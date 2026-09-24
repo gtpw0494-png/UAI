@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - build/v0.34.0-durable-orchestration
+      - 'build/**'
   pull_request:
     branches:
       - main
@@ -41,6 +41,9 @@ jobs:
 
       - name: Verify plugin sandbox and local model runtime boundaries
         run: node verification/runtime-boundaries.test.mjs
+
+      - name: Verify v0.43 control-plane modernization
+        run: npm run test:control-plane
 
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
@@ -98,7 +101,9 @@ jobs:
           with open('/tmp/status.json','r',encoding='utf-8') as f:
               data=json.load(f)
           assert data['name']=='IntraultUniversalion'
-          assert data['version']=='0.42.0'
+          import pathlib
+          expected=json.loads(pathlib.Path('package.json').read_text())['version']
+          assert data['version']==expected
           assert data['surface']=='OneChat'
           print('Status smoke test passed.')
           PY

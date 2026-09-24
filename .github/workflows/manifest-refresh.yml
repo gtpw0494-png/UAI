@@ -3,7 +3,7 @@ name: Refresh release manifest
 on:
   push:
     branches:
-      - build/v0.34.0-durable-orchestration
+      - 'build/**'
     paths-ignore:
       - release-manifest.json
       - .promotion-trigger
@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: release-manifest-build-branch
+  group: release-manifest-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: build/v0.34.0-durable-orchestration
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v7
@@ -46,4 +46,4 @@ jobs:
           test "$(git diff --cached --name-only | wc -l | tr -d ' ')" = "1"
           test "$(git diff --cached --name-only)" = "release-manifest.json"
           git commit -m "chore: refresh release manifest"
-          git push origin HEAD:build/v0.34.0-durable-orchestration
+          git push origin HEAD:${{ github.ref_name }}

@@ -130,3 +130,15 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Added adaptation prerequisite/planning CLI and deterministic continual-learning replay snapshots.
 - Added security/adversarial tests for prompt injection, approval replay, transfer tampering, plugin validation and state-transition abuse.
 - Expanded CI with Python compilation, contract/registry validation and public-repository privacy checks.
+
+
+## v0.43.0 — Control-Plane Modernization
+- Migrated AgentRegistry, accounts, subscriptions, legacy control plugins and availability evidence from direct JSON files to the transactional SQLite governance store.
+- Added legacy JSON import/rename compatibility so existing local state is preserved.
+- Added a tamper-evident SHA-256 audit chain; the first v0.43 record anchors the exact legacy audit prefix.
+- Added `GET /api/audit/verify` and status-level audit integrity reporting.
+- Added transactional plugin idempotency/replay protection with exact request hashing and key-collision denial.
+- Added `Idempotency-Key` HTTP support for plugin execution.
+- Generalized authoritative CI and release-manifest refresh from the retired v0.34 branch to all `build/*` branches.
+- Added architecture/data-flow/plugin/model/security/operations documentation matching the target UAI blueprint.
+- Added dedicated behavioral verification for migration, audit tamper detection, bounded agent capabilities and plugin exactly-once behavior.

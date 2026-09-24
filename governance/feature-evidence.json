@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.42.0",
+  "generated_for": "0.43.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -489,6 +489,48 @@
         "verification/test_data_learning.py"
       ],
       "evidence_note": "Secure aggregation/privacy accounting and federated evaluation are not implemented."
+    },
+    {
+      "id": "transactional-control-registries",
+      "introduced": "0.43.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/agent-system.js",
+        "src/control-center.js",
+        "src/availability-ledger.js",
+        "src/governance-db.js"
+      ],
+      "tests": [
+        "verification/control-plane-modernization.test.mjs"
+      ],
+      "evidence_note": "Legacy JSON migration and transactional registry behavior verified by authoritative repository CI and dedicated behavioral tests."
+    },
+    {
+      "id": "tamper-evident-audit-chain",
+      "introduced": "0.43.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/audit.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/control-plane-modernization.test.mjs"
+      ],
+      "evidence_note": "SHA-256 chain with legacy-prefix anchoring and tamper detection verified by authoritative repository CI and dedicated behavioral tests."
+    },
+    {
+      "id": "plugin-idempotency-replay-protection",
+      "introduced": "0.43.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/idempotency-store.js",
+        "src/plugin-executor.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/control-plane-modernization.test.mjs"
+      ],
+      "evidence_note": "Transactional exactly-once/replay behavior verified by authoritative repository CI and dedicated behavioral tests."
     }
   ]
 }

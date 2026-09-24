@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.42.0",
+  "version": "0.43.0",
   "private": true,
-  "description": "Verification release: transactional governance, exact approval binding, plugin/model registries, quarantined ingestion, lifecycle deletion, hybrid retrieval, adaptation registry and adversarial CI.",
+  "description": "Control-plane modernization: transactional registries, tamper-evident audit, plugin idempotency and generalized verification automation.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -39,7 +39,8 @@
     "adaptation:status": "python3 model/adaptation.py status",
     "continual:snapshot": "python3 model/continual.py snapshot",
     "data:lifecycle": "python3 storage/lifecycle.py status",
-    "retrieval:eval": "python3 storage/retrieval_eval.py"
+    "retrieval:eval": "python3 storage/retrieval_eval.py",
+    "test:control-plane": "node verification/control-plane-modernization.test.mjs"
   },
   "engines": {
     "node": ">=20"

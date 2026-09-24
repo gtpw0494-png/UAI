@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import {GovernanceDb} from "./governance-db.js";
 
 const BUILTIN = [
   {id:"research",name:"Research Agent",role:"research",capabilities:["knowledge.read","knowledge.write","source.registry.read","source.snapshot","reference.compare"]},
@@ -18,20 +19,66 @@ const BUILTIN = [
 
 export class AgentRegistry {
   constructor(stateRoot,audit){
-    this.file=path.join(stateRoot,"agents.json"); this.audit=audit; fs.mkdirSync(stateRoot,{recursive:true});
-    let all=[];try{all=fs.existsSync(this.file)?JSON.parse(fs.readFileSync(this.file,"utf8")):[];}catch{all=[];}
-    const ids=new Set(all.map(x=>x.id));let changed=false;
-    for(const x of BUILTIN)if(!ids.has(x.id)){all.push({...x,builtin:true,parentId:null,createdAt:new Date().toISOString(),lineage:[x.id]});changed=true;}
-    if(!fs.existsSync(this.file)||changed)fs.writeFileSync(this.file,JSON.stringify(all,null,2));
+    this.audit=audit;
+    this.db=new GovernanceDb(stateRoot);
+    this.legacy=path.join(stateRoot,"agents.json");
+    fs.mkdirSync(stateRoot,{recursive:true});
+    this._migrate();
+    this._seedBuiltins();
   }
-  list(){return JSON.parse(fs.readFileSync(this.file,"utf8"));}
-  get(id){return this.list().find(x=>x.id===id)||null;}
+
+  _strip(x){
+    if(!x)return null;
+    const y={...x};delete y._version;return y;
+  }
+
+  _migrate(){
+    if(!fs.existsSync(this.legacy))return;
+    let rows=[];try{rows=JSON.parse(fs.readFileSync(this.legacy,"utf8"));}catch{return;}
+    for(const row of rows){
+      if(row?.id&&!this.db.get("agent",row.id).record)this.db.create("agent",row);
+    }
+    if(rows.length){try{fs.renameSync(this.legacy,this.legacy+".migrated-v043");}catch{}}
+  }
+
+  _seedBuiltins(){
+    for(const x of BUILTIN){
+      if(this.db.get("agent",x.id).record)continue;
+      const rec={...x,builtin:true,parentId:null,createdAt:new Date().toISOString(),lineage:[x.id]};
+      const r=this.db.create("agent",rec);
+      if(r.state!=="SUCCESS")throw new Error(r.message||`Failed to seed builtin agent ${x.id}`);
+    }
+  }
+
+  list(){
+    return (this.db.list("agent",10000).records||[]).map(x=>this._strip(x));
+  }
+
+  get(id){
+    const r=this.db.get("agent",id);
+    return r.record?this._strip(r.record):null;
+  }
+
   spawn({parentId="explorative",name,role="specialist",instructions="",capabilities=[]}){
-    const parent=this.get(parentId); if(!parent)return {state:"FAILURE",message:"Parent agent not found."};
-    const allowed=new Set(parent.capabilities); const requested=[...new Set((capabilities||[]).map(String))];
-    const granted=requested.filter(x=>allowed.has(x)); const denied=requested.filter(x=>!allowed.has(x));
-    const agent={id:`agent-${crypto.randomUUID()}`,name:String(name||"Derived Agent"),role:String(role),instructions:String(instructions),capabilities:granted,builtin:false,parentId:parent.id,createdAt:new Date().toISOString(),lineage:[...(parent.lineage||[parent.id]),parent.id]};
-    const all=this.list();all.push(agent);fs.writeFileSync(this.file,JSON.stringify(all,null,2));
+    const parent=this.get(parentId);
+    if(!parent)return {state:"FAILURE",message:"Parent agent not found."};
+    const allowed=new Set(parent.capabilities);
+    const requested=[...new Set((capabilities||[]).map(String))];
+    const granted=requested.filter(x=>allowed.has(x));
+    const denied=requested.filter(x=>!allowed.has(x));
+    const agent={
+      id:`agent-${crypto.randomUUID()}`,
+      name:String(name||"Derived Agent"),
+      role:String(role),
+      instructions:String(instructions),
+      capabilities:granted,
+      builtin:false,
+      parentId:parent.id,
+      createdAt:new Date().toISOString(),
+      lineage:[...(parent.lineage||[parent.id]),parent.id]
+    };
+    const r=this.db.create("agent",agent);
+    if(r.state!=="SUCCESS")return {state:r.state,message:r.message||"Derived agent persistence failed."};
     this.audit?.append({type:"agent.spawn",agentId:agent.id,parentId:parent.id,granted,denied});
     return {state:"SUCCESS",message:"Derived logical agent created with parent-bounded capabilities.",agent,deniedCapabilities:denied};
   }
