@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "11683f21af6a518e59094ef180237f3c5da534afb294c3669ca5150294fb694b",
-      "bytes": 4241
+      "sha256": "9f29c23add00ef9aefe97353a5aafe20e633be55b67c638a17adf3db3a4596f3",
+      "bytes": 4324
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -19,8 +19,8 @@
     },
     {
       "path": ".github/workflows/manifest-refresh.yml",
-      "sha256": "51a4c6ce9ae2a3912f7c02411c97b17202953b830b92aee465461bdc92ded256",
-      "bytes": 1401
+      "sha256": "1a12b6a3e33bea50c3a27cbd8770a44f16e5c908b98d68044148ab6a9f7a25c4",
+      "bytes": 1360
     },
     {
       "path": ".gitignore",
@@ -379,8 +379,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "ae45ff1dfc4f9fd3e8e3018aa2bf87ce2017bb2a439bbda19fb40d4e1246fd84",
-      "bytes": 19274
+      "sha256": "a3cced76ae46b78fd3979364ef2f094b7bcc38b57e1b58f8d23ac2e9d10f352c",
+      "bytes": 19544
     },
     {
       "path": "src/action-envelope.js",
@@ -389,8 +389,8 @@
     },
     {
       "path": "src/agent-system.js",
-      "sha256": "11e37fbe19925844724d781c49dd09c6d494ecc7292f20d0444c83ef9d477c69",
-      "bytes": 16982
+      "sha256": "4cfc1e9675bb3862f938fb76b92b8aa8dfb38d73b7b7902be57042dcda9b4bfd",
+      "bytes": 17707
     },
     {
       "path": "src/agents.js",
@@ -404,8 +404,8 @@
     },
     {
       "path": "src/audit.js",
-      "sha256": "dc338b0d9867b0954390781e6ac8f5dc2cdcf15cc7ed667426e4aeca7711db9b",
-      "bytes": 628
+      "sha256": "122bedf0e379e1afa6e776afe29ce25e5112744b39409ef0416b2854941b550a",
+      "bytes": 3780
     },
     {
       "path": "src/autonomy-store.js",
@@ -414,8 +414,8 @@
     },
     {
       "path": "src/availability-ledger.js",
-      "sha256": "11db3d98f7f30c143be52cc92bfa628557822d9ecfce95fec789b7ca5a2e25bb",
-      "bytes": 1267
+      "sha256": "11600c4dbd155cca3c7a878a3a7293bcd03c47aa0f8b26857fb5f27379067370",
+      "bytes": 2212
     },
     {
       "path": "src/capabilities.js",
@@ -434,8 +434,8 @@
     },
     {
       "path": "src/control-center.js",
-      "sha256": "322ccf3eba92b07239915ba4514a8c8b3d5f33c8ddd767cce0f09fe53430c53f",
-      "bytes": 2319
+      "sha256": "73cc456e4b95b3a125fb0031e42fdd0f7f2c9061cb12529930128cfe870b5ab6",
+      "bytes": 3815
     },
     {
       "path": "src/dependency-status.js",
@@ -456,6 +456,11 @@
       "path": "src/governance-db.js",
       "sha256": "a57bb4cbb719a9a3bc9a2a52d72c8a72927ee4cdb9cc40bb90a633018882df1b",
       "bytes": 5372
+    },
+    {
+      "path": "src/idempotency-store.js",
+      "sha256": "44a899532a46abc1469d1ba0ca3e336aed445a19035b384c9a16690c2d5c81b6",
+      "bytes": 4467
     },
     {
       "path": "src/iubin.js",
@@ -504,8 +509,8 @@
     },
     {
       "path": "src/plugin-executor.js",
-      "sha256": "4fba6fe6e6697bafd4b4264fbfa3b0605cc9436d2adca0fed4a962b716c93ed6",
-      "bytes": 2478
+      "sha256": "18e17351576b0d3018da949d4e53f34b25b8205c11a522eb3367f8dd3f9761e3",
+      "bytes": 3930
     },
     {
       "path": "src/plugin-registry.js",
