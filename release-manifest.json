@@ -18,6 +18,11 @@
       "bytes": 1024
     },
     {
+      "path": ".github/workflows/manifest-refresh.yml",
+      "sha256": "5c645324fde783b8d3b3daa07b5cbd597d6a4a93482285d56a89f9003e3ff005",
+      "bytes": 1374
+    },
+    {
       "path": ".gitignore",
       "sha256": "92546f36c97ed92f5f7fe1844ba2824b3673fcd2e2fd654d07d0003d53cb3d25",
       "bytes": 503
