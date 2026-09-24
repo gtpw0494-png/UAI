@@ -39,6 +39,12 @@ jobs:
       - name: Run security and adversarial boundary suite
         run: npm run test:security
 
+      - name: Verify plugin sandbox and local model runtime boundaries
+        run: node verification/runtime-boundaries.test.mjs
+
+      - name: Verify lifecycle retrieval and learning foundations
+        run: python3 verification/test_data_learning.py
+
       - name: Compile all Python source
         shell: bash
         run: |
