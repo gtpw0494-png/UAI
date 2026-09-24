@@ -48,10 +48,10 @@ export class AuditLog {
     const body={
       id:crypto.randomUUID(),
       at:new Date().toISOString(),
+      ...event,
       chainVersion:"uai-audit-v1",
       prevHash:anchor.prevHash,
-      ...(anchor.legacyPrefix!==null?{legacyRecordsAnchored:anchor.legacyPrefix}:{}),
-      ...event
+      ...(anchor.legacyPrefix!==null?{legacyRecordsAnchored:anchor.legacyPrefix}:{})
     };
     const hash=`sha256:${digest(canonical(body))}`;
     const record={...body,hash};
