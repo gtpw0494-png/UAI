@@ -1,0 +1,132 @@
+# Release history
+
+## v0.30.0
+GitHub-ready cumulative checkpoint: dependency-free tokenizer core, GitHub Actions CI, repository ignore policy, and migration guidance.
+
+## v0.29.0
+Dependency-free sparse semantic-vector index in SQLite with cosine-ranked retrieval from OneChat. This is lexical-semantic vector retrieval, not a neural embedding claim.
+
+## v0.28.0
+Style-aware OASST dialogue retrieval with local deterministic style profiles (casual, technical, humorous, enthusiastic, short, question).
+
+## v0.27.0
+WordNet relationship graph import and OneChat lexical relationship queries (antonym, hypernym, hyponym, similar-to and other published pointer types).
+
+# Cumulative build batch v0.13.0–v0.20.0
+
+- **v0.13.0 — Data Fabric:** deterministic dataset v2, verification filtering, provenance, deduplication, train/validation splits and hashes.
+- **v0.14.0 — Cached Inference:** absolute-position KV cache, top-p support and cached/uncached greedy equivalence benchmark.
+- **v0.15.0 — Source Research:** architecture matrix, local reference-repository snapshot tool, model presets and strengthened doctrine metadata.
+- **v0.16.0 — Trainer v2:** preset training, validation, resume checkpoints, gradient accumulation, warmup/cosine schedule and run manifests.
+- **v0.17.0 — Model Lab:** OneChat collaboration connects dataset preparation, training, benchmarking and source analysis.
+- **v0.18.0 — Learned Tokenizer:** SentencePiece BPE with action tokens, checkpoint-bound tokenizer metadata and byte fallback.
+- **v0.19.0 — Advanced Objectives:** optional MoE balance regularization and future-token auxiliary objective with loss breakdowns.
+- **v0.20.0 — Integrated Release:** hardware profiling, SHA-256 release integrity, full pipeline checkpoint promotion, portability cleanup and final live OneChat verification.
+
+## v0.21.0 — Response Quality Gate
+- Added governed response composer for the single OneChat surface.
+- Ordinary conversation no longer returns bare retrieval-status strings as the primary response.
+- Raw ForgeLM seed output is preserved as evidence but cannot become the primary reply by default.
+- Added a model-output quality gate and `FORGELM_ALLOW_RAW_RESPONSES=1` opt-in for experimentation.
+- Added regression tests for coherent greetings and suppression of control-token/gibberish output.
+
+## v0.22.0 — Governed Web Corpus
+- Added Web Research Agent behind the same OneChat input.
+- Added explicit web source registry for Common Crawl, FineWeb, Wikimedia, Stack Exchange dump, direct URLs and public Git repositories.
+- Direct URL ingestion records URL, retrieval time, digest, robots result, declared/verified license state and training eligibility.
+- Private/local network targets are blocked by default.
+- Unknown/unverified licenses are stored for research but are not automatically promoted into model training data.
+
+## v0.23.0 — Bulk Web Corpus Import
+- Streaming Common Crawl WET/WARC text importer.
+- Streaming Wikimedia/MediaWiki XML(.bz2) importer.
+- Streaming Stack Exchange Posts.xml importer.
+- FineWeb-style JSONL and optional Parquet importer.
+- Optional Hugging Face FineWeb streaming sampler using `datasets`.
+- Every imported record carries source class, source ID/URL, digest, license policy and training-eligibility state.
+
+## v0.24.0 — Web → ForgeLM Training Bridge
+- ForgeLM dataset builder now consumes locally imported web records only when `trainingEligible=true`.
+- Web license/source fields survive into dataset records and manifests.
+- `FORGELM_MAX_WEB_RECORDS` bounds local memory use (default 5000) for Termux-scale runs.
+- Tokenizer/training corpus is rebuilt from governed dataset-v2 rather than bypassing the dataset policy.
+- Web Research Agent results participate in the same OneChat response composer.
+
+## v0.25.0 — Capability Recovery
+- Preserves the v0.24 OneChat response path as the protected working checkpoint.
+- Replaces six core provider-chat capability slots with six governed public-source research capabilities for ForgeLM development. Provider API adapters remain available as optional compatibility integrations but are no longer counted as core intelligence capabilities.
+- Adds official-Termux `python-torch` bootstrap support for ForgeLM train/infer/trainer activation.
+- Adds optional LangGraph.js orchestration adapter and installer.
+- Adds real configuration/probe adapters for Stripe subscription reads, Oxford Dictionaries API comparison and OctoPrint fabrication control.
+- Adds capability probing via OneChat, API and CLI script.
+- Keeps external credentials/hardware truth-gated: no adapter becomes CONNECTED merely because code exists.
+
+## v0.26.0 — Language Data + SQLite Storage
+- Added a high-volume SQLite storage database alongside the existing IUB record store.
+- Added FTS5-backed definition and dialogue search with a fallback when FTS5 is unavailable.
+- Added Princeton WordNet 3.0 definition downloader/importer with source/license provenance.
+- Added OpenAssistant OASST1 conversation downloader/importer as the default free conversational/banter corpus.
+- Added Lexicon Agent and Dialogue Agent behind the single OneChat input.
+- Added OneChat commands for local definitions, banter/dialogue retrieval and storage status.
+- Added training export of eligible WordNet definitions and OASST prompt/reply pairs into ForgeLM dataset-v2.
+- DailyDialog is registered as research-only/not-default because its published CC BY-NC-SA 4.0 terms are more restrictive.
+
+## v0.31.0 — Durable Task Ledger
+- Added restart-safe task records with explicit state-transition history, step outputs and checkpoints.
+- Added OneChat task planning/running/status/listing routes.
+
+## v0.32.0 — Action Envelopes
+- Added persistent action envelopes binding identity, intent, plan, capability scope, authority, security decision, execution, verification, recovery and audit lineage.
+- Every TaskEngine run now receives an action-envelope ID.
+
+## v0.33.0 — Recovery and Continuation
+- Added explicit task resume and cancellation.
+- Failed steps preserve their retry checkpoint; resume replaces the current result for that step only after real re-execution.
+- Completed tasks cannot be cancelled retroactively.
+
+## v0.34.0 — Availability Evidence + GitHub Privacy Boundary
+- Added persisted availability snapshots with evidence classes separating connected runtime, configuration-only, registered-source and unavailable states.
+- Added `/api/availability`, `/api/actions`, durable task APIs and OneChat `availability report`.
+- Hardened public-repository ignore policy so local user/runtime data, checkpoints, generated training data and secrets do not enter GitHub.
+
+## v0.35.0 — Persistent Policy + Approvals
+- Added independent `ALLOW/DENY/ASK/ESCALATE/BLOCK` policy evaluation.
+- Added persistent approval requests with expiry and explicit approve/deny decisions.
+- Added OneChat and HTTP surfaces for policy/approval inspection and decisions.
+
+## v0.36.0 — Scoped Autonomy Leases
+- Added persistent, revocable autonomy leases with exact operation scope, risk ceiling, expiry and maximum-action budget.
+- Autonomy leases do not grant credentials or bypass downstream policy/approval/security checks.
+- Added OneChat and HTTP surfaces for lease grant/list/revoke/authorization checks.
+
+## v0.37.0 — Transactional Governance Store
+- Moved durable task/action/approval/autonomy records to SQLite WAL with optimistic compare-and-swap versions.
+- Added legal task transition validation and event history.
+- Uses native `node:sqlite` when available, with a Python SQLite fallback for older runtimes.
+
+## v0.38.0 — Exact Approval Binding + Transfer Contracts
+- Approval records now bind action envelope/task, operation, arguments, capability, actor and tool version to a SHA-256 digest.
+- Added versioned transfer-envelope schema with integrity verification, idempotency field and byte limits.
+
+## v0.39.0 — Plugin and Model Registry Boundaries
+- Added validated plugin manifest schema, provenance hash and optional Ed25519 signature verification.
+- Third-party plugin execution requires an explicit external sandbox and per-invocation policy/approval gate.
+- Added model/runtime registry and truthful runtime detection for ForgeLM, llama.cpp/GGUF, Ollama, Transformers and ONNX Runtime.
+- Added a local llama.cpp probe/chat adapter; remote model runtime endpoints are blocked by default.
+
+## v0.40.0 — Quarantined Web Ingestion
+- External content explicitly has no instruction authority.
+- Added URL canonicalization, prompt-injection/PII/secret signals, global content deduplication and quarantine state.
+- Separated retrieval eligibility from training eligibility.
+- Bulk imports require explicit `--training-approved` in addition to source/license eligibility.
+
+## v0.41.0 — Data Lifecycle + Hybrid Retrieval
+- Added source retention, soft deletion and hard purge controls with retrieval/training exclusion.
+- Upgraded local retrieval to hybrid FTS5 + sparse-vector ranking.
+- Added recall@k/MRR evaluation utility.
+
+## v0.42.0 — Learning Registry + Adversarial CI
+- Added machine-readable learning-method registry covering causal pretraining, SFT, LoRA/QLoRA, DPO, RAG, continual replay, distillation, multimodal and federated status boundaries.
+- Added adaptation prerequisite/planning CLI and deterministic continual-learning replay snapshots.
+- Added security/adversarial tests for prompt injection, approval replay, transfer tampering, plugin validation and state-transition abuse.
+- Expanded CI with Python compilation, contract/registry validation and public-repository privacy checks.

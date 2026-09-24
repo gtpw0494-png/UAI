@@ -21,3 +21,8 @@ state/*.json
 state/*.jsonl
 state/sandboxes/
 model/tokenizers/
+state/*.sqlite3*
+state/*.db*
+model/data/replay-buffer.jsonl
+model/data/replay-buffer*.jsonl
+.bootstrap/

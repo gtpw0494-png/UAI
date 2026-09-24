@@ -1,0 +1,11 @@
+{
+  "format":"uai-model-registry-v1",
+  "policy":"Model presence, registry metadata, runtime installation and successful inference are distinct states. Licenses are never inferred from filenames.",
+  "models":[
+    {"id":"forgelm-local","name":"ForgeLM","version":"0.36-seed","family":"decoder-transformer","format":"pytorch-checkpoint","license":"PROJECT","source":"local-project","tokenizer":"byte-action-or-learned","contextSize":null,"quantization":"none","runtime":"forgelm","status":"PROJECT_MODEL"},
+    {"id":"llamacpp-gguf","name":"llama.cpp GGUF runtime","version":"external","family":"runtime","format":"GGUF","license":"runtime/project-specific","source":"https://github.com/ggml-org/llama.cpp","tokenizer":"model-embedded","contextSize":null,"quantization":"GGUF variants","runtime":"llama.cpp","status":"RUNTIME_REFERENCE"},
+    {"id":"ollama-runtime","name":"Ollama local runtime","version":"external","family":"runtime","format":"runtime-managed","license":"runtime/model-specific","source":"https://ollama.com/","tokenizer":"model-specific","contextSize":null,"quantization":"model-specific","runtime":"ollama","status":"RUNTIME_REFERENCE"},
+    {"id":"transformers-runtime","name":"Hugging Face Transformers","version":"external","family":"runtime","format":"safetensors/pytorch","license":"Apache-2.0 runtime; model-specific","source":"https://github.com/huggingface/transformers","tokenizer":"model-specific","contextSize":null,"quantization":"backend-specific","runtime":"transformers","status":"OPTIONAL_RUNTIME"},
+    {"id":"onnx-runtime","name":"ONNX Runtime","version":"external","family":"runtime","format":"ONNX","license":"MIT runtime; model-specific","source":"https://github.com/microsoft/onnxruntime","tokenizer":"external/model-specific","contextSize":null,"quantization":"model-specific","runtime":"onnxruntime","status":"OPTIONAL_RUNTIME"}
+  ]
+}

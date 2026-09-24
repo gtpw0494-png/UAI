@@ -1,15 +1,23 @@
-# IntraultUniversalion v0.36.0
+# IntraultUniversalion v0.42.0
 
-A local-first, evidence-governed OneChat application with collaborating research, knowledge, development, learning, systems and ForgeLM agents.
+A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
 
-## v0.31–v0.36 batch
+## v0.37–v0.42 verification batch
 
-- Durable task ledger and action-envelope persistence.
-- Explicit resume/cancel recovery paths and evidence-classed availability snapshots.
-- Independent policy decisions: `ALLOW`, `DENY`, `ASK`, `ESCALATE`, `BLOCK`.
-- Persistent approval requests/decisions with expiry.
-- Scoped, expiring autonomy leases with risk ceilings and action limits.
-- Public GitHub privacy boundary excludes runtime/user state, checkpoints, generated datasets and secrets.
-- Existing OneChat, ForgeLM, SQLite language data, web research, capability truth and self-development remain additive.
+- SQLite WAL governance persistence with optimistic concurrency and legal task-state transitions.
+- Exact-operation approval binding over action, arguments, capability, actor and tool version.
+- Versioned Node/Python/tool transfer envelopes with integrity hashes and size limits.
+- Signed plugin-manifest contract and external-sandbox execution boundary.
+- Model/runtime registry for ForgeLM, GGUF/llama.cpp, Ollama, Transformers and ONNX without confusing registry presence with runtime availability.
+- Web-content quarantine, prompt-injection/PII/secret signals, canonical URLs, global dedupe and explicit training promotion.
+- Retrieval/training separation: web records require both eligibility and explicit training approval.
+- Data retention, soft deletion and hard source purge hooks.
+- Hybrid SQLite FTS5 + sparse semantic retrieval and retrieval-evaluation tooling.
+- Runtime-conditional LoRA/QLoRA/DPO registry plus replay/regression foundations for continual learning.
+- Expanded adversarial CI and public-repository privacy checks.
 
-The complete v0.36 implementation passes the cumulative local regression suite. This GitHub build branch is intentionally kept separate from `main` until the full protected v0.30 source checkpoint is synchronized and CI can validate the repository itself.
+Existing OneChat, ForgeLM, WordNet/OASST storage, capability truth, source research, self-development, rollback, approvals and bounded autonomy remain additive.
+
+Run `npm test` and `npm run test:security`, then `npm start`.
+
+See `docs/AI-LEARNING-AND-DATA-ARCHITECTURE.md`, `docs/ACTION-LIFECYCLE.md` and `docs/GOVERNANCE-AUTHORITY.md`.
