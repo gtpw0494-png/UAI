@@ -1,68 +1,81 @@
-name: bootstrap-v042-source
+name: Bootstrap v0.36 sanitized source
 
 on:
   push:
     branches:
       - build/v0.34.0-durable-orchestration
     paths:
-      - .bootstrap/READY-v042
+      - '.bootstrap/READY'
 
 permissions:
   contents: write
 
 jobs:
-  expand-and-verify:
+  bootstrap:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout build branch
+        uses: actions/checkout@v4
         with:
           ref: build/v0.34.0-durable-orchestration
           fetch-depth: 0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-          package-manager-cache: false
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.13'
-      - name: Reconstruct sanitized v0.42 source archive
+
+      - name: Verify bootstrap part set
         shell: bash
         run: |
           set -euo pipefail
-          test "$(find .bootstrap -maxdepth 1 -name 'v042-*.b64' | wc -l)" -eq 4
-          cat .bootstrap/v042-*.b64 | tr -d '\n\r' | base64 -d > /tmp/uai-v042-source.zip
-          unzip -t /tmp/uai-v042-source.zip
+          count="$(find .bootstrap -maxdepth 1 -type f -name 'part-*.b64' | wc -l | tr -d ' ')"
+          echo "Bootstrap parts: $count"
+          test "$count" = "18"
+
+      - name: Reconstruct and repair source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat $(find .bootstrap -maxdepth 1 -type f -name 'part-*.b64' | sort) > .bootstrap/source.b64
+          base64 -d .bootstrap/source.b64 > .bootstrap/source.partial.zip
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq zip unzip
+          # The staged stream contains every local file record; only the trailing
+          # ZIP directory metadata is absent. Rebuild directory metadata from
+          # local headers, then require a strict archive test.
+          yes | zip -FF .bootstrap/source.partial.zip --out .bootstrap/source.zip >/tmp/zip-repair.log 2>&1 || {
+            cat /tmp/zip-repair.log
+            exit 1
+          }
+          cat /tmp/zip-repair.log
+          unzip -t .bootstrap/source.zip
+
       - name: Enforce public-repository privacy boundary
         shell: bash
         run: |
           set -euo pipefail
-          if unzip -Z1 /tmp/uai-v042-source.zip | grep -E '^(state/|data/|model/checkpoints/|model/runs/|model/tokenizers/|vendor-data/|vendor-reference/|\.env)'; then
-            echo "Blocked: sanitized archive contains a private/runtime path."
+          unzip -Z1 .bootstrap/source.zip > /tmp/archive-paths.txt
+          if grep -E '^(data/|state/|model/checkpoints/|model/runs/|model/tokenizers/|vendor-data/|vendor-reference/|\.env($|\.))' /tmp/archive-paths.txt; then
+            echo "Blocked private or mutable runtime path detected."
             exit 1
           fi
-      - name: Expand complete source checkpoint
+
+      - name: Extract sanitized source
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf /tmp/uai-source
-          mkdir -p /tmp/uai-source
-          unzip -q /tmp/uai-v042-source.zip -d /tmp/uai-source
-          rsync -a --delete --exclude='.git/' --exclude='.bootstrap/' /tmp/uai-source/ ./
-      - name: Validate source checkpoint
+          rm -rf /tmp/uai-v036-source
+          mkdir -p /tmp/uai-v036-source
+          unzip -q .bootstrap/source.zip -d /tmp/uai-v036-source
+          shopt -s dotglob nullglob
+          cp -a /tmp/uai-v036-source/* ./
+
+      - name: Run cumulative Node regression suite
+        run: npm test
+
+      - name: Check Torch-free tokenizer portability
+        run: python3 model/tokenizer.py status
+
+      - name: Commit validated v0.36 source
         shell: bash
         run: |
           set -euo pipefail
-          npm test
-          npm run test:security
-          python3 -m compileall -q model research storage scripts
-          python3 model/tokenizer.py status
-          python3 model/adaptation.py status
-      - name: Remove bootstrap payload and commit validated source tree
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf .bootstrap
-          rm -f .github/workflows/bootstrap-v036.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -70,5 +83,5 @@ jobs:
             echo "No source changes to commit."
             exit 0
           fi
-          git commit -m "chore: synchronize sanitized v0.42.0 source checkpoint"
+          git commit -m "chore: synchronize validated v0.36.0 sanitized source"
           git push origin HEAD:build/v0.34.0-durable-orchestration
