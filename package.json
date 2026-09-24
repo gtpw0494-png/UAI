@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.34.0",
+  "version": "0.36.0",
   "private": true,
-  "description": "Durable orchestration release: persisted task state, governed action envelopes, explicit resume/cancel recovery, availability evidence, and GitHub public-repository privacy hardening.",
+  "description": "Governance release: durable task/action lifecycle, persisted approvals, policy decisions, scoped expiring autonomy leases, and evidence-classed availability.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
