@@ -50,9 +50,6 @@ jobs:
           rsync -a --exclude='.git/' /tmp/uai-v042-source/ ./
           rm -rf .bootstrap
           rm -f .github/workflows/bootstrap-v036.yml
-          # Workflow files from the archive are installed separately through the
-          # GitHub connector because GITHUB_TOKEN cannot create/update workflows.
-          rm -f .github/workflows/ci.yml
 
       - name: Require complete source tree
         shell: bash
@@ -69,23 +66,6 @@ jobs:
 
       - name: Install Node package metadata
         run: npm install --ignore-scripts --omit=optional
-
-      - name: Diagnose self-development compatibility
-        shell: bash
-        run: |
-          set -euo pipefail
-          cp test.js /tmp/uai-test.js
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('test.js')
-          s=p.read_text()
-          old='const staged=selfEngine.stage(selfProp.id);assert.equal(staged.state,"SUCCESS");'
-          new='const staged=selfEngine.stage(selfProp.id);console.log("SELFDEV_DIAG",JSON.stringify(staged,null,2));assert.equal(staged.state,"SUCCESS");'
-          if old in s:
-              p.write_text(s.replace(old,new,1))
-          PY
-          npm test || true
-          mv /tmp/uai-test.js test.js
 
       - name: Run cumulative Node regression suite
         run: npm test
@@ -124,6 +104,10 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # ci.yml is required during validation and self-development sandbox tests,
+          # but a workflow-run token cannot publish workflow-file changes.
+          # The connector installs the already-tested ci.yml immediately afterward.
+          rm -f .github/workflows/ci.yml
           git add -A
           if git diff --cached --quiet; then
             echo "No source changes to commit."
