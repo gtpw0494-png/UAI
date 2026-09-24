@@ -1,0 +1,89 @@
+{
+  "schema_version": "uai-feature-evidence-v1",
+  "allowed_statuses": [
+    "DECLARED",
+    "IMPLEMENTED_UNVERIFIED_REPO",
+    "EXPERIMENTAL",
+    "PARTIAL",
+    "VERIFIED",
+    "UNAVAILABLE",
+    "BLOCKED"
+  ],
+  "promotion_rule": "Only VERIFIED features may be described as fully implemented on main. VERIFIED requires implementation paths, executable tests, and passing repository CI evidence.",
+  "features": [
+    {
+      "id": "durable-task-ledger",
+      "introduced": "0.31.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/task-store.js"
+      ],
+      "tests": [
+        "test.js::v0.31-v0.34"
+      ],
+      "evidence_note": "Passed cumulative local regression; repository source-sync/CI still pending."
+    },
+    {
+      "id": "action-envelopes",
+      "introduced": "0.32.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/action-envelope.js"
+      ],
+      "tests": [
+        "test.js::v0.31-v0.34"
+      ],
+      "evidence_note": "Passed cumulative local regression; repository source-sync/CI still pending."
+    },
+    {
+      "id": "task-resume-cancel-recovery",
+      "introduced": "0.33.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/task-store.js",
+        "server.js"
+      ],
+      "tests": [
+        "test.js::v0.31-v0.34"
+      ],
+      "evidence_note": "Server source not yet fully synchronized to GitHub branch."
+    },
+    {
+      "id": "runtime-availability-evidence",
+      "introduced": "0.34.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/availability-ledger.js"
+      ],
+      "tests": [
+        "test.js::v0.31-v0.34"
+      ],
+      "evidence_note": "Passed cumulative local regression; repository source-sync/CI still pending."
+    },
+    {
+      "id": "persistent-approvals",
+      "introduced": "0.35.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/approval-store.js",
+        "src/policy-engine.js"
+      ],
+      "tests": [
+        "test.js::v0.35-v0.36"
+      ],
+      "evidence_note": "Passed cumulative local regression; repository source-sync/CI still pending."
+    },
+    {
+      "id": "scoped-autonomy-leases",
+      "introduced": "0.36.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/autonomy-store.js"
+      ],
+      "tests": [
+        "test.js::v0.35-v0.36"
+      ],
+      "evidence_note": "Passed cumulative local regression; repository source-sync/CI still pending."
+    }
+  ]
+}
