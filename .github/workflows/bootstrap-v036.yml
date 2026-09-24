@@ -1,11 +1,11 @@
-name: bootstrap-v036-source
+name: bootstrap-v042-source
 
 on:
   push:
     branches:
       - build/v0.34.0-durable-orchestration
     paths:
-      - .bootstrap/READY
+      - .bootstrap/READY-v042
 
 permissions:
   contents: write
@@ -18,18 +18,25 @@ jobs:
         with:
           ref: build/v0.34.0-durable-orchestration
           fetch-depth: 0
-      - name: Reconstruct sanitized source archive
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Reconstruct sanitized v0.42 source archive
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap/part-*.b64 | tr -d '\n\r' | base64 -d > /tmp/uai-v036-source.zip
-          test "$(find .bootstrap -maxdepth 1 -name 'part-*.b64' | wc -l)" -eq 19
-          unzip -t /tmp/uai-v036-source.zip
+          test "$(find .bootstrap -maxdepth 1 -name 'v042-*.b64' | wc -l)" -eq 4
+          cat .bootstrap/v042-*.b64 | tr -d '\n\r' | base64 -d > /tmp/uai-v042-source.zip
+          unzip -t /tmp/uai-v042-source.zip
       - name: Enforce public-repository privacy boundary
         shell: bash
         run: |
           set -euo pipefail
-          if unzip -Z1 /tmp/uai-v036-source.zip | grep -E '^(data/|state/|model/checkpoints/|model/runs/|model/tokenizers/|vendor-data/|vendor-reference/|\.env)'; then
+          if unzip -Z1 /tmp/uai-v042-source.zip | grep -E '^(state/|data/|model/checkpoints/|model/runs/|model/tokenizers/|vendor-data/|vendor-reference/|\.env)'; then
             echo "Blocked: sanitized archive contains a private/runtime path."
             exit 1
           fi
@@ -39,18 +46,23 @@ jobs:
           set -euo pipefail
           rm -rf /tmp/uai-source
           mkdir -p /tmp/uai-source
-          unzip -q /tmp/uai-v036-source.zip -d /tmp/uai-source
-          rsync -a /tmp/uai-source/ ./
+          unzip -q /tmp/uai-v042-source.zip -d /tmp/uai-source
+          rsync -a --delete --exclude='.git/' --exclude='.bootstrap/' /tmp/uai-source/ ./
       - name: Validate source checkpoint
         shell: bash
         run: |
           set -euo pipefail
           npm test
+          npm run test:security
+          python3 -m compileall -q model research storage scripts
           python3 model/tokenizer.py status
-      - name: Commit validated source tree
+          python3 model/adaptation.py status
+      - name: Remove bootstrap payload and commit validated source tree
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf .bootstrap
+          rm -f .github/workflows/bootstrap-v036.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -58,5 +70,5 @@ jobs:
             echo "No source changes to commit."
             exit 0
           fi
-          git commit -m "chore: expand sanitized v0.36.0 source checkpoint"
+          git commit -m "chore: synchronize sanitized v0.42.0 source checkpoint"
           git push origin HEAD:build/v0.34.0-durable-orchestration
