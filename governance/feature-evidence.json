@@ -493,7 +493,7 @@
     {
       "id": "transactional-control-registries",
       "introduced": "0.43.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/agent-system.js",
         "src/control-center.js",
@@ -503,12 +503,12 @@
       "tests": [
         "verification/control-plane-modernization.test.mjs"
       ],
-      "evidence_note": "Legacy JSON migration and transactional registry behavior implemented; repository CI evidence pending."
+      "evidence_note": "Legacy JSON migration and transactional registry behavior verified by authoritative repository CI and dedicated behavioral tests."
     },
     {
       "id": "tamper-evident-audit-chain",
       "introduced": "0.43.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/audit.js",
         "server.js"
@@ -516,12 +516,12 @@
       "tests": [
         "verification/control-plane-modernization.test.mjs"
       ],
-      "evidence_note": "SHA-256 chain with legacy-prefix anchoring and tamper detection implemented; repository CI evidence pending."
+      "evidence_note": "SHA-256 chain with legacy-prefix anchoring and tamper detection verified by authoritative repository CI and dedicated behavioral tests."
     },
     {
       "id": "plugin-idempotency-replay-protection",
       "introduced": "0.43.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/idempotency-store.js",
         "src/plugin-executor.js",
@@ -530,7 +530,7 @@
       "tests": [
         "verification/control-plane-modernization.test.mjs"
       ],
-      "evidence_note": "Transactional exactly-once/replay behavior implemented; repository CI evidence pending."
+      "evidence_note": "Transactional exactly-once/replay behavior verified by authoritative repository CI and dedicated behavioral tests."
     }
   ]
 }
