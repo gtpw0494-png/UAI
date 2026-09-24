@@ -444,8 +444,8 @@
     },
     {
       "path": "src/availability-ledger.js",
-      "sha256": "11600c4dbd155cca3c7a878a3a7293bcd03c47aa0f8b26857fb5f27379067370",
-      "bytes": 2212
+      "sha256": "5513f6beced9059647e7dc4145f96f74a3bd97aa2b2922d3c812c13d948493ff",
+      "bytes": 2427
     },
     {
       "path": "src/capabilities.js",
