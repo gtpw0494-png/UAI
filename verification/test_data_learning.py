@@ -23,6 +23,7 @@ from storage.db import (
 )
 from storage.semantic import build as semantic_build, schema as semantic_schema, search as semantic_search
 import adaptation
+from data_pipeline import load_web_corpus
 
 
 def run_json(args, *, env=None):
@@ -146,6 +147,17 @@ with tempfile.TemporaryDirectory(prefix="uai-verify-") as td:
     assert metrics["recallAtK"] == 1.0
     assert metrics["mrr"] > 0.0
     assert metrics["algorithm"] == "hybrid-fts5+sparse-hash"
+
+    # Retrieval eligibility never implies training permission.
+    web_records = tmp / "web-corpus.jsonl"
+    web_records.write_text("\n".join([
+        json.dumps({"text": "approved web material", "sourceClass": "fixture", "trainingEligible": True, "trainingApproved": True, "license": "CC0-1.0"}),
+        json.dumps({"text": "retrieval only material", "sourceClass": "fixture", "trainingEligible": True, "trainingApproved": False, "license": "CC0-1.0"}),
+        json.dumps({"text": "unlicensed material", "sourceClass": "fixture", "trainingEligible": False, "trainingApproved": True, "license": "UNKNOWN"}),
+    ]) + "\n", encoding="utf-8")
+    loaded_web = list(load_web_corpus(web_records, max_records=10))
+    assert len(loaded_web) == 1
+    assert loaded_web[0].response == "approved web material"
 
     # Adaptation registry must preserve availability truth instead of pretending training ran.
     st = adaptation.status()
