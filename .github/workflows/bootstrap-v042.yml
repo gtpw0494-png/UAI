@@ -70,6 +70,23 @@ jobs:
       - name: Install Node package metadata
         run: npm install --ignore-scripts --omit=optional
 
+      - name: Diagnose self-development compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp test.js /tmp/uai-test.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('test.js')
+          s=p.read_text()
+          old='const staged=selfEngine.stage(selfProp.id);assert.equal(staged.state,"SUCCESS");'
+          new='const staged=selfEngine.stage(selfProp.id);console.log("SELFDEV_DIAG",JSON.stringify(staged,null,2));assert.equal(staged.state,"SUCCESS");'
+          if old in s:
+              p.write_text(s.replace(old,new,1))
+          PY
+          npm test || true
+          mv /tmp/uai-test.js test.js
+
       - name: Run cumulative Node regression suite
         run: npm test
 
