@@ -35,6 +35,7 @@ import { ModelRegistry } from "./src/model-registry.js";
 import { PluginExecutor } from "./src/plugin-executor.js";
 import { LlamaCppRuntime } from "./src/model-runtime-adapter.js";
 import { Observability } from "./src/observability.js";
+import { IdempotencyStore } from "./src/idempotency-store.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -56,10 +57,11 @@ const policyEngine = new PolicyEngine();
 const approvalStore = new ApprovalStore(stateDir,audit);
 const autonomyStore = new AutonomyStore(stateDir,audit);
 const pluginRegistry = new PluginRegistry(stateDir,audit);
+const idempotencyStore = new IdempotencyStore(stateDir,audit);
 const modelRegistry = new ModelRegistry();
 const llamaRuntime = new LlamaCppRuntime();
 const observability = new Observability(audit);
-const pluginExecutor = new PluginExecutor({registry:pluginRegistry,approvalStore,policyEngine,audit});
+const pluginExecutor = new PluginExecutor({registry:pluginRegistry,approvalStore,policyEngine,idempotencyStore,audit});
 const tasks = new TaskEngine({store,knowledge,providers:providerHub,research,development,explorative,agents,audit,taskStore,actionEnvelopes,policyEngine,approvalStore});
 const control = new ControlCenter(stateDir, audit);
 const forgelm = new ForgeLMBridge();
@@ -79,7 +81,7 @@ function readBody(req){return new Promise((resolve,reject)=>{let d="";req.on("da
 
 const server=http.createServer(async(req,res)=>{try{
   const url=new URL(req.url,`http://${req.headers.host}`);
-  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length}});}
+  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},auditIntegrity:audit.verify()});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/model-runtime/llamacpp")return send(res,200,await llamaRuntime.status());
@@ -108,6 +110,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
   if(req.method==="GET"&&url.pathname==="/api/subscriptions")return send(res,200,control.subscriptions.list());
   if(req.method==="GET"&&url.pathname==="/api/audit")return send(res,200,audit.list(Number(url.searchParams.get("limit")||100)));
+  if(req.method==="GET"&&url.pathname==="/api/audit/verify")return send(res,200,audit.verify());
   if(req.method==="GET"&&url.pathname==="/api/source/inspect")return send(res,200,workspace.inspect(url.searchParams.get("path")||"package.json"));
   if(req.method==="POST"&&url.pathname==="/api/research")return send(res,200,research.examine(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/plugins/register")return send(res,200,{state:"SUCCESS",plugin:control.registerPlugin(await readBody(req))});
