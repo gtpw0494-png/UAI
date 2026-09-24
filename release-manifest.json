@@ -623,6 +623,11 @@
       "bytes": 29009
     },
     {
+      "path": "verification/control-plane-modernization.test.mjs",
+      "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
+      "bytes": 6818
+    },
+    {
       "path": "verification/runtime-boundaries.test.mjs",
       "sha256": "11772eb7930bf5ac5fa112d4572d92bc0fe08e3aaae69a796d2d598a33e7e14c",
       "bytes": 4267
