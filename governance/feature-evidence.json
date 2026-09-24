@@ -1,0 +1,494 @@
+{
+  "schema_version": "uai-feature-evidence-v1",
+  "generated_for": "0.42.0",
+  "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
+  "allowed_statuses": [
+    "DECLARED",
+    "IMPLEMENTED_UNVERIFIED_REPO",
+    "EXPERIMENTAL",
+    "PARTIAL",
+    "VERIFIED",
+    "UNAVAILABLE",
+    "BLOCKED"
+  ],
+  "features": [
+    {
+      "id": "onechat-primary-surface",
+      "introduced": "0.7.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/onechat.js",
+        "server.js",
+        "public/index.html"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Cumulative OneChat tests plus authoritative localhost /api/status and /api/onechat smoke test."
+    },
+    {
+      "id": "governed-source-self-development",
+      "introduced": "0.11.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/self-development.js",
+        "src/workspace.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Sandbox validation, proposal/approval flow and rollback regression tests pass."
+    },
+    {
+      "id": "forgelm-local-neural-core",
+      "introduced": "0.12.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "model/forgelm.py",
+        "model/trainer.py",
+        "model/tokenizer_core.py"
+      ],
+      "tests": [
+        "model/test_forgelm.py",
+        "model/test_advanced.py"
+      ],
+      "evidence_note": "Authoritative CPU-PyTorch CI trains, saves, loads and backpropagates advanced objectives."
+    },
+    {
+      "id": "verified-learning-data-pipeline",
+      "introduced": "0.13.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "model/data_pipeline.py",
+        "src/learning-fabric.js"
+      ],
+      "tests": [
+        "test.js",
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Verified traces, dedupe/splits and explicit web training eligibility/approval are executable tests."
+    },
+    {
+      "id": "response-quality-gate",
+      "introduced": "0.21.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/response-composer.js",
+        "src/onechat.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Seed-model output quality and coherent fallback tests pass."
+    },
+    {
+      "id": "governed-web-ingestion",
+      "introduced": "0.22.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/web-corpus.js",
+        "src/content-security.js"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js",
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "SSRF/private-target boundaries, external-instruction authority, quarantine/security signals, dedupe and explicit training promotion are covered; live public-site reachability remains environment-dependent."
+    },
+    {
+      "id": "bulk-corpus-importers",
+      "introduced": "0.23.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "research/import_web_corpus.py",
+        "research/stream_fineweb.py"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Synthetic importer tests cover supported local corpus formats; remote FineWeb streaming remains dependency/network conditional."
+    },
+    {
+      "id": "language-database-storage",
+      "introduced": "0.26.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "storage/db.py",
+        "src/storage-db.js",
+        "research/import_wordnet.py",
+        "research/import_oasst1.py"
+      ],
+      "tests": [
+        "test.js",
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "SQLite/WAL storage, definitions/dialogue, lifecycle filtering and fixtures pass."
+    },
+    {
+      "id": "lexical-style-semantic-retrieval",
+      "introduced": "0.30.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "storage/db.py",
+        "storage/semantic.py"
+      ],
+      "tests": [
+        "test.js",
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Lexical relations, style profiling, hybrid sparse+FTS retrieval and retrieval metrics are executable."
+    },
+    {
+      "id": "durable-task-ledger",
+      "introduced": "0.31.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/task-store.js",
+        "src/governance-db.js"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js"
+      ],
+      "evidence_note": "Persistence, legal transitions, restart-safe checkpoints and optimistic conflict handling pass."
+    },
+    {
+      "id": "action-envelopes",
+      "introduced": "0.32.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/action-envelope.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Execution, verification, recovery and audit-linked envelope lifecycle is regression tested."
+    },
+    {
+      "id": "task-resume-cancel-recovery",
+      "introduced": "0.33.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/agent-system.js",
+        "src/task-store.js",
+        "server.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Failed-step resume and cancellation behavior pass."
+    },
+    {
+      "id": "runtime-availability-evidence",
+      "introduced": "0.34.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/availability-ledger.js",
+        "src/capabilities.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Runtime-connected/configured/unavailable evidence classes are tested independently from declarations."
+    },
+    {
+      "id": "policy-decision-engine",
+      "introduced": "0.35.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/policy-engine.js"
+      ],
+      "tests": [
+        "test.js",
+        "verification/runtime-boundaries.test.mjs"
+      ],
+      "evidence_note": "ALLOW/ASK/ESCALATE behavior and downstream execution checks pass."
+    },
+    {
+      "id": "exact-operation-approval-binding",
+      "introduced": "0.35.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/approval-store.js",
+        "src/governance-db.js"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js"
+      ],
+      "evidence_note": "Approved invocation validates; mutated arguments/replay binding is rejected."
+    },
+    {
+      "id": "scoped-autonomy-leases",
+      "introduced": "0.36.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/autonomy-store.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Scope, risk ceiling, action budget and revocation paths pass."
+    },
+    {
+      "id": "transactional-governance-store",
+      "introduced": "0.37.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/governance-db.js",
+        "storage/governance.py"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js"
+      ],
+      "evidence_note": "SQLite WAL, optimistic versioning and legal task-transition enforcement pass."
+    },
+    {
+      "id": "versioned-transfer-integrity-contracts",
+      "introduced": "0.38.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/contracts.js",
+        "schemas/event-envelope.schema.json"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js"
+      ],
+      "evidence_note": "Untampered envelopes verify and altered payloads are denied."
+    },
+    {
+      "id": "signed-plugin-registry-boundary",
+      "introduced": "0.39.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/plugin-registry.js",
+        "schemas/plugin-manifest.schema.json"
+      ],
+      "tests": [
+        "security-test.js"
+      ],
+      "evidence_note": "Manifest validation and Ed25519 signature verification are executable."
+    },
+    {
+      "id": "plugin-sandbox-executor",
+      "introduced": "0.39.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/plugin-executor.js"
+      ],
+      "tests": [
+        "verification/runtime-boundaries.test.mjs"
+      ],
+      "evidence_note": "Execution is unavailable without sandbox configuration; signed low-risk fixture executes successfully through configured external sandbox boundary."
+    },
+    {
+      "id": "model-runtime-registry",
+      "introduced": "0.40.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/model-registry.js",
+        "research/model_registry.json"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Registry/runtime presence is separated from connectivity truth."
+    },
+    {
+      "id": "llamacpp-runtime-adapter",
+      "introduced": "0.40.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/model-runtime-adapter.js"
+      ],
+      "tests": [
+        "verification/runtime-boundaries.test.mjs"
+      ],
+      "evidence_note": "Local OpenAI-compatible fixture proves status/chat; remote endpoints are blocked by default. Real llama.cpp availability remains runtime-dependent."
+    },
+    {
+      "id": "data-retention-deletion-purge",
+      "introduced": "0.41.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "storage/lifecycle.py",
+        "storage/db.py"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Fixture data is visible, hidden by soft deletion, and removed by transactional hard purge."
+    },
+    {
+      "id": "hybrid-retrieval-evaluation",
+      "introduced": "0.41.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "storage/semantic.py",
+        "storage/retrieval_eval.py"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Real SQLite fixture verifies ranked retrieval plus recall@k and MRR calculation."
+    },
+    {
+      "id": "adaptation-availability-planning",
+      "introduced": "0.42.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "model/adaptation.py",
+        "research/learning_methods.json"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Unknown/unavailable/runtime-conditional methods preserve truthful planning states; this does not claim LoRA/QLoRA/DPO training executed."
+    },
+    {
+      "id": "continual-replay-regression-gates",
+      "introduced": "0.42.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "model/continual.py"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Deterministic replay snapshots and pass/fail metric regression thresholds are executable."
+    },
+    {
+      "id": "public-repository-privacy-boundary",
+      "introduced": "0.30.0",
+      "status": "VERIFIED",
+      "implementation": [
+        ".gitignore",
+        ".github/workflows/ci.yml",
+        "scripts/build-release-manifest.py"
+      ],
+      "tests": [
+        ".github/workflows/ci.yml"
+      ],
+      "evidence_note": "Authoritative CI scans tracked paths and release manifest reproducibility."
+    },
+    {
+      "id": "long-running-background-orchestration",
+      "introduced": "0.31.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/task-store.js",
+        "src/agent-system.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Durable continuation exists, but execution stops when the localhost process is stopped; no background daemon is claimed."
+    },
+    {
+      "id": "universal-external-adapter-approval-binding",
+      "introduced": "0.35.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/approval-store.js",
+        "src/runtime-services.js",
+        "src/plugin-executor.js"
+      ],
+      "tests": [
+        "test.js",
+        "security-test.js",
+        "verification/runtime-boundaries.test.mjs"
+      ],
+      "evidence_note": "Exact binding is implemented for governed paths tested here; universal coverage across every future adapter is not claimed."
+    },
+    {
+      "id": "lora-qlora-dpo-execution",
+      "introduced": "0.42.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "model/adaptation.py",
+        "research/learning_methods.json"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Dependency/status planning exists. Actual adapter training requires compatible external base models, dependencies, compute and a governed training implementation/run."
+    },
+    {
+      "id": "production-scale-llm-training",
+      "introduced": "0.12.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "model/forgelm.py",
+        "model/trainer.py"
+      ],
+      "tests": [
+        "model/test_forgelm.py",
+        "model/test_advanced.py"
+      ],
+      "evidence_note": "Small local training is verified; production-scale distributed training is not claimed."
+    },
+    {
+      "id": "live-billing",
+      "introduced": "0.25.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/runtime-services.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Adapter foundation exists; live behavior requires legitimate external credentials/service availability."
+    },
+    {
+      "id": "oxford-definitive-comparison",
+      "introduced": "0.25.0",
+      "status": "UNAVAILABLE",
+      "implementation": [
+        "src/runtime-services.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Requires legitimately licensed Oxford data/API credentials; no substitute is presented as Oxford."
+    },
+    {
+      "id": "physical-fabrication",
+      "introduced": "0.25.0",
+      "status": "UNAVAILABLE",
+      "implementation": [
+        "src/runtime-services.js"
+      ],
+      "tests": [
+        "test.js"
+      ],
+      "evidence_note": "Requires real verified fabrication hardware/controller and explicit approval; source presence is not hardware availability."
+    },
+    {
+      "id": "multimodal-learning",
+      "introduced": "0.42.0",
+      "status": "UNAVAILABLE",
+      "implementation": [
+        "research/learning_methods.json"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "No modality pipeline/provenance/evaluation implementation exists yet."
+    },
+    {
+      "id": "federated-private-training",
+      "introduced": "0.42.0",
+      "status": "UNAVAILABLE",
+      "implementation": [
+        "research/learning_methods.json"
+      ],
+      "tests": [
+        "verification/test_data_learning.py"
+      ],
+      "evidence_note": "Secure aggregation/privacy accounting and federated evaluation are not implemented."
+    }
+  ]
+}

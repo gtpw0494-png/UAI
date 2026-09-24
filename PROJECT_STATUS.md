@@ -1,0 +1,130 @@
+# IntraultUniversalion requirement ledger
+
+This ledger prevents additive releases from silently dropping earlier requirements.
+`IMPLEMENTED` means executable in this repository and covered by tests/status checks.
+`PARTIAL` means a real foundation exists but the full requested breadth is not yet complete.
+`UNAVAILABLE` means the required external data/hardware/authority is not present.
+`RESEARCH-ONLY` means public material may be studied but no proprietary source is claimed.
+
+| Requirement | State | Evidence / boundary |
+|---|---|---|
+| Single user-facing chat input | IMPLEMENTED | `public/index.html`, `src/onechat.js` |
+| Collaborating hidden/specialist agents | IMPLEMENTED | agent registry + per-turn allocations |
+| Research + Development + Knowledge + Verification agents | IMPLEMENTED | built-ins with bounded capabilities |
+| Agent derivation/self-replication as logical agents | IMPLEMENTED | parent-bounded `AgentRegistry.spawn`; not physical replication |
+| Local persistent knowledge + binary transport | IMPLEMENTED | KnowledgeStore + IUB1 transport |
+| Capability truth states | IMPLEMENTED | capability registry and per-operation states |
+| Three Laws immutable project doctrine | IMPLEMENTED | `src/doctrine.js`; internal project precedence preserved |
+| Natural-language development proposals | IMPLEMENTED | Development Agent / OneChat |
+| Governed source mutation, snapshot, rollback | IMPLEMENTED | workspace + self-development sandbox |
+| Local neural language-model implementation | IMPLEMENTED | ForgeLM PyTorch causal transformer |
+| Train/save/load/generate locally | IMPLEMENTED | ForgeLM CLI/tests/checkpoint |
+| Verified traces -> training data | IMPLEMENTED | Learning Fabric + dataset v2 pipeline |
+| Open model/source study | PARTIAL | governed source registry; approved references can be fetched/studied |
+| Copy all source from ChatGPT/Claude/Gemini/Bixby/etc. | RESEARCH-ONLY | proprietary internals are not claimed or fabricated; use public/open sources only |
+| Oxford-standard definitive comparison | UNAVAILABLE | requires a legitimately licensed/imported Oxford source |
+| Arbitrary physical matter creation/repair | UNAVAILABLE | requires real connected fabrication/robotics hardware and evidence |
+| Full production-scale LLM training | PARTIAL | architecture/trainer exists; scale depends on data + compute |
+| GPU acceleration | PARTIAL | optional profiles; actual availability is hardware/toolchain dependent |
+| Accounts/subscriptions/billing | PARTIAL | local metadata implemented; live billing requires a real billing adapter |
+
+## v0.13-v0.20 additions
+
+- `IMPLEMENTED` — deterministic provenance-bearing dataset v2 with splits/deduplication/hashes.
+- `IMPLEMENTED` — ForgeLM KV-cache incremental inference with cached/uncached equivalence test.
+- `IMPLEMENTED` — source architecture matrix and local reference-repository snapshot manifests.
+- `IMPLEMENTED` — preset trainer v2 with validation, resume state, gradient accumulation and run metadata.
+- `IMPLEMENTED` — OneChat Model Lab routing for dataset preparation, training, benchmarking and source analysis.
+- `IMPLEMENTED` — learned SentencePiece tokenizer with action/observation/end symbols and byte fallback.
+- `IMPLEMENTED / EXPERIMENTAL` — MoE load-balance regularizer and future-token auxiliary loss; disabled in default preset.
+- `IMPLEMENTED` — release-integrity SHA-256 manifest and local hardware profiler.
+
+### v0.21.0 response path
+- OneChat HTTP/UI response path: IMPLEMENTED + VERIFIED
+- Governed coherent fallback response composer: IMPLEMENTED + VERIFIED
+- Raw seed-model output quality gate: IMPLEMENTED + VERIFIED
+- Production-quality natural-language generation from ForgeLM itself: PARTIAL (requires substantially more training/data/model scale)
+
+### v0.22 additions
+- Governed broad web-source registry: IMPLEMENTED
+- Direct public URL ingestion with robots/provenance: IMPLEMENTED
+- License-aware training eligibility: IMPLEMENTED
+- "All web information" mirrored locally: NOT CLAIMED — web-scale data is too large and source rights vary; connectors/importers are used instead.
+
+### v0.23 additions
+- Common Crawl WET local import: IMPLEMENTED
+- Wikimedia XML dump local import: IMPLEMENTED
+- Stack Exchange Posts.xml local import: IMPLEMENTED
+- FineWeb JSONL local import: IMPLEMENTED
+- FineWeb remote streaming: IMPLEMENTED when optional `datasets` dependency + network are available
+- Parquet import: IMPLEMENTED when optional `pyarrow` is available
+
+### v0.24 additions
+- License-gated web → ForgeLM dataset bridge: IMPLEMENTED
+- Source/license preservation into training examples: IMPLEMENTED
+- Termux web-record memory cap: IMPLEMENTED
+- Web-scale distributed/sharded pretraining over trillions of tokens: PARTIAL / requires appropriate storage and compute
+
+### v0.25 capability recovery
+- `IMPLEMENTED` — protected v0.24 chat-working checkpoint lineage.
+- `IMPLEMENTED` — core capability count remains exactly 42, but the six legacy provider-chat slots are replaced in the core count by governed source/research capabilities aligned with the ForgeLM goal.
+- `IMPLEMENTED` — OpenAI gpt-oss, xAI Grok-1, DeepSeek-V3, Google Gemma, Hugging Face Transformers and Anthropic public-research capability entries.
+- `IMPLEMENTED` — Termux neural bootstrap using the official `python-torch` package path when available from the user's configured Termux repositories.
+- `IMPLEMENTED` — optional LangGraph.js adapter and Termux installer path.
+- `IMPLEMENTED` — Stripe live subscription-read adapter; remains `UNAVAILABLE/CONFIGURED` until a legitimate secret key is supplied and a live probe succeeds.
+- `IMPLEMENTED` — Oxford Dictionaries API comparison adapter; remains `UNAVAILABLE/CONFIGURED` until legitimate Oxford credentials are supplied and a live probe succeeds.
+- `IMPLEMENTED` — approval-gated OctoPrint fabrication adapter; remains unavailable/configured until real hardware, endpoint/key, explicit enable flag and successful printer probe exist.
+- Baseline truth target without neural/LangGraph/external credentials: `35/42 CONNECTED`.
+- Local neural + LangGraph target after successful bootstrap: `39/42 CONNECTED`.
+- Oxford + Stripe can raise the verified live total to `41/42` with legitimate credentials.
+- `42/42` is only truthful with a real verified fabrication controller/printer.
+
+## v0.26.0 additions
+| Requirement | State | Evidence |
+|---|---|---|
+| Local high-volume storage database | IMPLEMENTED | SQLite `data/intraultuniversalion.sqlite3`, WAL, indexed tables, FTS5 when available |
+| Free definition database | IMPLEMENTED | Princeton WordNet 3.0 importer and governed source registry |
+| Free conversational/banter database | IMPLEMENTED | OpenAssistant OASST1 importer, Apache-2.0 source metadata |
+| OneChat definition retrieval | IMPLEMENTED | Lexicon Agent allocation and SQLite definition search |
+| OneChat banter/dialogue retrieval | IMPLEMENTED | Dialogue Agent allocation and SQLite full-text search |
+| Language DB -> ForgeLM training bridge | IMPLEMENTED | `storage/export_training.py` plus `model/data_pipeline.py` language database loader |
+| Entire external corpora bundled in release ZIP | NOT BUNDLED | Downloaded on the user's device to preserve source provenance and avoid inflating the source release |
+
+
+## v0.27-v0.30 additions
+- IMPLEMENTED: WordNet lexical relationship graph and OneChat relationship queries.
+- IMPLEMENTED: deterministic dialogue style profiling and style-aware retrieval.
+- IMPLEMENTED: dependency-free sparse semantic-vector index in SQLite.
+- IMPLEMENTED: ByteActionTokenizer moved to a Torch-free core module.
+- IMPLEMENTED: GitHub-ready `.gitignore`, CI workflow, contribution and migration guidance.
+- PARTIAL: neural semantic embeddings remain optional/future because current Termux neural dependencies are unresolved.
+
+## v0.31-v0.34 additions
+- IMPLEMENTED — durable task persistence with lifecycle history and restart-safe step checkpoints.
+- IMPLEMENTED — action envelope persistence carrying identity, intent, capability scope, authority/security metadata, execution, verification, recovery and audit lineage.
+- IMPLEMENTED — explicit task resume and cancellation through OneChat and HTTP APIs.
+- IMPLEMENTED — evidence-classed availability snapshots persisted separately from capability declarations.
+- IMPLEMENTED — public GitHub privacy boundary for mutable state, local knowledge, generated training data, checkpoints, tokenizer artifacts and secrets.
+- PARTIAL — truly long-running/background execution remains bounded by the foreground localhost process; persistence enables continuation after restart but does not claim autonomous background execution when the process is stopped.
+
+## v0.35-v0.36 additions
+- IMPLEMENTED — independent policy decision engine with ALLOW/DENY/ASK/ESCALATE/BLOCK outcomes.
+- IMPLEMENTED — persistent approval requests and decisions with expiry semantics.
+- IMPLEMENTED — scoped, expiring, revocable autonomy leases with risk ceilings and action budgets.
+- IMPLEMENTED — OneChat/API surfaces for policy, approvals and autonomy governance.
+- PARTIAL — approval binding into every individual external adapter is not yet universal; existing high-impact adapters still keep their own explicit gates.
+
+## v0.37-v0.42 additions
+- `IMPLEMENTED` — SQLite WAL governance store with optimistic versioning and legal task-transition matrix.
+- `IMPLEMENTED` — exact-operation approval binding and replay/mutation rejection.
+- `IMPLEMENTED` — JSON Schema 2020-12 plugin/transfer contracts plus SHA-256 integrity envelopes.
+- `IMPLEMENTED` — plugin registration/signature verification boundary; third-party execution remains `UNAVAILABLE` unless an external sandbox is explicitly configured and exact invocation approval succeeds.
+- `IMPLEMENTED` — model/runtime registry with truthful local runtime detection; registry presence is not runtime availability.
+- `IMPLEMENTED` — local llama.cpp status/chat adapter when a trusted server is actually reachable.
+- `IMPLEMENTED` — external-content quarantine, prompt-injection/PII/secret signals, canonical URLs and cross-run content deduplication.
+- `IMPLEMENTED` — separate retrieval eligibility and explicit training approval for web material.
+- `IMPLEMENTED` — retention metadata, soft deletion and hard source purge for SQLite language data.
+- `IMPLEMENTED` — hybrid FTS5 + sparse semantic retrieval and recall@k/MRR evaluation utility.
+- `IMPLEMENTED` — LoRA/QLoRA/DPO dependency/status planning and continual-learning replay snapshot foundations.
+- `PARTIAL` — LoRA/QLoRA/DPO execution requires compatible external base models/dependencies and is not claimed connected when absent.
+- `UNAVAILABLE` — multimodal/federated training remain unavailable until modality pipelines, secure aggregation/privacy accounting and evaluation are implemented.
