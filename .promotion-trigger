@@ -1,4 +1,4 @@
 UAI v0.43.0 implementation proof candidate
-source-manifest-head=8d4a3cc6e6e127d8a22ad9da7ccb346808d636fb
-stage=implementation-proof
+source-manifest-head=30f4c8df27e55f6085958f521a50cf5844e95ef5
+stage=implementation-proof-retry
 requirements=authoritative-ci+feature-evidence-gate
