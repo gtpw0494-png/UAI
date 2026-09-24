@@ -4,7 +4,7 @@ import hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent;OUT=ROOT/'release-manifest.json'
 include=[]
-for base in ['src','model','public','research','requirements','scripts','docs','storage','schemas','.github']:
+for base in ['src','model','public','research','requirements','scripts','docs','storage','schemas','governance','verification','.github']:
  for p in (ROOT/base).rglob('*'):
   rel=p.relative_to(ROOT)
   mutable=(rel.parts[:2] in [('model','data'),('model','runs'),('model','checkpoints'),('model','tokenizers')] or rel==Path('research/local_source_snapshot.json'))
