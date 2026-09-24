@@ -1,4 +1,4 @@
-UAI v0.42.0 promotion candidate
-source-manifest-head=da205fb87f7d806caf5d2a9f6461c890a077ca1c
+UAI v0.43.0 implementation proof candidate
+source-manifest-head=8d4a3cc6e6e127d8a22ad9da7ccb346808d636fb
+stage=implementation-proof
 requirements=authoritative-ci+feature-evidence-gate
-main-advance=only-after-all-required-jobs-success
