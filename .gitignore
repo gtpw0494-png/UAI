@@ -1,0 +1,23 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.*
+data/*.sqlite3*
+model/checkpoints/*.pt
+model/runs/
+model/data/dataset-v2/
+model/data/training-corpus.txt
+model/data/verified-traces.jsonl
+vendor-data/
+vendor-reference/
+.upgrade-backups/
+.DS_Store
+
+# Local user/runtime state — never publish from a working device
+data/*.iub
+data/index.json
+state/*.json
+state/*.jsonl
+state/sandboxes/
+model/tokenizers/
