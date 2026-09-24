@@ -63,9 +63,19 @@
       "bytes": 4576
     },
     {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "dbefe6f54d6eaaaf2e0394ee9f8599653ba42fce1517398e8801bd101348d275",
+      "bytes": 2974
+    },
+    {
       "path": "docs/CAPABILITY-RECOVERY.md",
       "sha256": "9f1a4d931575f989d929a8b63c93d8232752d763d4fc848535b6c498f3b5d4df",
       "bytes": 3569
+    },
+    {
+      "path": "docs/DATA-FLOW.md",
+      "sha256": "92968254bef11d5361cf8d8687ca18cb7b14b97477dc95a1e6904b6ea0f831d1",
+      "bytes": 1559
     },
     {
       "path": "docs/FEATURE-PROMOTION.md",
@@ -96,6 +106,26 @@
       "path": "docs/LANGUAGE-INTELLIGENCE.md",
       "sha256": "6c1bf9b1ad9a852d16eabd5e8d964b3d8f7fe210e32988fecae0e9fd95cd6d18",
       "bytes": 486
+    },
+    {
+      "path": "docs/MODEL-SUPPORT.md",
+      "sha256": "2b3d623eb81321356a1ac610ce1b54fe810f81e1a0a6dbc891a244a705189673",
+      "bytes": 1462
+    },
+    {
+      "path": "docs/OPERATIONS.md",
+      "sha256": "f095bf3719a05622d7fd0b99a935dff4b862799d061b86922a1a0d84a2fcaa2c",
+      "bytes": 1415
+    },
+    {
+      "path": "docs/PLUGIN-SDK.md",
+      "sha256": "362250e09cb1ea344cc666ab0fbd49ce468f49d64c96dd5543020a7e916bcb9f",
+      "bytes": 1727
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "sha256": "756414490f47367ba79de192fbcacb448603be3687d00de922e8583111a26a2f",
+      "bytes": 1718
     },
     {
       "path": "governance/feature-evidence.json",
