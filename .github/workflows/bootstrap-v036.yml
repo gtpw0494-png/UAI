@@ -1,0 +1,62 @@
+name: bootstrap-v036-source
+
+on:
+  push:
+    branches:
+      - build/v0.34.0-durable-orchestration
+    paths:
+      - .bootstrap/READY
+
+permissions:
+  contents: write
+
+jobs:
+  expand-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: build/v0.34.0-durable-orchestration
+          fetch-depth: 0
+      - name: Reconstruct sanitized source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .bootstrap/part-*.b64 | tr -d '\n\r' | base64 -d > /tmp/uai-v036-source.zip
+          test "$(find .bootstrap -maxdepth 1 -name 'part-*.b64' | wc -l)" -eq 19
+          unzip -t /tmp/uai-v036-source.zip
+      - name: Enforce public-repository privacy boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          if unzip -Z1 /tmp/uai-v036-source.zip | grep -E '^(data/|state/|model/checkpoints/|model/runs/|model/tokenizers/|vendor-data/|vendor-reference/|\.env)'; then
+            echo "Blocked: sanitized archive contains a private/runtime path."
+            exit 1
+          fi
+      - name: Expand complete source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/uai-source
+          mkdir -p /tmp/uai-source
+          unzip -q /tmp/uai-v036-source.zip -d /tmp/uai-source
+          rsync -a /tmp/uai-source/ ./
+      - name: Validate source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm test
+          python3 model/tokenizer.py status
+      - name: Commit validated source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: expand sanitized v0.36.0 source checkpoint"
+          git push origin HEAD:build/v0.34.0-durable-orchestration
