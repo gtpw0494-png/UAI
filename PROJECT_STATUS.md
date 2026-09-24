@@ -131,9 +131,9 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 
 
 ## v0.43.0 additions
-- IMPLEMENTED_UNVERIFIED_REPO — transactional SQLite migration for agents, accounts, subscriptions, control-center plugin metadata and availability snapshots, preserving legacy JSON through one-time import/rename.
-- IMPLEMENTED_UNVERIFIED_REPO — tamper-evident SHA-256 audit chain with legacy-prefix anchoring and explicit verification API.
-- IMPLEMENTED_UNVERIFIED_REPO — plugin idempotency/replay protection using the governance store; identical request/key replays without re-execution and changed request/key collisions are denied.
+- IMPLEMENTED + VERIFIED — transactional SQLite migration for agents, accounts, subscriptions, control-center plugin metadata and availability snapshots, preserving legacy JSON through one-time import/rename.
+- IMPLEMENTED + VERIFIED — tamper-evident SHA-256 audit chain with legacy-prefix anchoring and explicit verification API.
+- IMPLEMENTED + VERIFIED — plugin idempotency/replay protection using the governance store; identical request/key replays without re-execution and changed request/key collisions are denied.
 - IMPLEMENTED — generic `build/*` CI and manifest automation, removing v0.34 branch hard-coding.
 - IMPLEMENTED — repository architecture contracts for control/execution/evidence/data planes.
 - PARTIAL — full blueprint module decomposition remains incremental; the current flat `src/` layout is retained until behavior-preserving refactors are independently verified.
