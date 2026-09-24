@@ -1,0 +1,127 @@
+name: UAI authoritative CI
+
+on:
+  push:
+    branches:
+      - main
+      - build/v0.34.0-durable-orchestration
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Install Node metadata without optional runtimes
+        run: npm install --ignore-scripts --omit=optional
+
+      - name: Validate feature evidence claims
+        run: node scripts/validate-feature-evidence.mjs
+
+      - name: Run cumulative regression suite
+        run: npm test
+
+      - name: Run security and adversarial boundary suite
+        run: npm run test:security
+
+      - name: Compile all Python source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import py_compile
+          roots=[Path('model'),Path('research'),Path('storage'),Path('scripts')]
+          files=sorted(p for r in roots if r.exists() for p in r.rglob('*.py'))
+          for p in files:
+              py_compile.compile(str(p),doraise=True)
+          print(f'Compiled {len(files)} Python files successfully.')
+          PY
+
+      - name: Verify Torch-free tokenizer path
+        run: python3 model/tokenizer.py status
+
+      - name: Verify tracked-file privacy boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          git ls-files > /tmp/tracked.txt
+          if grep -E '(^|/)(\.env($|\.)|[^/]*\.sqlite3($|[-.])|[^/]*\.iub$|checkpoints/|runs/|tokenizers/|vendor-data/|vendor-reference/|state/)' /tmp/tracked.txt; then
+            echo 'Private or mutable runtime data is tracked.'
+            exit 1
+          fi
+
+      - name: Verify release manifest is reproducible
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp release-manifest.json /tmp/release-manifest.before.json
+          python3 scripts/build-release-manifest.py
+          diff -u /tmp/release-manifest.before.json release-manifest.json
+
+      - name: Localhost smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          PORT=8787 node server.js >/tmp/uai-server.log 2>&1 &
+          pid=$!
+          trap 'kill $pid 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8787/api/status >/tmp/status.json; then
+              break
+            fi
+            sleep 1
+          done
+          python3 - <<'PY'
+          import json
+          with open('/tmp/status.json','r',encoding='utf-8') as f:
+              data=json.load(f)
+          assert data['name']=='IntraultUniversalion'
+          assert data['version']=='0.42.0'
+          assert data['surface']=='OneChat'
+          print('Status smoke test passed.')
+          PY
+          curl -fsS -X POST -H 'content-type: application/json'             --data '{"message":"hello"}'             http://127.0.0.1:8787/api/onechat >/tmp/onechat.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/onechat.json','r',encoding='utf-8') as f:
+              data=json.load(f)
+          assert data.get('state') in {'SUCCESS','PARTIAL','UNAVAILABLE'}
+          assert isinstance(data.get('message',''),str) and data.get('message','')
+          print('OneChat smoke test passed.')
+          PY
+
+  neural-cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Install CPU PyTorch
+        run: python3 -m pip install --upgrade pip torch
+
+      - name: Run ForgeLM train-save-load test
+        working-directory: model
+        run: python3 test_forgelm.py
+
+      - name: Run advanced objective test
+        working-directory: model
+        run: python3 test_advanced.py
