@@ -624,8 +624,8 @@
     },
     {
       "path": "verification/test_data_learning.py",
-      "sha256": "cfc510b1804846f410c2a13f8b86e851feada1768d074f0ed641a3b989f26daf",
-      "bytes": 7122
+      "sha256": "73f43bbde9e110d2b42a9df877268ecbe26ce9b99a6732a21a2a8311bbc363f1",
+      "bytes": 7971
     }
   ],
   "policy": "Manifest covers shipped source/model-support files. Runtime state, fetched vendor references and mutable knowledge are excluded."
