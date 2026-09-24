@@ -19,8 +19,8 @@
     },
     {
       "path": ".github/workflows/manifest-refresh.yml",
-      "sha256": "5c645324fde783b8d3b3daa07b5cbd597d6a4a93482285d56a89f9003e3ff005",
-      "bytes": 1374
+      "sha256": "51a4c6ce9ae2a3912f7c02411c97b17202953b830b92aee465461bdc92ded256",
+      "bytes": 1401
     },
     {
       "path": ".gitignore",
@@ -96,6 +96,11 @@
       "path": "docs/LANGUAGE-INTELLIGENCE.md",
       "sha256": "6c1bf9b1ad9a852d16eabd5e8d964b3d8f7fe210e32988fecae0e9fd95cd6d18",
       "bytes": 486
+    },
+    {
+      "path": "governance/feature-evidence.json",
+      "sha256": "86a1370e856c049c075f3de94691ce31cf28b0b5afa7bb90c62781f3d828eb13",
+      "bytes": 2579
     },
     {
       "path": "model/adaptation.py",
@@ -319,8 +324,8 @@
     },
     {
       "path": "scripts/build-release-manifest.py",
-      "sha256": "5ee6ed3abca7d1c68c7acf6c8a4dfb13168654e395d29ba89e3082f5a2cf5c4d",
-      "bytes": 1490
+      "sha256": "5a22cd19702e79e722c6dc146f8bbc39abef40acafb05a0cb20c39626b455a9b",
+      "bytes": 1518
     },
     {
       "path": "scripts/enable-termux-capabilities.sh",
@@ -611,6 +616,16 @@
       "path": "test.js",
       "sha256": "8bbb24ab3e9aae85585753062ba5435cff358f36fd888ba6ab0e9d1fe49a8d27",
       "bytes": 29009
+    },
+    {
+      "path": "verification/runtime-boundaries.test.mjs",
+      "sha256": "11772eb7930bf5ac5fa112d4572d92bc0fe08e3aaae69a796d2d598a33e7e14c",
+      "bytes": 4267
+    },
+    {
+      "path": "verification/test_data_learning.py",
+      "sha256": "cfc510b1804846f410c2a13f8b86e851feada1768d074f0ed641a3b989f26daf",
+      "bytes": 7122
     }
   ],
   "policy": "Manifest covers shipped source/model-support files. Runtime state, fetched vendor references and mutable knowledge are excluded."
