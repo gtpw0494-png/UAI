@@ -41,6 +41,7 @@ export class AvailabilityLedger {
     const snap={
       id:`availability-${crypto.randomUUID()}`,
       observedAt,
+      observedEpochMs:Date.now(),
       total:entries.length,
       connected:entries.filter(x=>x.availability==="CONNECTED").length,
       configured:entries.filter(x=>x.availability==="CONFIGURED").length,
@@ -52,8 +53,13 @@ export class AvailabilityLedger {
   }
 
   latest(){
-    const row=this.db.list("availability",1).records?.[0];
-    return row?this._strip(row):{id:null,observedAt:null,total:0,connected:0,configured:0,entries:[]};
+    const rows=this.list(1000);
+    rows.sort((a,b)=>{
+      const av=Number(a.observedEpochMs)||Date.parse(a.observedAt||0)||0;
+      const bv=Number(b.observedEpochMs)||Date.parse(b.observedAt||0)||0;
+      return bv-av;
+    });
+    return rows[0]||{id:null,observedAt:null,observedEpochMs:null,total:0,connected:0,configured:0,entries:[]};
   }
 
   list(limit=50){
