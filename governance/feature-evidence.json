@@ -794,7 +794,7 @@
     {
       "id": "bounded-shadow-rd",
       "introduced": "0.52.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/agent-budget.js",
         "src/shadow/shadow-agent-registry.js",
@@ -812,7 +812,7 @@
     {
       "id": "isolated-light-source-maintenance",
       "introduced": "0.52.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/light/light-agent-registry.js",
         "src/light/worktree-manager.js",
@@ -827,7 +827,7 @@
     {
       "id": "protected-local-governance-kernel-v2",
       "introduced": "0.52.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/governance/kernel.js",
         "src/governance/promotion-rules.js",
@@ -845,7 +845,7 @@
     {
       "id": "platform-roadmap-truth-catalog",
       "introduced": "0.52.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/platform-capability-catalog.js",
         "server.js"
