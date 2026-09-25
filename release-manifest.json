@@ -108,6 +108,11 @@
       "bytes": 486
     },
     {
+      "path": "docs/MODEL-INTEGRATION.md",
+      "sha256": "0474b162e1d4536fd122e4ff71325609760054befd1b114d4865b24a9af27029",
+      "bytes": 1313
+    },
+    {
       "path": "docs/MODEL-SUPPORT.md",
       "sha256": "b9cca3e486a9683539c9011e9c7c667bf569572e57086d094e09fac6ea5ded46",
       "bytes": 1948
@@ -808,6 +813,11 @@
       "bytes": 276
     },
     {
+      "path": "src/model-catalog.js",
+      "sha256": "358617fd76045635ca7a536c3ad63ee38f5dae254b0d367ab5f23698846af155",
+      "bytes": 2698
+    },
+    {
       "path": "src/model-lab.js",
       "sha256": "84298839c917ea29d33bf4d9a5a0ba258cd74dbef0db4b6e367b1ed056e04ed0",
       "bytes": 3732
@@ -904,8 +914,8 @@
     },
     {
       "path": "src/providers.js",
-      "sha256": "6b472d268b3c41cf3848b8010c22346573535378b105dc6885eb4283e36c9965",
-      "bytes": 4950
+      "sha256": "9ea2c2636f459def98397343d1e85d0c7b5ef7eac21ed809ef41b18531978ed0",
+      "bytes": 8027
     },
     {
       "path": "src/release-integrity.js",
@@ -1166,6 +1176,11 @@
       "path": "verification/document-http.test.mjs",
       "sha256": "4a4510121ffedaa128d748b932cafae7749c1c4fed6b5f779c5f57d9122efa5c",
       "bytes": 5085
+    },
+    {
+      "path": "verification/model-catalog.test.mjs",
+      "sha256": "50456d564338cbf839ea16832c13d841b7c353c9f2f9a1fdc2d34c7c78fe527b",
+      "bytes": 686
     },
     {
       "path": "verification/model-router-evidence-v049.test.mjs",
