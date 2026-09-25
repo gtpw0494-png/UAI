@@ -818,6 +818,26 @@
       "bytes": 1146
     },
     {
+      "path": "src/provenance/citation.js",
+      "sha256": "30316184d93e5883341a56a4719b7a70fba951ddb633c3c2d8afcce36390222d",
+      "bytes": 741
+    },
+    {
+      "path": "src/provenance/graph.js",
+      "sha256": "0bc8e56b92a18eae5e6d4a25e69ddbc33663e6f52c174edf4d2ee585d9d86bc6",
+      "bytes": 5361
+    },
+    {
+      "path": "src/provenance/lineage.js",
+      "sha256": "8a6821a2c9791cdce3d9a25c68cb4c9395731adada51098c195181f6ded52a3f",
+      "bytes": 370
+    },
+    {
+      "path": "src/provenance/purge.js",
+      "sha256": "ddd9e71d4f68ec9998cfced4fee4bd5d5a467d7b4634f4532c15886af351db11",
+      "bytes": 234
+    },
+    {
       "path": "src/providers.js",
       "sha256": "6b472d268b3c41cf3848b8010c22346573535378b105dc6885eb4283e36c9965",
       "bytes": 4950
