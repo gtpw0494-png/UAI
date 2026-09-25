@@ -884,8 +884,8 @@
     },
     {
       "path": "src/shadow/shadow-run-store.js",
-      "sha256": "9dd64a1277a7bb8a8472768addd993aa9ad5f6f6801fc419d48af8657a5d3bc7",
-      "bytes": 2935
+      "sha256": "c4ed284ef0d898401b48a818d79468e9e9e8807db7e828b398acd2ffe39c3e44",
+      "bytes": 3714
     },
     {
       "path": "src/shadow/synthesis-agent.js",
