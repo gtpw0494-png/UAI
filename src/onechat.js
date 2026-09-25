@@ -26,6 +26,7 @@ export class OneChatRouter{
  allocations(message){
   const t=String(message||""),a=[];
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
+  if(/^(?:evaluate|promote|rollback)\s+model\s+run\s+model-run-[\w-]+/i.test(t.trim()))return [{agent:"forgelm",reason:"explicit governed model-candidate lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
   if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
   if(/\bmemory\b|remember|why remembered|forget source|disable training|disable memory|export memory/i.test(t))a.push({agent:"memory",reason:"explicit user-owned memory intent"});
@@ -96,27 +97,47 @@ export class OneChatRouter{
   if(agent==="forgelm"){
     const ownerId=context.ownerId||null;
     const approvalId=(String(message).match(/\bapproval\s+(approval-[\w-]+)/i)||[])[1]||null;
-    const authorizeTraining=(operation,args)=>{
-      if(!ownerId)return {state:"DENIED",message:"Authenticated owner identity is required for model training."};
-      if(!this.approvalStore)return {state:"BLOCKED",message:"Approval store is not configured; high-risk model training cannot run."};
-      const binding={operation,arguments:args,capability:"models.execute",actor:ownerId,toolVersion:"onechat-model-training-v1",actionEnvelopeId:null,taskId:null};
+    const authorizeHighRisk=(operation,args,label="model operation")=>{
+      if(!ownerId)return {state:"DENIED",message:"Authenticated owner identity is required for "+label+"."};
+      if(!this.approvalStore)return {state:"BLOCKED",message:"Approval store is not configured; "+label+" cannot run."};
+      const binding={operation,arguments:args,capability:"models.execute",actor:ownerId,toolVersion:"onechat-model-lifecycle-v1",actionEnvelopeId:null,taskId:null};
       if(!approvalId){
         const approval=this.approvalStore.request({...binding,risk:"high"});
-        return {state:"ASK",message:"Explicit approval is required before model training.",approval,binding};
+        return {state:"ASK",message:"Explicit approval is required before "+label+".",approval,binding};
       }
       const checked=this.approvalStore.validate(approvalId,binding);
-      if(checked.state!=="SUCCESS")return {...checked,message:checked.message||"Model training approval was not valid for this exact request."};
+      if(checked.state!=="SUCCESS")return {...checked,message:checked.message||("Approval was not valid for this exact "+label+".")};
       return {state:"SUCCESS",binding,approval:checked.approval||null};
     };
+    const lifecycle=String(message).match(/\b(evaluate|promote|rollback)\s+model\s+run\s+(model-run-[\w-]+)/i);
+    if(lifecycle&&this.modelLab){
+      const action=lifecycle[1].toLowerCase(),runId=lifecycle[2];
+      if(action==="evaluate"){
+        const thresholdMatch=String(message).match(/(?:max\s+regression|threshold)\s+([0-9]*\.?[0-9]+)/i);
+        const maxRelativeRegression=thresholdMatch?Math.max(0,Math.min(1,Number(thresholdMatch[1]))):0.02;
+        return this.modelLab.evaluateCandidate(runId,{maxRelativeRegression});
+      }
+      if(action==="promote"){
+        const gate=authorizeHighRisk("onechat.model.promote",{runId},"model promotion");
+        if(gate.state!=="SUCCESS")return gate;
+        return this.modelLab.promoteCandidate(runId,{approved:true,approvalId});
+      }
+      const reasonMatch=String(message).match(/\breason\s+(.+?)(?:\s+approval\s+approval-[\w-]+|$)/i);
+      const reason=(reasonMatch?.[1]||"owner-requested rollback").trim();
+      const gate=authorizeHighRisk("onechat.model.rollback",{runId,reason},"model rollback");
+      if(gate.state!=="SUCCESS")return gate;
+      return this.modelLab.rollback(runId,{reason});
+    }
     if(/train\s+tokenizer|tokenizer\s+train/i.test(message)&&this.modelLab){
       const n=Number((message.match(/(\d+)/)||[])[1]||512),vocabSize=Math.max(280,Math.min(n,32000));
-      const gate=authorizeTraining("onechat.model.tokenizer.train",{vocabSize});
+      const gate=authorizeHighRisk("onechat.model.tokenizer.train",{vocabSize},"tokenizer training");
       if(gate.state!=="SUCCESS")return gate;
       return this.modelLab.trainTokenizer(vocabSize);
     }
     if(/train/i.test(message)){
-      const n=Number((message.match(/(\d+)\s*steps?/i)||[])[1]||40),steps=Math.max(1,Math.min(n,10000));const pm=message.match(/preset\s+([\w-]+)/i);const preset=pm?pm[1]:"termux-tiny";
-      const gate=authorizeTraining("onechat.model.train",{steps,preset});
+      const n=Number((message.match(/(\d+)\s*steps?/i)||[])[1]||40),steps=Math.max(1,Math.min(n,10000));
+      const pm=message.match(/preset\s+([\w-]+)/i),preset=pm?pm[1]:"termux-tiny";
+      const gate=authorizeHighRisk("onechat.model.train",{steps,preset},"model training");
       if(gate.state!=="SUCCESS")return gate;
       return this.modelLab?this.modelLab.train({steps,preset}):this.forgelm.train(steps,{preset});
     }
