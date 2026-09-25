@@ -414,8 +414,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "c664ddf6fb0c144ee62e51262b743434988609f351419382cff45ec24b976935",
-      "bytes": 20495
+      "sha256": "b96a0a149b938f0507498d731d47e973f5af70e1d8f66a944058af424a6d320d",
+      "bytes": 21963
     },
     {
       "path": "src/action-envelope.js",
@@ -639,8 +639,8 @@
     },
     {
       "path": "src/web-corpus.js",
-      "sha256": "8b91f259ec267e2f5d16078881761f9156c03c3527de84fbbbfee5a88eb0b1ef",
-      "bytes": 7897
+      "sha256": "c7a9241aacd1b2fe4bf7055e059371657863c637b839eba0e4761cadca02f68d",
+      "bytes": 8933
     },
     {
       "path": "src/workspace.js",
