@@ -1363,6 +1363,11 @@
       "bytes": 5085
     },
     {
+      "path": "verification/forgelm-candidate-promotion.test.mjs",
+      "sha256": "b5f997d0d2acb19b901079dcb42ae7bcef4bc5b2d2c7c5a0e37e98aa6cfd4ff4",
+      "bytes": 1812
+    },
+    {
       "path": "verification/forgelm-self-sufficient.test.mjs",
       "sha256": "a0ee33eeadc9a7ae7e176f0c71ccffc65c219a1056d12ef37017e7a06d034486",
       "bytes": 408
