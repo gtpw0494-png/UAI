@@ -36,6 +36,7 @@ import { PluginExecutor } from "./src/plugin-executor.js";
 import { LlamaCppRuntime } from "./src/model-runtime-adapter.js";
 import { Observability } from "./src/observability.js";
 import { IdempotencyStore } from "./src/idempotency-store.js";
+import { PluginGateway } from "./src/plugin-gateway.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -73,7 +74,9 @@ const runtimeServices = new RuntimeServices();
 const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});},availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
+const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
+const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
 const PORT = Number(process.env.PORT || 8787);
 
 function send(res,status,data,type="application/json"){res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(type==="application/json"?JSON.stringify(data,null,2):data);}
@@ -88,7 +91,21 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/observability")return send(res,200,observability.summary());
   if(req.method==="GET"&&url.pathname==="/api/plugins-v1")return send(res,200,{state:"SUCCESS",plugins:pluginRegistry.list()});
   if(req.method==="POST"&&url.pathname==="/api/plugins-v1/register"){const b=await readBody(req);return send(res,200,pluginRegistry.register(b.manifest||b));}
-  if(req.method==="POST"&&url.pathname==="/api/plugins-v1/execute"){const b=await readBody(req);return send(res,200,await pluginExecutor.execute(String(b.pluginId||''),b.input||{},b.approvalId||null));}
+  if(req.method==="POST"&&url.pathname==="/api/plugins-v1/execute"){
+    const b=await readBody(req);
+    const controller=new AbortController();
+    req.once("aborted",()=>controller.abort());
+    res.once("close",()=>{if(!res.writableEnded)controller.abort();});
+    const idempotencyKey=String(req.headers["idempotency-key"]||b.idempotencyKey||"").trim()||null;
+    return send(res,200,await pluginGateway.execute(String(b.pluginId||""),String(b.operation||"execute"),b.input||{},{
+      approvalId:b.approvalId||null,
+      autonomyLeaseId:b.autonomyLeaseId||b.leaseId||null,
+      idempotencyKey,
+      actionEnvelopeId:b.actionEnvelopeId||null,
+      taskId:b.taskId||null,
+      signal:controller.signal
+    }));
+  }
   if(req.method==="GET"&&url.pathname==="/api/data-lifecycle")return send(res,200,await storageDb.lifecycleStatus());
   if(req.method==="GET"&&url.pathname==="/api/storage/status")return send(res,200,await storageDb.status());
   if(req.method==="GET"&&url.pathname==="/api/definitions"){return send(res,200,await storageDb.define(url.searchParams.get("term")||"",Number(url.searchParams.get("limit")||8)));}
