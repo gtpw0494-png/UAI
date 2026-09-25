@@ -353,6 +353,11 @@
       "bytes": 1119
     },
     {
+      "path": "schemas/http-request.schema.json",
+      "sha256": "818053d8b5e9052d3528c1405529ea5589129f31b510803adb6f284a1d7cf7d0",
+      "bytes": 1130
+    },
+    {
       "path": "schemas/plugin-manifest.schema.json",
       "sha256": "3555ca419f32516984dd2931e5f1044cf3c83212cae636cbd4ddb04cadef15f8",
       "bytes": 6301
@@ -491,6 +496,21 @@
       "path": "src/forgelm-bridge.js",
       "sha256": "614944543d9a95cc1cccd1325a7f16041152970f8771d1ca89d251bab48f5fe2",
       "bytes": 1107
+    },
+    {
+      "path": "src/governance/authorization.js",
+      "sha256": "be3fe2debe470e60cd9451397ec1cd5b6c5dceaa1aa24d13eaabb06c422a4fc3",
+      "bytes": 6678
+    },
+    {
+      "path": "src/governance/identity.js",
+      "sha256": "6485b0472d251062885568e2c039bbf505760f811ff4353ce6fbed629045457f",
+      "bytes": 6032
+    },
+    {
+      "path": "src/governance/kernel.js",
+      "sha256": "4b89cf948800177b33ffa23633332cf56a9f747ff9df23473ebbf258dfbc0e31",
+      "bytes": 605
     },
     {
       "path": "src/governance-db.js",
