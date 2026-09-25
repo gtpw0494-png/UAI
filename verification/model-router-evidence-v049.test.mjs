@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import http from "node:http";
+import net from "node:net";
+import os from "node:os";
 import path from "node:path";
+import {spawn} from "node:child_process";
 import {fileURLToPath} from "node:url";
 import {EvidenceEnvelope,verifyEvidenceEnvelope} from "../src/evidence-envelope.js";
 import {ModelRouter,buildLocalModelCandidates} from "../src/models/router.js";
@@ -125,5 +129,76 @@ const app=fs.readFileSync(path.join(root,"public","app.js"),"utf8");
 assert.match(app,/sessionStorage\.getItem\(CHAT_KEY\)/);
 assert.match(app,/message:text,chatId/);
 assert.match(app,/evidenceEnvelope\|\|x\.evidence/);
+
+const freePort=()=>new Promise((resolve,reject)=>{
+  const s=net.createServer();s.once("error",reject);s.listen(0,"127.0.0.1",()=>{const p=s.address().port;s.close(()=>resolve(p));});
+});
+const llamaPort=await freePort(),uaiPort=await freePort();
+let fixtureCalls=0;
+const fixture=http.createServer((req,res)=>{
+  res.setHeader("content-type","application/json");
+  if(req.method==="GET"&&req.url==="/v1/models")return res.end(JSON.stringify({data:[{id:"fixture-llama"}]}));
+  if(req.method==="POST"&&req.url==="/v1/chat/completions"){
+    let body="";req.on("data",d=>body+=d);req.on("end",()=>{
+      const parsed=JSON.parse(body||"{}"),user=parsed.messages?.at(-1)?.content||"";
+      fixtureCalls+=1;
+      if(fixtureCalls===2)assert.match(user,/first system integration question/i);
+      res.end(JSON.stringify({model:"fixture-llama",choices:[{message:{role:"assistant",content:fixtureCalls===1?"First routed system answer with enough detail.":"Second routed answer confirms shared conversation context."}}],usage:{prompt_tokens:20,completion_tokens:10}}));
+    });
+    return;
+  }
+  res.statusCode=404;res.end(JSON.stringify({error:"not found"}));
+});
+await new Promise((resolve,reject)=>{fixture.once("error",reject);fixture.listen(llamaPort,"127.0.0.1",resolve);});
+
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),"uai-v049-http-"));
+const child=spawn(process.execPath,["server.js"],{
+  cwd:root,
+  env:{...process.env,PORT:String(uaiPort),IUV_STATE_DIR:path.join(temp,"state"),IUV_DB_PATH:path.join(temp,"knowledge.sqlite3"),IUV_OBJECT_ROOT:path.join(temp,"objects"),LLAMA_SERVER_URL:`http://127.0.0.1:${llamaPort}`},
+  stdio:["ignore","pipe","pipe"]
+});
+let childOut="",childErr="";child.stdout.on("data",d=>childOut+=d);child.stderr.on("data",d=>childErr+=d);
+const base=`http://127.0.0.1:${uaiPort}`;
+try{
+  let ready=false;
+  for(let i=0;i<80;i++){try{const r=await fetch(base+"/api/status");if(r.ok){ready=true;break;}}catch{}await new Promise(r=>setTimeout(r,100));}
+  assert.equal(ready,true,`v0.49 UAI server did not start\n${childOut}\n${childErr}`);
+
+  const email="router-test@example.local",password="RouterEvidencePassword-12345";
+  const enrollRaw=await fetch(base+"/api/auth/enroll",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email,password})});
+  const enroll=await enrollRaw.json();assert.equal(enrollRaw.status,201);
+  const cookiesRaw=enrollRaw.headers.get("set-cookie")||"";
+  const session=cookiesRaw.match(/uai_session=([^;,]+)/)?.[1],csrfCookie=cookiesRaw.match(/uai_csrf=([^;,]+)/)?.[1];
+  const csrf=enroll.csrfToken||decodeURIComponent(csrfCookie||"");assert.ok(session&&csrf);
+  const cookie=`uai_session=${session}; uai_csrf=${csrfCookie}`;
+  const readHeaders={cookie},writeHeaders={"content-type":"application/json",cookie,"x-uai-csrf":csrf};
+
+  const routeHttp=await fetch(base+"/api/models/route?task=chat&privacy=local-only&offline=true",{headers:readHeaders}).then(r=>r.json());
+  assert.equal(routeHttp.state,"SUCCESS");
+  assert.equal(routeHttp.selected.id,"llamacpp-local");
+
+  const callChat=message=>fetch(base+"/api/onechat",{method:"POST",headers:writeHeaders,body:JSON.stringify({chatId:"system-v049",message})}).then(r=>r.json());
+  const sys1=await callChat("First system integration question");
+  assert.equal(sys1.state,"SUCCESS");assert.equal(sys1.responseMode,"native-conversation");
+  assert.equal(sys1.evidenceEnvelope.model.provider,"llama.cpp");
+  assert.equal(verifyEvidenceEnvelope(sys1.evidenceEnvelope).state,"SUCCESS");
+
+  const sys2=await callChat("Follow up on that answer");
+  assert.equal(sys2.state,"SUCCESS");
+  const convResult=sys2.contributions.find(x=>x.agent==="conversation")?.result;
+  assert.ok(convResult.contextTurns>=2);
+  assert.equal(convResult.modelRoute.selected.id,"llamacpp-local");
+
+  const explainedHttp=await callChat("explain answer");
+  assert.equal(explainedHttp.state,"SUCCESS");
+  assert.equal(explainedHttp.responseMode,"evidence-explanation");
+  assert.equal(explainedHttp.evidenceEnvelope.id,sys2.evidenceEnvelope.id);
+  assert.ok(fixtureCalls>=2);
+}finally{
+  child.kill("SIGTERM");
+  await new Promise(resolve=>{child.once("close",resolve);setTimeout(resolve,800);});
+  await new Promise(resolve=>fixture.close(resolve));
+  fs.rmSync(temp,{recursive:true,force:true});
+}
 
 console.log("v0.49 evidence-native model routing tests passed");
