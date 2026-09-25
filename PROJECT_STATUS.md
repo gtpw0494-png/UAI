@@ -172,5 +172,5 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — user-facing `explain answer` evidence summary without private chain-of-thought.
 - IMPLEMENTED + VERIFIED — stable per-tab browser chat ID for live context continuity.
 - PARTIAL — persisted chat-turn/evidence records are not yet rehydrated into full model context after a process restart.
-- IMPLEMENTED, pending exact promotion verification — owner credential bootstrap/rotation from local environment or explicit local CLI; legacy bearer-owner authentication remains disabled and active sessions are revoked on credential rotation.
+- IMPLEMENTED + VERIFIED — owner credential bootstrap/rotation from local environment or explicit local CLI; legacy bearer-owner authentication is disabled and active sessions are revoked on credential rotation.
 
