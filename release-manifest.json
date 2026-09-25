@@ -509,8 +509,8 @@
     },
     {
       "path": "src/governance/kernel.js",
-      "sha256": "4b89cf948800177b33ffa23633332cf56a9f747ff9df23473ebbf258dfbc0e31",
-      "bytes": 605
+      "sha256": "fecdeee421662a050026bff6d3daab9d3eb06c3f12f04e6e8e4c7d389803aeee",
+      "bytes": 783
     },
     {
       "path": "src/governance/request-schemas.js",
