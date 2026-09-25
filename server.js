@@ -142,12 +142,20 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/auth/status"){
     const auth=identity.authenticateRequest(req);return send(res,200,{...identity.status(auth),governance:governanceKernel.status(auth),requestId,correlationId});
   }
+  if(req.method==="POST"&&url.pathname==="/api/auth/enroll"){
+    const b=await readBody(req),loginRate=allowLoginAttempt(req);
+    if(!loginRate.allowed)return send(res,429,{state:"BLOCKED",message:"Too many owner enrollment attempts.",rate:loginRate,requestId,correlationId});
+    const out=identity.enroll(b.email,b.password);
+    if(out.state!=="SUCCESS")return send(res,out.state==="DENIED"?409:400,{...out,requestId,correlationId});
+    const login=identity.login(b.email,b.password);res.setHeader("set-cookie",sessionCookies(login,{secure:Boolean(req.socket.encrypted)}));
+    const {sessionToken,...safe}=login;return send(res,201,{...safe,enrollment:"COMPLETE",requestId,correlationId});
+  }
   if(req.method==="POST"&&url.pathname==="/api/auth/login"){
     const b=await readBody(req),loginRate=allowLoginAttempt(req);
     if(!loginRate.allowed)return send(res,429,{state:"BLOCKED",message:"Too many owner login attempts.",rate:loginRate,requestId,correlationId});
     const loginGate=requestAuthorizer.authorize({req,url,body:b,requestId,correlationId});
     if(!loginGate.allowed)return send(res,loginGate.httpStatus||400,{state:loginGate.state,message:loginGate.message,validation:loginGate.validation||null,requestId,correlationId});
-    const login=identity.login(b.token);
+    const login=identity.login(b.email,b.password);
     if(login.state!=="SUCCESS"){audit.append({type:"identity.login.denied",requestId,correlationId,remote:String(req.socket.remoteAddress||"")});return send(res,401,{state:login.state,message:login.message,requestId,correlationId});}
     res.setHeader("set-cookie",sessionCookies(login,{secure:Boolean(req.socket.encrypted)}));
     const {sessionToken,...safe}=login;return send(res,200,{...safe,requestId,correlationId});
