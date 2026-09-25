@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.49.0",
+  "generated_for": "0.50.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -745,6 +745,22 @@
         "verification/api-security-v046.test.mjs"
       ],
       "evidence_note": "Verified by v0.49 owner-auth CI: environment bootstrap creates the password-session owner without plaintext credential persistence in the identity record, explicit local credential rotation revokes active sessions, protected HTTP routes reject bearer-only owner requests, and email/password login succeeds through the normal session + CSRF path."
+    },
+    {
+      "id": "conversational-live-web-research",
+      "introduced": "0.50.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/research/search-provider.js",
+        "src/research/research-engine.js",
+        "src/research/research-composer.js",
+        "src/onechat.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/conversational-research-v050.test.mjs"
+      ],
+      "evidence_note": "Implementation and deterministic system-facing tests exist on the build branch. VERIFIED is withheld until authoritative CI passes on the exact promotion commit. Live public-web reachability remains runtime/network dependent."
     }
   ]
 }
