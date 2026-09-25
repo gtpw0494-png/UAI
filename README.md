@@ -4,6 +4,15 @@ A local-first, evidence-governed OneChat platform combining durable agent orches
 
 ## v0.49 evidence-native model routing
 
+### Owner email/password bootstrap and rotation
+
+- Legacy bearer-owner authentication is retired; protected API routes authenticate through the local owner session.
+- First-run credentials can be provisioned from local environment variables without committing plaintext credentials.
+- Existing installations can explicitly rotate the owner email/password from the local shell; active sessions are revoked after rotation.
+- The browser uses normal email/password login, server-side session cookies and CSRF for state-changing requests.
+- Plaintext owner passwords are not stored in Git, browser storage or API responses.
+
+
 - Native conversation now routes through a health-aware local model router rather than hard-coding a single runtime path.
 - The router filters by privacy, offline mode, task, modality and context constraints, ranks connected candidates and records fallback attempts.
 - Unusable model output can trigger fallback to the next eligible runtime instead of blocking the turn.
