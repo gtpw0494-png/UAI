@@ -668,6 +668,46 @@
       "bytes": 4288
     },
     {
+      "path": "src/shadow/architecture-agent.js",
+      "sha256": "95bd5a126fdacacc0838dd84cbaa0d65105835dac7b743335c9f5d9ab7857267",
+      "bytes": 188
+    },
+    {
+      "path": "src/shadow/dataset-quality-agent.js",
+      "sha256": "b35ee059113db81ad659294ff18c96a1dda73679ccdfcab469704c52650af21b",
+      "bytes": 177
+    },
+    {
+      "path": "src/shadow/experiment-agent.js",
+      "sha256": "86a79cc84c73b7fe72fb2680a8a72c9c8b3c557e9e5cd927305b341db2d891f6",
+      "bytes": 183
+    },
+    {
+      "path": "src/shadow/literature-agent.js",
+      "sha256": "a312614d240e272040ce28fd6686200ceef758316409a65581949f435b9498b6",
+      "bytes": 183
+    },
+    {
+      "path": "src/shadow/model-evaluation-agent.js",
+      "sha256": "9e372567667557e0ff781dd050ac5159b566b2a497b348309d07d0322b923501",
+      "bytes": 174
+    },
+    {
+      "path": "src/shadow/research-agent.js",
+      "sha256": "ab331bc9333b13b4d3ae584ab764d6b4af361145a2f22ebdb6f590a00f71f37c",
+      "bytes": 185
+    },
+    {
+      "path": "src/shadow/retrieval-critic.js",
+      "sha256": "86f2563c8aa87d1d972559252e2ae9718c53441e966f498aca3e67adce277f40",
+      "bytes": 186
+    },
+    {
+      "path": "src/shadow/safety-red-team-agent.js",
+      "sha256": "392f8d2dbc849d6e14cf90c26e2c06e3d2159336fa9a7596dadf3f1e10936e22",
+      "bytes": 190
+    },
+    {
       "path": "src/source-capabilities.js",
       "sha256": "4e846bfea0679532e4a2207345b1ee04026d9ae51dbbb777b2a17c0be6bb5c6f",
       "bytes": 1637
