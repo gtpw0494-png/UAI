@@ -204,8 +204,8 @@
     },
     {
       "path": "model/eval/checkpoint_compare.py",
-      "sha256": "79e23c16e85d76614c34ed1185a3898b7fbc30aa1923b281b9d12e5fe1abc2a8",
-      "bytes": 2230
+      "sha256": "e65fc06b7c8dfe9e8a7e4ebcbf3f1ea0b71b35b37ce2ba0e1c9a35636e1d5adc",
+      "bytes": 3541
     },
     {
       "path": "model/eval/knowledge_benchmark.py",
@@ -216,6 +216,11 @@
       "path": "model/eval/promotion_score.py",
       "sha256": "ebd02c7f89e3f1cdedd4b8352198515397e1a74701ae4709d29c4c6464d72de9",
       "bytes": 2460
+    },
+    {
+      "path": "model/eval/regression_corpus.jsonl",
+      "sha256": "5f285331b9b0c7d0aefd847945b5fbde66cd71c8a516f4737e16831e621d21c5",
+      "bytes": 1409
     },
     {
       "path": "model/eval/run_all.py",
@@ -309,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "b885e4b67cf380077c0bcf095493af8e159bec54920fcb8a37e83667ab31ec95",
-      "bytes": 6006
+      "sha256": "aa91dc05e28e6035fba83cbd84215d6bbf4a20053d49783dfbdb0662cddc0e30",
+      "bytes": 6283
     },
     {
       "path": "public/app.js",
@@ -844,8 +849,8 @@
     },
     {
       "path": "src/knowledge-training-job.js",
-      "sha256": "134b924cc4dbb9e4928c3c22f3376131772b0aaa70e0f916d9c1726dec8ebb72",
-      "bytes": 4552
+      "sha256": "a6023a7d75328bfc03c9b68660b41eefc236bd845014914ed24f57fa1355a4ed",
+      "bytes": 4741
     },
     {
       "path": "src/knowledge-training.js",
@@ -1393,6 +1398,11 @@
       "bytes": 1984
     },
     {
+      "path": "verification/knowledge-governance.test.mjs",
+      "sha256": "31cf0eaa9dd3c6601c323205377985171a3ddffd6c630f71d303a8a8f4f890a9",
+      "bytes": 1283
+    },
+    {
       "path": "verification/knowledge-learning-pipeline.test.mjs",
       "sha256": "6d1cf27737d7582eb658f70455437f602f175e20d3ab8b10ec8bda1c6faf9006",
       "bytes": 1843
@@ -1404,8 +1414,8 @@
     },
     {
       "path": "verification/knowledge-training-job.test.mjs",
-      "sha256": "df782bfbfc91427e496f7558941e92783e04634eedd8d522418acbfb41ea8f41",
-      "bytes": 2075
+      "sha256": "d17604f43b6014e2fbab5fc3db4a31b1e8cc7d20e343693542f74ca59b050a15",
+      "bytes": 2112
     },
     {
       "path": "verification/model-catalog.test.mjs",
