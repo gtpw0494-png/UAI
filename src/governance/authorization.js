@@ -23,6 +23,11 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/autonomy"))capability="governance.autonomy";
   else if(p.startsWith("/api/policy"))capability="governance.policy";
   else if(p.startsWith("/api/selfdev"))capability="source.selfdev";
+  else if(p.startsWith("/api/shadow/"))capability=stateChanging?"shadow.execute":"shadow.read";
+  else if(p.startsWith("/api/light/"))capability=stateChanging?"light.execute":"light.read";
+  else if(p.startsWith("/api/promotion/"))capability="governance.promotion";
+  else if(p.startsWith("/api/governance/"))capability=stateChanging?"governance.manage":"governance.read";
+  else if(p.startsWith("/api/platform/"))capability="platform.read";
   else if(p.startsWith("/api/develop")||p.startsWith("/api/source/"))capability="source.modify";
   else if(p.startsWith("/api/web/")||p.startsWith("/api/provider/"))capability="external.research";
   else if(p.startsWith("/api/fabrication"))capability="hardware.fabrication";
@@ -30,7 +35,7 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/knowledge"))capability=stateChanging?"knowledge.write":"knowledge.read";
   else if(p.startsWith("/api/accounts")||p.startsWith("/api/subscriptions")||p.startsWith("/api/billing"))capability="accounts.manage";
 
-  if(/\/purge$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$/.test(p))risk="high";
+  if(/\/purge$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|^\/api\/promotion\/|\/governance\/emergency\/release$|\/governance\/trusted-devices\/(?:enroll|revoke)$/.test(p))risk="high";
   if(/\/fabrication\/job$/.test(p))risk="critical";
   if(["/api/develop/apply","/api/selfdev/promote","/api/source/rollback"].includes(p))mutatesSource=true;
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.endsWith("/execute"))external=true;
