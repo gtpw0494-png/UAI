@@ -8,6 +8,12 @@ function parseDevelop(message){const m=String(message).match(/^develop\s+file\s+
 function ids(message,re){const m=String(message).match(re);return m?m.slice(1):null;}
 export class OneChatRouter{
  constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();this.lastEvidence=new Map();}
+ _intent(message,chatId){
+  const text=String(message||"").trim(),history=this.conversation?._history?.(chatId)||[];
+  const research=/(?:latest|current|today|recent|web|internet|research|sources?|citations?|look up|search for|verify online|news|compare.*sources)/i.test(text);
+  const followup=history.length>0&&/^(?:and|also|but|so|then|what about|how about|why|how|when|where|who|which|can you|could you|would you|continue|go on|tell me more|explain that|expand|more)\b/i.test(text);
+  return {research,followup,historyTurns:history.length};
+ }
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
   try{
@@ -139,7 +145,7 @@ export class OneChatRouter{
  }
  async handle(input={}){
   const message=String(input.message||"").trim();if(!message)return {state:"BLOCKED",message:"Chat message is empty.",allocations:[],contributions:[]};
-  const chatId=input.chatId||`chat-${crypto.randomUUID()}`;
+  const chatId=input.chatId||`chat-${crypto.randomUUID()}`,intent=this._intent(message,chatId);
   if(/^explain\s+answer[.! ]*$/i.test(message)){
     const prior=this._previousEvidence(chatId);
     if(!prior)return {state:"UNAVAILABLE",chatId,message:"No prior answer evidence is available for this chat yet.",responseMode:"evidence-explanation",evidenceEnvelope:null,allocations:[],contributions:[]};
@@ -147,8 +153,20 @@ export class OneChatRouter{
     const sources=(prior.claims||[]).flatMap(x=>x.support||[]).filter(x=>x.source_id||x.chunk_id);
     return {state:"SUCCESS",chatId,message:`Previous answer evidence: ${prior.claims?.length||0} claim(s); statuses ${JSON.stringify(summary)}; ${sources.length} cited source chunk(s); model ${prior.model?.id||prior.model?.provider||"none"}.`,responseMode:"evidence-explanation",modelUsed:Boolean(prior.model),evidenceEnvelope:prior,allocations:[],contributions:[],truth:"This explanation exposes structured evidence and execution metadata, not private chain-of-thought."};
   }
-  const allocations=this.allocations(message),contributions=[];
-  for(const a of allocations)contributions.push({agent:a.agent,reason:a.reason,result:await this.execute(a.agent,message,chatId)});
+  let allocations=this.allocations(message),contributions=[],researchContext=null;
+  if(intent.research&&this.webResearch){
+    researchContext=await this.webResearch.research(message,{maxSources:Number(input.maxResearchSources||6)});
+    contributions.push({agent:"web-research",reason:"live governed multi-source research",result:{...researchContext,context:undefined}});
+    allocations=[...allocations.filter(x=>x.agent!=="web-research"&&x.agent!=="conversation"),{agent:"conversation",reason:"synthesize the researched evidence into one natural answer"}];
+  }else if(intent.followup&&!allocations.some(x=>x.agent==="conversation")){
+    allocations=[...allocations,{agent:"conversation",reason:"maintain conversational continuity for the follow-up"}];
+  }
+  for(const a of allocations){
+    const executed=a.agent==="conversation"&&this.conversation
+      ?await this.conversation.chat({chatId,message,researchContext})
+      :await this.execute(a.agent,message,chatId);
+    contributions.push({agent:a.agent,reason:a.reason,result:executed});
+  }
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
   const ranked=contributions.filter(x=>x.agent!=="verifier").map(x=>x.result).sort((a,b)=>(stateRank.get(b.state)||0)-(stateRank.get(a.state)||0));const best=ranked[0]||verification;
@@ -156,7 +174,8 @@ export class OneChatRouter{
   const answer=composed.message||best.message||"Collaboration completed.";
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
-  const support=(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}}));
+  const researchSupport=(researchContext?.sources||[]).map(x=>({source_id:`web:${x.publisher||x.label}`,document_id:null,document_revision:null,chunk_id:x.label,uri:x.url,quote:null,score:x.relevance??null,provenance:{title:x.title,publisher:x.publisher,retrievedAt:x.retrievedAt,researchRunId:researchContext.runId}}));
+  const support=[...(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}})),...researchSupport];
   const conversationResult=contributions.find(x=>x.agent==="conversation")?.result||null;
   const claimStatus=support.length?"SUPPORTED":(composed.mode==="native-conversation"||composed.mode==="governed-composer"?"INFERENCE":(finalState==="SUCCESS"?"INFERENCE":"UNSUPPORTED"));
   const evidenceEnvelope=new EvidenceEnvelope({
@@ -165,7 +184,7 @@ export class OneChatRouter{
     promptVersion:"onechat-v0.49",
     claims:[{claim:answer,support,status:claimStatus,confidence:null}],
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
-    metadata:{chatId,responseMode:composed.mode,finalState}
+    metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null}
   });
   this.lastEvidence.set(chatId,evidenceEnvelope);
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,verified:finalState==="SUCCESS"});
