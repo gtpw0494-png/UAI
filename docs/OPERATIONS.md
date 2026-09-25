@@ -54,3 +54,25 @@ Legacy files are renamed with `.migrated-v043` after successful import.
 ## Release discipline
 
 All work starts from verified `main` on a `build/*` branch. CI and manifest refresh apply generically to build branches. Main advances only after exact-commit evidence and authoritative CI succeed.
+
+## v0.49 model routing and evidence operations
+
+Authenticated operators can inspect the current local model route without generating a response:
+
+```text
+GET /api/models/route?task=chat&privacy=local-only&offline=true
+```
+
+The endpoint probes registered local candidates and returns `UNAVAILABLE` rather than fabricating connectivity when no runtime is connected.
+
+OneChat also accepts:
+
+```text
+model route chat offline
+explain answer
+```
+
+`explain answer` returns the previous answer's structured evidence envelope for the same `chatId`. The browser UI maintains a stable chat ID per tab/session. Clearing the browser session starts a new chat identity.
+
+Conversation context is bounded in the running process. Persisted turn/evidence records do not yet mean full model-context rehydration after a server restart.
+
