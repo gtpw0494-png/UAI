@@ -53,7 +53,7 @@ export class PublicWebSearchProvider{
     if(!r.ok)return {state:"UNAVAILABLE",message:`HTTP ${r.status}`,url:r.url};
     const type=(r.headers.get("content-type")||"").toLowerCase();if(!type.includes("text")&&!type.includes("json")&&!type.includes("xml"))return {state:"BLOCKED",message:`Unsupported research content type ${type||"unknown"}.`,url:r.url};
     const buf=Buffer.from(await r.arrayBuffer());if(buf.length>maxBytes)return {state:"BLOCKED",message:"Research page exceeds size limit.",url:r.url,bytes:buf.length};
-    const raw=buf.toString("utf8"),text=sanitizeExternalText(type.includes("html")?stripHtml(raw):raw).slice(0,180000),security=inspectExternalContent(text);
+    const raw=buf.toString("utf8"),extracted=type.includes("html")?stripHtml(raw):raw,security=inspectExternalContent(extracted),text=sanitizeExternalText(extracted).slice(0,180000);
     return {state:text.length>20?"SUCCESS":"UNAVAILABLE",url:r.url,title:(raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]&&decode(stripHtml(RegExp.$1)))||host(r.url),domain:host(r.url),retrievedAt:new Date().toISOString(),contentType:type,text,security,instructionAuthority:"NONE"};
   }
 }
