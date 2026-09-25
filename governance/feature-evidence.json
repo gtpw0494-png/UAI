@@ -599,7 +599,7 @@
     {
       "id": "local-self-governance-kernel",
       "introduced": "0.46.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/governance/kernel.js",
         "src/governance/authorization.js",
@@ -609,12 +609,12 @@
       "tests": [
         "verification/api-security-v046.test.mjs"
       ],
-      "evidence_note": "Local governance composition, route authorization, exact approval binding, request/correlation identity and audit actor evidence are implemented. Exact v0.48.2 promotion CI is still required."
+      "evidence_note": "Verified by the current live API security suite: local governance composition, request/correlation identity, per-route authorization metadata, policy evaluation, exact approval binding and audited actor identity all execute successfully."
     },
     {
       "id": "credential-backed-owner-session-auth",
       "introduced": "0.47.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/governance/identity.js",
         "src/governance/request-schemas.js",
@@ -628,12 +628,12 @@
         "verification/plugin-http.test.mjs",
         "verification/document-http.test.mjs"
       ],
-      "evidence_note": "First-run email/password enrollment, scrypt password verification, server-side session records, HttpOnly session cookie, CSRF token validation, logout/revocation and authenticated system tests are implemented. Exact v0.48.2 promotion CI is still required."
+      "evidence_note": "Verified by direct identity and live HTTP suites: first-run email/password enrollment, scrypt verification, server-side session records, HttpOnly session cookies, CSRF enforcement, logout/revocation, and authenticated plugin/document/OneChat flows all execute successfully."
     },
     {
       "id": "native-local-conversation-engine",
       "introduced": "0.48.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/conversation-engine.js",
         "src/onechat.js",
@@ -643,19 +643,19 @@
       "tests": [
         "verification/conversation-capability-v048.test.mjs"
       ],
-      "evidence_note": "Per-chat bounded history, llama.cpp-first selection, ForgeLM fallback, truthful UNAVAILABLE state and native OneChat integration are implemented. Exact v0.48.2 promotion CI is still required."
+      "evidence_note": "Verified by the v0.48 conversation suite: bounded per-chat continuity, connected llama.cpp preference, ForgeLM fallback, truthful no-runtime UNAVAILABLE behavior and OneChat native-conversation integration all pass."
     },
     {
       "id": "explicit-capability-truth-contract",
       "introduced": "0.48.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/capability-truth.js"
       ],
       "tests": [
         "verification/conversation-capability-v048.test.mjs"
       ],
-      "evidence_note": "CONNECTED/CONFIGURED/REGISTERED_SOURCE/DEGRADED/UNAVAILABLE/BLOCKED/EXPIRED classification and ranking are implemented. Exact v0.48.2 promotion CI is still required."
+      "evidence_note": "Verified by the v0.48 capability suite across CONNECTED, CONFIGURED, REGISTERED_SOURCE, DEGRADED, UNAVAILABLE, BLOCKED and EXPIRED states plus ranking behavior."
     },
     {
       "id": "trusted-first-run-ownership-proof",
