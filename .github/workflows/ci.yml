@@ -87,6 +87,12 @@ jobs:
       - name: Verify v0.53 governed control-plane HTTP integration
         run: npm run test:agent-control-http
 
+      - name: Verify v0.54 user-owned intelligence plane
+        run: npm run test:platform-intelligence
+
+      - name: Verify v0.54 governed intelligence HTTP integration
+        run: npm run test:platform-intelligence-http
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
