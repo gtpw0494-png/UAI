@@ -518,6 +518,11 @@
       "bytes": 1196
     },
     {
+      "path": "src/code/repository-intelligence.js",
+      "sha256": "e884819bfed7c51cee8b5470b947b3098df4da0bbeb35cd78335c8b7f9fbfa89",
+      "bytes": 7252
+    },
+    {
       "path": "src/content-security.js",
       "sha256": "5a20cbd1864b9c0acac86149825238e13132890e4dd392c11e4951d4f1023abf",
       "bytes": 1630
