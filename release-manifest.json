@@ -513,6 +513,11 @@
       "bytes": 605
     },
     {
+      "path": "src/governance/request-schemas.js",
+      "sha256": "f309340126b4217dec068fa0d72a7fa0cd943be7ea6568b8da88de30a007899f",
+      "bytes": 4813
+    },
+    {
       "path": "src/governance-db.js",
       "sha256": "a57bb4cbb719a9a3bc9a2a52d72c8a72927ee4cdb9cc40bb90a633018882df1b",
       "bytes": 5372
