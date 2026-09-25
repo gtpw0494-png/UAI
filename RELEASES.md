@@ -161,3 +161,13 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Added direct storage and live HTTP/OneChat verification suites.
 - Multimodal evidence locations, dense retrieval/reranking and the full cross-artifact provenance graph remain PARTIAL/future rather than being claimed complete.
 
+## v0.48.2 — Main Repair and Runtime Truth Reconciliation
+- Repaired cumulative self-development validation after the native OneChat greeting changed.
+- Migrated legacy plugin/document/API HTTP tests to current email/password Owner enrollment, server-side sessions and CSRF-protected state changes.
+- Added dedicated native-conversation tests for bounded chat continuity, llama.cpp preference, ForgeLM fallback and truthful no-runtime behavior.
+- Added dedicated capability-truth tests for CONNECTED, CONFIGURED, REGISTERED_SOURCE, DEGRADED, UNAVAILABLE, BLOCKED and EXPIRED.
+- Bound feature-evidence metadata to the package version and reject duplicate feature IDs.
+- Replaced CI's obsolete bearer-token localhost smoke path with first-run Owner enrollment plus cookie/CSRF OneChat execution.
+- Reconciled the v0.46-v0.48 runtime features into the feature-evidence ledger.
+- First-run independent ownership proof remains PARTIAL; no stronger enrollment guarantee is claimed.
+
