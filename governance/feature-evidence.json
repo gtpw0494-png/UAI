@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.52.0",
+  "generated_for": "0.53.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -858,6 +858,42 @@
         "verification/shadow-light-http-v052.test.mjs"
       ],
       "evidence_note": "Model, runtime, learning, retrieval, plugin, connector, tool and benchmark categories are exposed without treating declarations as connected capabilities; incomplete items remain explicitly non-complete."
+    },
+    {
+      "id": "typed-agent-control-plane-v053",
+      "introduced": "0.53.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "storage/control_plane.py",
+        "src/control-plane-store.js",
+        "src/control-plane-scheduler.js",
+        "src/shadow/shadow-run-store.js",
+        "src/shadow/candidate-store.js",
+        "src/shadow/shadow-coordinator.js",
+        "src/light/worktree-manager.js",
+        "src/light/light-coordinator.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/agent-control-v053.test.mjs",
+        "verification/agent-control-http-v053.test.mjs"
+      ],
+      "evidence_note": "Dedicated shadow_runs, shadow_candidates, light_patches, light_worktrees and agent_jobs SQLite tables are implemented with legacy migration, bounded persistent lease scheduling, lease recovery, TTL expiry, authenticated dispatch/maintenance APIs and emergency-stop inheritance. Promotion authority remains separate. Awaiting authoritative exact-commit CI before VERIFIED."
+    },
+    {
+      "id": "structured-web-research-v053",
+      "introduced": "0.53.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/web-research-engine.js",
+        "src/onechat.js"
+      ],
+      "tests": [
+        "verification/conversation-research-v050.test.mjs"
+      ],
+      "evidence_note": "Multi-query public-web research and an optional Brave Search API path are implemented. Brave remains runtime/configuration dependent, HTML search fallbacks remain best-effort, and UAI does not claim exhaustive internet-wide coverage."
     }
   ]
 }
