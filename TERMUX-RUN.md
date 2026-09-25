@@ -165,3 +165,61 @@ npm run control:maintenance
 
 The local CLI never grants promotion authority. Shadow output remains quarantined/promotion-gated, and light work remains isolated from protected `main`. The authenticated HTTP control plane additionally enforces session/CSRF policy and the governance emergency stop.
 
+## v0.54 user-owned intelligence plane
+
+Pull and verify:
+
+```bash
+cd ~/UAI
+git checkout main
+git pull --ff-only origin main
+npm install --ignore-scripts --omit=optional
+
+node -p "'UAI version: ' + require('./package.json').version"
+npm run test:platform-intelligence
+npm run test:platform-intelligence-http
+npm run platform:status
+```
+
+Optional encrypted local memory: provide a 32-byte key as 64 hex characters or base64 before starting UAI. Keep the key outside Git.
+
+```bash
+export IUV_MEMORY_KEY="$(python3 - <<'PY'
+import secrets
+print(secrets.token_hex(32))
+PY
+)"
+npm start
+```
+
+Useful local commands:
+
+```bash
+npm run memory:status -- owner-local
+npm run provenance:status
+npm run evaluations:status
+
+node scripts/platform-intelligence-cli.js remember owner-local "Prefer evidence-first local execution"
+node scripts/platform-intelligence-cli.js memory-list owner-local
+node scripts/platform-intelligence-cli.js memory-search owner-local evidence-first
+node scripts/platform-intelligence-cli.js policy-simulate "high risk source code change with external API"
+```
+
+OneChat commands after owner login:
+
+```text
+remember that I prefer local-first execution
+show memory
+why remembered memory-<id>
+forget memory-<id>
+forget source <source-id>
+disable memory
+disable training
+export memory
+provenance graph status
+trace provenance prov-node-<id>
+simulate policy high risk source modification using an external API
+```
+
+Memory is not silently created from ordinary conversation and is not training-eligible by default. Provenance purge planning is a dry run unless an explicitly authorized purge route is used. Artifact integrity verification does not imply the model runtime is connected or production-approved.
+
