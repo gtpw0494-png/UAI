@@ -41,7 +41,8 @@
     "data:lifecycle": "python3 storage/lifecycle.py status",
     "retrieval:eval": "python3 storage/retrieval_eval.py",
     "test:control-plane": "node verification/control-plane-modernization.test.mjs",
-    "test:plugin-gateway": "node verification/plugin-gateway.test.mjs"
+    "test:plugin-gateway": "node verification/plugin-gateway.test.mjs",
+    "test:plugin-http": "node verification/plugin-http.test.mjs"
   },
   "engines": {
     "node": ">=20"
