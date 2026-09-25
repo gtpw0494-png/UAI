@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "80ee121f4952da2d75d51e80ea41a55fbed6663b0abdf0b71ee3d3f01bd0223c",
-      "bytes": 4420
+      "sha256": "eae561833719054cd500a432bf38b6abaa7e860763a488bf3a1584194205cb12",
+      "bytes": 4513
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "d22aed9faef00bd76a14a90d561201350b35d337eae728425e4213cb54ff0873",
-      "bytes": 2602
+      "sha256": "8c234d4604e025eb4862a476da89ac9440e94beba10429cc7b3e4a674ed63477",
+      "bytes": 2690
     },
     {
       "path": "public/app.js",
