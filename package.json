@@ -2,7 +2,7 @@
   "name": "intraultuniversalion",
   "version": "0.49.0",
   "private": true,
-  "description": "Evidence-native OneChat with health-aware local model routing, fallback traces, integrity-hashed answer evidence and browser chat continuity.",
+  "description": "Evidence-native OneChat with health-aware local model routing, integrity-hashed answer evidence, browser chat continuity and email/password owner login with local bootstrap/rotation.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -49,7 +49,10 @@
     "documents:reindex": "python3 storage/documents.py reindex",
     "test:api-security": "node verification/api-security-v046.test.mjs",
     "test:conversation-capability": "node verification/conversation-capability-v048.test.mjs",
-    "test:model-router-evidence": "node verification/model-router-evidence-v049.test.mjs"
+    "test:model-router-evidence": "node verification/model-router-evidence-v049.test.mjs",
+    "test:owner-auth": "node verification/owner-bootstrap-v049.test.mjs",
+    "owner:configure": "node scripts/configure-owner.mjs",
+    "owner:run": "bash scripts/run-owner-local.sh"
   },
   "engines": {
     "node": ">=20"
