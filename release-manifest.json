@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.49.0",
+  "version": "0.50.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "22f10c507eb25ab6b5146b0f49f95f8cfeed626b46da5a393c684fd19e9bccc5",
-      "bytes": 5902
+      "sha256": "8445b68850900200a2d53426cf2a2201a9263fdac811cbd47e6e695b73561051",
+      "bytes": 6030
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -19,8 +19,8 @@
     },
     {
       "path": ".github/workflows/manifest-refresh.yml",
-      "sha256": "1a12b6a3e33bea50c3a27cbd8770a44f16e5c908b98d68044148ab6a9f7a25c4",
-      "bytes": 1360
+      "sha256": "6a85537502dd421d82d3042d221b820603a87d9b66e8a540122ddc11ee7fa93d",
+      "bytes": 1373
     },
     {
       "path": ".gitignore",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "6f4832dec38d96d6b14dae713c4080b55397ca1908b39795f82ed9319afdc63b",
-      "bytes": 25673
+      "sha256": "3557496f52462295e13fb39c4895b178716e5628f06ea60f3cbc23a090991f4e",
+      "bytes": 27538
     },
     {
       "path": "model/adaptation.py",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "c9e86811c2ffaf8e72b22b610f719f60f63702c5452c9d84cbea6c6fbadcce96",
-      "bytes": 3506
+      "sha256": "60d005207c55ac8d11cda447984bbe60c5bd041a0adc06ddb82cf3196f3cd216",
+      "bytes": 3588
     },
     {
       "path": "public/app.js",
@@ -429,8 +429,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "9365ba1cef29831c680f0cf7c5685d118034c6449dc67cab6d47d684fe073991",
-      "bytes": 30814
+      "sha256": "5d455bc289d592617daafd7a8a34fa8d3eb38f6b38aba4ff063fb29f905d63e1",
+      "bytes": 30944
     },
     {
       "path": "src/action-envelope.js",
@@ -494,8 +494,8 @@
     },
     {
       "path": "src/conversation-engine.js",
-      "sha256": "548e3af24dcf844a8f463aeba5a54697383d86ad59407692ba03a32dbfc29966",
-      "bytes": 4642
+      "sha256": "08310171b6869bd6f6b15c7499b6f693870815f0e4b1d958269d660b2ae35240",
+      "bytes": 6030
     },
     {
       "path": "src/dependency-status.js",
@@ -584,13 +584,13 @@
     },
     {
       "path": "src/model-runtime-adapter.js",
-      "sha256": "29cfcf48813fda28d5f95cd0c95e83e8e5168e802a86e6e642fa56de92bd8a64",
-      "bytes": 1978
+      "sha256": "0099f7243d65e9f077f918fbad88bae73d3f08efab9677e7dad5f72ea527a8a7",
+      "bytes": 2179
     },
     {
       "path": "src/models/router.js",
-      "sha256": "88b3c96e66ab263262d1c6b52520e0554a2f099c47d557a224dc97c9359fa197",
-      "bytes": 5744
+      "sha256": "8539b88556c79371e0bb32b04e4c0a66d4ac6310f31cfc3019353df5d4573536",
+      "bytes": 5812
     },
     {
       "path": "src/observability.js",
@@ -599,8 +599,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "fa132ca1a52f29affea66dc7f9ae1c068cfdbcc21d756fb117c8b2be27344190",
-      "bytes": 24946
+      "sha256": "9ebb5aaa68c09caeed18a173945e7b19c9666bb30edb2d5f24f94503f876c5f9",
+      "bytes": 26775
     },
     {
       "path": "src/plugin-executor.js",
@@ -698,6 +698,11 @@
       "bytes": 9218
     },
     {
+      "path": "src/web-research-engine.js",
+      "sha256": "25bb8e228600ac0c064cb2a8109ec4f91adb28612479a8af43ff7dcd74b023a3",
+      "bytes": 4952
+    },
+    {
       "path": "src/workspace.js",
       "sha256": "3cab65ed340059d30d7eea23e596b9a811f56a36e5ce222fc15724cf2cb21ca3",
       "bytes": 4259
@@ -756,6 +761,11 @@
       "path": "verification/conversation-capability-v048.test.mjs",
       "sha256": "c8ad32d2fe5b862b10236caec9d94fdeb1e4554679d9870185d30f2e749dea96",
       "bytes": 4636
+    },
+    {
+      "path": "verification/conversation-research-v050.test.mjs",
+      "sha256": "e769434e66be0e55c5a0b011b44e6175fcc4138dbb52e2d7c1f02c907c6b795d",
+      "bytes": 3440
     },
     {
       "path": "verification/document-data-plane.test.py",
