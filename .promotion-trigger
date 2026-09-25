@@ -1,8 +1,4 @@
 UAI v0.49.0 promotion candidate
-source-manifest-head=bd38047a4fcea002327e3d2760d6af9a62146d49
+source-manifest-head=20134b5d9fc5755ea3da5c2216c70904d9a0dcf0
 requirements=authoritative-ci+feature-evidence-gate
-owner-auth=email-password-session
-legacy-owner-bearer-token=disabled
-owner-password-storage=scrypt-local-governance-db
-model-routing=evidence-native-local-router
 main-advance=only-after-all-required-jobs-success
