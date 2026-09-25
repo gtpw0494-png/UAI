@@ -14,6 +14,10 @@ TABLES={
   "model-artifact":"model_artifacts",
   "evaluation-run":"evaluation_runs",
   "policy-simulation":"policy_simulations",
+  "code-file":"code_files",
+  "code-symbol":"code_symbols",
+  "code-edge":"code_edges",
+  "media-artifact":"media_artifacts",
 }
 def now(): return datetime.now(timezone.utc).isoformat()
 def connect():
