@@ -89,7 +89,7 @@ export function buildLocalModelCandidates({llamaRuntime=null,forgelm=null}={}){
     id:"llamacpp-local",provider:"llama.cpp",local:true,offline:true,privacy:"local-only",
     tasks:["chat","planning","summarization","reasoning"],modalities:["text"],contextTokens:null,
     health:async()=>{const s=await llamaRuntime.status();return {...s,executable:s.executable!==false&&s.availability==="CONNECTED"};},
-    generate:async({prompt,system="",maxTokens=768,model="local"})=>llamaRuntime.chat(prompt,{system,maxTokens,model})
+    generate:async({prompt,system="",maxTokens=768,model="local",messages=null,tools=null,temperature=0.7})=>llamaRuntime.chat(prompt,{system,maxTokens,model,messages,tools,temperature})
   });
   if(forgelm)out.push({
     id:"forgelm-local",provider:"forgelm",local:true,offline:true,privacy:"local-only",
