@@ -100,7 +100,7 @@ function send(res,status,data,type="application/json"){
 }
 function readBody(req){
   if(req._uaiBodyPromise)return req._uaiBodyPromise;
-  req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){reject(new Error("Request body exceeds 4 MB limit."));req.destroy();}});req.on("end",()=>{try{resolve(d?JSON.parse(d):{});}catch{reject(new Error("Request body must be valid JSON."));}});req.on("error",reject);});
+  req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){const e=new Error("Request body exceeds 4 MB limit.");e.statusCode=400;reject(e);req.destroy();}});req.on("end",()=>{try{resolve(d?JSON.parse(d):{});}catch{const e=new Error("Request body must be valid JSON.");e.statusCode=400;reject(e);}});req.on("error",reject);});
   return req._uaiBodyPromise;
 }
 function allowedOrigin(req){
@@ -262,5 +262,5 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/chat")return send(res,200,await onechat.handle(await readBody(req)));
   if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp)&&fs.statSync(fp).isFile()){const ext=path.extname(fp);const type=ext===".css"?"text/css":ext===".js"?"text/javascript":"text/html";return send(res,200,fs.readFileSync(fp),type);}}
   send(res,404,{state:"FAILURE",message:"Not found.",requestId:res.getHeader("x-request-id")||null});
-}catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;audit.append({type:"api.error",requestId,errorName:e?.name||"Error",errorMessage:String(e?.message||"Internal request failure.").slice(0,1000)});send(res,500,{state:"ERROR",message:"Internal request failure.",requestId});}});
+}catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;const status=Number(e?.statusCode)||500;const publicMessage=status===400?String(e?.message||"Invalid request."):"Internal request failure.";audit.append({type:"api.error",requestId,status,errorName:e?.name||"Error",errorMessage:String(e?.message||"Internal request failure.").slice(0,1000)});send(res,status,{state:status===400?"BLOCKED":"ERROR",message:publicMessage,requestId});}});
 server.listen(PORT,"127.0.0.1",()=>console.log(`IntraultUniversalion v${APP_VERSION} running at http://127.0.0.1:${PORT}`));
