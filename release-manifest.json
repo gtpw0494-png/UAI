@@ -198,6 +198,11 @@
       "bytes": 131
     },
     {
+      "path": "model/eval/knowledge_benchmark.py",
+      "sha256": "618de3b8401cca90235f5cb1b3603b737478478c33698a8932c090f98ea1b8e3",
+      "bytes": 1363
+    },
+    {
       "path": "model/eval/promotion_score.py",
       "sha256": "ebd02c7f89e3f1cdedd4b8352198515397e1a74701ae4709d29c4c6464d72de9",
       "bytes": 2460
@@ -231,6 +236,31 @@
       "path": "model/hardware_profile.py",
       "sha256": "179fed9a4ae57f4c664032ab28d1a65332626c12e46cb669e43ff027b767ba70",
       "bytes": 1077
+    },
+    {
+      "path": "model/knowledge_pipeline.py",
+      "sha256": "fc394be6e179351c27f4f53c7aa6808843caa380c410bdff0282f395b549dbb2",
+      "bytes": 4356
+    },
+    {
+      "path": "model/knowledge_sources.json",
+      "sha256": "dfbc1b1725af6f1b15355e04514a23f42d061b5ee9488bcc7a47acede8b9af24",
+      "bytes": 1957
+    },
+    {
+      "path": "model/knowledge_store.py",
+      "sha256": "e9ed125af43448e87bf1243f8468402075f3eca4315eaa8a2beb0c6952868365",
+      "bytes": 1591
+    },
+    {
+      "path": "model/knowledge_train_batch.py",
+      "sha256": "0360cf8d3b12eaee72fb3d7ad2dd3d4605f9115517e639e2769dd3d91a967a46",
+      "bytes": 619
+    },
+    {
+      "path": "model/knowledge_verifier.py",
+      "sha256": "b2807b00ca9e4cae15f25a430a516f0c013be2a7c95a140750da53b9dbe18089",
+      "bytes": 2103
     },
     {
       "path": "model/orchestration.py",
@@ -731,6 +761,16 @@
       "path": "src/iubin.js",
       "sha256": "0b03cb5d2fe5a94569b96dd1d4cff0d93d3de25e4cd04722b587a2bb3d4afe46",
       "bytes": 1369
+    },
+    {
+      "path": "src/knowledge-autonomy.js",
+      "sha256": "7f6a223e1ff153e7b192e79813fe20f8bdbbc8896589aaa1f2cdd0cb0b8f68a4",
+      "bytes": 1920
+    },
+    {
+      "path": "src/knowledge-training.js",
+      "sha256": "6d168600acb82456dc75ab5422c26a9f6253eb311b133498d65af2fa00873d1a",
+      "bytes": 450
     },
     {
       "path": "src/knowledge.js",
