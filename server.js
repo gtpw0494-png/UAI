@@ -45,6 +45,9 @@ import { GovernanceKernel } from "./src/governance/kernel.js";
 import { ConversationEngine } from "./src/conversation-engine.js";
 import { ModelRouter, buildLocalModelCandidates } from "./src/models/router.js";
 import { WebResearchEngine } from "./src/web-research-engine.js";
+import { ShadowCoordinator } from "./src/shadow/shadow-coordinator.js";
+import { LightCoordinator } from "./src/light/light-coordinator.js";
+import { platformCapabilityCatalog } from "./src/platform-capability-catalog.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -72,7 +75,7 @@ delete process.env.UAI_OWNER_TOKEN;
 delete process.env.IUV_OWNER_TOKEN;
 if(ownerBootstrap.state==="BLOCKED")throw new Error(ownerBootstrap.message||"Owner bootstrap configuration is invalid.");
 const requestAuthorizer = new RequestAuthorizer({identity,policyEngine,approvalStore,audit,appVersion:APP_VERSION});
-const governanceKernel = new GovernanceKernel({identity,authorizer:requestAuthorizer,policyEngine,approvalStore,autonomyStore,audit});
+const governanceKernel = new GovernanceKernel({identity,authorizer:requestAuthorizer,policyEngine,approvalStore,autonomyStore,audit,stateRoot:stateDir});
 const pluginRegistry = new PluginRegistry(stateDir,audit);
 const idempotencyStore = new IdempotencyStore(stateDir,audit);
 const modelRegistry = new ModelRegistry();
@@ -93,6 +96,9 @@ const webResearch = new WebResearchEngine({audit});
 const runtimeServices = new RuntimeServices();
 const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
+const shadow = new ShadowCoordinator({stateRoot:stateDir,audit,maxWorkers:Number(process.env.IUV_SHADOW_WORKERS||4)});
+const light = new LightCoordinator({root:__dirname,stateRoot:stateDir,audit,maxWorkers:Number(process.env.IUV_LIGHT_WORKERS||2)});
+const platformCatalog = platformCapabilityCatalog();
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
@@ -179,11 +185,17 @@ const server=http.createServer(async(req,res)=>{try{
       return send(res,gate.httpStatus||403,{state:gate.state,message:gate.message,policy:gate.policy||null,binding:gate.binding||null,validation:gate.validation||null,rate:gate.rate||null,requestId,correlationId});
     }
     req.uaiSecurity=gate;
+    const stop=governanceKernel.emergencyStop.status();
+    const emergencyExempt=new Set(["/api/governance/emergency/release","/api/approvals/request","/api/approvals/decide"]);
+    if(stop.engaged&&gate.meta?.stateChanging&&!emergencyExempt.has(url.pathname)){
+      audit.append({type:"api.denied",requestId,correlationId,actor:gate.auth?.identityId||null,method:req.method,path:url.pathname,state:"BLOCKED",reason:"emergency-stop"});
+      return send(res,423,{state:"BLOCKED",message:"Governance emergency stop is engaged.",emergencyStop:stop,requestId,correlationId});
+    }
     if(req.method==="POST"&&url.pathname==="/api/auth/logout"){
       const out=identity.logout(req);res.setHeader("set-cookie",clearSessionCookies({secure:Boolean(req.socket.encrypted)}));return send(res,200,{...out,requestId,correlationId});
     }
   }
-  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),modelRouter:modelRouter.describe(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},governanceKernel:governanceKernel.status(auth),ownerAuthentication:{mode:"email-password-session",legacyBearerTokenAccepted:false,bootstrapState:ownerBootstrap.state,bootstrapApplied:ownerBootstrap.bootstrapped===true},auditIntegrity:audit.verify()});}
+  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),modelRouter:modelRouter.describe(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},governanceKernel:governanceKernel.status(auth),ownerAuthentication:{mode:"email-password-session",legacyBearerTokenAccepted:false,bootstrapState:ownerBootstrap.state,bootstrapApplied:ownerBootstrap.bootstrapped===true},shadow:shadow.status(),light:light.status(),platformCatalogSummary:{partialOrNotDemonstrated:platformCatalog.partialOrNotDemonstrated.length,modelCategories:platformCatalog.modelCategories.length,pluginTypes:platformCatalog.pluginTypes.length,toolAbilities:platformCatalog.toolAbilities.length},auditIntegrity:audit.verify()});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/models/route"){
@@ -243,6 +255,30 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/web/ingest")return send(res,200,await webCorpus.ingestUrl(await readBody(req)));
   if(req.method==="GET"&&url.pathname==="/api/knowledge")return send(res,200,store.list());
   if(req.method==="GET"&&url.pathname==="/api/agents")return send(res,200,agents.list());
+  if(req.method==="GET"&&url.pathname==="/api/platform/roadmap")return send(res,200,platformCatalog);
+  if(req.method==="GET"&&url.pathname==="/api/governance/status")return send(res,200,governanceKernel.status(identity.authenticateRequest(req)));
+  if(req.method==="GET"&&url.pathname==="/api/governance/trusted-devices")return send(res,200,{state:"SUCCESS",devices:governanceKernel.trustedDevices.list(1000)});
+  if(req.method==="POST"&&url.pathname==="/api/governance/emergency/engage"){const b=await readBody(req);return send(res,200,governanceKernel.emergencyStop.engage(b.reason||"owner emergency stop"));}
+  if(req.method==="POST"&&url.pathname==="/api/governance/emergency/release"){const b=await readBody(req);return send(res,200,governanceKernel.emergencyStop.release(req.uaiSecurity,b.reason||"owner release"));}
+  if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/enroll"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.enroll(b,req.uaiSecurity));}
+  if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/revoke"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.revoke(b.id,req.uaiSecurity));}
+  if(req.method==="GET"&&url.pathname==="/api/shadow/status")return send(res,200,shadow.status());
+  if(req.method==="GET"&&url.pathname==="/api/shadow/agents")return send(res,200,{state:"SUCCESS",agents:shadow.registry.list()});
+  if(req.method==="GET"&&url.pathname==="/api/shadow/runs")return send(res,200,{state:"SUCCESS",runs:shadow.runs.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null})});
+  if(req.method==="GET"&&url.pathname==="/api/shadow/candidates")return send(res,200,{state:"SUCCESS",candidates:shadow.candidates.list(Number(url.searchParams.get("limit")||100))});
+  if(req.method==="POST"&&url.pathname==="/api/shadow/runs")return send(res,200,shadow.submit(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/shadow/simulate"){const b=await readBody(req);return send(res,200,await shadow.simulate(b.id,{evidence:b.evidence||[],observations:b.observations||[],outputs:b.outputs||[]}));}
+  if(req.method==="POST"&&url.pathname==="/api/shadow/reject"){const b=await readBody(req);return send(res,200,shadow.reject(b.candidateId,b.reason));}
+  if(req.method==="GET"&&url.pathname==="/api/light/status")return send(res,200,light.status());
+  if(req.method==="GET"&&url.pathname==="/api/light/agents")return send(res,200,{state:"SUCCESS",agents:light.registry.list()});
+  if(req.method==="GET"&&url.pathname==="/api/light/patches")return send(res,200,{state:"SUCCESS",patches:light.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null})});
+  if(req.method==="POST"&&url.pathname==="/api/light/patches")return send(res,200,light.propose(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/light/worktree"){const b=await readBody(req);return send(res,200,light.createWorktree(b.id));}
+  if(req.method==="POST"&&url.pathname==="/api/light/implementation"){const b=await readBody(req);return send(res,200,light.recordImplementation(b.id,{changedFiles:b.changedFiles||[],evidence:b.evidence||[]}));}
+  if(req.method==="POST"&&url.pathname==="/api/light/evaluate"){const b=await readBody(req),{id,...input}=b;return send(res,200,light.evaluate(id,input));}
+  if(req.method==="POST"&&url.pathname==="/api/light/rollback"){const b=await readBody(req);return send(res,200,light.rollback(b.id,b.reason));}
+  if(req.method==="POST"&&url.pathname==="/api/promotion/shadow"){const b=await readBody(req);return send(res,200,shadow.promote(b.candidateId,req.uaiSecurity,{evidence:b.evidence===true,evaluation:b.evaluation===true}));}
+  if(req.method==="POST"&&url.pathname==="/api/promotion/light"){const b=await readBody(req);return send(res,200,light.markPromotionEligible(b.patchId,req.uaiSecurity));}
   if(req.method==="GET"&&url.pathname==="/api/plugins")return send(res,200,control.plugins.list());
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
   if(req.method==="GET"&&url.pathname==="/api/subscriptions")return send(res,200,control.subscriptions.list());
