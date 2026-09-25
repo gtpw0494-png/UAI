@@ -828,6 +828,11 @@
       "bytes": 3354
     },
     {
+      "path": "src/local-capability-orchestrator.js",
+      "sha256": "648ea3bfd2d2a9fb16b4d8a4680b3da1f2a97c66be32ad42bd387a3f423c8461",
+      "bytes": 1164
+    },
+    {
       "path": "src/local-capability-router.js",
       "sha256": "a03ca48c6da51de83f48b8bcd25de307b0afeb213d20ae09d62fad46da4913d4",
       "bytes": 3757
