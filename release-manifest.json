@@ -304,8 +304,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "302a3d3ecaadebc0b0f2e6266ff44ffd0445f1dda3d802d3256f3003cfd21ea2",
-      "bytes": 5495
+      "sha256": "dfe0a7c4919a0d5378614c23638d6a1a3af3e344b59ee4feef3b289ab23ef71b",
+      "bytes": 5583
     },
     {
       "path": "public/app.js",
@@ -798,6 +798,11 @@
       "bytes": 2157
     },
     {
+      "path": "src/knowledge-job-store.js",
+      "sha256": "52ab2127263bcdcfb2fe4aa25799837cedf4fb1c6b3fb0de60ba6d72cca3885a",
+      "bytes": 923
+    },
+    {
       "path": "src/knowledge-metrics.js",
       "sha256": "95623ca60a2b5c5b256faac4ca92fb64b237b44e9bcc45179f3609b98b8fbc72",
       "bytes": 784
@@ -816,6 +821,11 @@
       "path": "src/knowledge-scheduler.js",
       "sha256": "4cefd67deac5f0b7405867f009e06ddb79e5bd0cc6484d8ea8510f03002498fe",
       "bytes": 996
+    },
+    {
+      "path": "src/knowledge-training-job.js",
+      "sha256": "471bc3429eab6568ab08614417584ba02d5b9a08a8a4791648e2551a068f5756",
+      "bytes": 1798
     },
     {
       "path": "src/knowledge-training.js",
@@ -1351,6 +1361,11 @@
       "path": "verification/knowledge-autonomy-v055.test.mjs",
       "sha256": "e6df0bf2ba9419b7882f21a8c68a289d259a820cf081bed17865eeff39dd3c59",
       "bytes": 1984
+    },
+    {
+      "path": "verification/knowledge-training-job.test.mjs",
+      "sha256": "4834bad7bf5b2da795854cf44ca2c4d8848b93880183d4eeb4dac244561b6372",
+      "bytes": 1052
     },
     {
       "path": "verification/model-catalog.test.mjs",
