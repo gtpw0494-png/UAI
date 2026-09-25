@@ -74,7 +74,10 @@
     "platform:status": "node scripts/platform-intelligence-cli.js status",
     "memory:status": "node scripts/platform-intelligence-cli.js memory-status",
     "provenance:status": "node scripts/platform-intelligence-cli.js provenance-status",
-    "evaluations:status": "node scripts/platform-intelligence-cli.js evaluations"
+    "evaluations:status": "node scripts/platform-intelligence-cli.js evaluations",
+    "test:knowledge-autonomy": "node verification/knowledge-autonomy-v055.test.mjs",
+    "knowledge:benchmark": "python3 model/eval/knowledge_benchmark.py",
+    "knowledge:store": "python3 model/knowledge_store.py"
   },
   "engines": {
     "node": ">=20"
