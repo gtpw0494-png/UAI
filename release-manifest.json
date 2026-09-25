@@ -514,8 +514,8 @@
     },
     {
       "path": "src/control-plane-store.js",
-      "sha256": "93ba9bb339455f005fb27d136f5ae07cab83593d5ce89b918868d4deb5e31600",
-      "bytes": 7138
+      "sha256": "841dbcafa1a12bbe01f5c0cd8037cd6aa1339e20356360fc187a062198acb86b",
+      "bytes": 7152
     },
     {
       "path": "src/conversation-engine.js",
@@ -939,8 +939,8 @@
     },
     {
       "path": "storage/control_plane.py",
-      "sha256": "e7f8dd1eaf2b25ad76e4c3568578bffb82149d1917cdd399a3f076cf911cc98b",
-      "bytes": 6646
+      "sha256": "5cb768dd83bf3d0f8673d356835f26bed84dde267e2859afd7addc76b384fb28",
+      "bytes": 6662
     },
     {
       "path": "storage/db.py",
