@@ -9,7 +9,8 @@ let DatabaseSync=null;try{({DatabaseSync}=require("node:sqlite"));}catch{}
 const iso=()=>new Date().toISOString();
 export const PLATFORM_TABLES=Object.freeze({
   "memory-item":"memory_items","memory-settings":"memory_settings","provenance-node":"provenance_nodes","provenance-edge":"provenance_edges",
-  "model-artifact":"model_artifacts","evaluation-run":"evaluation_runs","policy-simulation":"policy_simulations"
+  "model-artifact":"model_artifacts","evaluation-run":"evaluation_runs","policy-simulation":"policy_simulations",
+  "code-file":"code_files","code-symbol":"code_symbols","code-edge":"code_edges","media-artifact":"media_artifacts"
 });
 const meta=(body={})=>({
   state:String(body.state||body.status||body.deletionState||"ACTIVE"),
