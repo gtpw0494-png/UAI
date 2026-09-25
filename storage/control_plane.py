@@ -65,7 +65,7 @@ def main():
         states={}
         for k,t in TABLES.items():
             states[k]={r["state"]:r["n"] for r in c.execute(f"SELECT state,COUNT(*) n FROM {t} GROUP BY state")}
-        emit({"state":"SUCCESS","path":str(DB),"backend":"python-sqlite3","journalMode":c.execute("PRAGMA journal_mode").fetchone()[0],"counts":counts,"states":states});return
+        emit({"state":"SUCCESS","path":str(DB),"backend":"python-sqlite3","journalMode":c.execute("PRAGMA journal_mode").fetchone()[0],"tables":TABLES,"counts":counts,"states":states});return
       kind=str(req.get("kind") or ""); t=table_for(kind); rid=str(req.get("id") or "")
       if action=="get":
         r=c.execute(f"SELECT body_json,version FROM {t} WHERE id=?",(rid,)).fetchone()
