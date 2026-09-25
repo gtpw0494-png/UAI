@@ -74,8 +74,8 @@
     },
     {
       "path": "docs/DATA-FLOW.md",
-      "sha256": "92968254bef11d5361cf8d8687ca18cb7b14b97477dc95a1e6904b6ea0f831d1",
-      "bytes": 1559
+      "sha256": "aa6aff45c798bcada645625e524bde4ece24678361cb5a559a3c6e506db8c7e3",
+      "bytes": 3224
     },
     {
       "path": "docs/FEATURE-PROMOTION.md",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "3be9e418c059158515252b5acdb7cb5e80381171f171ac9711f4717c9c79a448",
-      "bytes": 17917
+      "sha256": "b405e5e7d8339ff6df43ebec7d5500740e834166996ecc940bd043be046e8aec",
+      "bytes": 19257
     },
     {
       "path": "model/adaptation.py",
