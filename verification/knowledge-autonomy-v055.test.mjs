@@ -7,8 +7,8 @@ import { VerifiedKnowledgeStore } from "../src/verified-knowledge-store.js";
 import { KnowledgePromotion } from "../src/knowledge-promotion.js";
 
 const registry=[
- {id:"a",domain:"a.example",allowed:true,trust:.95},
- {id:"b",domain:"b.example",allowed:true,trust:.90},
+ {id:"a",domain:"a.example",allowed:true,trust:.95,training_policy:"FACT_EXTRACTION_ALLOWED"},
+ {id:"b",domain:"b.example",allowed:true,trust:.90,training_policy:"FACT_EXTRACTION_ALLOWED"},
  {id:"blocked",domain:"bad.example",allowed:false,trust:1}
 ];
 const verifier=new KnowledgeVerifier({registry,minIndependentSources:2});
