@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.45.0",
+  "version": "0.46.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "5b6807b8dc375dce7cdb3b9131e826991aa9f38927556381f155db47c0a02ffa",
-      "bytes": 4808
+      "sha256": "82cbe7f45417b5fb23d02a4ff7a60d9d8c60e48e498dd66cbb3ea9615cf88634",
+      "bytes": 5006
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -214,23 +214,23 @@
     },
     {
       "path": "package.json",
-      "sha256": "9ac9114bab4f541dfe790fd48dd8303e46772dc0bf7f7f8354a43ccc2dbe3091",
-      "bytes": 3034
+      "sha256": "f66be5f351c8e790725fd90a542295133edf2c5bc8e6ecd9df5fc479bf4859fb",
+      "bytes": 3111
     },
     {
       "path": "public/app.js",
-      "sha256": "ac2e9b0d6681a79be442c064327d4be83d08a6f62b56587bc62a2f7480ec3ceb",
-      "bytes": 2895
+      "sha256": "e1d7fe596398d391a314d8c0d7b0e4297cdfb9cb3eee7fdcf34d1ea6e8162e99",
+      "bytes": 6030
     },
     {
       "path": "public/index.html",
-      "sha256": "322ee25508e874444a29612838aaa1194baa4a5436f41693e8d90f0591a073a5",
-      "bytes": 1564
+      "sha256": "e6737a2ad6ffe7cd0cebf5ef507653f279d9e37c19374356f63ee2bb7cda73e5",
+      "bytes": 1960
     },
     {
       "path": "public/styles.css",
-      "sha256": "1a8beb62663496b9df00db6884e2b080637db67b95d5de4ea06316cba574fe2f",
-      "bytes": 2984
+      "sha256": "bea163dc0a200dc3b572010ddf8529c19b9584bed92e2f42a9a575e936667a2c",
+      "bytes": 3675
     },
     {
       "path": "requirements/core.txt",
@@ -353,6 +353,11 @@
       "bytes": 1119
     },
     {
+      "path": "schemas/http-request.schema.json",
+      "sha256": "818053d8b5e9052d3528c1405529ea5589129f31b510803adb6f284a1d7cf7d0",
+      "bytes": 1130
+    },
+    {
       "path": "schemas/plugin-manifest.schema.json",
       "sha256": "3555ca419f32516984dd2931e5f1044cf3c83212cae636cbd4ddb04cadef15f8",
       "bytes": 6301
@@ -414,8 +419,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "b96a0a149b938f0507498d731d47e973f5af70e1d8f66a944058af424a6d320d",
-      "bytes": 21963
+      "sha256": "6317ee9f2c47a113710f5cc44908992354db64bd66b4fae1fe5d2a1dfb23e7e4",
+      "bytes": 28643
     },
     {
       "path": "src/action-envelope.js",
@@ -491,6 +496,26 @@
       "path": "src/forgelm-bridge.js",
       "sha256": "614944543d9a95cc1cccd1325a7f16041152970f8771d1ca89d251bab48f5fe2",
       "bytes": 1107
+    },
+    {
+      "path": "src/governance/authorization.js",
+      "sha256": "8103f45bb79598ac80532b6636800628ca87b137856be422d8eb8730f33e3e10",
+      "bytes": 7241
+    },
+    {
+      "path": "src/governance/identity.js",
+      "sha256": "6485b0472d251062885568e2c039bbf505760f811ff4353ce6fbed629045457f",
+      "bytes": 6032
+    },
+    {
+      "path": "src/governance/kernel.js",
+      "sha256": "fecdeee421662a050026bff6d3daab9d3eb06c3f12f04e6e8e4c7d389803aeee",
+      "bytes": 783
+    },
+    {
+      "path": "src/governance/request-schemas.js",
+      "sha256": "f309340126b4217dec068fa0d72a7fa0cd943be7ea6568b8da88de30a007899f",
+      "bytes": 4813
     },
     {
       "path": "src/governance-db.js",
@@ -688,6 +713,11 @@
       "bytes": 29009
     },
     {
+      "path": "verification/api-security-v046.test.mjs",
+      "sha256": "5a4e60c51c4fe67236f88024eaa5980071183c2663e93bc10aa7f389c04d98c8",
+      "bytes": 7520
+    },
+    {
       "path": "verification/control-plane-modernization.test.mjs",
       "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
       "bytes": 6818
@@ -699,8 +729,8 @@
     },
     {
       "path": "verification/document-http.test.mjs",
-      "sha256": "e4e26aade17a7e46e4b151311ab8108a78f526b3531790f7e60baba581f0fba7",
-      "bytes": 4017
+      "sha256": "143f7e7d651cc54a4e2211d47ba692cab7cb57114bd1f50391f690e98cc297f3",
+      "bytes": 4324
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
@@ -709,8 +739,8 @@
     },
     {
       "path": "verification/plugin-http.test.mjs",
-      "sha256": "7c50128fee126849c424d73acc2866c6a119defb200552437f9106a801b9ee1c",
-      "bytes": 4283
+      "sha256": "179180aa4c9796f26212370225be659b5051daaee6850d8b3dc887563785599f",
+      "bytes": 4462
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
