@@ -45,6 +45,9 @@ jobs:
       - name: Verify v0.43 control-plane modernization
         run: npm run test:control-plane
 
+      - name: Verify v0.44 governed plugin gateway
+        run: npm run test:plugin-gateway
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
