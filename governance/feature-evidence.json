@@ -902,7 +902,7 @@
     {
       "id": "user-owned-memory-v054",
       "introduced": "0.54.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "storage/platform_state.py",
         "src/platform-state-store.js",
@@ -918,12 +918,12 @@
         "verification/platform-intelligence-v054.test.mjs",
         "verification/platform-intelligence-http-v054.test.mjs"
       ],
-      "evidence_note": "Typed user-owned memory with explicit consent, separate namespaces, retention/expiry, inspectable source/reason, training-disabled default, soft deletion, hard purge, export and optional AES-256-GCM via IUV_MEMORY_KEY is implemented. UAI does not silently persist every conversation or silently train from memory. Awaiting authoritative exact-commit CI."
+      "evidence_note": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: explicit-consent memory, AES-256-GCM mode, training-disabled default, search/why/export/delete semantics, authenticated OneChat/HTTP flows and emergency-stop blocking passed. UAI still does not silently remember every conversation or silently train from memory."
     },
     {
       "id": "provenance-policy-plane-v054",
       "introduced": "0.54.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/provenance/graph.js",
         "src/provenance/lineage.js",
@@ -939,12 +939,12 @@
         "verification/platform-intelligence-v054.test.mjs",
         "verification/platform-intelligence-http-v054.test.mjs"
       ],
-      "evidence_note": "Queryable provenance nodes/edges, trace, dry-run purge planning, memory-node purge propagation, non-executing policy workflow simulation and richer policy decision metadata/proofs are implemented. Full deletion propagation into every document/index/model artifact remains PARTIAL and is reported as externalDeletionRequired. Awaiting authoritative exact-commit CI."
+      "evidence_note": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: provenance node/edge tracing, dry-run purge planning, linked-memory purge propagation, richer policy decision metadata/proofs and non-executing policy workflow simulation passed. Full deletion propagation into every legacy document/index/dataset/model store remains PARTIAL and is not claimed."
     },
     {
       "id": "model-artifact-evaluation-v054",
       "introduced": "0.54.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/models/artifact-verifier.js",
         "src/evaluation/evaluation-store.js",
@@ -958,7 +958,7 @@
         "verification/platform-intelligence-v054.test.mjs",
         "verification/platform-intelligence-http-v054.test.mjs"
       ],
-      "evidence_note": "Model artifact SHA-256 verification, optional Ed25519 signature verification, persistent artifact records, evidence-backed evaluation records, verified-only leaderboards and promotion evidence scoring are implemented. Artifact registration never implies runtime availability or production eligibility. Awaiting authoritative exact-commit CI."
+      "evidence_note": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: artifact path confinement, SHA-256 verification, runtime-availability separation, persistent evaluation records, verified-only leaderboards, benchmark runner and promotion-evidence scoring passed, alongside ForgeLM train-save-load and advanced neural-objective CI. Artifact registration still does not imply runtime connectivity or production eligibility."
     }
   ]
 }
