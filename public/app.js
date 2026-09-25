@@ -32,6 +32,11 @@ async function refreshOperations(){
       <article><b>Shadow runs</b><span>${d.shadow?.runs||0} · ${esc(stateText(d.shadow?.states))}</span></article>
       <article><b>Light patches</b><span>${d.light?.patches||0} · ${esc(stateText(d.light?.states))}</span></article>
       <article><b>Worker queue</b><span>${d.scheduler?.queued||0} queued · ${d.scheduler?.running||0} running · max ${d.scheduler?.maxWorkers||0}</span></article>
+      <article><b>Private memory</b><span>${d.memory?.active||0} active · ${esc(d.memory?.encryption||"UNKNOWN")}</span></article>
+      <article><b>Provenance graph</b><span>${d.provenance?.nodes||0} nodes · ${d.provenance?.edges||0} edges</span></article>
+      <article><b>Evaluations</b><span>${d.evaluations?.verified||0}/${d.evaluations?.runs||0} verified</span></article>
+      <article><b>Model artifacts</b><span>${d.modelArtifacts?.total||0} · ${esc(stateText(d.modelArtifacts?.states))}</span></article>
+      <article><b>Policy simulations</b><span>${d.policySimulations?.total||0} · ${esc(stateText(d.policySimulations?.decisions))}</span></article>
       <article><b>Feature evidence</b><span>${d.evidence?.total||0} · ${esc(stateText(d.evidence?.statuses))}</span></article>
       <article><b>Audit</b><span>${d.audit?.total||0} records · ${esc(d.audit?.integrity?.state||"UNKNOWN")}</span></article>
     </div>
