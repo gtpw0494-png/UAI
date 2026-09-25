@@ -2,7 +2,8 @@ import {validateSchema} from "../schema-validator.js";
 
 const object={type:"object"};
 const schemas=new Map([
-  ["POST /api/auth/login",{type:"object",required:["token"],properties:{token:{type:"string",minLength:16,maxLength:4096}},additionalProperties:false}],
+  ["POST /api/auth/enroll",{type:"object",required:["email","password"],properties:{email:{type:"string",minLength:3,maxLength:320},password:{type:"string",minLength:12,maxLength:1024}},additionalProperties:false}],
+  ["POST /api/auth/login",{type:"object",required:["email","password"],properties:{email:{type:"string",minLength:3,maxLength:320},password:{type:"string",minLength:1,maxLength:1024}},additionalProperties:false}],
   ["POST /api/onechat",{type:"object",required:["message"],properties:{message:{type:"string",minLength:1,maxLength:200000},chatId:{type:"string",maxLength:256}},additionalProperties:true}],
   ["POST /api/chat",{type:"object",required:["message"],properties:{message:{type:"string",minLength:1,maxLength:200000},chatId:{type:"string",maxLength:256}},additionalProperties:true}],
   ["POST /api/documents/ingest",{type:"object",required:["source_id","text"],properties:{source_id:{type:"string",minLength:1,maxLength:512},text:{type:"string",minLength:1,maxLength:4000000},canonical_uri:{type:["string","null"],maxLength:4096},original_uri:{type:["string","null"],maxLength:4096},title:{type:["string","null"],maxLength:1024},training_approved:{type:"boolean"},retrieval_eligible:{type:"boolean"}},additionalProperties:true}],
