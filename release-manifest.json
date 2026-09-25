@@ -543,9 +543,19 @@
       "bytes": 3930
     },
     {
+      "path": "src/plugin-gateway.js",
+      "sha256": "1ae32a892d3e1f2677b4560ce48d96d669c61039592d9b89fa5f8a83d0e4648e",
+      "bytes": 8375
+    },
+    {
       "path": "src/plugin-registry.js",
       "sha256": "66a91f0fc37ae23cbb63c451cbb21224a59d3e93f21892a749f61044fa37ed72",
       "bytes": 4107
+    },
+    {
+      "path": "src/plugin-secret-broker.js",
+      "sha256": "709a0c9bab725be6c2794193072a08587fc1b893c6e26b95a7a6fda06f4ef9c3",
+      "bytes": 1477
     },
     {
       "path": "src/policy-engine.js",
@@ -571,6 +581,16 @@
       "path": "src/runtime-services.js",
       "sha256": "52ddf5ad0aa65b08b636f8e458b83627ccfa909de8b7f06a0d154ac16cdac233",
       "bytes": 8175
+    },
+    {
+      "path": "src/sandbox-runner.js",
+      "sha256": "6796c88f7455b282cc0700d4239d777f527fc75363fd4cd59f8bfa69a1248879",
+      "bytes": 4521
+    },
+    {
+      "path": "src/schema-validator.js",
+      "sha256": "41315d56f6b62a6805ae2560c9de0e42037000fbc93b2e8adc96ad6f54a326e7",
+      "bytes": 2913
     },
     {
       "path": "src/self-development.js",
