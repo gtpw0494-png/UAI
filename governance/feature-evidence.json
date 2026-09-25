@@ -862,7 +862,7 @@
     {
       "id": "typed-agent-control-plane-v053",
       "introduced": "0.53.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "storage/control_plane.py",
         "src/control-plane-store.js",
@@ -874,13 +874,17 @@
         "src/light/light-coordinator.js",
         "src/governance/authorization.js",
         "src/governance/request-schemas.js",
-        "server.js"
+        "server.js",
+        "scripts/control-plane-cli.js",
+        "public/app.js",
+        "public/index.html",
+        "TERMUX-RUN.md"
       ],
       "tests": [
         "verification/agent-control-v053.test.mjs",
         "verification/agent-control-http-v053.test.mjs"
       ],
-      "evidence_note": "Dedicated shadow_runs, shadow_candidates, light_patches, light_worktrees and agent_jobs SQLite tables are implemented with legacy migration, bounded persistent lease scheduling, lease recovery, TTL expiry, authenticated dispatch/maintenance APIs and emergency-stop inheritance. Promotion authority remains separate. Awaiting authoritative exact-commit CI before VERIFIED."
+      "evidence_note": "Verified by authoritative exact-state CI on commit 552cd72d54f3d1f7ef23c9812caa236d7a187e7d: cumulative/security regressions, dedicated v0.53 storage/scheduler tests, live authenticated HTTP dispatch/dashboard tests, release-manifest reproducibility, localhost smoke, ForgeLM train-save-load and advanced neural objective jobs all passed. Dedicated shadow_runs, shadow_candidates, light_patches, light_worktrees and agent_jobs SQLite tables use bounded persistent leases, expiry/recovery and legacy migration; promotion authority remains separate."
     },
     {
       "id": "structured-web-research-v053",
