@@ -1,4 +1,5 @@
 import http from "node:http";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,6 +39,9 @@ import { Observability } from "./src/observability.js";
 import { IdempotencyStore } from "./src/idempotency-store.js";
 import { PluginGateway } from "./src/plugin-gateway.js";
 import { DocumentStore } from "./src/document-store.js";
+import { LocalIdentity, sessionCookies, clearSessionCookies } from "./src/governance/identity.js";
+import { RequestAuthorizer } from "./src/governance/authorization.js";
+import { GovernanceKernel } from "./src/governance/kernel.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -58,6 +62,9 @@ const availabilityLedger = new AvailabilityLedger(stateDir);
 const policyEngine = new PolicyEngine();
 const approvalStore = new ApprovalStore(stateDir,audit);
 const autonomyStore = new AutonomyStore(stateDir,audit);
+const identity = new LocalIdentity(stateDir,audit);
+const requestAuthorizer = new RequestAuthorizer({identity,policyEngine,approvalStore,audit,appVersion:APP_VERSION});
+const governanceKernel = new GovernanceKernel({identity,authorizer:requestAuthorizer,policyEngine,approvalStore,autonomyStore,audit});
 const pluginRegistry = new PluginRegistry(stateDir,audit);
 const idempotencyStore = new IdempotencyStore(stateDir,audit);
 const modelRegistry = new ModelRegistry();
@@ -81,12 +88,83 @@ const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,ap
 const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,documentStore,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
 const PORT = Number(process.env.PORT || 8787);
 
-function send(res,status,data,type="application/json"){res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(type==="application/json"?JSON.stringify(data,null,2):data);}
-function readBody(req){return new Promise((resolve,reject)=>{let d="";req.on("data",c=>{d+=c;if(d.length>4_000_000)req.destroy();});req.on("end",()=>{try{resolve(d?JSON.parse(d):{});}catch(e){reject(e);}});req.on("error",reject);});}
+const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
+function send(res,status,data,type="application/json"){
+  const payload=type==="application/json"?JSON.stringify(data,null,2):data;
+  const bytes=Buffer.byteLength(payload);
+  if(type==="application/json"&&bytes>MAX_RESPONSE_BYTES){
+    const small=JSON.stringify({state:"BLOCKED",message:"Response exceeded the configured API size limit.",maxBytes:MAX_RESPONSE_BYTES,requestId:res.getHeader("x-request-id")||null},null,2);
+    res.writeHead(413,{"content-type":"application/json; charset=utf-8","cache-control":"no-store"});return res.end(small);
+  }
+  res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(payload);
+}
+function readBody(req){
+  if(req._uaiBodyPromise)return req._uaiBodyPromise;
+  req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){const e=new Error("Request body exceeds 4 MB limit.");e.statusCode=400;reject(e);req.destroy();}});req.on("end",()=>{try{resolve(d?JSON.parse(d):{});}catch{const e=new Error("Request body must be valid JSON.");e.statusCode=400;reject(e);}});req.on("error",reject);});
+  return req._uaiBodyPromise;
+}
+function allowedOrigin(req){
+  const origin=String(req.headers.origin||"").trim();
+  if(!origin)return true;
+  const allowed=new Set([`http://127.0.0.1:${PORT}`,`http://localhost:${PORT}`,...String(process.env.IUV_ALLOWED_ORIGINS||"").split(",").map(x=>x.trim()).filter(Boolean)]);
+  return allowed.has(origin);
+}
+const loginBuckets=new Map();
+function allowLoginAttempt(req){
+  const now=Date.now(),window=Math.floor(now/60000),remote=String(req.socket.remoteAddress||"local"),key=remote+"|"+window;
+  const count=(loginBuckets.get(key)||0)+1;loginBuckets.set(key,count);
+  if(loginBuckets.size>1000)for(const k of loginBuckets.keys())if(!k.endsWith("|"+window))loginBuckets.delete(k);
+  return {allowed:count<=10,count,limit:10,resetAt:new Date((window+1)*60000).toISOString()};
+}
+function setSecurityHeaders(res,requestId,correlationId){
+  res.setHeader("x-request-id",requestId);res.setHeader("x-correlation-id",correlationId);
+  res.setHeader("x-content-type-options","nosniff");res.setHeader("referrer-policy","no-referrer");res.setHeader("x-frame-options","DENY");
+  res.setHeader("content-security-policy","default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+  res.setHeader("permissions-policy","camera=(), microphone=(), geolocation=()");
+}
 
 const server=http.createServer(async(req,res)=>{try{
+  const requestId=/^[A-Za-z0-9._:-]{1,128}$/.test(String(req.headers["x-request-id"]||""))?String(req.headers["x-request-id"]):`req-${crypto.randomUUID()}`;
+  const correlationId=/^[A-Za-z0-9._:-]{1,128}$/.test(String(req.headers["x-correlation-id"]||""))?String(req.headers["x-correlation-id"]):requestId;
+  setSecurityHeaders(res,requestId,correlationId);
   const url=new URL(req.url,`http://${req.headers.host}`);
-  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},auditIntegrity:audit.verify()});}
+  if(url.pathname.startsWith("/api/")&&!allowedOrigin(req)){
+    audit.append({type:"api.denied",requestId,correlationId,reason:"origin",method:req.method,path:url.pathname});
+    return send(res,403,{state:"BLOCKED",message:"Cross-origin API request is not allowed.",requestId,correlationId});
+  }
+  if(url.pathname.startsWith("/api/")&&req.headers.origin){
+    res.setHeader("access-control-allow-origin",String(req.headers.origin));res.setHeader("vary","Origin");res.setHeader("access-control-allow-credentials","true");
+  }
+  if(url.pathname.startsWith("/api/")&&req.method==="OPTIONS"){
+    res.setHeader("access-control-allow-methods","GET,POST,OPTIONS");res.setHeader("access-control-allow-headers","content-type,authorization,x-uai-csrf,x-uai-approval-id,x-request-id,x-correlation-id,idempotency-key");
+    return send(res,204,"","text/plain");
+  }
+  if(req.method==="GET"&&url.pathname==="/api/auth/status"){
+    const auth=identity.authenticateRequest(req);return send(res,200,{...identity.status(auth),governance:governanceKernel.status(auth),requestId,correlationId});
+  }
+  if(req.method==="POST"&&url.pathname==="/api/auth/login"){
+    const b=await readBody(req),loginRate=allowLoginAttempt(req);
+    if(!loginRate.allowed)return send(res,429,{state:"BLOCKED",message:"Too many owner login attempts.",rate:loginRate,requestId,correlationId});
+    const loginGate=requestAuthorizer.authorize({req,url,body:b,requestId,correlationId});
+    if(!loginGate.allowed)return send(res,loginGate.httpStatus||400,{state:loginGate.state,message:loginGate.message,validation:loginGate.validation||null,requestId,correlationId});
+    const login=identity.login(b.token);
+    if(login.state!=="SUCCESS"){audit.append({type:"identity.login.denied",requestId,correlationId,remote:String(req.socket.remoteAddress||"")});return send(res,401,{state:login.state,message:login.message,requestId,correlationId});}
+    res.setHeader("set-cookie",sessionCookies(login,{secure:Boolean(req.socket.encrypted)}));
+    const {sessionToken,...safe}=login;return send(res,200,{...safe,requestId,correlationId});
+  }
+  if(url.pathname.startsWith("/api/")){
+    const body=["GET","HEAD","OPTIONS"].includes(req.method)?{}:await readBody(req);
+    const gate=requestAuthorizer.authorize({req,url,body,requestId,correlationId});
+    if(!gate.allowed){
+      audit.append({type:"api.denied",requestId,correlationId,actor:gate.auth?.identityId||null,method:req.method,path:url.pathname,state:gate.state,reason:gate.message,capability:gate.meta?.capability||null});
+      return send(res,gate.httpStatus||403,{state:gate.state,message:gate.message,policy:gate.policy||null,binding:gate.binding||null,validation:gate.validation||null,rate:gate.rate||null,requestId,correlationId});
+    }
+    req.uaiSecurity=gate;
+    if(req.method==="POST"&&url.pathname==="/api/auth/logout"){
+      const out=identity.logout(req);res.setHeader("set-cookie",clearSessionCookies({secure:Boolean(req.socket.encrypted)}));return send(res,200,{...out,requestId,correlationId});
+    }
+  }
+  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},governanceKernel:governanceKernel.status(auth),auditIntegrity:audit.verify()});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/model-runtime/llamacpp")return send(res,200,await llamaRuntime.status());
@@ -183,6 +261,6 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/onechat")return send(res,200,await onechat.handle(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/chat")return send(res,200,await onechat.handle(await readBody(req)));
   if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp)&&fs.statSync(fp).isFile()){const ext=path.extname(fp);const type=ext===".css"?"text/css":ext===".js"?"text/javascript":"text/html";return send(res,200,fs.readFileSync(fp),type);}}
-  send(res,404,{error:"Not found"});
-}catch(e){send(res,500,{error:e.message});}});
+  send(res,404,{state:"FAILURE",message:"Not found.",requestId:res.getHeader("x-request-id")||null});
+}catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;const status=Number(e?.statusCode)||500;const publicMessage=status===400?String(e?.message||"Invalid request."):"Internal request failure.";audit.append({type:"api.error",requestId,status,errorName:e?.name||"Error",errorMessage:String(e?.message||"Internal request failure.").slice(0,1000)});send(res,status,{state:status===400?"BLOCKED":"ERROR",message:publicMessage,requestId});}});
 server.listen(PORT,"127.0.0.1",()=>console.log(`IntraultUniversalion v${APP_VERSION} running at http://127.0.0.1:${PORT}`));
