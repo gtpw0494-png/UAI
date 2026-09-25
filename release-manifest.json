@@ -773,14 +773,34 @@
       "bytes": 1454
     },
     {
+      "path": "src/knowledge-harvest.js",
+      "sha256": "76b225395f47f2f7b3cba8c8fc2ca9936dea2e4f217a53fa354eb6a487d42d50",
+      "bytes": 3317
+    },
+    {
+      "path": "src/knowledge-integration.js",
+      "sha256": "b64d7ef2b1eebb771e2c1d8bcc12b8e5da0459fb49fbf08269d6904c8d69e218",
+      "bytes": 1773
+    },
+    {
       "path": "src/knowledge-metrics.js",
-      "sha256": "52123777ba492f9704cc2299815614010bfbc1f2c5f1b3fc02f77830ac06d799",
-      "bytes": 785
+      "sha256": "95623ca60a2b5c5b256faac4ca92fb64b237b44e9bcc45179f3609b98b8fbc72",
+      "bytes": 784
+    },
+    {
+      "path": "src/knowledge-promotion.js",
+      "sha256": "9c277acf1852fba264f4b1330bcb37019e85b4cb010c1427981560aa448f2b9b",
+      "bytes": 1439
     },
     {
       "path": "src/knowledge-rollback.js",
-      "sha256": "3c8c68f8b2a054ad07baa3140d4eff5bfbc80b190e2425715955f5e811862a3e",
-      "bytes": 1529
+      "sha256": "31898f0100aced5b87db6cecf179d18a1f74a3699a211a8aa9733160b7b99c7c",
+      "bytes": 1528
+    },
+    {
+      "path": "src/knowledge-scheduler.js",
+      "sha256": "4cefd67deac5f0b7405867f009e06ddb79e5bd0cc6484d8ea8510f03002498fe",
+      "bytes": 996
     },
     {
       "path": "src/knowledge-training.js",
