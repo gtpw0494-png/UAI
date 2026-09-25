@@ -48,6 +48,9 @@ jobs:
       - name: Verify v0.44 governed plugin gateway
         run: npm run test:plugin-gateway
 
+      - name: Verify v0.44 plugin HTTP integration
+        run: npm run test:plugin-http
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
