@@ -40,7 +40,7 @@ export class VerifiedKnowledgeStore {
   }
   snapshot() {
     const rows=this.read();
-    return {state:"SUCCESS",count:rows.length,training_eligible:rows.filter(x=>x.training_eligible===true).length,integrity_sha256:crypto.createHash("sha256").update(JSON.stringify(rows)).digest("hex")};
+    return {state:"SUCCESS",count:rows.length,training_eligible:rows.filter(x=>x.training_eligible===true&&x.verification?.verified===true&&x.verification?.training_rights_verified===true).length,integrity_sha256:crypto.createHash("sha256").update(JSON.stringify(rows)).digest("hex")};
   }
 }
 export default VerifiedKnowledgeStore;
