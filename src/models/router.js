@@ -62,15 +62,18 @@ export class ModelRouter{
     const route=await this.route(requirements);
     if(route.state!=="SUCCESS")return route;
     const attempts=[];
+    const {acceptResult=null,...generationOptions}=options||{};
     for(const item of route.ranked){
       let result;
       const started=Date.now();
-      try{result=await item.candidate.generate({prompt:String(prompt),...options});}
+      try{result=await item.candidate.generate({prompt:String(prompt),...generationOptions});}
       catch(e){result={state:"ERROR",message:String(e.message||e)};}
-      const attempt={id:item.candidate.id,provider:item.candidate.provider,state:result?.state||"UNKNOWN",latencyMs:Date.now()-started};
+      const text=clean(result?.text||result?.message);
+      const accepted=result?.state==="SUCCESS"&&text&&(!acceptResult||acceptResult(text,result)!==false);
+      const attempt={id:item.candidate.id,provider:item.candidate.provider,state:accepted?"SUCCESS":(result?.state==="SUCCESS"?"REJECTED_OUTPUT":result?.state||"UNKNOWN"),latencyMs:Date.now()-started};
       attempts.push(attempt);
-      if(result?.state==="SUCCESS"&&clean(result.text||result.message)){
-        const out={...result,state:"SUCCESS",text:clean(result.text||result.message),route:{requirements:route.requirements,selected:{id:item.candidate.id,provider:item.candidate.provider,score:item.score},alternatives:route.alternatives,attempts}};
+      if(accepted){
+        const out={...result,state:"SUCCESS",text,route:{requirements:route.requirements,selected:{id:item.candidate.id,provider:item.candidate.provider,score:item.score},alternatives:route.alternatives,attempts}};
         this.audit?.append({type:"model.route.generate",selected:item.candidate.id,provider:item.candidate.provider,attempts,requirements:route.requirements});
         return out;
       }
