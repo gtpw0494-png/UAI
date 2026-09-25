@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import fs from "node:fs"; import os from "node:os"; import path from "node:path";
+import { KnowledgeTrainingJob } from "../src/knowledge-training-job.js";
+import { KnowledgeJobStore } from "../src/knowledge-job-store.js";
+let call=null;
+const job=new KnowledgeTrainingJob({root:"/repo",runner:async(command,args,opts)=>{call={command,args,opts};return{state:"SUCCESS",code:0,stdout:"trained",stderr:""}}});
+assert.equal((await job.execute({count:0})).state,"BLOCKED");
+const out=await job.execute({count:2},{steps:3,preset:"termux-tiny"});
+assert.equal(out.state,"SUCCESS");assert.equal(out.trained,true);assert.equal(out.batch_count,2);
+assert.equal(call.command,"python3");assert.deepEqual(call.args,["model/cli.py","train","--steps","3","--preset","termux-tiny"]);
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-kjobs-"));const store=new KnowledgeJobStore({stateRoot:root});store.record({state:"SUCCESS",kind:"training"});assert.equal(store.list().length,1);
+console.log("knowledge training job: ok");
