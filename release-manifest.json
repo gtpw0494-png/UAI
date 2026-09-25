@@ -828,6 +828,11 @@
       "bytes": 3354
     },
     {
+      "path": "src/local-benchmark.js",
+      "sha256": "43dc1ea67db6124d931649cb0976cc3d54b9295ac7eddf1e0043b94df975bc42",
+      "bytes": 1139
+    },
+    {
       "path": "src/local-capability-orchestrator.js",
       "sha256": "648ea3bfd2d2a9fb16b4d8a4680b3da1f2a97c66be32ad42bd387a3f423c8461",
       "bytes": 1164
