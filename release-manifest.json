@@ -1028,6 +1028,11 @@
       "bytes": 4267
     },
     {
+      "path": "verification/shadow-light-http-v052.test.mjs",
+      "sha256": "ed86bf7770590dd9e9eab05d42f6478832c56b112c3ae2fb00202d72644e1404",
+      "bytes": 4800
+    },
+    {
       "path": "verification/shadow-light-v052.test.mjs",
       "sha256": "0160b562f954ddb4568e2420876c204693f78b6badc58d001a9dd32309b6b80d",
       "bytes": 2989
