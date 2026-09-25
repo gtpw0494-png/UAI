@@ -23,8 +23,8 @@ const job=new KnowledgeTrainingJob({
 });
 assert.equal((await job.execute({count:0,batch:[]})).state,"BLOCKED");
 const batch={count:2,batch:[
- {subject:"a",claim:"fact one",fact_id:"1",source_id:"s1",source_url:"https://s1",verification:{verified:true},training_eligible:true},
- {subject:"b",claim:"fact two",fact_id:"2",source_id:"s2",source_url:"https://s2",verification:{verified:true},training_eligible:true}
+ {subject:"a",claim:"fact one",fact_id:"1",source_id:"s1",source_url:"https://s1",verification:{verified:true,training_rights_verified:true},training_eligible:true},
+ {subject:"b",claim:"fact two",fact_id:"2",source_id:"s2",source_url:"https://s2",verification:{verified:true,training_rights_verified:true},training_eligible:true}
 ]};
 const out=await job.execute(batch,{steps:3,preset:"termux-tiny"});
 assert.equal(out.state,"SUCCESS");
