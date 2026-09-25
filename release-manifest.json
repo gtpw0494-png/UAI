@@ -879,8 +879,8 @@
     },
     {
       "path": "src/shadow/shadow-coordinator.js",
-      "sha256": "454bf3cf873de82d96d24c0a4a8843ac0a841166031be5690747e6e493678aca",
-      "bytes": 5348
+      "sha256": "fd6b1497b2dace8fc3ceb1d8a27807adeaede809890f9825904c89d891a87fdf",
+      "bytes": 6697
     },
     {
       "path": "src/shadow/shadow-run-store.js",
