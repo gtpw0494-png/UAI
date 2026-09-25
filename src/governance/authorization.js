@@ -41,7 +41,7 @@ export function routeSecurity(method,path){
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.endsWith("/execute"))external=true;
   if(p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/provider/"))requiresCredential=true;
   if(["/api/plugins-v1/execute","/api/develop/apply","/api/selfdev/promote","/api/fabrication/job"].includes(p))delegateApproval=true;
-  if(["/api/approvals/request","/api/approvals/decide","/api/policy/evaluate","/api/auth/logout"].includes(p))risk="low";
+  if(["/api/approvals/request","/api/approvals/decide","/api/policy/evaluate","/api/auth/logout","/api/governance/emergency/engage"].includes(p))risk="low";
   return {public:false,stateChanging,capability,risk,external,mutatesSource,requiresCredential,delegateApproval};
 }
 
