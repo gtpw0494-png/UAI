@@ -1044,8 +1044,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "4f483cc435b1de6570104753cdb8cdec368bcac31f903b4815a5e670587ee836",
-      "bytes": 30882
+      "sha256": "f3b32b394d62fe66b63fcb07ea1dcb224b83fdcf7805d851de480ff5eeae7d86",
+      "bytes": 32265
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -1329,8 +1329,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "0a7a9f62831a696b7d9e3e046dd4233dcf22a932fdc5046801bc54f8afb9be61",
-      "bytes": 29658
+      "sha256": "589829c3beea40fa4b602a014014481c158e099112ff3a045c643e7b4bf9e6ed",
+      "bytes": 30147
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
