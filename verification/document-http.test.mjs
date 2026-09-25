@@ -16,15 +16,17 @@ const port=await new Promise((resolve,reject)=>{
 });
 const child=spawn(process.execPath,["server.js"],{
   cwd:path.resolve(path.dirname(new URL(import.meta.url).pathname),".."),
-  env:{...process.env,PORT:String(port),IUV_STATE_DIR:state,IUV_DB_PATH:db,IUV_OBJECT_ROOT:objects},
+  env:{...process.env,PORT:String(port),IUV_STATE_DIR:state,IUV_DB_PATH:db,IUV_OBJECT_ROOT:objects,IUV_OWNER_TOKEN:"TEST_OWNER_TOKEN_v046_0123456789abcdef"},
   stdio:["ignore","pipe","pipe"]
 });
 let stdout="",stderr="";
 child.stdout.on("data",d=>stdout+=d);
 child.stderr.on("data",d=>stderr+=d);
 const base=`http://127.0.0.1:${port}`;
+const auth={"authorization":"Bearer TEST_OWNER_TOKEN_v046_0123456789abcdef"};
 
 async function json(url,options={}){
+  options={...options,headers:{...auth,...(options.headers||{})}};
   const r=await fetch(base+url,options);
   return await r.json();
 }
