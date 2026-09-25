@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { VerifiedKnowledgeStore } from "../src/verified-knowledge-store.js";
+import { CloudKnowledgeStore } from "../src/cloud-knowledge-store.js";
+import { HybridKnowledgeStore } from "../src/hybrid-knowledge-store.js";
+
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-cloud-knowledge-"));
+const local=new VerifiedKnowledgeStore({stateRoot:root});
+const fact={subject:"x",claim:"verified",source_id:"a",source_url:"https://a.example",verification:{verified:true},training_eligible:true,fact_id:"f1"};
+let calls=0;
+const cloud=new CloudKnowledgeStore({endpoint:"https://db.example",apiKey:"secret",fetchImpl:async(url,opts)=>{calls++;assert.equal(opts.method,"POST");assert.ok(!opts.body.includes("unverified"));return{ok:true,status:201}}});
+const hybrid=new HybridKnowledgeStore({local,cloud});
+const out=await hybrid.upsertMany([fact,{subject:"x",claim:"unverified",verification:{verified:false},training_eligible:false}]);
+assert.equal(out.durability,"LOCAL_AND_CLOUD");
+assert.equal(calls,1);
+assert.equal(local.filterTrainingEligible(10).length,1);
+const unavailable=new CloudKnowledgeStore();
+assert.equal(unavailable.status().state,"UNAVAILABLE");
+assert.equal((await unavailable.putMany([fact])).state,"UNAVAILABLE");
+console.log("cloud knowledge storage: ok");
