@@ -64,3 +64,48 @@ Source lifecycle supports:
 - hard purge of source-backed language data.
 
 Future document/chunk stores must preserve the same deletion semantics across indexes, datasets and derived artifacts.
+
+## v0.45 provenance document plane
+
+The ordinary retrieval path now has a revisioned document layer in addition to the legacy language/web stores:
+
+```text
+source
+ -> canonical URI
+ -> normalized content hash
+ -> content-addressed object
+ -> document revision
+ -> deterministic chunks
+ -> retrieval eligibility
+ -> FTS index
+ -> citation-bearing OneChat evidence
+```
+
+Each stored document records source ID, canonical/original URI, revision, content hash, parser and normalization versions, publisher, language, retrieval time, security metadata, provenance metadata, retrieval eligibility, training approval and deletion state.
+
+Direct web ingestion continues writing the legacy governed web record for compatibility, and also attempts to persist the same normalized text into the provenance document plane. If that second persistence step fails, web ingestion reports `PARTIAL` rather than hiding the failure.
+
+### Current state model
+
+```text
+RAW
+QUARANTINED
+PARSED
+NORMALIZED
+REVIEW_REQUIRED
+RETRIEVAL_ELIGIBLE
+TRAINING_ELIGIBLE
+REJECTED
+DELETED
+```
+
+A document may be retrievable without being training-eligible. Training eligibility requires source eligibility plus explicit training approval.
+
+### Deletion
+
+Soft deletion removes chunks from retrieval and marks document/chunk state `DELETED`. Hard purge removes the document and removes its content-addressed object only when no remaining document revision references that content hash.
+
+### Truth boundary
+
+v0.45 is text-document lineage. Dense embeddings/reranking, page/frame/timestamp/bounding-box lineage, graph-wide derived-artifact purge and multimodal parsers remain separate future capabilities.
+
