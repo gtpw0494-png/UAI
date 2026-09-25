@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.49.0",
+  "generated_for": "0.50.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -745,6 +745,50 @@
         "verification/api-security-v046.test.mjs"
       ],
       "evidence_note": "Verified by v0.49 owner-auth CI: environment bootstrap creates the password-session owner without plaintext credential persistence in the identity record, explicit local credential rotation revokes active sessions, protected HTTP routes reject bearer-only owner requests, and email/password login succeeds through the normal session + CSRF path."
+    },
+    {
+      "id": "context-engineered-conversation",
+      "introduced": "0.50.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/conversation-engine.js",
+        "src/onechat.js",
+        "src/model-runtime-adapter.js",
+        "src/models/router.js"
+      ],
+      "tests": [
+        "verification/conversation-research-v050.test.mjs",
+        "verification/conversation-capability-v048.test.mjs"
+      ],
+      "evidence_note": "Verified by v0.50 tests for bounded same-chat follow-up continuity, context-aware synthesis, and structured local runtime routing. This establishes implementation behavior, not parity with any proprietary model."
+    },
+    {
+      "id": "governed-live-web-research",
+      "introduced": "0.50.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/web-research-engine.js",
+        "src/onechat.js",
+        "src/content-security.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/conversation-research-v050.test.mjs"
+      ],
+      "evidence_note": "Verified with deterministic live-HTTP fixtures: research performs search discovery, fetches multiple sources, quarantines external instructions as untrusted evidence, labels sources, and passes the evidence into conversational synthesis."
+    },
+    {
+      "id": "internet-wide-source-coverage",
+      "introduced": "0.50.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/web-research-engine.js",
+        "src/web-corpus.js"
+      ],
+      "tests": [
+        "verification/conversation-research-v050.test.mjs"
+      ],
+      "evidence_note": "The research engine can discover and fetch multiple public web sources, but no implementation can guarantee literally all web sources; access remains subject to indexing, robots, authentication, paywalls, network availability, content type and policy."
     }
   ]
 }
