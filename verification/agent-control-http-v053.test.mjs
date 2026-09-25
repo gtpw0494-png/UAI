@@ -47,6 +47,13 @@ try{
   assert.equal(cp.x.storage.tables["light-worktree"],"light_worktrees");
   assert.equal(cp.x.storage.tables["agent-job"],"agent_jobs");
 
+  const dashboard=await req("/api/control-plane/dashboard",{headers:read});
+  assert.equal(dashboard.r.status,200);assert.equal(dashboard.x.generatedFor,"0.53.0");
+  assert.ok(dashboard.x.tasks&&dashboard.x.capabilities&&dashboard.x.models&&dashboard.x.plugins&&dashboard.x.approvals);
+  assert.ok(dashboard.x.shadow&&dashboard.x.light&&dashboard.x.scheduler&&dashboard.x.evidence&&dashboard.x.audit);
+  assert.ok(dashboard.x.evidence.features.some(x=>x.id==="typed-agent-control-plane-v053"));
+  const home=await fetch(base+"/");assert.equal(home.status,200);assert.match(await home.text(),/Operations dashboard/);
+
   const shadowRun=await req("/api/shadow/runs",{method:"POST",headers:write,body:{agentType:"research-discovery",objective:"dispatch a governed research simulation",simulationInput:{evidence:[{source:"fixture",verified:true}],observations:["alpha","beta"]}}});
   assert.equal(shadowRun.r.status,200);assert.equal(shadowRun.x.state,"SUCCESS");assert.equal(shadowRun.x.job.state,"QUEUED");
   const shadowDispatch=await req("/api/control-plane/dispatch",{method:"POST",headers:write,body:{queue:"shadow",workerId:"http-shadow-worker"}});
