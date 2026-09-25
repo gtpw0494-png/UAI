@@ -161,7 +161,9 @@ export class OneChatRouter{
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
   const ranked=contributions.filter(x=>x.agent!=="verifier").map(x=>x.result).sort((a,b)=>(stateRank.get(b.state)||0)-(stateRank.get(a.state)||0));const best=ranked[0]||verification;
-  const composed=this.responseComposer.compose({message,allocations,contributions});
+  const webResult=contributions.find(x=>x.agent==="web-research")?.result||null;
+  let composed=this.responseComposer.compose({message,allocations,contributions});
+  if(webResult?.researchRun&&webResult?.message)composed={...composed,message:webResult.message,mode:"live-web-research",modelUsed:webResult.modelUsed===true};
   const answer=composed.message||best.message||"Collaboration completed.";
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
