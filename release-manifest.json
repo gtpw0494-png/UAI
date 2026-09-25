@@ -638,6 +638,21 @@
       "bytes": 929
     },
     {
+      "path": "src/research/research-composer.js",
+      "sha256": "e05dd8b42f9959a78e3830a225df824fa7dbb51d82a1a478dfdfe20d359eea8b",
+      "bytes": 2062
+    },
+    {
+      "path": "src/research/research-engine.js",
+      "sha256": "eea0f49f4c8980c9352a8eba45f35e65e3c653e0c8f69ed3d34efef6e7ed4777",
+      "bytes": 4131
+    },
+    {
+      "path": "src/research/search-provider.js",
+      "sha256": "6ed4313ef4dcefe7bbd3d4ae72abc2900ccaa340bc1809efdc8667375ae240a2",
+      "bytes": 4165
+    },
+    {
       "path": "src/response-composer.js",
       "sha256": "7859b7d7a5eb8d87be2112ecac7826267adb5e7aedfa4ad1e1b91ed9d061ae17",
       "bytes": 5763
