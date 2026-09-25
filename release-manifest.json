@@ -349,8 +349,8 @@
     },
     {
       "path": "schemas/plugin-manifest.schema.json",
-      "sha256": "6115b6a76be01d58981fbecd3c24cc1d17cdc6d42ed629baccf95e309e89aad9",
-      "bytes": 1780
+      "sha256": "3555ca419f32516984dd2931e5f1044cf3c83212cae636cbd4ddb04cadef15f8",
+      "bytes": 6301
     },
     {
       "path": "scripts/build-release-manifest.py",
@@ -549,8 +549,8 @@
     },
     {
       "path": "src/plugin-registry.js",
-      "sha256": "66a91f0fc37ae23cbb63c451cbb21224a59d3e93f21892a749f61044fa37ed72",
-      "bytes": 4107
+      "sha256": "96fe7456f39d615e418596b88184e1b2723f00a347f0e84163ef0a5a72d7e500",
+      "bytes": 8462
     },
     {
       "path": "src/plugin-secret-broker.js",
