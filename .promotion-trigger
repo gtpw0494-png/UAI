@@ -3,3 +3,4 @@ requirements=authoritative-ci+typed-control-plane+bounded-lease-scheduler+legacy
 main-advance=user-directed
 feature=dedicated-shadow-light-tables+persistent-agent-jobs+lease-recovery+ttl-expiry+owner-governed-dispatch+operations-dashboard
 truth=promotion-authority-remains-separate+multimodal+dense-retrieval+federated-learning+formal-verification+independent-bootstrap-proof-remain-incomplete
+checkpoint=pre-evidence-promotion
