@@ -429,8 +429,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "9365ba1cef29831c680f0cf7c5685d118034c6449dc67cab6d47d684fe073991",
-      "bytes": 30814
+      "sha256": "d414259eabd7240ae66bcdb64b2efb8b598f548c48f6db84f0b5db5cc3dd6ec3",
+      "bytes": 31572
     },
     {
       "path": "src/action-envelope.js",
@@ -539,8 +539,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "4f2c9940e52d516ffbe4e70e15b6bd29309d802274e1403c1488bcbb39a9f182",
-      "bytes": 5090
+      "sha256": "2c231b6aa6482751d3216e08ff60b5b73cb0619ff9d4a397ac038e7b0eb84048",
+      "bytes": 5350
     },
     {
       "path": "src/governance-db.js",
@@ -599,8 +599,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "fa132ca1a52f29affea66dc7f9ae1c068cfdbcc21d756fb117c8b2be27344190",
-      "bytes": 24946
+      "sha256": "14790dcc77a4c40ba6acbd35d8e0585d01a1511339e4d385082beedde33e1f49",
+      "bytes": 26562
     },
     {
       "path": "src/plugin-executor.js",
@@ -649,8 +649,8 @@
     },
     {
       "path": "src/research/search-provider.js",
-      "sha256": "6ed4313ef4dcefe7bbd3d4ae72abc2900ccaa340bc1809efdc8667375ae240a2",
-      "bytes": 4165
+      "sha256": "37df229cde446aa9b3208b3cdc380b74b307a45809e6f003a9768a6455d6ce10",
+      "bytes": 5052
     },
     {
       "path": "src/response-composer.js",
@@ -771,6 +771,11 @@
       "path": "verification/conversation-capability-v048.test.mjs",
       "sha256": "c8ad32d2fe5b862b10236caec9d94fdeb1e4554679d9870185d30f2e749dea96",
       "bytes": 4636
+    },
+    {
+      "path": "verification/conversational-research-v050.test.mjs",
+      "sha256": "31ff3ea17f141c1cf7fb9a6493d6e16ae1df556b07c84c7b531908671c27cfe6",
+      "bytes": 3214
     },
     {
       "path": "verification/document-data-plane.test.py",
