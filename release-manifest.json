@@ -314,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "aa91dc05e28e6035fba83cbd84215d6bbf4a20053d49783dfbdb0662cddc0e30",
-      "bytes": 6283
+      "sha256": "4089d0c8d28abaf76f48699e92fb95b1d12e2d5a6096f046988f280a9c059062",
+      "bytes": 6531
     },
     {
       "path": "public/app.js",
@@ -1259,8 +1259,8 @@
     },
     {
       "path": "src/verified-knowledge-store.js",
-      "sha256": "c422f303de66302531ba01dc38bd1f9672113ed8f46d226f9df13947c0166fee",
-      "bytes": 2111
+      "sha256": "a1e62a15d0c2a59f1cde4fe63977f064a56b0747671bf8ab98a9bb6690924408",
+      "bytes": 2193
     },
     {
       "path": "src/web-corpus.js",
@@ -1329,8 +1329,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "589829c3beea40fa4b602a014014481c158e099112ff3a045c643e7b4bf9e6ed",
-      "bytes": 30147
+      "sha256": "e25a3354355f8c51685f5b1f7a540e00a1eca77138213665dc7cc061bfc88c53",
+      "bytes": 30273
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
@@ -1399,8 +1399,8 @@
     },
     {
       "path": "verification/knowledge-governance.test.mjs",
-      "sha256": "31cf0eaa9dd3c6601c323205377985171a3ddffd6c630f71d303a8a8f4f890a9",
-      "bytes": 1283
+      "sha256": "5dd022d91f58ad5d8d97e759bc229be9d7847d6075bf893c57fb9dfd8f6e0825",
+      "bytes": 2037
     },
     {
       "path": "verification/knowledge-learning-pipeline.test.mjs",
@@ -1431,6 +1431,11 @@
       "path": "verification/model-router-evidence-v049.test.mjs",
       "sha256": "88772fad9b005bc0fb3e9db0daf461504140f420f1298de2973c35cae2516198",
       "bytes": 10627
+    },
+    {
+      "path": "verification/onechat-model-lifecycle.test.mjs",
+      "sha256": "f31354df0a56387c8550fcc10dd379249d03c3487e12f9f89c203cd9c6a8237c",
+      "bytes": 2053
     },
     {
       "path": "verification/owner-bootstrap-v049.test.mjs",
