@@ -419,8 +419,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "5b5c7ac19461cd239ed55a3bbd47660ad29da1b18df3078500b016f1cc6d33ec",
-      "bytes": 26408
+      "sha256": "f2ee8fb8aae485d7e076685a5a09ad5cca4e364a03f871e40aea2c9cd8b90465",
+      "bytes": 27449
     },
     {
       "path": "src/action-envelope.js",
@@ -499,8 +499,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "cb82a447410988011479ca5014e90c0f07e583f3590e62bdcd4bbb15824fe141",
-      "bytes": 6967
+      "sha256": "8103f45bb79598ac80532b6636800628ca87b137856be422d8eb8730f33e3e10",
+      "bytes": 7241
     },
     {
       "path": "src/governance/identity.js",
