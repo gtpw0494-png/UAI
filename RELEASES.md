@@ -142,3 +142,11 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Generalized authoritative CI and release-manifest refresh from the retired v0.34 branch to all `build/*` branches.
 - Added architecture/data-flow/plugin/model/security/operations documentation matching the target UAI blueprint.
 - Added dedicated behavioral verification for migration, audit tamper detection, bounded agent capabilities and plugin exactly-once behavior.
+## v0.44.0 — Governed Plugin Gateway
+- Added operation-scoped plugin manifests with per-operation risk, schemas, capability requirements, secrets, idempotency and resource budgets.
+- Added a single PluginGateway that performs input validation, destination allowlist checks, runtime-capability evidence checks, policy evaluation, exact approval validation and bounded autonomy before execution.
+- Added a scoped plugin secret broker; only manifest-approved secret names can be requested and exact secret values are redacted from plugin output.
+- Added SandboxRunner with minimal environment, temporary HOME/TMPDIR, timeout, cancellation and bounded output capture.
+- HTTP plugin execution now forwards `Idempotency-Key` into transactional replay protection and accepts explicit operation names.
+- Added dedicated adversarial/behavioral verification for schema rejection, allowlist denial, replay/collision behavior, approval mutation rejection, secret redaction, missing capability evidence, output-schema failure, output limits, timeout, cancellation and autonomy exhaustion.
+- Hard OS-level filesystem/network/CPU/memory isolation remains external-sandbox dependent and is retained as PARTIAL rather than overstated.
