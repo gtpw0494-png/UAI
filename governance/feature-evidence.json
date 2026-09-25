@@ -567,7 +567,7 @@
     {
       "id": "provenance-document-data-plane",
       "introduced": "0.45.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "storage/documents.py",
         "src/document-store.js",
@@ -581,7 +581,7 @@
         "verification/document-data-plane.test.py",
         "verification/document-http.test.mjs"
       ],
-      "evidence_note": "Candidate implementation adds content-addressed source objects, canonical URIs, document revisions, deterministic chunks, ingestion events, security/provenance metadata, retrieval/training separation, FTS retrieval, citation-bearing OneChat responses and deletion/purge behavior. Promotion requires authoritative CI."
+      "evidence_note": "Dedicated SQLite/object-store and live HTTP/OneChat suites pass on v0.45: canonical URI handling, immutable content-addressed objects, revisions, deterministic chunks, quarantine exclusion, retrieval/training separation, source/document/chunk citations, soft deletion, hard purge, reindexing and API composition. Final promotion still requires exact-commit authoritative CI."
     },
     {
       "id": "multimodal-document-lineage",
