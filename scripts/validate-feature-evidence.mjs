@@ -8,9 +8,14 @@ const allowed=new Set(doc.allowed_statuses||[]);
 const errors=[];
 
 if(doc.schema_version!=='uai-feature-evidence-v1') errors.push('unsupported schema_version');
+const packageVersion=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version;
+if(doc.generated_for!==packageVersion) errors.push(`feature evidence generated_for ${doc.generated_for} does not match package version ${packageVersion}`);
+const ids=new Set();
 
 for(const f of doc.features||[]){
   if(!f.id) errors.push('feature missing id');
+  else if(ids.has(f.id)) errors.push(`duplicate feature id ${f.id}`);
+  else ids.add(f.id);
   if(!allowed.has(f.status)) errors.push(`${f.id}: invalid status ${f.status}`);
   const impl=Array.isArray(f.implementation)?f.implementation:[];
   const tests=Array.isArray(f.tests)?f.tests:[];
