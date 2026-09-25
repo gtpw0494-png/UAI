@@ -81,6 +81,12 @@ jobs:
       - name: Verify v0.52 governed HTTP integration
         run: npm run test:shadow-light-http
 
+      - name: Verify v0.53 dedicated agent control plane
+        run: npm run test:agent-control
+
+      - name: Verify v0.53 governed control-plane HTTP integration
+        run: npm run test:agent-control-http
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
