@@ -438,6 +438,11 @@
       "bytes": 4441
     },
     {
+      "path": "src/agent-budget.js",
+      "sha256": "70c192f863f420f312558bf72b4f7d1a0df08d9f577333db97339df619155a51",
+      "bytes": 1233
+    },
+    {
       "path": "src/agent-system.js",
       "sha256": "4cfc1e9675bb3862f938fb76b92b8aa8dfb38d73b7b7902be57042dcda9b4bfd",
       "bytes": 17707
