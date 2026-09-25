@@ -639,8 +639,8 @@
     },
     {
       "path": "src/web-corpus.js",
-      "sha256": "c7a9241aacd1b2fe4bf7055e059371657863c637b839eba0e4761cadca02f68d",
-      "bytes": 8933
+      "sha256": "89faa9520aa6220d3d1eb146d1ae432d36190c98a223676b33c63b75e709dc73",
+      "bytes": 9218
     },
     {
       "path": "src/workspace.js",
