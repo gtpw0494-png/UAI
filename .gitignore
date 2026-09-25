@@ -26,3 +26,4 @@ state/*.db*
 model/data/replay-buffer.jsonl
 model/data/replay-buffer*.jsonl
 .bootstrap/
+data/objects/
