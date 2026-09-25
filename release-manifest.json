@@ -259,8 +259,8 @@
     },
     {
       "path": "model/knowledge_sources.json",
-      "sha256": "dfbc1b1725af6f1b15355e04514a23f42d061b5ee9488bcc7a47acede8b9af24",
-      "bytes": 1957
+      "sha256": "283e327ad68e244d948bc6edbd285d6fdabffda7de98886588d543bbc7cbf188",
+      "bytes": 3261
     },
     {
       "path": "model/knowledge_store.py",
@@ -859,8 +859,8 @@
     },
     {
       "path": "src/knowledge-verifier.js",
-      "sha256": "6d01a677d746348b3f72212ee30b2a27a54435299d5b45ab19baade4ad003184",
-      "bytes": 2634
+      "sha256": "e85d7aab8340e0b8fdf3ad3e0e596cefdeb96a13486551312519f3e205a8010d",
+      "bytes": 3561
     },
     {
       "path": "src/knowledge.js",
