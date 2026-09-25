@@ -14,7 +14,11 @@ export function routeSecurity(method,path){
   if(p==="/api/status"||p==="/api/auth/status"||p==="/api/auth/login")return {public:true,stateChanging:p==="/api/auth/login",capability:"identity.login",risk:"low"};
   const stateChanging=!["GET","HEAD","OPTIONS"].includes(m);
   let risk=stateChanging?"medium":"low",capability="api.read",external=false,mutatesSource=false,requiresCredential=false,delegateApproval=false;
-  if(p.startsWith("/api/documents/"))capability=stateChanging?"documents.write":"documents.read";
+  if(p.startsWith("/api/memory/"))capability=stateChanging?"memory.write":"memory.read";
+  else if(p.startsWith("/api/provenance/"))capability=stateChanging?"provenance.write":"provenance.read";
+  else if(p.startsWith("/api/evaluations/"))capability=stateChanging?"evaluation.write":"evaluation.read";
+  else if(p.startsWith("/api/model-artifacts/"))capability=stateChanging?"models.artifacts.write":"models.artifacts.read";
+  else if(p.startsWith("/api/documents/"))capability=stateChanging?"documents.write":"documents.read";
   else if(p.startsWith("/api/models"))capability="models.read";
   else if(p.startsWith("/api/plugins-v1/"))capability=p.endsWith("/execute")?"plugins.execute":"plugins.manage";
   else if(p.startsWith("/api/model/"))capability=stateChanging?"models.execute":"models.read";
@@ -36,13 +40,13 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/knowledge"))capability=stateChanging?"knowledge.write":"knowledge.read";
   else if(p.startsWith("/api/accounts")||p.startsWith("/api/subscriptions")||p.startsWith("/api/billing"))capability="accounts.manage";
 
-  if(/\/purge$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|^\/api\/promotion\/|\/governance\/emergency\/release$|\/governance\/trusted-devices\/(?:enroll|revoke)$/.test(p))risk="high";
+  if(/\/purge$|\/forget-source$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|^\/api\/promotion\/|\/governance\/emergency\/release$|\/governance\/trusted-devices\/(?:enroll|revoke)$/.test(p))risk="high";
   if(/\/fabrication\/job$/.test(p))risk="critical";
   if(["/api/develop/apply","/api/selfdev/promote","/api/source/rollback"].includes(p))mutatesSource=true;
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.endsWith("/execute"))external=true;
   if(p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/provider/"))requiresCredential=true;
   if(["/api/plugins-v1/execute","/api/develop/apply","/api/selfdev/promote","/api/fabrication/job"].includes(p))delegateApproval=true;
-  if(["/api/approvals/request","/api/approvals/decide","/api/policy/evaluate","/api/auth/logout","/api/governance/emergency/engage"].includes(p))risk="low";
+  if(["/api/approvals/request","/api/approvals/decide","/api/policy/evaluate","/api/policy/simulate","/api/auth/logout","/api/governance/emergency/engage"].includes(p))risk="low";
   return {public:false,stateChanging,capability,risk,external,mutatesSource,requiresCredential,delegateApproval};
 }
 
