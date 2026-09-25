@@ -82,12 +82,13 @@
     "test:knowledge-training-job": "node verification/knowledge-training-job.test.mjs",
     "test:forgelm-candidate-promotion": "node verification/forgelm-candidate-promotion.test.mjs",
     "test:knowledge-learning-pipeline": "node verification/knowledge-learning-pipeline.test.mjs",
-    "test:knowledge-production": "npm run test:knowledge-autonomy && npm run test:cloud-knowledge && npm run test:knowledge-training-job && npm run test:forgelm-candidate-promotion && npm run test:knowledge-learning-pipeline && npm run test:knowledge-research && npm run test:knowledge-governance && npm run test:model-lab-promotion && npm run test:onechat-model-lifecycle && npm run test:forgelm-cli-policy && npm run knowledge:benchmark",
+    "test:knowledge-production": "npm run test:knowledge-autonomy && npm run test:cloud-knowledge && npm run test:knowledge-training-job && npm run test:forgelm-candidate-promotion && npm run test:knowledge-learning-pipeline && npm run test:knowledge-research && npm run test:knowledge-governance && npm run test:model-lab-promotion && npm run test:onechat-model-lifecycle && npm run test:forgelm-cli-policy && npm run test:knowledge-production-http && npm run knowledge:benchmark",
     "test:knowledge-research": "node verification/knowledge-research-scheduler.test.mjs",
     "test:knowledge-governance": "node verification/knowledge-governance.test.mjs",
     "test:model-lab-promotion": "node verification/model-lab-promotion.test.mjs",
     "test:onechat-model-lifecycle": "node verification/onechat-model-lifecycle.test.mjs",
-    "test:forgelm-cli-policy": "node verification/forgelm-cli-policy.test.mjs"
+    "test:forgelm-cli-policy": "node verification/forgelm-cli-policy.test.mjs",
+    "test:knowledge-production-http": "node verification/knowledge-production-http-v055.test.mjs"
   },
   "engines": {
     "node": ">=20"
