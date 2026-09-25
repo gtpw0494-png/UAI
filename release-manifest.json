@@ -34,18 +34,18 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "85c7329a1035f6d164703a124822cfd4de70959299549deca58d426f4c5aa68f",
-      "bytes": 16896
+      "sha256": "3defd02b15ccaa8bcfd82b0da23d725328f9db764adf66814cf4bbf405e6f577",
+      "bytes": 19272
     },
     {
       "path": "README.md",
-      "sha256": "fcec2e356328d81602c678218b022b9198f3eb4c7e0bca600c6ea5c3982a1d67",
-      "bytes": 7529
+      "sha256": "6e2050db465d571ced2f2ef3947e448101e0d8a057f662581738dc25db11870f",
+      "bytes": 8875
     },
     {
       "path": "RELEASES.md",
-      "sha256": "a5fe6e2f035de9d359378e8bf5f1548efa602be7fcb7d545aae108eab65d13e7",
-      "bytes": 15192
+      "sha256": "9a7c7dec0113c0f87d931ac38ef1e657dc216e37a457cd7621f6fdb008e4cd5a",
+      "bytes": 16637
     },
     {
       "path": "TERMUX-RUN.md",
@@ -219,8 +219,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "49c21958104c8666ac2adf24989f20f8e55837a3d14058dae3b554b4a39d2a33",
-      "bytes": 6369
+      "sha256": "591f80c5a3bd51f5b3ff80f85fbba625d8f8fd3ac8b7d42a86c82dae833332a2",
+      "bytes": 6707
     },
     {
       "path": "public/index.html",
