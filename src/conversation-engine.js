@@ -2,8 +2,8 @@ const clean=x=>String(x??"").trim();
 const usable=t=>{t=clean(t);return t.length>=12&&!/<\|[^|]+\|>/.test(t);};
 const approxTokens=s=>Math.ceil(clean(s).length/4);
 export class ConversationEngine{
- constructor({llamaRuntime=null,forgelm=null,store=null,audit=null,maxContextTokens=Number(process.env.IUV_CHAT_CONTEXT_TOKENS||6000)}={}){
-  this.llamaRuntime=llamaRuntime;this.forgelm=forgelm;this.store=store;this.audit=audit;this.maxContextTokens=Math.max(1024,maxContextTokens);this.history=new Map();
+ constructor({llamaRuntime=null,forgelm=null,modelRouter=null,store=null,audit=null,maxContextTokens=Number(process.env.IUV_CHAT_CONTEXT_TOKENS||6000)}={}){
+  this.llamaRuntime=llamaRuntime;this.forgelm=forgelm;this.modelRouter=modelRouter;this.store=store;this.audit=audit;this.maxContextTokens=Math.max(1024,maxContextTokens);this.history=new Map();
  }
  _history(id){return this.history.get(id)||[];}
  _remember(id,role,content){const h=this._history(id);h.push({role,content:clean(content),at:new Date().toISOString()});while(h.length>40)h.shift();this.history.set(id,h);}
@@ -26,8 +26,18 @@ export class ConversationEngine{
   const prior=this._compact(this._history(id));const extra=this._contextText(context);
   const transcript=prior.map(x=>`${x.role}: ${x.content}`).join("\n");
   const prompt=[transcript,extra,msg?`user: ${msg}`:""].filter(Boolean).join("\n");
-  if(this.llamaRuntime){const status=await this.llamaRuntime.status();if(status.availability==="CONNECTED"){const r=await this.llamaRuntime.chat(prompt,{maxTokens:768,system});if(r.state==="SUCCESS"&&usable(r.text)){this._remember(id,"user",msg);this._remember(id,"assistant",r.text);this.audit?.append({type:"conversation.reply",chatId:id,runtime:"llama.cpp",model:r.model||null,contextTurns:prior.length});return {state:"SUCCESS",message:clean(r.text),runtime:"llama.cpp",model:r.model||null,modelUsed:true,contextTurns:prior.length};}}}
-  if(this.forgelm){const r=await this.forgelm.chat(prompt,384);if(r?.state==="SUCCESS"&&usable(r.text)){this._remember(id,"user",msg);this._remember(id,"assistant",r.text);this.audit?.append({type:"conversation.reply",chatId:id,runtime:"forgelm",contextTurns:prior.length});return {state:"SUCCESS",message:clean(r.text),runtime:"forgelm",modelUsed:true,contextTurns:prior.length};}}
+  if(this.modelRouter){
+    const routed=await this.modelRouter.generate({task:"chat",modality:"text",privacy:"local-only",offline:true,contextTokens:approxTokens(prompt)},{toString(){return prompt;}},{system,maxTokens:768});
+    if(routed.state==="SUCCESS"&&usable(routed.text)){
+      this._remember(id,"user",msg);this._remember(id,"assistant",routed.text);
+      const selected=routed.route?.selected||{};
+      this.audit?.append({type:"conversation.reply",chatId:id,runtime:selected.provider||routed.runtime||null,model:routed.model||selected.id||null,modelRoute:routed.route||null,contextTurns:prior.length});
+      return {state:"SUCCESS",message:clean(routed.text),runtime:selected.provider||routed.runtime||null,model:routed.model||selected.id||null,modelUsed:true,modelRoute:routed.route||null,contextTurns:prior.length};
+    }
+    if(routed.state!=="UNAVAILABLE")this.audit?.append({type:"conversation.route.non_success",chatId:id,state:routed.state,details:routed.route||routed.attempts||null});
+  }
+  if(!this.modelRouter&&this.llamaRuntime){const status=await this.llamaRuntime.status();if(status.availability==="CONNECTED"){const r=await this.llamaRuntime.chat(prompt,{maxTokens:768,system});if(r.state==="SUCCESS"&&usable(r.text)){this._remember(id,"user",msg);this._remember(id,"assistant",r.text);this.audit?.append({type:"conversation.reply",chatId:id,runtime:"llama.cpp",model:r.model||null,contextTurns:prior.length});return {state:"SUCCESS",message:clean(r.text),runtime:"llama.cpp",model:r.model||null,modelUsed:true,contextTurns:prior.length};}}}
+  if(!this.modelRouter&&this.forgelm){const r=await this.forgelm.chat(prompt,384);if(r?.state==="SUCCESS"&&usable(r.text)){this._remember(id,"user",msg);this._remember(id,"assistant",r.text);this.audit?.append({type:"conversation.reply",chatId:id,runtime:"forgelm",contextTurns:prior.length});return {state:"SUCCESS",message:clean(r.text),runtime:"forgelm",modelUsed:true,contextTurns:prior.length};}}
   return {state:"UNAVAILABLE",message:"No promoted conversational model runtime is currently available. Connect a local llama.cpp model or promote a verified ForgeLM checkpoint.",modelUsed:false};
  }
 }
