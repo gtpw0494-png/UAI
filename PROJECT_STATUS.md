@@ -202,3 +202,13 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - BOUNDARY — scheduler completion grants no promotion authority. Shadow candidates remain quarantined/governed and light patches remain outside protected-`main` merge authority until a separate owner-authorized promotion path acts.
 - STILL PARTIAL / UNAVAILABLE AS COMPLETE — multimodal ingestion/understanding/training, dense embeddings/reranking, complete provenance graph, production kernel sandboxing, federated learning, distillation at scale, model parity, automatic ensembles, encrypted multi-device sync, enterprise federation, full IDE integration, formal governance verification, complete marketplace/catalog, and independent bootstrap ownership proof.
 
+## v0.54.0 additions
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — explicit-consent user-owned memory namespaces with source/reason/confidence/retention/expiry/deletion/training metadata and training disabled by default.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — optional AES-256-GCM memory encryption via a local owner-supplied key; without a key the runtime reports PLAINTEXT_LOCAL rather than claiming encryption.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — provenance node/edge graph, bounded lineage tracing, dry-run purge plans and linked-memory purge propagation.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — non-executing policy simulation with data/access/approval/external-transfer/risk reporting and safer-plan output.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — richer final-call policy metadata, arguments hashes and optional local Ed25519 decision signatures.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — model artifact SHA-256/optional Ed25519 verification and persistent artifact records separated from runtime/production eligibility.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — evidence-backed evaluation records, verified-only leaderboards, benchmark runner and promotion evidence score.
+- PARTIAL — provenance purge propagation currently covers graph state and linked UAI memory records; legacy documents, embeddings, datasets and model artifacts still require explicit store-specific deletion integration.
+- STILL PARTIAL / UNAVAILABLE AS COMPLETE — dense neural embeddings/reranking, multimodal OCR/audio/video pipelines, full source-code symbol/dependency graph, production kernel sandbox isolation, encrypted multi-device sync, federated personalization, distillation at scale, formal governance verification, complete marketplace/catalog and independent hardware bootstrap ownership proof.
