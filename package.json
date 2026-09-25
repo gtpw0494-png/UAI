@@ -64,7 +64,11 @@
     "light:patches": "node scripts/light-cli.js patches",
     "test:shadow-light-http": "node verification/shadow-light-http-v052.test.mjs",
     "test:agent-control": "node verification/agent-control-v053.test.mjs",
-    "test:agent-control-http": "node verification/agent-control-http-v053.test.mjs"
+    "test:agent-control-http": "node verification/agent-control-http-v053.test.mjs",
+    "control:status": "node scripts/control-plane-cli.js status",
+    "control:jobs": "node scripts/control-plane-cli.js jobs",
+    "control:dispatch": "node scripts/control-plane-cli.js dispatch",
+    "control:maintenance": "node scripts/control-plane-cli.js maintenance"
   },
   "engines": {
     "node": ">=20"
