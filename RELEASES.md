@@ -171,3 +171,12 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Reconciled the v0.46-v0.48 runtime features into the feature-evidence ledger.
 - First-run independent ownership proof remains PARTIAL; no stronger enrollment guarantee is claimed.
 
+## v0.49.0 — Evidence-Native Model Routing
+- Added a health-aware local model router with privacy/offline/task/modality/context constraints and recorded fallback attempts.
+- Routed native conversation through the router while preserving ForgeLM/llama.cpp truth and fallback behavior.
+- Added integrity-hashed evidence envelopes to OneChat answers.
+- Added cited chunk excerpts to document-backed answer evidence.
+- Added `explain answer` for structured evidence summaries without exposing chain-of-thought.
+- Added stable browser chat IDs so live UI turns share conversation context.
+- Added a truthful PARTIAL state for conversation rehydration after process restart.
+
