@@ -644,13 +644,13 @@
     },
     {
       "path": "src/research/research-engine.js",
-      "sha256": "eea0f49f4c8980c9352a8eba45f35e65e3c653e0c8f69ed3d34efef6e7ed4777",
-      "bytes": 4131
+      "sha256": "1533934ed175af21a05d9f67372faad81b7c6c87d237df9e821d0be999521df7",
+      "bytes": 4229
     },
     {
       "path": "src/research/search-provider.js",
-      "sha256": "37df229cde446aa9b3208b3cdc380b74b307a45809e6f003a9768a6455d6ce10",
-      "bytes": 5052
+      "sha256": "7e684bef47edd4c432f41a888a9ff3000505f2f59fff62859cc8415e7a92e396",
+      "bytes": 5077
     },
     {
       "path": "src/response-composer.js",
