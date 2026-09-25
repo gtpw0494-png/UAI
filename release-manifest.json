@@ -419,8 +419,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "a52e8bb4bdedc88ea24e8fa0a193d6e83350b5bd48545774775ee0c4f7d81bd8",
-      "bytes": 29355
+      "sha256": "8656f065b769bd72aa78217acd49d8f86e009ceeab97b405da42ab1257c2be28",
+      "bytes": 29516
     },
     {
       "path": "src/action-envelope.js",
@@ -476,6 +476,11 @@
       "path": "src/control-center.js",
       "sha256": "73cc456e4b95b3a125fb0031e42fdd0f7f2c9061cb12529930128cfe870b5ab6",
       "bytes": 3815
+    },
+    {
+      "path": "src/conversation-engine.js",
+      "sha256": "9d0da0d4f04d49dbc397e427d59d62580aea3aeb540114b96f48e6849a411810",
+      "bytes": 2219
     },
     {
       "path": "src/dependency-status.js",
