@@ -1,4 +1,5 @@
 import http from "node:http";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,6 +39,9 @@ import { Observability } from "./src/observability.js";
 import { IdempotencyStore } from "./src/idempotency-store.js";
 import { PluginGateway } from "./src/plugin-gateway.js";
 import { DocumentStore } from "./src/document-store.js";
+import { LocalIdentity, sessionCookies, clearSessionCookies } from "./src/governance/identity.js";
+import { RequestAuthorizer } from "./src/governance/authorization.js";
+import { GovernanceKernel } from "./src/governance/kernel.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -58,6 +62,9 @@ const availabilityLedger = new AvailabilityLedger(stateDir);
 const policyEngine = new PolicyEngine();
 const approvalStore = new ApprovalStore(stateDir,audit);
 const autonomyStore = new AutonomyStore(stateDir,audit);
+const identity = new LocalIdentity(stateDir,audit);
+const requestAuthorizer = new RequestAuthorizer({identity,policyEngine,approvalStore,audit,appVersion:APP_VERSION});
+const governanceKernel = new GovernanceKernel({identity,authorizer:requestAuthorizer,policyEngine,approvalStore,autonomyStore,audit});
 const pluginRegistry = new PluginRegistry(stateDir,audit);
 const idempotencyStore = new IdempotencyStore(stateDir,audit);
 const modelRegistry = new ModelRegistry();
