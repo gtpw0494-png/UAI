@@ -25,6 +25,7 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/selfdev"))capability="source.selfdev";
   else if(p.startsWith("/api/shadow/"))capability=stateChanging?"shadow.execute":"shadow.read";
   else if(p.startsWith("/api/light/"))capability=stateChanging?"light.execute":"light.read";
+  else if(p.startsWith("/api/control-plane/"))capability=stateChanging?"agents.schedule":"agents.schedule.read";
   else if(p.startsWith("/api/promotion/"))capability="governance.promotion";
   else if(p.startsWith("/api/governance/"))capability=stateChanging?"governance.manage":"governance.read";
   else if(p.startsWith("/api/platform/"))capability="platform.read";
