@@ -168,6 +168,11 @@
       "bytes": 8727
     },
     {
+      "path": "model/dense_runtime.py",
+      "sha256": "4c14bc5def0bf97c16cb13a6e1428d933bb507595bfbdc98e2fa8cc1ba5f6563",
+      "bytes": 2767
+    },
+    {
       "path": "model/dependency_status.py",
       "sha256": "18a76b33330e57bbe158b54fd135748aea28a029df0e1d75372e344ee8b67a07",
       "bytes": 649
@@ -901,6 +906,21 @@
       "path": "src/response-composer.js",
       "sha256": "7859b7d7a5eb8d87be2112ecac7826267adb5e7aedfa4ad1e1b91ed9d061ae17",
       "bytes": 5763
+    },
+    {
+      "path": "src/retrieval/hybrid-engine.js",
+      "sha256": "f1106a56ade491ee1e0a2bc44211bb1336eab717a012ab0d0ea2c98ab52e9046",
+      "bytes": 3616
+    },
+    {
+      "path": "src/retrieval/metrics.js",
+      "sha256": "b1b3813a4abf5d4506384cde67249468df2c1df4ba21ed7afe740b2002a86b97",
+      "bytes": 1401
+    },
+    {
+      "path": "src/retrieval/neural-adapter.js",
+      "sha256": "7cc2daae7897516a4df5fc35cad468d6ddbc997eb7a0be1db1af83ae3e58e240",
+      "bytes": 1197
     },
     {
       "path": "src/runtime-services.js",
