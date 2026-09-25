@@ -728,6 +728,31 @@
       "bytes": 3354
     },
     {
+      "path": "src/memory/consent.js",
+      "sha256": "35460696e7a17c38c10adea3dfe0a362d0c29ac26854dae5cc5eb478f9d2b76c",
+      "bytes": 715
+    },
+    {
+      "path": "src/memory/deletion.js",
+      "sha256": "950fc0b17d1b9dc8d06889a96ca0bcb7a24b28fcdfb18dd0d74fee4a576f6255",
+      "bytes": 338
+    },
+    {
+      "path": "src/memory/memory-store.js",
+      "sha256": "73722fe202efa409a12adb8ac19134ac5dc741539d8252a15595f350be77e0bc",
+      "bytes": 8967
+    },
+    {
+      "path": "src/memory/retention.js",
+      "sha256": "a6a1a532ce4f223292fe8acdebd8758f5e3f7566c63b90cfa27cf61c9cc948bb",
+      "bytes": 597
+    },
+    {
+      "path": "src/memory/retrieval.js",
+      "sha256": "8d67a1c5a8b1c5daee1ff6919fa72d81b305034c615f3a682ec5f2c79ed56b88",
+      "bytes": 276
+    },
+    {
       "path": "src/model-lab.js",
       "sha256": "84298839c917ea29d33bf4d9a5a0ba258cd74dbef0db4b6e367b1ed056e04ed0",
       "bytes": 3732
