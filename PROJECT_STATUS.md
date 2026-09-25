@@ -166,10 +166,10 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - UNMERGED — v0.48.1 evidence-envelope/model-router foundations remain outside this repair checkpoint until they gain integrated system tests.
 
 ## v0.49.0 additions
-- IMPLEMENTED, pending repository verification — health-aware local model router with runtime probes, execution constraints, deterministic ranking and fallback traces.
-- IMPLEMENTED, pending repository verification — native conversation routed through the model router with output-quality acceptance before fallback.
-- IMPLEMENTED, pending repository verification — integrity-hashed OneChat evidence envelope with claim support states, cited chunks, model route and tool-call summaries.
-- IMPLEMENTED, pending repository verification — user-facing `explain answer` evidence summary without private chain-of-thought.
-- IMPLEMENTED, pending repository verification — stable per-tab browser chat ID for live context continuity.
+- IMPLEMENTED + VERIFIED — health-aware local model router with runtime probes, execution constraints, deterministic ranking and fallback traces.
+- IMPLEMENTED + VERIFIED — native conversation routed through the model router with output-quality acceptance before fallback.
+- IMPLEMENTED + VERIFIED — integrity-hashed OneChat evidence envelope with claim support states, cited chunks, model route and tool-call summaries.
+- IMPLEMENTED + VERIFIED — user-facing `explain answer` evidence summary without private chain-of-thought.
+- IMPLEMENTED + VERIFIED — stable per-tab browser chat ID for live context continuity.
 - PARTIAL — persisted chat-turn/evidence records are not yet rehydrated into full model context after a process restart.
 
