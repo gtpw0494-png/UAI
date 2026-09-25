@@ -209,8 +209,8 @@
     },
     {
       "path": "model/eval/knowledge_benchmark.py",
-      "sha256": "2979e1687c40554bf43c3b7443f2b6559986fddb99b433028aa1ccc635cc8e84",
-      "bytes": 2201
+      "sha256": "49ce0048bc080760e4e18becf23491319bc24b239afe82a950ac3d81f884c07d",
+      "bytes": 2289
     },
     {
       "path": "model/eval/promotion_score.py",
@@ -569,8 +569,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "ae8578b3c6dc31b8607093ff86e587fdb76a96a34341e8f02657d9e0f139f997",
-      "bytes": 50428
+      "sha256": "7e00bc25424ada73a4b0199f5fcd97ce9ac3e0be23fb4d10f72d5d8c562b7373",
+      "bytes": 50473
     },
     {
       "path": "src/action-envelope.js",
@@ -624,8 +624,8 @@
     },
     {
       "path": "src/cloud-knowledge-store.js",
-      "sha256": "7d5a3d6586848412531de461fdb4fcb4583ea9cc876d5d1ec82991b18c1cd49e",
-      "bytes": 3544
+      "sha256": "b2c97989a83acb993c95b3cf2843e756a8998814b35ef3698c805ac8a1569d1e",
+      "bytes": 3594
     },
     {
       "path": "src/code/repository-intelligence.js",
@@ -849,8 +849,8 @@
     },
     {
       "path": "src/knowledge-training-job.js",
-      "sha256": "a6023a7d75328bfc03c9b68660b41eefc236bd845014914ed24f57fa1355a4ed",
-      "bytes": 4741
+      "sha256": "ed46a4e76c9cad817a142961a9a7e679be7e51108008616415ab4dd48f9687f9",
+      "bytes": 4791
     },
     {
       "path": "src/knowledge-training.js",
@@ -1259,8 +1259,8 @@
     },
     {
       "path": "src/verified-knowledge-store.js",
-      "sha256": "1c5f992d6e14c63a124f85c6add18f4df4bbaa82c5b92323175ce92781439d6b",
-      "bytes": 2012
+      "sha256": "c422f303de66302531ba01dc38bd1f9672113ed8f46d226f9df13947c0166fee",
+      "bytes": 2111
     },
     {
       "path": "src/web-corpus.js",
@@ -1349,8 +1349,8 @@
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
-      "sha256": "4ecdb39abf5f6edadfe3809fb6d4ff7a53fa98e364e0640aace5058b996b55b9",
-      "bytes": 1399
+      "sha256": "6479a569bbea121961c1ea8545d439f1bd3c63891d10eafe522d5f8a63bdb37e",
+      "bytes": 1429
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
@@ -1414,8 +1414,8 @@
     },
     {
       "path": "verification/knowledge-training-job.test.mjs",
-      "sha256": "d17604f43b6014e2fbab5fc3db4a31b1e8cc7d20e343693542f74ca59b050a15",
-      "bytes": 2112
+      "sha256": "ee612b1cd388c96c7689b733bde47c44e8aeccea7809d3055956693160a9b623",
+      "bytes": 2172
     },
     {
       "path": "verification/model-catalog.test.mjs",
