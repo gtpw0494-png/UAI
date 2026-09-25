@@ -9,7 +9,7 @@ export class LocalIdentity{
  constructor(stateRoot,audit=null,{sessionHours=Number(process.env.IUV_SESSION_HOURS||12)}={}){
   this.audit=audit;this.db=new GovernanceDb(stateRoot);this.sessionMs=Math.max(5,Math.min(168,Number(sessionHours)||12))*3600000;
  }
- status(auth=null){const o=this.db.get("identity",OWNER_ID).record;return {state:"SUCCESS",identityConfigured:Boolean(o?.passwordHash),enrollmentRequired:!o?.passwordHash,authenticated:Boolean(auth?.authenticated),identity:auth?.authenticated?{id:auth.identityId,role:auth.role,email:o?.email||null,authMode:auth.authMode}:null,sessionHours:this.sessionMs/3600000};}
+ status(auth=null){const o=this.db.get("identity",OWNER_ID).record;return {state:"SUCCESS",identityConfigured:Boolean(o?.passwordHash),enrollmentRequired:!o?.passwordHash,authenticated:Boolean(auth?.authenticated),authenticationMode:"email-password-session",legacyBearerTokenAccepted:false,identity:auth?.authenticated?{id:auth.identityId,role:auth.role,email:o?.email||null,authMode:auth.authMode}:null,sessionHours:this.sessionMs/3600000};}
  enroll(email,password,{credentialSource="FIRST_RUN"}={}){
   const current=this.db.get("identity",OWNER_ID);if(current.record?.passwordHash)return {state:"DENIED",message:"Owner enrollment is already complete."};
   email=String(email||"").trim().toLowerCase();password=String(password||"");
