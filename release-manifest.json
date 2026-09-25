@@ -824,8 +824,8 @@
     },
     {
       "path": "src/knowledge-training-job.js",
-      "sha256": "471bc3429eab6568ab08614417584ba02d5b9a08a8a4791648e2551a068f5756",
-      "bytes": 1798
+      "sha256": "134b924cc4dbb9e4928c3c22f3376131772b0aaa70e0f916d9c1726dec8ebb72",
+      "bytes": 4552
     },
     {
       "path": "src/knowledge-training.js",
