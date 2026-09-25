@@ -19,3 +19,13 @@ assert.equal(validateRequestBody("POST","/api/knowledge/model/promote",{jobId:"j
 assert.equal(validateRequestBody("POST","/api/knowledge/model/promote",{jobId:"j1",approvalId:"a1"}).state,"SUCCESS");
 assert.equal(validateRequestBody("POST","/api/knowledge/research/run",{topic:"ai safety"}).state,"SUCCESS");
 console.log("knowledge governance boundary: ok");
+
+let modelRoute=routeSecurity("POST","/api/model/promote");
+assert.equal(modelRoute.risk,"high");
+modelRoute=routeSecurity("POST","/api/model/rollback");
+assert.equal(modelRoute.risk,"high");
+assert.equal(validateRequestBody("POST","/api/model/evaluate",{}).state,"FAILURE");
+assert.equal(validateRequestBody("POST","/api/model/evaluate",{runId:"model-run-1"}).state,"SUCCESS");
+assert.equal(validateRequestBody("POST","/api/model/promote",{runId:"model-run-1"}).state,"FAILURE");
+assert.equal(validateRequestBody("POST","/api/model/promote",{runId:"model-run-1",approvalId:"approval-1"}).state,"SUCCESS");
+assert.equal(validateRequestBody("POST","/api/model/rollback",{runId:"model-run-1",approvalId:"approval-1",reason:"regression"}).state,"SUCCESS");
