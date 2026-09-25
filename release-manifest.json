@@ -709,8 +709,8 @@
     },
     {
       "path": "verification/plugin-http.test.mjs",
-      "sha256": "b1d5aecc756ee86b32451b3e445e724a9cca69005a22146b419375f752137517",
-      "bytes": 4178
+      "sha256": "7c50128fee126849c424d73acc2866c6a119defb200552437f9106a801b9ee1c",
+      "bytes": 4283
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
