@@ -140,7 +140,7 @@ const knowledgeResearchScheduler = new KnowledgeScheduler({
 if(String(process.env.IUV_KNOWLEDGE_TOPICS||"").trim()){
   knowledgeResearchScheduler.configure({topics:String(process.env.IUV_KNOWLEDGE_TOPICS).split(",")});
 }
-if(String(process.env.IUV_KNOWLEDGE_AUTOSTART||"").toLowerCase()==="true"){
+if(knowledgeResearchScheduler.status().enabled||String(process.env.IUV_KNOWLEDGE_AUTOSTART||"").toLowerCase()==="true"){
   knowledgeResearchScheduler.start();
 }
 const agentScheduler = new BoundedWorkerScheduler({
