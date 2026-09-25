@@ -809,8 +809,13 @@
     },
     {
       "path": "src/knowledge-job-store.js",
-      "sha256": "52ab2127263bcdcfb2fe4aa25799837cedf4fb1c6b3fb0de60ba6d72cca3885a",
-      "bytes": 923
+      "sha256": "b9b820324271ee9a656ae98b30fb66588b04c4412588928f233178f7c47dbb03",
+      "bytes": 1443
+    },
+    {
+      "path": "src/knowledge-learning-pipeline.js",
+      "sha256": "3c0613306cb252e79be516aa285406ad11fd879b153f902384d145d357bc4e3a",
+      "bytes": 3841
     },
     {
       "path": "src/knowledge-metrics.js",
@@ -1376,6 +1381,11 @@
       "path": "verification/knowledge-autonomy-v055.test.mjs",
       "sha256": "e6df0bf2ba9419b7882f21a8c68a289d259a820cf081bed17865eeff39dd3c59",
       "bytes": 1984
+    },
+    {
+      "path": "verification/knowledge-learning-pipeline.test.mjs",
+      "sha256": "6d1cf27737d7582eb658f70455437f602f175e20d3ab8b10ec8bda1c6faf9006",
+      "bytes": 1843
     },
     {
       "path": "verification/knowledge-training-job.test.mjs",
