@@ -546,7 +546,8 @@
         "schemas/plugin-manifest.schema.json"
       ],
       "tests": [
-        "verification/plugin-gateway.test.mjs"
+        "verification/plugin-gateway.test.mjs",
+        "verification/plugin-http.test.mjs"
       ],
       "evidence_note": "Implementation exists on the v0.44 build branch. Promotion requires authoritative CI proving schema validation, destination allowlists, capability evidence, exact approval binding, scoped secrets/redaction, replay protection, output limits, timeout and cancellation."
     },
