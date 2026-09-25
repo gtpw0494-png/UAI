@@ -25,7 +25,7 @@ export class ControlPlaneStore{
   status(){
     if(!this.native)return this._py({action:"status"});
     const counts={},states={};for(const [kind,table] of Object.entries(TABLES)){counts[kind]=Number(this.db.prepare(`SELECT COUNT(*) n FROM ${table}`).get().n);states[kind]=Object.fromEntries(this.db.prepare(`SELECT state,COUNT(*) n FROM ${table} GROUP BY state`).all().map(r=>[r.state,Number(r.n)]));}
-    return {state:"SUCCESS",path:this.dbPath,backend:"node:sqlite",journalMode:String(this.db.prepare("PRAGMA journal_mode").get().journal_mode||"wal"),counts,states};
+    return {state:"SUCCESS",path:this.dbPath,backend:"node:sqlite",journalMode:String(this.db.prepare("PRAGMA journal_mode").get().journal_mode||"wal"),tables:TABLES,counts,states};
   }
   get(kind,id){if(!this.native)return this._py({action:"get",kind,id});const table=this._table(kind),r=this.db.prepare(`SELECT body_json,version FROM ${table} WHERE id=?`).get(id);return r?{state:"SUCCESS",record:JSON.parse(r.body_json),version:Number(r.version)}:{state:"FAILURE",message:"Record not found."};}
   list(kind,limit=100,state=null){
