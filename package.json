@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.52.0",
+  "version": "0.53.0",
   "private": true,
-  "description": "Independent local-first AI operating environment with durable conversation, evidence-native research, bounded shadow R&D, isolated light-agent source improvement, local model routing and owner-governed promotion.",
+  "description": "Independent local-first AI operating environment with durable conversation, evidence-native research, typed agent control-plane storage, bounded lease scheduling, isolated light-agent source improvement, local model routing and owner-governed promotion.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -62,7 +62,9 @@
     "light:status": "node scripts/light-cli.js status",
     "light:agents": "node scripts/light-cli.js agents",
     "light:patches": "node scripts/light-cli.js patches",
-    "test:shadow-light-http": "node verification/shadow-light-http-v052.test.mjs"
+    "test:shadow-light-http": "node verification/shadow-light-http-v052.test.mjs",
+    "test:agent-control": "node verification/agent-control-v053.test.mjs",
+    "test:agent-control-http": "node verification/agent-control-http-v053.test.mjs"
   },
   "engines": {
     "node": ">=20"
