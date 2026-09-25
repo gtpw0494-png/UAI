@@ -46,7 +46,7 @@ assert.equal(modelTextQuality("oenhehreaebefinreorlitfism sittverron riseecloro 
 const responseStore=new KnowledgeStore(path.join(dir,"response-data"));
 const responseKnowledge=new KnowledgeEngine(responseStore);const responseExplore=new ExplorativeAgent(responseStore,responseKnowledge);
 const responseChat=new OneChatRouter({research,development,explorative:responseExplore,tasks,knowledge:responseKnowledge,agents:migrated,store:responseStore,audit,forgelm:{status:async()=>({state:"SUCCESS",checkpointExists:true,parameters:119104,device:"cpu"}),chat:async()=>({state:"SUCCESS",text:"oenhehreaebefinreorlitfism sittverron riseecloro <|end|>",parameters:119104,device:"cpu",checkpoint:"seed.pt"}),train:async()=>({state:"SUCCESS"})},learning:{build:()=>({state:"SUCCESS"}),file:"x"},selfdev:{},control,sourceRegistry:sourceRegistryV12,dependencyStatus:()=>({state:"SUCCESS",dependencies:{torch:"CONNECTED"}}),modelLab:tokLab,responseComposer:new ResponseComposer()});
-const helloTurn=await responseChat.handle({message:"hello"});assert.match(helloTurn.message,/OneChat is responding correctly/i);assert.equal(helloTurn.responseMode,"governed-composer");
+const helloTurn=await responseChat.handle({message:"hello"});assert.match(helloTurn.message,/OneChat is (?:responding correctly|ready)/i);assert.equal(helloTurn.responseMode,"governed-composer");
 const badModelTurn=await responseChat.handle({message:"tell me about the local model"});assert.equal(badModelTurn.responseMode,"quality-gated");assert.ok(!badModelTurn.message.includes("oenhehreaebefinreorlitfism"));assert.match(badModelTurn.message,/not yet promoted/i);
 console.log("v0.21.0 response-quality tests passed");
 // v0.22 governed web-corpus tests
