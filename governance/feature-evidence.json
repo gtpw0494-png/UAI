@@ -535,7 +535,7 @@
     {
       "id": "operation-scoped-plugin-gateway",
       "introduced": "0.44.0",
-      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "status": "VERIFIED",
       "implementation": [
         "src/plugin-gateway.js",
         "src/sandbox-runner.js",
@@ -549,7 +549,7 @@
         "verification/plugin-gateway.test.mjs",
         "verification/plugin-http.test.mjs"
       ],
-      "evidence_note": "Implementation exists on the v0.44 build branch. Promotion requires authoritative CI proving schema validation, destination allowlists, capability evidence, exact approval binding, scoped secrets/redaction, replay protection, output limits, timeout and cancellation."
+      "evidence_note": "Dedicated gateway and HTTP integration suites pass on the v0.44 implementation: schema validation, network-destination allowlists, runtime capability evidence, exact approval binding, autonomy budgeting, scoped secret injection/redaction, transactional replay protection, output verification/limits, timeout, cancellation and HTTP Idempotency-Key forwarding. Final main promotion still requires authoritative CI on the exact promotion commit."
     },
     {
       "id": "os-level-plugin-hard-isolation",
