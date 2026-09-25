@@ -3,6 +3,7 @@ name: Refresh release manifest
 on:
   push:
     branches:
+      - main
       - 'build/**'
     paths-ignore:
       - release-manifest.json
