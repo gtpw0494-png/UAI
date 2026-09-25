@@ -1,0 +1,5 @@
+const score=(c,r)=>{let s=0;if(c.availability==="CONNECTED")s+=100;if(c.local)s+=r.privacy==="local-only"?40:10;if((c.tasks||[]).includes(r.task))s+=30;if((c.modalities||["text"]).includes(r.modality||"text"))s+=20;if(c.context&&r.contextTokens&&c.context>=r.contextTokens)s+=10;if(r.offline&&!c.offline)s-=1000;if(r.maxLatencyMs&&c.latencyMs&&c.latencyMs>r.maxLatencyMs)s-=20;return s;};
+export class ModelRouter{
+ constructor({registry=null}={}){this.registry=registry;}
+ select(requirements={},candidates=[]){const viable=candidates.filter(x=>x&&x.availability==="CONNECTED"&&(!requirements.offline||x.offline));if(!viable.length)return {state:"UNAVAILABLE",message:"No connected model satisfies the requested execution constraints.",requirements};const ranked=viable.map(model=>({model,score:score(model,requirements)})).sort((a,b)=>b.score-a.score);return {state:"SUCCESS",selected:ranked[0].model,score:ranked[0].score,alternatives:ranked.slice(1,4).map(x=>({id:x.model.id,score:x.score})),requirements};}
+}
