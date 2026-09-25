@@ -64,6 +64,7 @@ import { KnowledgeTrainingJob } from "./src/knowledge-training-job.js";
 import { KnowledgeJobStore } from "./src/knowledge-job-store.js";
 import { ForgeLMCandidatePromotion } from "./src/forgelm-candidate-promotion.js";
 import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js";
+import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -127,6 +128,8 @@ const knowledgeTrainingJob = new KnowledgeTrainingJob({root:__dirname,stateRoot:
 const knowledgeJobStore = new KnowledgeJobStore({stateRoot:stateDir});
 const forgeLMCandidatePromotion = new ForgeLMCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
 const knowledgeLearningPipeline = new KnowledgeLearningPipeline({trainingJob:knowledgeTrainingJob,promotion:forgeLMCandidatePromotion,jobStore:knowledgeJobStore,audit});
+const autonomousKnowledgeSources = JSON.parse(fs.readFileSync(path.join(__dirname,"model","knowledge_sources.json"),"utf8")).sources;
+const autonomousKnowledge = new KnowledgeAutonomy({registry:autonomousKnowledgeSources});
 const agentScheduler = new BoundedWorkerScheduler({
   stateRoot:stateDir,
   audit,
@@ -256,6 +259,20 @@ const server=http.createServer(async(req,res)=>{try{
     const b=await readBody(req);
     const result=await localOrchestrator.structured(b.payload || b.text || b.prompt || b.message || "{}", b.context || "");
     return send(res,200,result);
+  }
+
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/autonomy/status"){
+    return send(res,200,{...autonomousKnowledge.status(),store:verifiedKnowledgeStore.snapshot()});
+  }
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/autonomy/sources"){
+    return send(res,200,{state:"SUCCESS",sources:autonomousKnowledgeSources.map(({id,name,domain,type,allowed,license,trust,priority})=>({id,name,domain,type,allowed,license,trust,priority}))});
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/autonomy/verify-ingest"){
+    const b=await readBody(req);
+    const verification=autonomousKnowledge.verifyFacts(b.items||[]);
+    const persisted=await verifiedKnowledgeStore.upsertMany(verification.facts||[]);
+    audit.append({type:"knowledge.autonomy.ingest",requestId,correlationId,actor:req.uaiSecurity?.auth?.identityId||null,candidates:verification.total_candidates||0,verified:verification.verified||0,local:persisted.local||null,cloud:persisted.cloud?.state||null});
+    return send(res,200,{state:"SUCCESS",verification,persisted});
   }
 
   if(req.method==="GET"&&url.pathname==="/api/knowledge/store/status"){
