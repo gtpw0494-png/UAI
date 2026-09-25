@@ -69,6 +69,9 @@ jobs:
       - name: Verify v0.49 owner email/password bootstrap and token retirement
         run: npm run test:owner-auth
 
+      - name: Verify v0.50 conversational multi-source research
+        run: npm run test:conversational-research
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
