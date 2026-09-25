@@ -733,6 +733,11 @@
       "bytes": 6818
     },
     {
+      "path": "verification/conversation-capability-v048.test.mjs",
+      "sha256": "c8ad32d2fe5b862b10236caec9d94fdeb1e4554679d9870185d30f2e749dea96",
+      "bytes": 4636
+    },
+    {
       "path": "verification/document-data-plane.test.py",
       "sha256": "5ba44e00158aa741ca5c7f08c4046d170e040c4fef5081d27fca3657da2f880c",
       "bytes": 4206
