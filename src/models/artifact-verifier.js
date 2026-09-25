@@ -3,7 +3,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import {fileURLToPath} from "node:url";
 import {PlatformStateStore} from "../platform-state-store.js";
-const repoRoot=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const repoRoot=path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const iso=()=>new Date().toISOString();
 const inside=(root,p)=>p===root||p.startsWith(root+path.sep);
 function sha256File(file){const h=crypto.createHash("sha256"),fd=fs.openSync(file,"r"),buf=Buffer.allocUnsafe(1024*1024);try{let n=0;while((n=fs.readSync(fd,buf,0,buf.length,null))>0)h.update(buf.subarray(0,n));}finally{fs.closeSync(fd);}return h.digest("hex");}
