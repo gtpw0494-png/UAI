@@ -989,8 +989,8 @@
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
-      "sha256": "ed5c3ed2f38e8d217843007a7889b9380b0713350f4f4f5ef5f36f69c11f5269",
-      "bytes": 5943
+      "sha256": "cb53cc7c3b656887a546bb05d5b7e0e7c0b185a8eb13122f61451f5364532f3a",
+      "bytes": 6560
     },
     {
       "path": "verification/agent-control-v053.test.mjs",
