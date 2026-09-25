@@ -499,8 +499,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "be3fe2debe470e60cd9451397ec1cd5b6c5dceaa1aa24d13eaabb06c422a4fc3",
-      "bytes": 6678
+      "sha256": "8465e73a8a5583ff26d35d83e7694e4ad3c794ee891a1bfc0e43c251dc777344",
+      "bytes": 6646
     },
     {
       "path": "src/governance/identity.js",
