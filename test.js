@@ -151,3 +151,12 @@ const preg42=new PluginRegistry(advancedRoot,audit);assert.equal(preg42.register
 const mr42=new ModelRegistry().status();assert.ok(mr42.models.some(x=>x.id==='llamacpp-gguf'));assert.ok(['CONNECTED','UNAVAILABLE'].includes(mr42.runtimes.llamacpp.availability));
 const pipeline42=fs.readFileSync(new URL('./model/data_pipeline.py',import.meta.url),'utf8');assert.ok(pipeline42.includes('trainingApproved'));const web42=fs.readFileSync(new URL('./src/web-corpus.js',import.meta.url),'utf8');assert.ok(web42.includes('instructionAuthority'));assert.ok(fs.existsSync(new URL('./storage/lifecycle.py',import.meta.url)));assert.ok(fs.existsSync(new URL('./schemas/event-envelope.schema.json',import.meta.url)));assert.ok(fs.existsSync(new URL('./research/learning_methods.json',import.meta.url)));
 console.log('v0.37-v0.42 verification/storage/model/plugin/data-security tests passed');
+// v0.55 autonomous knowledge / candidate-promotion production boundaries
+await import("./verification/knowledge-autonomy-v055.test.mjs");
+await import("./verification/cloud-knowledge-store.test.mjs");
+await import("./verification/knowledge-training-job.test.mjs");
+await import("./verification/forgelm-candidate-promotion.test.mjs");
+await import("./verification/knowledge-learning-pipeline.test.mjs");
+await import("./verification/knowledge-research-scheduler.test.mjs");
+await import("./verification/knowledge-governance.test.mjs");
+console.log("v0.55 production knowledge lifecycle tests passed");
