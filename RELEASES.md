@@ -179,4 +179,5 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Added `explain answer` for structured evidence summaries without exposing chain-of-thought.
 - Added stable browser chat IDs so live UI turns share conversation context.
 - Added a truthful PARTIAL state for conversation rehydration after process restart.
+- Added email/password owner bootstrap for local first run, explicit credential rotation for upgrades, active-session revocation, and explicit retirement tests for legacy bearer-owner tokens.
 
