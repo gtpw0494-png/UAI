@@ -28,7 +28,9 @@ export class OneChatRouter{
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
   if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
-  if(/document|citation|provenance|source graph|evidence search|retrieval source/i.test(t))a.push({agent:"documents",reason:"provenance-aware document retrieval intent"});
+  if(/\bmemory\b|remember|why remembered|forget source|disable training|disable memory|export memory/i.test(t))a.push({agent:"memory",reason:"explicit user-owned memory intent"});
+  if(/provenance graph|lineage|trace provenance|source graph|purge provenance/i.test(t))a.push({agent:"provenance",reason:"provenance graph intent"});
+  if(/document|citation|evidence search|retrieval source/i.test(t))a.push({agent:"documents",reason:"provenance-aware document retrieval intent"});
   if(/research|analyse|analyze|compare|definition|knowledge|evidence|study|semantic search|semantic retrieve/i.test(t))a.push({agent:"knowledge",reason:"knowledge/research intent"});
   if(/\bdefine\b|definition of|meaning of|wordnet|lexicon|dictionary|synonym|antonym|hypernym|hyponym|related word|lexical relation/i.test(t))a.push({agent:"lexicon",reason:"local lexical-definition intent"});
   if(/banter|chitchat|chat example|conversation example|dialogue example|oasst|openassistant|casual reply|humorous reply|technical banter/i.test(t))a.push({agent:"dialogue",reason:"local conversational-corpus intent"});
@@ -40,7 +42,7 @@ export class OneChatRouter{
   if(!a.length)a.push({agent:"conversation",reason:"general conversational response"});
   return a.filter((x,i)=>a.findIndex(y=>y.agent===x.agent)===i);
  }
- async execute(agent,message,chatId=null){
+ async execute(agent,message,chatId=null,context={}){
   if(agent==="conversation")return this.conversation?this.conversation.chat({chatId,message}):result("UNAVAILABLE","Conversational model engine is not configured.");
   if(agent==="web-research"){
     if(/web corpus status|web sources|source classes|common crawl|fineweb|wikimedia|wikipedia|stack exchange/i.test(message)){const s=this.webCorpus?.status();return s?{...s,message:`Web corpus registry contains ${s.sourceClasses} governed source classes and ${s.records} locally ingested record(s).`}:result("UNAVAILABLE","Web corpus service is not configured.");}
@@ -57,6 +59,28 @@ export class OneChatRouter{
     const purge=String(message).match(/purge\s+document\s+(doc-[\w-]+)/i);if(purge)return this.documentStore.purge(purge[1],"OneChat user-requested purge");
     const q=String(message).match(/(?:document|evidence|provenance)\s+(?:search|retrieve|find)\s+(.+)/i);if(q)return this.documentStore.search(q[1].trim(),8);
     return result("SUCCESS","Document agent is ready. Ask for document data plane status, list documents, or document search <query>.",{commands:["document data plane status","list documents","document search <query>","show document <doc-id>"]});
+  }
+  if(agent==="memory"){
+    if(!this.memoryStore)return result("UNAVAILABLE","User-owned memory store is not configured.");const ownerId=context.ownerId;if(!ownerId)return result("DENIED","Authenticated owner identity is required for memory operations.");
+    if(/^(?:show|list)\s+memory\b|what do you remember about me/i.test(message)){const items=this.memoryStore.list({ownerId,limit:100});return result("SUCCESS",`${items.length} active owner memory item(s).`,{items,settings:this.memoryStore.settings(ownerId)});}
+    const why=String(message).match(/why\s+(?:do you\s+)?remember(?:ed)?\s+(memory-[\w-]+)/i);if(why)return this.memoryStore.why(why[1],ownerId);
+    const forgetSource=String(message).match(/forget\s+(?:everything\s+from\s+)?source\s+([^\n]+)/i);if(forgetSource)return this.memoryStore.forgetSource(forgetSource[1].trim(),ownerId,"explicit OneChat forget-source command");
+    const forget=String(message).match(/forget\s+(memory-[\w-]+)/i);if(forget)return this.memoryStore.forget(forget[1],ownerId,"explicit OneChat forget command");
+    if(/disable\s+memory/i.test(message))return this.memoryStore.setSettings(ownerId,{memoryEnabled:false});
+    if(/enable\s+memory/i.test(message))return this.memoryStore.setSettings(ownerId,{memoryEnabled:true});
+    if(/disable\s+training/i.test(message))return this.memoryStore.setSettings(ownerId,{trainingEnabled:false});
+    if(/enable\s+training/i.test(message))return this.memoryStore.setSettings(ownerId,{trainingEnabled:true});
+    if(/export\s+memory/i.test(message))return this.memoryStore.export(ownerId);
+    const search=String(message).match(/memory\s+(?:search|find)\s+([\s\S]+)/i);if(search)return this.memoryStore.search(search[1].trim(),{ownerId,limit:20});
+    const remember=String(message).match(/^remember(?:\s+that)?\s+([\s\S]+)/i);if(remember)return this.memoryStore.remember({ownerId,namespace:"user",sourceId:"user:onechat",text:remember[1].trim(),consent:true,reason:"explicit OneChat remember command",trainingAllowed:false});
+    return result("SUCCESS","Memory commands are explicit only. Use: remember <text>, show memory, why remembered <memory-id>, forget <memory-id>, forget source <source>, export memory, disable memory, or disable training.",{settings:this.memoryStore.settings(ownerId)});
+  }
+  if(agent==="provenance"){
+    if(!this.provenanceGraph)return result("UNAVAILABLE","Provenance graph is not configured.");
+    if(/provenance\s+(?:graph\s+)?status/i.test(message))return this.provenanceGraph.status();
+    const trace=String(message).match(/(?:trace\s+provenance|provenance\s+trace)\s+(prov-node-[\w-]+)/i);if(trace)return this.provenanceGraph.trace(trace[1],{direction:"both",depth:6});
+    const purge=String(message).match(/purge\s+provenance\s+(prov-node-[\w-]+)/i);if(purge)return this.provenanceGraph.planPurge(purge[1]);
+    return result("SUCCESS","Provenance graph is ready. Use provenance graph status, trace provenance <node-id>, or purge provenance <node-id> for a dry-run deletion plan.");
   }
   if(agent==="lexicon"){
     if(!this.storageDb)return result("UNAVAILABLE","SQLite language database is not configured.");
@@ -117,7 +141,8 @@ export class OneChatRouter{
   if(agent==="systems"){
     if(/(?:show|list)\s+approvals?/i.test(message)&&this.approvalStore){const approvals=this.approvalStore.list({limit:50});return result("SUCCESS",`${approvals.length} approval record(s).`,{approvals});}
     const approvalDecision=String(message).match(/\b(approve|deny)\s+(approval-[\w-]+)/i);if(approvalDecision&&this.approvalStore)return this.approvalStore.decide(approvalDecision[2],approvalDecision[1].toUpperCase()==="APPROVE"?"APPROVE":"DENY");
-    if(/policy/i.test(message)&&this.policyEngine){const risk=(message.match(/\b(low|medium|high|critical)\b/i)||[])[1]||"low";return this.policyEngine.evaluate({operation:message,risk,physical:/physical|fabricat/i.test(message),mutatesSource:/source|code|mutat|develop/i.test(message),external:/external|api|web/i.test(message),requiresCredential:/credential|account|billing/i.test(message)});}
+    if(/(?:simulate policy|policy simulation|dry run)/i.test(message)&&this.policySimulator){const risk=(message.match(/\b(low|medium|high|critical)\b/i)||[])[1]||"low";return this.policySimulator.simulate({actor:context.ownerId||"user:onechat",objective:message,steps:[{operation:"onechat.proposed-workflow",description:message,risk,physical:/physical|fabricat/i.test(message),mutatesSource:/source|code|mutat|develop/i.test(message),external:/external|api|web|send|upload/i.test(message),requiresCredential:/credential|account|billing|secret/i.test(message),dataClassification:/secret/i.test(message)?"secret":/private|personal/i.test(message)?"private":"local"}]});}
+    if(/policy/i.test(message)&&this.policyEngine){const risk=(message.match(/\b(low|medium|high|critical)\b/i)||[])[1]||"low";return this.policyEngine.evaluate({operation:message,risk,actor:context.ownerId||null,physical:/physical|fabricat/i.test(message),mutatesSource:/source|code|mutat|develop/i.test(message),external:/external|api|web/i.test(message),requiresCredential:/credential|account|billing/i.test(message)});}
     if(/(?:show|list)\s+autonomy|autonomy\s+status/i.test(message)&&this.autonomyStore){const leases=this.autonomyStore.list();return result("SUCCESS",`${leases.length} autonomy lease(s).`,{leases});}
     const revokeLease=String(message).match(/revoke\s+autonomy\s+(lease-[\w-]+)/i);if(revokeLease&&this.autonomyStore)return this.autonomyStore.revoke(revokeLease[1]);
     const grantLease=String(message).match(/grant\s+autonomy(?:\s+scope\s+([\w.,-]+))?(?:\s+max\s+(\d+))?(?:\s+(\d+)\s+minutes?)?/i);if(grantLease&&this.autonomyStore){const scope=(grantLease[1]||"explore,research").split(',').filter(Boolean);const maxActions=Math.min(1000,Math.max(1,Number(grantLease[2]||10)));const minutes=Math.min(1440,Math.max(1,Number(grantLease[3]||60)));return this.autonomyStore.grant({scope,riskCeiling:"medium",maxActions,durationMs:minutes*60000});}
@@ -165,7 +190,7 @@ export class OneChatRouter{
   for(const a of allocations){
     const executed=a.agent==="conversation"&&this.conversation
       ?await this.conversation.chat({chatId,message,researchContext})
-      :await this.execute(a.agent,message,chatId);
+      :await this.execute(a.agent,message,chatId,{ownerId:input.ownerId||null});
     contributions.push({agent:a.agent,reason:a.reason,result:executed});
   }
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
