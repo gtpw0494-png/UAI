@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "66f372080fad3ec367b077050a22cabd352019c19e2ef6d6d55c66caf19b41ec",
-      "bytes": 24851
+      "sha256": "dd1a768e07a2e50bfa7688df5a4908beb9707dfbaf3e55cfb62053fc6e27903c",
+      "bytes": 25579
     },
     {
       "path": "model/adaptation.py",
