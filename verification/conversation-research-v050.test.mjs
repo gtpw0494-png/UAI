@@ -27,8 +27,6 @@ const webResearch=new WebResearchEngine({audit,searchEndpoints:[`http://127.0.0.
 webResearch.fetchSource=async(item,query)=>({state:"SUCCESS",url:item.url,title:item.title,publisher:"fixture",retrievedAt:new Date().toISOString(),contentType:"text/html",text:item.url.endsWith("/a")?"Local-first AI keeps user data and inference under local control.":"Evidence-grounded systems attach provenance and citations to claims.",security:{risk:"LOW",promptInjectionSignals:0,secretSignals:0},relevance:0.8});
 const rr=await webResearch.research("research local-first evidence",{maxSources:2});
 assert.equal(rr.state,"SUCCESS");assert.equal(rr.sources.length,2);assert.match(rr.context,/\[S1\]/);
-researchServer.close();
-
 const store={rows:[],add(x){const row={id:"k-"+(this.rows.length+1),...x};this.rows.push(row);return row;},list(){return this.rows.map(x=>({id:x.id}));},get(id){return this.rows.find(x=>x.id===id);}};
 const explorative={chat:async()=>({state:"SUCCESS",message:"Research helper context."})};
 const knowledge={search:()=>[]};
@@ -37,4 +35,5 @@ const modelLab={analyzeSources:async()=>({state:"SUCCESS",message:"Fixture sourc
 const onechat=new OneChatRouter({conversation,webResearch,store,audit,explorative,knowledge,sourceRegistry,modelLab,responseComposer:{compose({contributions}){const x=contributions.find(c=>c.agent==="conversation")?.result;return {message:x?.message||"none",mode:"native-conversation",modelUsed:true,evidence:null};}}});
 const out=await onechat.handle({chatId:"c2",message:"research the latest local-first evidence"});
 assert.ok(["SUCCESS","PARTIAL"].includes(out.state));assert.equal(out.evidenceEnvelope.metadata.researchRunId!=null,true);assert.equal(out.evidenceEnvelope.claims[0].support.length,2);assert.match(out.message,/\[S1\]/);
+researchServer.close();
 console.log("v0.50.0 conversational continuity and governed web-research tests passed");
