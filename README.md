@@ -1,6 +1,18 @@
-# IntraultUniversalion v0.53.0
+# IntraultUniversalion v0.54.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.54 user-owned intelligence plane
+
+- Added explicit-consent memory namespaces for session, task, user, project, agent, source, model-training and audit memory.
+- Durable memory records retain owner, source, confidence, consent, retention, expiry, deletion state, visibility and training permission; training is disabled by default and conversations are not silently promoted into training.
+- Optional local AES-256-GCM memory encryption is available through `IUV_MEMORY_KEY`; when no key is configured the API truthfully reports `PLAINTEXT_LOCAL`.
+- Added a typed provenance graph with source/derived nodes, lineage edges, trace queries and dry-run purge planning. v0.54 can propagate purge into linked memory records; deletion across every legacy document/index/model store remains explicitly partial.
+- Added non-executing policy simulation that reports tools/steps, data touched, external destinations, approvals, violations and a safer-plan summary before execution.
+- Policy decisions now include version, actor/resource context, arguments hash, data classification, destination, risk factors and a local integrity proof. Optional Ed25519 signing is supported when a local policy signing key is configured.
+- Added model artifact SHA-256 verification, optional Ed25519 signature verification and artifact records that remain separate from runtime availability/production eligibility.
+- Added evidence-backed evaluation records, verified-only leaderboards, benchmark-runner foundations and promotion evidence scoring.
+- OneChat gained explicit memory/provenance/policy-simulation commands, while the operations dashboard now exposes memory, provenance, evaluations, artifacts and simulations.
 
 ## v0.53 persistent agent control plane
 
