@@ -209,8 +209,8 @@
     },
     {
       "path": "model/eval/knowledge_benchmark.py",
-      "sha256": "618de3b8401cca90235f5cb1b3603b737478478c33698a8932c090f98ea1b8e3",
-      "bytes": 1363
+      "sha256": "2979e1687c40554bf43c3b7443f2b6559986fddb99b433028aa1ccc635cc8e84",
+      "bytes": 2201
     },
     {
       "path": "model/eval/promotion_score.py",
