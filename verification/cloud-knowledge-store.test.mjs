@@ -8,7 +8,7 @@ import { HybridKnowledgeStore } from "../src/hybrid-knowledge-store.js";
 
 const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-cloud-knowledge-"));
 const local=new VerifiedKnowledgeStore({stateRoot:root});
-const fact={subject:"x",claim:"verified",source_id:"a",source_url:"https://a.example",verification:{verified:true},training_eligible:true,fact_id:"f1"};
+const fact={subject:"x",claim:"verified",source_id:"a",source_url:"https://a.example",verification:{verified:true,training_rights_verified:true},training_eligible:true,fact_id:"f1"};
 let calls=0;
 const cloud=new CloudKnowledgeStore({endpoint:"https://db.example",apiKey:"secret",fetchImpl:async(url,opts)=>{calls++;assert.equal(opts.method,"POST");assert.ok(!opts.body.includes("unverified"));return{ok:true,status:201}}});
 const hybrid=new HybridKnowledgeStore({local,cloud});
