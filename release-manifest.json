@@ -713,6 +713,11 @@
       "bytes": 29009
     },
     {
+      "path": "verification/api-security-v046.test.mjs",
+      "sha256": "5a4e60c51c4fe67236f88024eaa5980071183c2663e93bc10aa7f389c04d98c8",
+      "bytes": 7520
+    },
+    {
       "path": "verification/control-plane-modernization.test.mjs",
       "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
       "bytes": 6818
