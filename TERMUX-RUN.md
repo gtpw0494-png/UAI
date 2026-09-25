@@ -1,4 +1,33 @@
-# Termux run — v0.34.0
+# Termux run — v0.49.0
+
+## Owner email/password login
+
+UAI v0.49 uses email/password owner login with server-side sessions and CSRF. Legacy owner bearer tokens are not accepted.
+
+First local bootstrap:
+
+```bash
+cd ~/UAI
+export UAI_OWNER_EMAIL="owner@example.com"
+read -rsp 'Owner password: ' UAI_OWNER_PASSWORD; echo
+export UAI_OWNER_PASSWORD
+chmod +x scripts/run-owner-local.sh
+./scripts/run-owner-local.sh
+```
+
+Existing installation credential rotation:
+
+```bash
+cd ~/UAI
+export UAI_OWNER_EMAIL="owner@example.com"
+read -rsp 'Owner password: ' UAI_OWNER_PASSWORD; echo
+export UAI_OWNER_PASSWORD
+node scripts/configure-owner.mjs --replace
+unset UAI_OWNER_PASSWORD
+npm start
+```
+
+The password is not committed to Git, stored in browser storage, or returned by the API. The governance database stores a salted scrypt verifier. Credential rotation revokes active owner sessions.
 
 From the GitHub working copy:
 
