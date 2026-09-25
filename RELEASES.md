@@ -188,3 +188,15 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Applies the existing context-token budget and 40-turn cap during restoration and keeps unrelated chat IDs isolated.
 - Makes restored history available before follow-up intent classification and before local model routing/generation.
 - Adds an auditable rehydration event and dedicated regression coverage in `verification/conversation-memory-v051.test.mjs`.
+
+
+## v0.52.0 — Bounded Shadow R&D, Light Source Maintenance and Governance Protection
+- Added bounded shadow-agent research/R&D infrastructure with explicit worker/resource budgets, persistent lifecycle state, quarantined candidates and disagreement-aware expansion signals.
+- Added research, literature, model-evaluation, dataset-quality, retrieval, safety-red-team, architecture, experiment and synthesis profiles plus additional specialized research roles.
+- Added bounded light-agent source-maintenance infrastructure with detached worktree creation, patch evidence, test/security/shadow review and rollback cleanup.
+- Added explicit protected-governance rule declarations, emergency stop, local policy records, capability boundaries, audit-integrity facade and truthful trusted-device registry.
+- Added owner-authenticated HTTP surfaces for shadow runs, light patches, promotion eligibility, emergency stop and trusted devices.
+- Added a machine-readable platform roadmap catalog covering requested models, runtimes, learning approaches, retrieval/memory layers, plugins, connectors, tool abilities and evaluation metrics.
+- Added `verification/shadow-light-v052.test.mjs` and authoritative CI integration.
+- No shadow candidate self-deploys or directly enters training, no light agent can directly merge protected `main`, and incomplete multimodal/dense/federated/formal-verification/enterprise features remain explicitly non-complete.
+
