@@ -264,6 +264,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/provenance/status")return send(res,200,provenanceGraph.status());
   if(req.method==="GET"&&url.pathname==="/api/provenance/nodes")return send(res,200,{state:"SUCCESS",nodes:provenanceGraph.listNodes({limit:Number(url.searchParams.get("limit")||100),type:url.searchParams.get("type")||null,ownerId:req.uaiSecurity.auth.identityId,state:url.searchParams.get("state")||null})});
   if(req.method==="GET"&&url.pathname==="/api/provenance/trace")return send(res,200,provenanceGraph.trace(url.searchParams.get("id")||"",{direction:url.searchParams.get("direction")||"both",depth:Number(url.searchParams.get("depth")||4),limit:Number(url.searchParams.get("limit")||500)}));
+  if(req.method==="GET"&&url.pathname==="/api/provenance/purge-plan")return send(res,200,provenanceGraph.planPurge(url.searchParams.get("id")||""));
   if(req.method==="POST"&&url.pathname==="/api/provenance/nodes"){const b=await readBody(req);return send(res,200,provenanceGraph.addNode({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/provenance/edges")return send(res,200,provenanceGraph.addEdge(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/provenance/purge"){const b=await readBody(req);return send(res,200,provenanceGraph.purge(b.id,{apply:b.apply===true,ownerId:req.uaiSecurity.auth.identityId,reason:b.reason||"owner source purge"}));}
