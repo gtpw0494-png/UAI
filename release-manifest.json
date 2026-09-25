@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "425016229e30d863761d29f437c779d841f0720570b884a83fffdedb1eaa88a3",
-      "bytes": 6254
+      "sha256": "dfcc5060fa7800e0adb2a609c892eac9530bb569f5125a1c99b223b279914417",
+      "bytes": 6251
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
