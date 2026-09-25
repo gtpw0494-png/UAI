@@ -698,6 +698,11 @@
       "bytes": 4206
     },
     {
+      "path": "verification/document-http.test.mjs",
+      "sha256": "e4e26aade17a7e46e4b151311ab8108a78f526b3531790f7e60baba581f0fba7",
+      "bytes": 4017
+    },
+    {
       "path": "verification/plugin-gateway.test.mjs",
       "sha256": "6aa96d3fd2f6c652e93d220160db65067a55c1ff26f85bc6ee829ca42a41604a",
       "bytes": 9060
