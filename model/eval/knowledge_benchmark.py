@@ -2,46 +2,53 @@
 from __future__ import annotations
 
 import json
+import sys
 import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from knowledge_verifier import verify_batch, filter_training_batch
 
 def benchmark_knowledge_pipeline() -> dict:
     start = time.perf_counter()
-
-    sample = [
-        {
-            "subject": "python",
-            "claim": "Python is dynamically typed.",
-            "source_id": "python-docs",
-            "source_url": "https://docs.python.org/3/library/stdtypes.html",
-            "trust": 0.98,
-        },
-        {
-            "subject": "javascript",
-            "claim": "JavaScript is a scripting language for the web.",
-            "source_id": "github-docs",
-            "source_url": "https://docs.github.com/en/get-started/starting-with-web-development",
-            "trust": 0.95,
-        },
+    registry = [
+        {"id":"a","domain":"a.example","allowed":True,"trust":0.95},
+        {"id":"b","domain":"b.example","allowed":True,"trust":0.92},
+        {"id":"blocked","domain":"bad.example","allowed":False,"trust":1.0},
     ]
-
-    verified = []
-    for item in sample:
-        verified.append({
-            **item,
-            "verified": True,
-            "training_eligible": True,
-        })
-
+    good = verify_batch([
+        {"subject":"x","claim":"same verified fact","source_id":"a","source_url":"https://a.example/doc"},
+        {"subject":"x","claim":"same verified fact","source_id":"b","source_url":"https://b.example/doc"},
+    ], registry)
+    one_source = verify_batch([
+        {"subject":"x","claim":"single source claim","source_id":"a","source_url":"https://a.example/doc"},
+    ], registry)
+    spoof = verify_batch([
+        {"subject":"x","claim":"spoofed trust","source_id":"a","source_url":"https://evil.example/doc","trust":1.0},
+        {"subject":"x","claim":"spoofed trust","source_id":"b","source_url":"https://evil.example/doc","trust":1.0},
+    ], registry)
+    passed = (
+        len(filter_training_batch(good)) == 1
+        and len(filter_training_batch(one_source)) == 0
+        and len(filter_training_batch(spoof)) == 0
+    )
     elapsed = (time.perf_counter() - start) * 1000
-
     return {
-        "state": "SUCCESS",
-        "benchmark": "knowledge-verified-batch",
-        "items_processed": len(sample),
-        "items_verified": len(verified),
-        "training_eligible": sum(1 for item in verified if item["training_eligible"]),
+        "state": "SUCCESS" if passed else "FAILURE",
+        "benchmark": "knowledge-verification-boundary",
+        "score": 1.0 if passed else 0.0,
+        "checks": {
+            "independent_sources_required": len(filter_training_batch(one_source)) == 0,
+            "domain_spoof_blocked": len(filter_training_batch(spoof)) == 0,
+            "verified_pair_accepted": len(filter_training_batch(good)) == 1,
+        },
         "latency_ms": round(elapsed, 2),
     }
 
 if __name__ == "__main__":
-    print(json.dumps(benchmark_knowledge_pipeline(), indent=2, sort_keys=True))
+    result = benchmark_knowledge_pipeline()
+    print(json.dumps(result, indent=2, sort_keys=True))
+    raise SystemExit(0 if result["state"] == "SUCCESS" else 1)
