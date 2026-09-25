@@ -24,8 +24,8 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "92546f36c97ed92f5f7fe1844ba2824b3673fcd2e2fd654d07d0003d53cb3d25",
-      "bytes": 503
+      "sha256": "13679fe8f71599e7e566d0a89b7d8d099a0c43628f4c5ba3f813533bdf123efa",
+      "bytes": 517
     },
     {
       "path": "CONTRIBUTING.md",
@@ -544,8 +544,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "319c3f07416de61b484ea278bb46e00edd0adcaa845443aa0e835e147e6a6afb",
-      "bytes": 21277
+      "sha256": "19e822eca87e2dbe933fd0b355848603b5959908db679e0b6e7b8ce982b0166a",
+      "bytes": 21310
     },
     {
       "path": "src/plugin-executor.js",
