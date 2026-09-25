@@ -808,6 +808,11 @@
       "bytes": 450
     },
     {
+      "path": "src/knowledge-verifier.js",
+      "sha256": "6d01a677d746348b3f72212ee30b2a27a54435299d5b45ab19baade4ad003184",
+      "bytes": 2634
+    },
+    {
       "path": "src/knowledge.js",
       "sha256": "b2b5e484af4fd540efb759f70ce067b95a0036b1a3d8bac8185d636be4c121cc",
       "bytes": 3013
@@ -1203,6 +1208,11 @@
       "bytes": 397
     },
     {
+      "path": "src/verified-knowledge-store.js",
+      "sha256": "1c5f992d6e14c63a124f85c6add18f4df4bbaa82c5b92323175ce92781439d6b",
+      "bytes": 2012
+    },
+    {
       "path": "src/web-corpus.js",
       "sha256": "89faa9520aa6220d3d1eb146d1ae432d36190c98a223676b33c63b75e709dc73",
       "bytes": 9218
@@ -1316,6 +1326,11 @@
       "path": "verification/forgelm-self-sufficient.test.mjs",
       "sha256": "a0ee33eeadc9a7ae7e176f0c71ccffc65c219a1056d12ef37017e7a06d034486",
       "bytes": 408
+    },
+    {
+      "path": "verification/knowledge-autonomy-v055.test.mjs",
+      "sha256": "e6df0bf2ba9419b7882f21a8c68a289d259a820cf081bed17865eeff39dd3c59",
+      "bytes": 1984
     },
     {
       "path": "verification/model-catalog.test.mjs",
