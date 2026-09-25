@@ -94,10 +94,31 @@ export class OneChatRouter{
     const m=String(message).match(/(?:banter|chitchat|conversation|dialogue)(?:\s+(?:about|on|for))?\s*(.*)$/i);let query=(m?.[1]||"").trim();let style="";const sm=query.match(/\bstyle\s+(casual|technical|humorous|enthusiastic|short|question)(?:\s*,\s*(casual|technical|humorous|enthusiastic|short|question))*/i);if(sm){style=sm[0].replace(/^style\s+/i,"");query=query.replace(sm[0],"").trim();}return this.storageDb.banter(query,8,style);
   }
   if(agent==="forgelm"){
-    if(/train\s+tokenizer|tokenizer\s+train/i.test(message)&&this.modelLab){const n=Number((message.match(/(\d+)/)||[])[1]||512);return this.modelLab.trainTokenizer(Math.max(280,Math.min(n,32000)));}
+    const ownerId=context.ownerId||null;
+    const approvalId=(String(message).match(/\bapproval\s+(approval-[\w-]+)/i)||[])[1]||null;
+    const authorizeTraining=(operation,args)=>{
+      if(!ownerId)return {state:"DENIED",message:"Authenticated owner identity is required for model training."};
+      if(!this.approvalStore)return {state:"BLOCKED",message:"Approval store is not configured; high-risk model training cannot run."};
+      const binding={operation,arguments:args,capability:"models.execute",actor:ownerId,toolVersion:"onechat-model-training-v1",actionEnvelopeId:null,taskId:null};
+      if(!approvalId){
+        const approval=this.approvalStore.request({...binding,risk:"high"});
+        return {state:"ASK",message:"Explicit approval is required before model training.",approval,binding};
+      }
+      const checked=this.approvalStore.validate(approvalId,binding);
+      if(checked.state!=="SUCCESS")return {...checked,message:checked.message||"Model training approval was not valid for this exact request."};
+      return {state:"SUCCESS",binding,approval:checked.approval||null};
+    };
+    if(/train\s+tokenizer|tokenizer\s+train/i.test(message)&&this.modelLab){
+      const n=Number((message.match(/(\d+)/)||[])[1]||512),vocabSize=Math.max(280,Math.min(n,32000));
+      const gate=authorizeTraining("onechat.model.tokenizer.train",{vocabSize});
+      if(gate.state!=="SUCCESS")return gate;
+      return this.modelLab.trainTokenizer(vocabSize);
+    }
     if(/train/i.test(message)){
-      const n=Number((message.match(/(\d+)\s*steps?/i)||[])[1]||40);const pm=message.match(/preset\s+([\w-]+)/i);const preset=pm?pm[1]:"termux-tiny";
-      return this.modelLab?this.modelLab.train({steps:Math.max(1,Math.min(n,10000)),preset}):this.forgelm.train(Math.max(1,Math.min(n,10000)));
+      const n=Number((message.match(/(\d+)\s*steps?/i)||[])[1]||40),steps=Math.max(1,Math.min(n,10000));const pm=message.match(/preset\s+([\w-]+)/i);const preset=pm?pm[1]:"termux-tiny";
+      const gate=authorizeTraining("onechat.model.train",{steps,preset});
+      if(gate.state!=="SUCCESS")return gate;
+      return this.modelLab?this.modelLab.train({steps,preset}):this.forgelm.train(steps,{preset});
     }
     if(/benchmark/i.test(message)&&this.modelLab)return this.modelLab.benchmark();
     if(/presets?|model lab/i.test(message)&&this.modelLab)return this.modelLab.status();
