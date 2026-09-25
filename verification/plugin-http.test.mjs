@@ -26,17 +26,15 @@ const manifest={
   risk:"medium",
   timeoutMs:2000,
   reversible:true,
-  operations:[
-    {
-      name:"fetch",
-      risk:"medium",
-      external:true,
-      reversible:true,
-      idempotencyRequired:true,
-      inputSchema:{type:"object",required:["url"],properties:{url:{type:"string"}},additionalProperties:false},
-      outputSchema:{type:"object",required:["ok"],properties:{ok:{type:"boolean"}},additionalProperties:false}
-    }
-  ],
+  operations:[{
+    name:"fetch",
+    risk:"medium",
+    external:true,
+    reversible:true,
+    idempotencyRequired:true,
+    inputSchema:{type:"object",required:["url"],properties:{url:{type:"string"}},additionalProperties:false},
+    outputSchema:{type:"object",required:["ok"],properties:{ok:{type:"boolean"}},additionalProperties:false}
+  }],
   provenance:{source:"http-test",sha256:"2".repeat(64)}
 };
 manifest.signature={
@@ -52,7 +50,6 @@ const child=spawn(process.execPath,["server.js"],{
     ...process.env,
     PORT:String(port),
     IUV_STATE_DIR:root,
-    IUV_OWNER_TOKEN:"TEST_OWNER_TOKEN_v046_0123456789abcdef",
     IUV_PLUGIN_SANDBOX_COMMAND:"cat >/dev/null; echo '{\"ok\":true}'"
   },
   stdio:["ignore","pipe","pipe"]
@@ -61,19 +58,32 @@ child.stdout.on("data",d=>stdout+=d);
 child.stderr.on("data",d=>stderr+=d);
 
 const base=`http://127.0.0.1:${port}`;
-const auth={"authorization":"Bearer TEST_OWNER_TOKEN_v046_0123456789abcdef"};
+const email="plugin-test@example.local",password="PluginTestPassword-12345";
+function sessionFrom(res,body){
+  const raw=res.headers.get("set-cookie")||"";
+  const session=raw.match(/uai_session=([^;,]+)/)?.[1];
+  const csrfCookie=raw.match(/uai_csrf=([^;,]+)/)?.[1];
+  const csrf=body.csrfToken||decodeURIComponent(csrfCookie||"");
+  assert.ok(session&&csrf);
+  return {cookie:`uai_session=${session}; uai_csrf=${csrfCookie}`,csrf};
+}
 try{
   let ready=false;
   for(let i=0;i<60;i++){
-    try{
-      const r=await fetch(base+"/api/status");
-      if(r.ok){ready=true;break;}
-    }catch{}
+    try{const r=await fetch(base+"/api/status");if(r.ok){ready=true;break;}}catch{}
     await new Promise(r=>setTimeout(r,100));
   }
   assert.equal(ready,true,`server did not start\nstdout=${stdout}\nstderr=${stderr}`);
 
-  const reg=await fetch(base+"/api/plugins-v1/register",{method:"POST",headers:{"content-type":"application/json",...auth},body:JSON.stringify({manifest})});
+  const enrollRaw=await fetch(base+"/api/auth/enroll",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email,password})});
+  const enroll=await enrollRaw.json();
+  assert.equal(enrollRaw.status,201);
+  assert.equal(enroll.state,"SUCCESS");
+  const auth=sessionFrom(enrollRaw,enroll);
+  const readHeaders={cookie:auth.cookie};
+  const writeHeaders={"content-type":"application/json","cookie":auth.cookie,"x-uai-csrf":auth.csrf};
+
+  const reg=await fetch(base+"/api/plugins-v1/register",{method:"POST",headers:writeHeaders,body:JSON.stringify({manifest})});
   const registered=await reg.json();
   assert.equal(registered.state,"SUCCESS");
   assert.equal(registered.plugin.signatureState,"SIGNED_VERIFIED");
@@ -81,7 +91,7 @@ try{
   const body={pluginId:"http.fixture",operation:"fetch",input:{url:"https://api.example.com/search?q=uai"}};
   const call=()=>fetch(base+"/api/plugins-v1/execute",{
     method:"POST",
-    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1",...auth},
+    headers:{...writeHeaders,"Idempotency-Key":"http-key-1"},
     body:JSON.stringify(body)
   }).then(r=>r.json());
 
@@ -93,13 +103,13 @@ try{
   assert.equal(second.state,"SUCCESS");
   assert.equal(second.idempotentReplay,true);
 
-  const audit=await fetch(base+"/api/audit?limit=200",{headers:auth}).then(r=>r.json());
+  const audit=await fetch(base+"/api/audit?limit=200",{headers:readHeaders}).then(r=>r.json());
   const sandboxRuns=audit.filter(x=>x.type==="plugin.sandbox.complete"&&x.pluginId==="http.fixture");
   assert.equal(sandboxRuns.length,1);
 
   const collision=await fetch(base+"/api/plugins-v1/execute",{
     method:"POST",
-    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1",...auth},
+    headers:{...writeHeaders,"Idempotency-Key":"http-key-1"},
     body:JSON.stringify({...body,input:{url:"https://api.example.com/other"}})
   }).then(r=>r.json());
   assert.equal(collision.state,"DENIED");
@@ -114,5 +124,4 @@ try{
   await new Promise(resolve=>{child.once("close",resolve);setTimeout(resolve,1000);});
   fs.rmSync(root,{recursive:true,force:true});
 }
-
-console.log("v0.44 plugin HTTP gateway integration tests passed");
+console.log("v0.44 plugin HTTP gateway integration tests passed with owner session + CSRF");
