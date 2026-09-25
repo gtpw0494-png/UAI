@@ -181,3 +181,10 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - Added a truthful PARTIAL state for conversation rehydration after process restart.
 - Added email/password owner bootstrap for local first run, explicit credential rotation for upgrades, active-session revocation, and explicit retirement tests for legacy bearer-owner tokens.
 
+
+
+## v0.51.0 — Durable Conversation Rehydration
+- Rehydrates recent persisted OneChat user/assistant turns for the same `chatId` after a process restart.
+- Applies the existing context-token budget and 40-turn cap during restoration and keeps unrelated chat IDs isolated.
+- Makes restored history available before follow-up intent classification and before local model routing/generation.
+- Adds an auditable rehydration event and dedicated regression coverage in `verification/conversation-memory-v051.test.mjs`.

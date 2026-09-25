@@ -171,6 +171,13 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — integrity-hashed OneChat evidence envelope with claim support states, cited chunks, model route and tool-call summaries.
 - IMPLEMENTED + VERIFIED — user-facing `explain answer` evidence summary without private chain-of-thought.
 - IMPLEMENTED + VERIFIED — stable per-tab browser chat ID for live context continuity.
-- PARTIAL — persisted chat-turn/evidence records are not yet rehydrated into full model context after a process restart.
+- IMPLEMENTED + VERIFIED — persisted chat-turn records are rehydrated into bounded per-chat model context after process restart when the same chatId is reused; unrelated chats remain isolated.
 - IMPLEMENTED + VERIFIED — owner credential bootstrap/rotation from local environment or explicit local CLI; legacy bearer-owner authentication is disabled and active sessions are revoked on credential rotation.
 
+
+
+## v0.51.0 additions
+- IMPLEMENTED + VERIFIED — restart-safe conversation rehydration from persisted `chat-turn` records into the existing bounded native conversation context.
+- IMPLEMENTED + VERIFIED — restored history participates in follow-up intent detection before routing and in the subsequent local model prompt.
+- VERIFIED — chat isolation, 40-turn cap, context-token compaction and no-cross-chat restoration are covered by `verification/conversation-memory-v051.test.mjs`.
+- BOUNDARY — this is local persisted conversation continuity, not hidden chain-of-thought persistence and not a claim of proprietary-model parity.

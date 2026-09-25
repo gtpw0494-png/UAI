@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.50.0",
+  "version": "0.51.0",
   "private": true,
-  "description": "Context-engineered OneChat with conversational continuity, governed multi-source web research, evidence-native synthesis, local model routing and owner-controlled execution.",
+  "description": "Context-engineered OneChat with restart-safe conversational continuity, governed multi-source web research, evidence-native synthesis, local model routing and owner-controlled execution.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -53,7 +53,8 @@
     "test:owner-auth": "node verification/owner-bootstrap-v049.test.mjs",
     "owner:configure": "node scripts/configure-owner.mjs",
     "owner:run": "bash scripts/run-owner-local.sh",
-    "test:conversation-research": "node verification/conversation-research-v050.test.mjs"
+    "test:conversation-research": "node verification/conversation-research-v050.test.mjs",
+    "test:conversation-memory": "node verification/conversation-memory-v051.test.mjs"
   },
   "engines": {
     "node": ">=20"

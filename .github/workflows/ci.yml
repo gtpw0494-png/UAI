@@ -72,6 +72,9 @@ jobs:
       - name: Verify v0.50 conversational continuity and governed web research
         run: npm run test:conversation-research
 
+      - name: Verify v0.51 durable conversation rehydration
+        run: npm run test:conversation-memory
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 

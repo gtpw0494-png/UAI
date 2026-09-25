@@ -1,6 +1,14 @@
-# IntraultUniversalion v0.49.0
+# IntraultUniversalion v0.51.0
 
 A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
+
+## v0.51 durable conversation rehydration
+
+- Persisted OneChat `chat-turn` records are now rehydrated into the native conversation engine after a process restart when the same `chatId` is reused.
+- Rehydration is local-only, chat-scoped and bounded by the existing context-token and 40-turn limits; unrelated chats are not mixed.
+- Follow-up intent detection sees the restored history before routing, so `continue`, pronoun/reference follow-ups and model prompts regain prior context after restart.
+- Rehydration emits auditable success/PARTIAL metadata and does not fabricate memory when no persisted turn exists.
+- Governed multi-source research and evidence-native routing from v0.50 remain additive and unchanged.
 
 ## v0.49 evidence-native model routing
 

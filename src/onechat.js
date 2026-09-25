@@ -9,6 +9,7 @@ function ids(message,re){const m=String(message).match(re);return m?m.slice(1):n
 export class OneChatRouter{
  constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();this.lastEvidence=new Map();}
  _intent(message,chatId){
+  this.conversation?.ensureHistory?.(chatId);
   const text=String(message||"").trim(),history=this.conversation?._history?.(chatId)||[];
   const research=/(?:latest|current|today|recent|web|internet|research|sources?|citations?|look up|search for|verify online|news|compare.*sources)/i.test(text);
   const followup=history.length>0&&/^(?:and|also|but|so|then|what about|how about|why|how|when|where|who|which|can you|could you|would you|continue|go on|tell me more|explain that|expand|more)\b/i.test(text);
@@ -181,7 +182,7 @@ export class OneChatRouter{
   const evidenceEnvelope=new EvidenceEnvelope({
     responseId,answer,
     model:conversationResult?.modelUsed?{id:conversationResult.model||conversationResult.modelRoute?.selected?.id||null,provider:conversationResult.runtime||conversationResult.modelRoute?.selected?.provider||null,route:conversationResult.modelRoute||null}:null,
-    promptVersion:"onechat-v0.49",
+    promptVersion:"onechat-v0.51",
     claims:[{claim:answer,support,status:claimStatus,confidence:null}],
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
     metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null}
