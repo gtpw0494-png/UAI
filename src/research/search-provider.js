@@ -1,9 +1,22 @@
+import dns from "node:dns/promises";
+import net from "node:net";
 import {inspectExternalContent,sanitizeExternalText} from "../content-security.js";
 
 const clean=x=>String(x??"").replace(/\s+/g," ").trim();
 const stripHtml=s=>clean(String(s||"").replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi," ").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi," ").replace(/<[^>]+>/g," "));
 const decode=s=>String(s||"").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#x27;|&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
 const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"");}catch{return "";}};
+function privateIp(ip){
+  if(net.isIP(ip)===4){const p=ip.split(".").map(Number);return p[0]===10||p[0]===127||p[0]===0||(p[0]===169&&p[1]===254)||(p[0]===172&&p[1]>=16&&p[1]<=31)||(p[0]===192&&p[1]===168);}
+  if(net.isIP(ip)===6){const x=ip.toLowerCase();return x==="::1"||x.startsWith("fc")||x.startsWith("fd")||x.startsWith("fe80:");}
+  return false;
+}
+async function assertPublic(url){
+  const u=new URL(url);if(!["http:","https:"].includes(u.protocol))throw new Error("Only public HTTP(S) research targets are supported.");
+  if(["localhost","localhost.localdomain"].includes(u.hostname.toLowerCase())||(net.isIP(u.hostname)&&privateIp(u.hostname)))throw new Error("Local/private research targets are blocked.");
+  const rows=await dns.lookup(u.hostname,{all:true});if(rows.some(x=>privateIp(x.address)))throw new Error("Research target resolves to a local/private address.");
+  return u;
+}
 function normalizeUrl(raw){
   try{
     const u=new URL(raw);
@@ -35,7 +48,7 @@ export class PublicWebSearchProvider{
     return {state:results.length?"SUCCESS":"UNAVAILABLE",message:results.length?`Found ${results.length} public web result(s).`:"Search returned no parseable public results.",provider:"duckduckgo-html",query:q,results};
   }
   async open(url,{maxBytes=800000}={}){
-    let u;try{u=new URL(url);if(!["http:","https:"].includes(u.protocol))throw new Error("Unsupported protocol.");}catch(e){return {state:"BLOCKED",message:String(e.message||e),url};}
+    let u;try{u=await assertPublic(url);}catch(e){return {state:"BLOCKED",message:String(e.message||e),url};}
     let r;try{r=await fetch(u,{redirect:"follow",headers:{"user-agent":"UAI-Research/0.50"},signal:AbortSignal.timeout(this.timeoutMs)});}catch(e){return {state:"UNAVAILABLE",message:String(e.message||e),url};}
     if(!r.ok)return {state:"UNAVAILABLE",message:`HTTP ${r.status}`,url:r.url};
     const type=(r.headers.get("content-type")||"").toLowerCase();if(!type.includes("text")&&!type.includes("json")&&!type.includes("xml"))return {state:"BLOCKED",message:`Unsupported research content type ${type||"unknown"}.`,url:r.url};
