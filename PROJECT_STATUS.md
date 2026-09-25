@@ -193,3 +193,12 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - PARTIAL / UNAVAILABLE AS COMPLETE — full multimodal ingestion; image understanding; layout-aware OCR; audio transcription; video understanding; dense embedding/reranking; complete cross-artifact provenance graph; production OS/kernel plugin isolation; federated and multimodal learning; distillation; large-scale model training; general-purpose LLM parity; automatic ensemble orchestration; large-scale autonomous research/source-maintenance populations; encrypted multi-device sync; enterprise identity federation; full IDE integration; full dependency graph; large-scale benchmark leaderboard; energy-aware scheduling; formal governance-kernel verification; complete self-hosted model marketplace/offline catalog; independent trusted-device/bootstrap proof.
 - NOT SUPPORTED — unbounded/infinite live agent generation and automated source-code promotion without separate local-owner authority.
 
+## v0.53.0 additions
+- IMPLEMENTED, PENDING FINAL PROMOTION — dedicated `shadow_runs`, `shadow_candidates`, `light_patches`, `light_worktrees` and `agent_jobs` SQLite tables with v0.52 compatibility migration.
+- IMPLEMENTED, PENDING FINAL PROMOTION — persistent bounded worker scheduling with queue/concurrency ceilings, priority, TTL expiry, lease ownership and stale-lease recovery.
+- IMPLEMENTED, PENDING FINAL PROMOTION — authenticated scheduler status/jobs/dispatch/maintenance APIs and single-chat operations dashboard covering tasks, capabilities, models, plugins, approvals, shadow/light state, evidence and audit integrity.
+- IMPLEMENTED — Termux control-plane status/jobs/dispatch/maintenance CLI.
+- PARTIAL — multi-query public-web research plus optional Brave Search API adapter; provider/network/index coverage remains conditional and exhaustive internet coverage is not claimed.
+- BOUNDARY — scheduler completion grants no promotion authority. Shadow candidates remain quarantined/governed and light patches remain outside protected-`main` merge authority until a separate owner-authorized promotion path acts.
+- STILL PARTIAL / UNAVAILABLE AS COMPLETE — multimodal ingestion/understanding/training, dense embeddings/reranking, complete provenance graph, production kernel sandboxing, federated learning, distillation at scale, model parity, automatic ensembles, encrypted multi-device sync, enterprise federation, full IDE integration, formal governance verification, complete marketplace/catalog, and independent bootstrap ownership proof.
+
