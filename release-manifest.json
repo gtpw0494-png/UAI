@@ -519,8 +519,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "7c78fecf5806f05b7a53ba5788d418a514a12eb700fd378ef26deccc45bd12d2",
-      "bytes": 47612
+      "sha256": "9b26454aff1db72549f068882feb3cd2973024ac8f6e7c05eeeda2f9759992e6",
+      "bytes": 44085
     },
     {
       "path": "src/action-envelope.js",
