@@ -30,6 +30,27 @@ export class LocalIdentity{
   if(r.state==="SUCCESS"){this.audit?.append({type:"identity.owner.bootstrap",identityId:OWNER_ID,source:"environment"});return {...r,bootstrapped:true};}
   return {...r,bootstrapped:false};
  }
+ configureOwner(email,password,{replace=false,credentialSource="LOCAL_CLI"}={}){
+  email=String(email||"").trim().toLowerCase();password=String(password||"");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return {state:"BLOCKED",message:"A valid email is required."};
+  if(password.length<12)return {state:"BLOCKED",message:"Password must contain at least 12 characters."};
+  const current=this.db.get("identity",OWNER_ID);
+  if(current.record?.passwordHash&&!replace)return {state:"DENIED",message:"Owner identity already exists. Re-run with explicit replace authorization."};
+  if(!current.record?.passwordHash)return this.enroll(email,password,{credentialSource});
+  const salt=crypto.randomBytes(16).toString("hex");
+  const rec={...current.record,email,passwordSalt:salt,passwordHash:derive(password,salt),status:"ACTIVE",credentialSource:String(credentialSource||"LOCAL_CLI").slice(0,64),credentialsUpdatedAt:new Date().toISOString()};
+  const r=this.db.cas("identity",OWNER_ID,current.version,rec,{type:"credential-rotation"});
+  if(r.state!=="SUCCESS")return {state:r.state,message:r.message||"Owner credential update failed."};
+  let revoked=0;
+  for(const s of this.db.list("session",10000).records||[]){
+    if(s.identityId!==OWNER_ID||s.status!=="ACTIVE"||!Number.isFinite(Number(s._version)))continue;
+    const { _version,...body }=s;
+    const rr=this.db.cas("session",s.id,_version,{...body,status:"REVOKED",revokedAt:new Date().toISOString(),revokeReason:"owner-credential-rotation"},{type:"credential-rotation-revoke"});
+    if(rr.state==="SUCCESS")revoked++;
+  }
+  this.audit?.append({type:"identity.owner.credentials.rotated",identityId:OWNER_ID,credentialSource:rec.credentialSource,revokedSessions:revoked});
+  return {state:"SUCCESS",message:"Owner credentials updated and active sessions revoked.",identity:{id:OWNER_ID,email,role:"owner"},revokedSessions:revoked,credentialSource:rec.credentialSource};
+ }
  verify(email,password){const o=this.db.get("identity",OWNER_ID).record;if(!o?.passwordHash||o.status!=="ACTIVE"||String(email||"").trim().toLowerCase()!==o.email)return false;return eqHex(derive(password,o.passwordSalt),o.passwordHash);}
  login(email,password){if(!this.verify(email,password))return {state:"DENIED",message:"Email or password is invalid."};const sessionToken=crypto.randomBytes(32).toString("base64url"),csrfToken=crypto.randomBytes(24).toString("base64url"),now=Date.now(),id="session-"+hash(sessionToken),session={id,identityId:OWNER_ID,role:"owner",scopes:["*"],csrfHash:hash(csrfToken),status:"ACTIVE",createdAt:new Date(now).toISOString(),expiresAt:new Date(now+this.sessionMs).toISOString()};const r=this.db.create("session",session);if(r.state!=="SUCCESS")return {state:"ERROR",message:r.message||"Failed to create session."};this.audit?.append({type:"identity.login",identityId:OWNER_ID,sessionId:id});return {state:"SUCCESS",message:"Owner session created.",sessionToken,csrfToken,identity:{id:OWNER_ID,role:"owner",email:String(email).trim().toLowerCase()},expiresAt:session.expiresAt};}
  authenticateRequest(req){const sessionToken=cookies(req).uai_session;if(!sessionToken)return {authenticated:false,reason:"No owner session."};const id="session-"+hash(sessionToken),s=this.db.get("session",id).record;if(!s||s.status!=="ACTIVE")return {authenticated:false,reason:"Session unavailable."};if(Date.now()>Date.parse(s.expiresAt||0))return {authenticated:false,reason:"Session expired."};return {authenticated:true,identityId:s.identityId,role:s.role,scopes:s.scopes||[],authMode:"session",csrfRequired:true,sessionId:id,csrfHash:s.csrfHash};}
