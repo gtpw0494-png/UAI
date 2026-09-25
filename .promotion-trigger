@@ -1,5 +1,5 @@
-UAI v0.52.0 direct-main verification trigger
-requirements=authoritative-ci+shadow-light-bounded-agents+governance-protection+http-integration+manifest-reproducibility
+UAI v0.53.0 direct-main verification trigger
+requirements=authoritative-ci+typed-control-plane+bounded-lease-scheduler+legacy-migration+http-integration+dashboard+manifest-reproducibility
 main-advance=user-directed
-feature=bounded-shadow-rd+isolated-light-maintenance+protected-local-governance+truthful-platform-roadmap
-truth=multimodal+dense-retrieval+federated-learning+formal-verification+independent-bootstrap-proof-remain-incomplete
+feature=dedicated-shadow-light-tables+persistent-agent-jobs+lease-recovery+ttl-expiry+owner-governed-dispatch+operations-dashboard
+truth=promotion-authority-remains-separate+multimodal+dense-retrieval+federated-learning+formal-verification+independent-bootstrap-proof-remain-incomplete
