@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.51.0",
+  "version": "0.52.0",
   "private": true,
-  "description": "Context-engineered OneChat with restart-safe conversational continuity, governed multi-source web research, evidence-native synthesis, local model routing and owner-controlled execution.",
+  "description": "Independent local-first AI operating environment with durable conversation, evidence-native research, bounded shadow R&D, isolated light-agent source improvement, local model routing and owner-governed promotion.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -54,7 +54,14 @@
     "owner:configure": "node scripts/configure-owner.mjs",
     "owner:run": "bash scripts/run-owner-local.sh",
     "test:conversation-research": "node verification/conversation-research-v050.test.mjs",
-    "test:conversation-memory": "node verification/conversation-memory-v051.test.mjs"
+    "test:conversation-memory": "node verification/conversation-memory-v051.test.mjs",
+    "test:shadow-light": "node verification/shadow-light-v052.test.mjs",
+    "shadow:status": "node scripts/shadow-cli.js status",
+    "shadow:agents": "node scripts/shadow-cli.js agents",
+    "shadow:runs": "node scripts/shadow-cli.js runs",
+    "light:status": "node scripts/light-cli.js status",
+    "light:agents": "node scripts/light-cli.js agents",
+    "light:patches": "node scripts/light-cli.js patches"
   },
   "engines": {
     "node": ">=20"
