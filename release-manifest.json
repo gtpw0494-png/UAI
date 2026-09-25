@@ -714,8 +714,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "c2caafcb8dcacb020fd3be2c1980cdf93ca662d7433a4e0352788693d8537c66",
-      "bytes": 8646
+      "sha256": "8222839c3cd8d9665c5578be946f20e80aac09bbfde418bd4d40f2103238fe1a",
+      "bytes": 8747
     },
     {
       "path": "src/governance/capability-boundary.js",
