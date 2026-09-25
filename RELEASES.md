@@ -1,5 +1,14 @@
 # Release history
 
+## v0.54.0 — User-Owned Intelligence Plane
+- Added typed local memory with explicit consent, inspectable source/reason, retention, expiry, training opt-in, deletion controls and optional AES-256-GCM at-rest protection.
+- Added queryable provenance nodes/edges, lineage tracing, dry-run purge planning and memory deletion propagation without overstating full cross-store erasure.
+- Added policy workflow simulation and richer final-call policy metadata/integrity proofs.
+- Added model artifact hashing/signature verification and persistent evaluation/leaderboard records that do not confuse registration with runtime availability.
+- Added OneChat, authenticated HTTP, dashboard and Termux surfaces plus dedicated system/integration tests.
+- Full multimodal ingestion, dense neural retrieval/reranking, full cross-store provenance purge, production kernel sandbox isolation, encrypted multi-device sync and federated personalization remain incomplete.
+
+
 ## v0.53.0 — Persistent Agent Control Plane
 - Migrated shadow runs/candidates and light patches/worktrees into dedicated SQLite tables while preserving v0.52 records through compatibility migration.
 - Added persistent bounded `agent_jobs` scheduling with concurrency/queue limits, priority, TTL expiry, lease recovery and explicit worker dispatch.
