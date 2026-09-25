@@ -193,9 +193,34 @@
       "bytes": 649
     },
     {
+      "path": "model/eval/__init__.py",
+      "sha256": "860eadcac4b8fddb936cacd55194fd08714e1da4c997a3cf64192f085b83f400",
+      "bytes": 131
+    },
+    {
+      "path": "model/eval/promotion_score.py",
+      "sha256": "ebd02c7f89e3f1cdedd4b8352198515397e1a74701ae4709d29c4c6464d72de9",
+      "bytes": 2460
+    },
+    {
+      "path": "model/forgecode.py",
+      "sha256": "99abc296cd8d0effd72e97749870ed182065f16e39bc6da3d4289591402f657f",
+      "bytes": 7216
+    },
+    {
       "path": "model/forgelm.py",
       "sha256": "3b6ac1cfc6f4dec9587af7b314e2fd121cbc4906de65e83f1495b1d82b8e6c17",
       "bytes": 11577
+    },
+    {
+      "path": "model/forgereason.py",
+      "sha256": "880b14b4b69ad714b2f404a3364d6bb2f26df25fc8def444022edda69b39dcf4",
+      "bytes": 3746
+    },
+    {
+      "path": "model/forgestructured.py",
+      "sha256": "c37104d6ffef22dc94e44951babf59a949058f377a1c4033e14ae632c6f735b3",
+      "bytes": 4614
     },
     {
       "path": "model/hardware_profile.py",
