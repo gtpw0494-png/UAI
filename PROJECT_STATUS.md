@@ -181,3 +181,15 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — restored history participates in follow-up intent detection before routing and in the subsequent local model prompt.
 - VERIFIED — chat isolation, 40-turn cap, context-token compaction and no-cross-chat restoration are covered by `verification/conversation-memory-v051.test.mjs`.
 - BOUNDARY — this is local persisted conversation continuity, not hidden chain-of-thought persistence and not a claim of proprietary-model parity.
+
+## v0.52.0 additions
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — bounded virtual shadow-agent R&D with resource ceilings, persistent lifecycle records, research-agent registry, disagreement detection, quarantined candidate storage and independent promotion gates.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — bounded light-agent source-maintenance system with isolated detached worktrees, patch lifecycle records, mandatory changed-file/reason/test/risk/dependency/rollback/evidence fields, test/security/shadow review and cleanup/rollback.
+- IMPLEMENTED, PENDING AUTHORITATIVE CI — protected local governance extensions covering policy storage, protected-rule classification, emergency stop, capability boundary, audit verification and trusted-device enrollment/revocation records.
+- IMPLEMENTED — runtime roadmap catalog for model categories/runtimes, learning methods, retrieval layers, memory classes, plugin/connector/tool categories, benchmark tracks and observability metrics.
+- BOUNDARY — a shadow candidate remains `productionEligible=false` and `trainingEligible=false` after research acceptance; a separate governed downstream process must act on it.
+- BOUNDARY — light-agent promotion only makes a tested patch promotion-eligible; light agents cannot commit or merge directly to protected `main`.
+- BOUNDARY — trusted-device registration currently records a public-key fingerprint but does **not** claim independent hardware/bootstrap ownership proof.
+- PARTIAL / UNAVAILABLE AS COMPLETE — full multimodal ingestion; image understanding; layout-aware OCR; audio transcription; video understanding; dense embedding/reranking; complete cross-artifact provenance graph; production OS/kernel plugin isolation; federated and multimodal learning; distillation; large-scale model training; general-purpose LLM parity; automatic ensemble orchestration; large-scale autonomous research/source-maintenance populations; encrypted multi-device sync; enterprise identity federation; full IDE integration; full dependency graph; large-scale benchmark leaderboard; energy-aware scheduling; formal governance-kernel verification; complete self-hosted model marketplace/offline catalog; independent trusted-device/bootstrap proof.
+- NOT SUPPORTED — unbounded/infinite live agent generation and automated source-code promotion without separate local-owner authority.
+
