@@ -26,11 +26,12 @@ export class ResearchEngine{
     const uniq=[];for(const r of all){if(!uniq.some(x=>x.url===r.url))uniq.push(r);}
     const selected=diversify(uniq,Math.max(2,Math.min(12,Number(maxSources)||8))),sources=[];
     for(const hit of selected){
-      const page=await this.provider.open(hit.url);if(page.state!=="SUCCESS"||page.security?.risk==="HIGH")continue;
+      const page=await this.provider.open(hit.url);if(page.state!=="SUCCESS")continue;
       const ranked=sentences(page.text).map(text=>({text,score:overlap(query,text)})).sort((a,b)=>b.score-a.score).filter(x=>x.score>0).slice(0,4);
       const source={source_id:"web-"+crypto.createHash("sha256").update(page.url).digest("hex").slice(0,16),title:page.title||hit.title,url:page.url,domain:page.domain,retrieved_at:page.retrievedAt,security:page.security,instruction_authority:"NONE",snippets:ranked};
+      if(page.security?.risk==="HIGH"){source.quarantine_state="QUARANTINED";source.snippets=[];sources.push(source);continue;}
       sources.push(source);
-      if(store&&this.documentStore&&page.security?.risk!=="HIGH")await this.documentStore.ingest({source_id:source.source_id,source_name:source.title,source_type:"live-web-research",source_url:page.url,original_uri:page.url,canonical_uri:page.url,title:source.title,language:"unknown",mime_type:page.contentType,publisher:page.domain,retrieved_at:page.retrievedAt,license:"UNKNOWN",license_source:"UNVERIFIED",text:page.text,retrieval_eligible:true,source_training_eligible:false,training_approved:false,provenance:{researchQuery:query,instructionAuthority:"NONE"},security:page.security});
+      if(store&&this.documentStore)await this.documentStore.ingest({source_id:source.source_id,source_name:source.title,source_type:"live-web-research",source_url:page.url,original_uri:page.url,canonical_uri:page.url,title:source.title,language:"unknown",mime_type:page.contentType,publisher:page.domain,retrieved_at:page.retrievedAt,license:"UNKNOWN",license_source:"UNVERIFIED",text:page.text,retrieval_eligible:true,source_training_eligible:false,training_approved:false,provenance:{researchQuery:query,instructionAuthority:"NONE"},security:page.security});
     }
     const evidence=sources.flatMap(s=>s.snippets.map(x=>({...x,source_id:s.source_id,title:s.title,url:s.url,domain:s.domain,retrieved_at:s.retrieved_at}))).sort((a,b)=>b.score-a.score);
     const state=evidence.length?"SUCCESS":sources.length?"PARTIAL":"UNAVAILABLE";
