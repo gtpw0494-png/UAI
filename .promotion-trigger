@@ -1,5 +1,5 @@
-UAI v0.51.0 direct-main verification trigger
-requirements=authoritative-ci+conversation-memory+conversation-research+manifest-reproducibility
+UAI v0.52.0 direct-main verification trigger
+requirements=authoritative-ci+shadow-light-bounded-agents+governance-protection+http-integration+manifest-reproducibility
 main-advance=user-directed
-feature=durable-conversation-rehydration+context-engineered-conversation+governed-live-web-research
-truth=restart-continuity-is-chat-scoped+bounded+local
+feature=bounded-shadow-rd+isolated-light-maintenance+protected-local-governance+truthful-platform-roadmap
+truth=multimodal+dense-retrieval+federated-learning+formal-verification+independent-bootstrap-proof-remain-incomplete
