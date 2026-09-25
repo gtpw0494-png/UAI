@@ -759,8 +759,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "eb25cb8848b7954dda364c44a590e0c834f694e2253809fc285c3789eaaa5016",
-      "bytes": 15485
+      "sha256": "fd030c53b45d32e691340313bd7b086a2bcf43dd8b2a2c50f7d99ab5e4b5576d",
+      "bytes": 15961
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -1396,6 +1396,11 @@
       "path": "verification/knowledge-learning-pipeline.test.mjs",
       "sha256": "6d1cf27737d7582eb658f70455437f602f175e20d3ab8b10ec8bda1c6faf9006",
       "bytes": 1843
+    },
+    {
+      "path": "verification/knowledge-research-scheduler.test.mjs",
+      "sha256": "13b3c90583ab3c5aede45742cca74119816ca4be6f4e336dd1961c636c497a4c",
+      "bytes": 1728
     },
     {
       "path": "verification/knowledge-training-job.test.mjs",
