@@ -52,6 +52,7 @@ const child=spawn(process.execPath,["server.js"],{
     ...process.env,
     PORT:String(port),
     IUV_STATE_DIR:root,
+    IUV_OWNER_TOKEN:"TEST_OWNER_TOKEN_v046_0123456789abcdef",
     IUV_PLUGIN_SANDBOX_COMMAND:"cat >/dev/null; echo '{\"ok\":true}'"
   },
   stdio:["ignore","pipe","pipe"]
@@ -60,6 +61,7 @@ child.stdout.on("data",d=>stdout+=d);
 child.stderr.on("data",d=>stderr+=d);
 
 const base=`http://127.0.0.1:${port}`;
+const auth={"authorization":"Bearer TEST_OWNER_TOKEN_v046_0123456789abcdef"};
 try{
   let ready=false;
   for(let i=0;i<60;i++){
@@ -71,7 +73,7 @@ try{
   }
   assert.equal(ready,true,`server did not start\nstdout=${stdout}\nstderr=${stderr}`);
 
-  const reg=await fetch(base+"/api/plugins-v1/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({manifest})});
+  const reg=await fetch(base+"/api/plugins-v1/register",{method:"POST",headers:{"content-type":"application/json",...auth},body:JSON.stringify({manifest})});
   const registered=await reg.json();
   assert.equal(registered.state,"SUCCESS");
   assert.equal(registered.plugin.signatureState,"SIGNED_VERIFIED");
@@ -79,7 +81,7 @@ try{
   const body={pluginId:"http.fixture",operation:"fetch",input:{url:"https://api.example.com/search?q=uai"}};
   const call=()=>fetch(base+"/api/plugins-v1/execute",{
     method:"POST",
-    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1"},
+    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1",...auth},
     body:JSON.stringify(body)
   }).then(r=>r.json());
 
@@ -91,13 +93,13 @@ try{
   assert.equal(second.state,"SUCCESS");
   assert.equal(second.idempotentReplay,true);
 
-  const audit=await fetch(base+"/api/audit?limit=200").then(r=>r.json());
+  const audit=await fetch(base+"/api/audit?limit=200",{headers:auth}).then(r=>r.json());
   const sandboxRuns=audit.filter(x=>x.type==="plugin.sandbox.complete"&&x.pluginId==="http.fixture");
   assert.equal(sandboxRuns.length,1);
 
   const collision=await fetch(base+"/api/plugins-v1/execute",{
     method:"POST",
-    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1"},
+    headers:{"content-type":"application/json","Idempotency-Key":"http-key-1",...auth},
     body:JSON.stringify({...body,input:{url:"https://api.example.com/other"}})
   }).then(r=>r.json());
   assert.equal(collision.state,"DENIED");
