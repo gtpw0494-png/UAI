@@ -794,8 +794,8 @@
     },
     {
       "path": "src/models/artifact-verifier.js",
-      "sha256": "43a8feea02254307e79498483cc95b9388a1a350168546b295fa5bc41263060b",
-      "bytes": 3937
+      "sha256": "a60794621f3465188ecb13184060a3263683adebd5a510442c5dfe31f06050ac",
+      "bytes": 3951
     },
     {
       "path": "src/models/router.js",
