@@ -304,8 +304,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "bf4035a4a274174322a194f3b65d1b207a3810bb84f3d6ed2cb04819308d076a",
-      "bytes": 5415
+      "sha256": "302a3d3ecaadebc0b0f2e6266ff44ffd0445f1dda3d802d3256f3003cfd21ea2",
+      "bytes": 5495
     },
     {
       "path": "public/app.js",
