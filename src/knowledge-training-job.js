@@ -23,8 +23,8 @@ function sha256File(file){
   const h=crypto.createHash("sha256");h.update(fs.readFileSync(file));return h.digest("hex");
 }
 function writeJsonl(file,rows){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,rows.map(x=>JSON.stringify(x)).join("\n")+(rows.length?"\n":""),"utf8")}
-function materializeDataset(root,jobId,items=[]){
-  const dir=path.join(root,"state","knowledge-autonomy","training-jobs",jobId,"dataset");
+function materializeDataset(stateRoot,jobId,items=[]){
+  const dir=path.join(stateRoot,"knowledge-autonomy","training-jobs",jobId,"dataset");
   const rows=items.filter(x=>x?.training_eligible===true&&x?.verification?.verified===true).map(x=>({
     text:[String(x.subject||"").trim(),String(x.claim||"").trim()].filter(Boolean).join(": "),
     fact_id:x.fact_id||null,source_id:x.source_id||null,source_url:x.source_url||null,
@@ -43,9 +43,10 @@ export class KnowledgeTrainingJob {
   async execute(batch,{steps=Number(process.env.IUV_KNOWLEDGE_TRAIN_STEPS||20),preset=process.env.IUV_KNOWLEDGE_TRAIN_PRESET||"termux-tiny",timeoutMs=Number(process.env.IUV_KNOWLEDGE_TRAIN_TIMEOUT_MS||900000)}={}){
     const items=Array.isArray(batch?.batch)?batch.batch:[];
     const count=Number(batch?.count||items.length||0);
-    if(!count||!items.length)return{state:"BLOCKED",message:"No verified training examples are available.",trained:false};
+    const minBatch=Math.max(2,Number(process.env.IUV_KNOWLEDGE_MIN_BATCH||2));
+    if(count<minBatch||items.length<minBatch)return{state:"BLOCKED",message:`At least ${minBatch} verified examples are required so training keeps a held-out validation split.`,trained:false,min_batch:minBatch};
     const jobId="knowledge-train-"+crypto.randomUUID();
-    const dataset=materializeDataset(this.root,jobId,items);
+    const dataset=materializeDataset(path.resolve(this.stateRoot),jobId,items);
     if(!dataset.manifest.records)return{state:"BLOCKED",message:"Training batch contains no verified eligible records.",trained:false};
     const runName=jobId;
     const args=["model/trainer.py","--steps",String(Math.max(1,steps)),"--preset",preset,"--dataset",dataset.dir,"--run-name",runName];
