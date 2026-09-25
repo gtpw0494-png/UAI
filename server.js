@@ -37,6 +37,7 @@ import { LlamaCppRuntime } from "./src/model-runtime-adapter.js";
 import { Observability } from "./src/observability.js";
 import { IdempotencyStore } from "./src/idempotency-store.js";
 import { PluginGateway } from "./src/plugin-gateway.js";
+import { DocumentStore } from "./src/document-store.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -69,14 +70,15 @@ const forgelm = new ForgeLMBridge();
 const learning = new LearningFabric({store,audit,root:__dirname});
 const selfdev = new SelfDevelopmentEngine({root:__dirname,stateRoot:stateDir,store,workspace,audit});
 const modelLab = new ModelLab({learning,audit,stateRoot:stateDir});
-const webCorpus = new WebCorpus({root:__dirname,store,audit});
+const documentStore = new DocumentStore();
+const webCorpus = new WebCorpus({root:__dirname,store,audit,documentStore});
 const runtimeServices = new RuntimeServices();
 const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,documentStore,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
 const PORT = Number(process.env.PORT || 8787);
 
 function send(res,status,data,type="application/json"){res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(type==="application/json"?JSON.stringify(data,null,2):data);}
@@ -84,7 +86,7 @@ function readBody(req){return new Promise((resolve,reject)=>{let d="";req.on("da
 
 const server=http.createServer(async(req,res)=>{try{
   const url=new URL(req.url,`http://${req.headers.host}`);
-  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},auditIntegrity:audit.verify()});}
+  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},auditIntegrity:audit.verify()});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/model-runtime/llamacpp")return send(res,200,await llamaRuntime.status());
@@ -107,6 +109,14 @@ const server=http.createServer(async(req,res)=>{try{
     }));
   }
   if(req.method==="GET"&&url.pathname==="/api/data-lifecycle")return send(res,200,await storageDb.lifecycleStatus());
+  if(req.method==="GET"&&url.pathname==="/api/documents/status")return send(res,200,await documentStore.status());
+  if(req.method==="GET"&&url.pathname==="/api/documents")return send(res,200,await documentStore.list({limit:Number(url.searchParams.get("limit")||100),status:url.searchParams.get("status")||null}));
+  if(req.method==="GET"&&url.pathname==="/api/documents/get")return send(res,200,await documentStore.get(url.searchParams.get("id")||""));
+  if(req.method==="GET"&&url.pathname==="/api/documents/search")return send(res,200,await documentStore.search(url.searchParams.get("q")||"",Number(url.searchParams.get("limit")||8)));
+  if(req.method==="POST"&&url.pathname==="/api/documents/ingest")return send(res,200,await documentStore.ingest(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/documents/reindex")return send(res,200,await documentStore.reindex());
+  if(req.method==="POST"&&url.pathname==="/api/documents/delete"){const b=await readBody(req);return send(res,200,await documentStore.delete(b.id||"",b.reason||"user-requested deletion"));}
+  if(req.method==="POST"&&url.pathname==="/api/documents/purge"){const b=await readBody(req);return send(res,200,await documentStore.purge(b.id||"",b.reason||"user-requested purge"));}
   if(req.method==="GET"&&url.pathname==="/api/storage/status")return send(res,200,await storageDb.status());
   if(req.method==="GET"&&url.pathname==="/api/definitions"){return send(res,200,await storageDb.define(url.searchParams.get("term")||"",Number(url.searchParams.get("limit")||8)));}
   if(req.method==="GET"&&url.pathname==="/api/dialogue/search"){return send(res,200,await storageDb.banter(url.searchParams.get("q")||"",Number(url.searchParams.get("limit")||8),url.searchParams.get("style")||""));}
