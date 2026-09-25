@@ -17,7 +17,7 @@ export function modelTextQuality(text){
 export class ResponseComposer{
   constructor({allowRawModel=process.env.FORGELM_ALLOW_RAW_RESPONSES==="1"}={}){this.allowRawModel=allowRawModel;}
   compose({message,contributions=[]}){
-    const msg=textOf(message), fm=byAgent(contributions,"forgelm"), exp=byAgent(contributions,"explorative"), kn=byAgent(contributions,"knowledge"), res=byAgent(contributions,"research"), web=byAgent(contributions,"web-research"), dev=byAgent(contributions,"development"), learn=byAgent(contributions,"learning"), sys=byAgent(contributions,"systems"), lex=byAgent(contributions,"lexicon"), dlg=byAgent(contributions,"dialogue");
+    const msg=textOf(message), fm=byAgent(contributions,"forgelm"), exp=byAgent(contributions,"explorative"), kn=byAgent(contributions,"knowledge"), res=byAgent(contributions,"research"), web=byAgent(contributions,"web-research"), docs=byAgent(contributions,"documents"), dev=byAgent(contributions,"development"), learn=byAgent(contributions,"learning"), sys=byAgent(contributions,"systems"), lex=byAgent(contributions,"lexicon"), dlg=byAgent(contributions,"dialogue");
     if(isGreeting(msg))return {message:"Hello. OneChat is responding correctly. I can coordinate the local research, knowledge, development, learning, systems and ForgeLM agents from this single conversation.",mode:"governed-composer",modelUsed:false};
     if(fm){
       if(fm.message&&!fm.text)return {message:fm.message,mode:"agent-result",modelUsed:false};
@@ -28,9 +28,13 @@ export class ResponseComposer{
     if(lex?.definitions?.length){const d=lex.definitions[0];return {message:`${d.term}${d.pos?` (${d.pos})`:""}: ${d.definition}${d.example?` Example: ${d.example}`:""}`,mode:"lexicon-db",modelUsed:false};}
     if(lex?.relations?.length){const items=lex.relations.slice(0,8).map(r=>`${r.relation}: ${r.target_term}`).join("; ");return {message:`Lexical relationships for ${lex.term}: ${items}.`,mode:"lexicon-relations",modelUsed:false};}
     if(kn?.matches?.length){const items=kn.matches.slice(0,5).map(x=>`${x.kind}:${x.title||x.term||x.recordId} (${Number(x.score||0).toFixed(3)})`).join("; ");return {message:`Semantic retrieval found ${kn.matches.length} ranked local match${kn.matches.length===1?"":"es"}: ${items}.`,mode:"semantic-retrieval",modelUsed:false};}
+    if(docs?.matches?.length){
+      const refs=docs.matches.slice(0,5).map((x,i)=>"["+(i+1)+"] "+(x.title||x.canonical_uri||x.document_id)+" — "+x.chunk_id+" (rev "+x.revision+")").join("; ");
+      return {message:"Evidence retrieval found "+docs.matches.length+" eligible source chunk"+(docs.matches.length===1?"":"s")+": "+refs+".",mode:"evidence-retrieval",modelUsed:false,evidence:{status:"SUPPORTED",sources:docs.matches.slice(0,5).map(x=>({sourceId:x.source_id,documentId:x.document_id,chunkId:x.chunk_id,revision:x.revision,uri:x.canonical_uri,score:x.bm25,provenance:x.provenance}))}};
+    }
     if(dlg?.messages?.length){const sample=dlg.messages.slice(0,3).map(x=>x.text).join(" / ");return {message:`I found ${dlg.messages.length} local conversation record${dlg.messages.length===1?"":"s"}. Sample: ${sample}`,mode:"dialogue-db",modelUsed:false};}
     if(exp&&(exp.taskId||exp.task||exp.tasks||exp.plan)&&exp.message)return {message:exp.message,mode:"task-lifecycle",modelUsed:false};
-    const primary=[dev,learn,sys,web,res,kn].find(x=>x?.message);if(primary)return {message:primary.message,mode:"agent-result",modelUsed:false};
+    const primary=[dev,learn,sys,web,docs,res,kn].find(x=>x?.message);if(primary)return {message:primary.message,mode:"agent-result",modelUsed:false};
     if(exp){
       if(exp.message)return {message:exp.message,mode:"agent-result",modelUsed:false};
       const evidence=Array.isArray(exp.evidence)?exp.evidence:[];
