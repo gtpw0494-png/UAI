@@ -15,8 +15,8 @@ from knowledge_verifier import verify_batch, filter_training_batch
 def benchmark_knowledge_pipeline() -> dict:
     start = time.perf_counter()
     registry = [
-        {"id":"a","domain":"a.example","allowed":True,"trust":0.95},
-        {"id":"b","domain":"b.example","allowed":True,"trust":0.92},
+        {"id":"a","domain":"a.example","allowed":True,"trust":0.95,"training_policy":"FACT_EXTRACTION_ALLOWED"},
+        {"id":"b","domain":"b.example","allowed":True,"trust":0.92,"training_policy":"FACT_EXTRACTION_ALLOWED"},
         {"id":"blocked","domain":"bad.example","allowed":False,"trust":1.0},
     ]
     good = verify_batch([
