@@ -12,6 +12,8 @@ import { AgentRegistry, TaskEngine } from "./src/agent-system.js";
 import { ControlCenter } from "./src/control-center.js";
 import { OneChatRouter } from "./src/onechat.js";
 import { ForgeLMBridge } from "./src/forgelm-bridge.js";
+import { LocalCapabilityRouter } from "./src/local-capability-router.js";
+import { ForgeLocalOrchestrator } from "./src/local-capability-orchestrator.js";
 import { LearningFabric } from "./src/learning-fabric.js";
 import { dependencyStatus } from "./src/dependency-status.js";
 import { SelfDevelopmentEngine } from "./src/self-development.js";
@@ -91,6 +93,8 @@ const pluginExecutor = new PluginExecutor({registry:pluginRegistry,approvalStore
 const tasks = new TaskEngine({store,knowledge,providers:providerHub,research,development,explorative,agents,audit,taskStore,actionEnvelopes,policyEngine,approvalStore});
 const control = new ControlCenter(stateDir, audit);
 const forgelm = new ForgeLMBridge();
+const localCapabilityRouter = new LocalCapabilityRouter();
+const localOrchestrator = new ForgeLocalOrchestrator({ router: localCapabilityRouter });
 const modelRouter = new ModelRouter({candidates:buildLocalModelCandidates({llamaRuntime,forgelm}),audit});
 const conversation = new ConversationEngine({llamaRuntime,forgelm,modelRouter,store,audit});
 const learning = new LearningFabric({store,audit,root:__dirname});
@@ -120,9 +124,9 @@ const platformCatalog = platformCapabilityCatalog();
 const featureEvidence = JSON.parse(fs.readFileSync(path.join(__dirname,"governance","feature-evidence.json"),"utf8"));
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
-const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
+const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,runtimeServices,langgraph,localOrchestrator,localCapabilityRouter,modelRouter,modelRegistry,taskStore,approvalStore,autonomyStore,availabilityLedger,providerHub,modelArtifactVerifier,evaluationStore});
 const PORT = Number(process.env.PORT || 8787);
 
 const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
@@ -133,11 +137,11 @@ function send(res,status,data,type="application/json"){
     const small=JSON.stringify({state:"BLOCKED",message:"Response exceeded the configured API size limit.",maxBytes:MAX_RESPONSE_BYTES,requestId:res.getHeader("x-request-id")||null},null,2);
     res.writeHead(413,{"content-type":"application/json; charset=utf-8","cache-control":"no-store"});return res.end(small);
   }
-  res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(payload);
+  res.writeHead(status,{"content-type":`${type}; charset=utf-8","cache-control":"no-store"});res.end(payload);
 }
 function readBody(req){
   if(req._uaiBodyPromise)return req._uaiBodyPromise;
-  req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){const e=new Error("Request body exceeds 4 MB limit.");e.statusCode=400;reject(e);req.destroy();}});req.on("end",()=>{try{resolve(d?JSON.parse(d):{});}catch{const e=new Error("Request body must be valid JSON.");e.statusCode=400;reject(e);}});req.on("error",reject);});
+  req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){const e=new Error("Request body exceeds 4 MB limit.");e.statusCode=400;reject(e);}});req.on("end",()=>resolve(JSON.parse(d||"{}")));req.on("error",reject);});
   return req._uaiBodyPromise;
 }
 function allowedOrigin(req){
@@ -215,7 +219,30 @@ const server=http.createServer(async(req,res)=>{try{
       const out=identity.logout(req);res.setHeader("set-cookie",clearSessionCookies({secure:Boolean(req.socket.encrypted)}));return send(res,200,{...out,requestId,correlationId});
     }
   }
-  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const documents=await documentStore.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,documentDataPlane:documents,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),modelRouter:modelRouter.describe(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},governanceKernel:governanceKernel.status(auth),ownerAuthentication:{mode:"email-password-session",legacyBearerTokenAccepted:false,bootstrapState:ownerBootstrap.state,bootstrapApplied:ownerBootstrap.bootstrapped===true},shadow:shadow.status(),light:light.status(),controlPlane:{scheduler:agentScheduler.status(),storage:agentScheduler.db.status()},memory:auth.authenticated?memoryStore.status(auth.identityId):{state:"LOCKED",message:"Owner authentication required for memory status."},provenance:provenanceGraph.status(),evaluations:evaluationStore.status(),modelArtifacts:{count:modelArtifactVerifier.list(10000).length},policySimulation:{count:policySimulator.list(10000).length},platformCatalogSummary:{partialOrNotDemonstrated:platformCatalog.partialOrNotDemonstrated.length,modelCategories:platformCatalog.modelCategories.length,pluginTypes:platformCatalog.pluginTypes.length,toolAbilities:platformCatalog.toolAbilities.length},auditIntegrity:audit.verify()});}
+
+  if(req.method==="GET"&&url.pathname==="/api/local/status")return send(res,200,await localOrchestrator.promotionSnapshot());
+  if(req.method==="POST"&&url.pathname==="/api/local/chat"){
+    const b=await readBody(req);
+    const result=await localOrchestrator.chat(b.prompt || b.message || "", b.context || "");
+    return send(res,200,result);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/local/code"){
+    const b=await readBody(req);
+    const result=await localOrchestrator.code(b.prompt || b.message || "", b.context || "");
+    return send(res,200,result);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/local/reason"){
+    const b=await readBody(req);
+    const result=await localOrchestrator.reason(b.problem || b.prompt || b.message || "", b.context || "");
+    return send(res,200,result);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/local/structured"){
+    const b=await readBody(req);
+    const result=await localOrchestrator.structured(b.payload || b.text || b.prompt || b.message || "{}", b.context || "");
+    return send(res,200,result);
+  }
+
+  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const local=await localOrchestrator.promotionSnapshot();return send(res,200,{state:"SUCCESS",auth:identity.status(auth),deps,model,langgraph:lg,local,requestId,correlationId});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/models/route"){
@@ -251,8 +278,8 @@ const server=http.createServer(async(req,res)=>{try{
     }));
   }
   if(req.method==="GET"&&url.pathname==="/api/memory/status")return send(res,200,{...memoryStore.status(req.uaiSecurity.auth.identityId),settings:memoryStore.settings(req.uaiSecurity.auth.identityId)});
-  if(req.method==="GET"&&url.pathname==="/api/memory")return send(res,200,{state:"SUCCESS",items:memoryStore.list({ownerId:req.uaiSecurity.auth.identityId,namespace:url.searchParams.get("namespace")||null,sourceId:url.searchParams.get("sourceId")||null,limit:Number(url.searchParams.get("limit")||100),includeDeleted:url.searchParams.get("includeDeleted")==="true"})});
-  if(req.method==="GET"&&url.pathname==="/api/memory/search")return send(res,200,memoryStore.search(url.searchParams.get("q")||"",{ownerId:req.uaiSecurity.auth.identityId,namespace:url.searchParams.get("namespace")||null,limit:Number(url.searchParams.get("limit")||20)}));
+  if(req.method==="GET"&&url.pathname==="/api/memory")return send(res,200,{state:"SUCCESS",items:memoryStore.list({ownerId:req.uaiSecurity.auth.identityId,namespace:url.searchParams.get("namespace")||null,limit:Number(url.searchParams.get("limit")||50),includeDeleted:url.searchParams.get("includeDeleted")==="true"})});
+  if(req.method==="GET"&&url.pathname==="/api/memory/search")return send(res,200,memoryStore.search(url.searchParams.get("q")||"",{ownerId:req.uaiSecurity.auth.identityId,namespace:url.searchParams.get("namespace")||null,limit:Number(url.searchParams.get("limit")||10)}));
   if(req.method==="GET"&&url.pathname==="/api/memory/why")return send(res,200,memoryStore.why(url.searchParams.get("id")||"",req.uaiSecurity.auth.identityId));
   if(req.method==="GET"&&url.pathname==="/api/memory/export")return send(res,200,memoryStore.export(req.uaiSecurity.auth.identityId,{includeDeleted:url.searchParams.get("includeDeleted")==="true"}));
   if(req.method==="POST"&&url.pathname==="/api/memory/remember"){const b=await readBody(req);return send(res,200,memoryStore.remember({...b,ownerId:req.uaiSecurity.auth.identityId}));}
@@ -262,18 +289,18 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/memory/purge"){const b=await readBody(req);return send(res,200,memoryStore.purge(b.id,req.uaiSecurity.auth.identityId,b.reason));}
   if(req.method==="POST"&&url.pathname==="/api/memory/maintenance"){const b=await readBody(req);return send(res,200,memoryStore.maintenance(Number(b.now)||Date.now()));}
   if(req.method==="GET"&&url.pathname==="/api/provenance/status")return send(res,200,provenanceGraph.status());
-  if(req.method==="GET"&&url.pathname==="/api/provenance/nodes")return send(res,200,{state:"SUCCESS",nodes:provenanceGraph.listNodes({limit:Number(url.searchParams.get("limit")||100),type:url.searchParams.get("type")||null,ownerId:req.uaiSecurity.auth.identityId,state:url.searchParams.get("state")||null})});
-  if(req.method==="GET"&&url.pathname==="/api/provenance/trace")return send(res,200,provenanceGraph.trace(url.searchParams.get("id")||"",{direction:url.searchParams.get("direction")||"both",depth:Number(url.searchParams.get("depth")||4),limit:Number(url.searchParams.get("limit")||500)}));
+  if(req.method==="GET"&&url.pathname==="/api/provenance/nodes")return send(res,200,{state:"SUCCESS",nodes:provenanceGraph.listNodes({limit:Number(url.searchParams.get("limit")||100),type:url.searchParams.get("type")||null})});
+  if(req.method==="GET"&&url.pathname==="/api/provenance/trace")return send(res,200,provenanceGraph.trace(url.searchParams.get("id")||"",{direction:url.searchParams.get("direction")||"both",depth:Number(url.searchParams.get("depth")||3)}));
   if(req.method==="GET"&&url.pathname==="/api/provenance/purge-plan")return send(res,200,provenanceGraph.planPurge(url.searchParams.get("id")||""));
   if(req.method==="POST"&&url.pathname==="/api/provenance/nodes"){const b=await readBody(req);return send(res,200,provenanceGraph.addNode({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/provenance/edges")return send(res,200,provenanceGraph.addEdge(await readBody(req)));
-  if(req.method==="POST"&&url.pathname==="/api/provenance/purge"){const b=await readBody(req);return send(res,200,provenanceGraph.purge(b.id,{apply:b.apply===true,ownerId:req.uaiSecurity.auth.identityId,reason:b.reason||"owner source purge"}));}
+  if(req.method==="POST"&&url.pathname==="/api/provenance/purge"){const b=await readBody(req);return send(res,200,provenanceGraph.purge(b.id,{apply:b.apply===true,ownerId:req.uaiSecurity.auth.identityId,reason:b.reason||"user-requested purge"}));}
   if(req.method==="GET"&&url.pathname==="/api/model-artifacts")return send(res,200,{state:"SUCCESS",artifacts:modelArtifactVerifier.list(Number(url.searchParams.get("limit")||100))});
   if(req.method==="POST"&&url.pathname==="/api/model-artifacts/verify")return send(res,200,modelArtifactVerifier.verify(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/model-artifacts/register")return send(res,200,modelArtifactVerifier.register(await readBody(req)));
   if(req.method==="GET"&&url.pathname==="/api/evaluations/status")return send(res,200,evaluationStore.status());
-  if(req.method==="GET"&&url.pathname==="/api/evaluations")return send(res,200,{state:"SUCCESS",evaluations:evaluationStore.list({limit:Number(url.searchParams.get("limit")||100),subjectId:url.searchParams.get("subjectId")||null,state:url.searchParams.get("state")||null})});
-  if(req.method==="GET"&&url.pathname==="/api/evaluations/leaderboard")return send(res,200,evaluationStore.leaderboard({category:url.searchParams.get("category")||null,metric:url.searchParams.get("metric")||"score",limit:Number(url.searchParams.get("limit")||20),includeUnverified:url.searchParams.get("includeUnverified")==="true"}));
+  if(req.method==="GET"&&url.pathname==="/api/evaluations")return send(res,200,{state:"SUCCESS",evaluations:evaluationStore.list({limit:Number(url.searchParams.get("limit")||100),subjectId:url.searchParams.get("subjectId")||null,category:url.searchParams.get("category")||null})});
+  if(req.method==="GET"&&url.pathname==="/api/evaluations/leaderboard")return send(res,200,evaluationStore.leaderboard({category:url.searchParams.get("category")||null,metric:url.searchParams.get("metric")||null,limit:Number(url.searchParams.get("limit")||10)}));
   if(req.method==="POST"&&url.pathname==="/api/evaluations/record")return send(res,200,evaluationStore.record(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/policy/simulate"){const b=await readBody(req);return send(res,200,policySimulator.simulate({...b,actor:req.uaiSecurity.auth.identityId}));}
   if(req.method==="GET"&&url.pathname==="/api/policy/simulations")return send(res,200,{state:"SUCCESS",simulations:policySimulator.list(Number(url.searchParams.get("limit")||100))});
@@ -288,13 +315,13 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/documents/purge"){const b=await readBody(req);return send(res,200,await documentStore.purge(b.id||"",b.reason||"user-requested purge"));}
   if(req.method==="GET"&&url.pathname==="/api/storage/status")return send(res,200,await storageDb.status());
   if(req.method==="GET"&&url.pathname==="/api/definitions"){return send(res,200,await storageDb.define(url.searchParams.get("term")||"",Number(url.searchParams.get("limit")||8)));}
-  if(req.method==="GET"&&url.pathname==="/api/dialogue/search"){return send(res,200,await storageDb.banter(url.searchParams.get("q")||"",Number(url.searchParams.get("limit")||8),url.searchParams.get("style")||""));}
-  if(req.method==="GET"&&url.pathname==="/api/lexicon/related"){return send(res,200,await storageDb.related(url.searchParams.get("term")||"",url.searchParams.get("relation")||"",Number(url.searchParams.get("limit")||12)));}
+  if(req.method==="GET"&&url.pathname==="/api/dialogue/search"){return send(res,200,await storageDb.banter(url.searchParams.get("q")||"",Number(url.searchParams.get("limit")||8),url.searchParams.get("kind")||"all"));}
+  if(req.method==="GET"&&url.pathname==="/api/lexicon/related"){return send(res,200,await storageDb.related(url.searchParams.get("term")||"",url.searchParams.get("relation")||"",Number(url.searchParams.get("limit")||8)));}
   if(req.method==="GET"&&url.pathname==="/api/semantic/search"){return send(res,200,await storageDb.semanticSearch(url.searchParams.get("q")||"",url.searchParams.get("kind")||"all",Number(url.searchParams.get("limit")||8)));}
-  if(req.method==="POST"&&url.pathname==="/api/semantic/build"){return send(res,200,await storageDb.semanticBuild());}
+  if(req.method==="POST"&&url.pathname==="/api/semantic/build")return send(res,200,await storageDb.semanticBuild());
   if(req.method==="GET"&&url.pathname==="/api/web/status")return send(res,200,webCorpus.status());
-  if(req.method==="POST"&&url.pathname==="/api/capabilities/probe"){const probes=await runtimeServices.probe();const lg=await langgraph.status();const model=await forgelm.status();return send(res,200,{state:"SUCCESS",runtimeServices:probes,langgraph:lg,forgelm:model});}
-  if(req.method==="GET"&&url.pathname==="/api/billing/subscriptions"){return send(res,200,await runtimeServices.billing.list({limit:url.searchParams.get("limit")||10,status:url.searchParams.get("status")||"all"}));}
+  if(req.method==="POST"&&url.pathname==="/api/capabilities/probe"){const probes=await runtimeServices.probe();const lg=await langgraph.status();const model=await forgelm.status();return send(res,200,{state:"SUCCESS",probes,langgraph:lg,model});}
+  if(req.method==="GET"&&url.pathname==="/api/billing/subscriptions"){return send(res,200,await runtimeServices.billing.list({limit:url.searchParams.get("limit")||10,status:url.searchParams.get("status")||null}));}
   if(req.method==="POST"&&url.pathname==="/api/oxford/compare"){const b=await readBody(req);return send(res,200,await runtimeServices.oxford.compare(b.word,b.description));}
   if(req.method==="POST"&&url.pathname==="/api/fabrication/probe")return send(res,200,await runtimeServices.fabrication.probe());
   if(req.method==="POST"&&url.pathname==="/api/fabrication/job"){const b=await readBody(req);return send(res,200,await runtimeServices.fabrication.job(String(b.command||""),b.approval===true));}
@@ -311,12 +338,12 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/revoke"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.revoke(b.id,req.uaiSecurity));}
   if(req.method==="GET"&&url.pathname==="/api/control-plane/status")return send(res,200,{state:"SUCCESS",scheduler:agentScheduler.status(),storage:agentScheduler.db.status()});
   if(req.method==="GET"&&url.pathname==="/api/control-plane/dashboard"){
-    const capabilities=await capabilitySnapshot(),taskRows=taskStore.list({limit:10000}),approvalRows=approvalStore.list({limit:10000}),shadowRuns=shadow.runs.list({limit:10000}),lightPatches=light.list({limit:10000}),jobs=agentScheduler.list({limit:10000}),plugins=pluginRegistry.list(),modelStatus=modelRegistry.status(),evidenceRows=featureEvidence.features||[],auditRows=audit.list(10000),ownerId=req.uaiSecurity.auth.identityId,memoryItems=memoryStore.list({ownerId,limit:10000}),provStatus=provenanceGraph.status(),evalStatus=evaluationStore.status(),artifactRows=modelArtifactVerifier.list(10000),policySims=policySimulator.list(10000);
-    return send(res,200,{state:"SUCCESS",generatedFor:featureEvidence.generated_for,tasks:{total:taskRows.length,states:countBy(taskRows)},capabilities:{total:capabilities.length,availability:countBy(capabilities,"availability")},models:modelStatus,plugins:{total:plugins.length,enabled:plugins.filter(x=>x.enabled!==false).length},approvals:{total:approvalRows.length,states:countBy(approvalRows,"status")},shadow:{...shadow.status(),states:countBy(shadowRuns),recent:shadowRuns.slice(0,12)},light:{...light.status(),states:countBy(lightPatches),recent:lightPatches.slice(0,12)},scheduler:{...agentScheduler.status(),states:countBy(jobs),recent:jobs.slice(0,20)},memory:{...memoryStore.status(ownerId),namespaces:countBy(memoryItems,"namespace"),settings:memoryStore.settings(ownerId)},provenance:provStatus,evaluations:evalStatus,modelArtifacts:{total:artifactRows.length,states:countBy(artifactRows)},policySimulations:{total:policySims.length,decisions:countBy(policySims,"overallDecision")},evidence:{total:evidenceRows.length,statuses:countBy(evidenceRows,"status"),features:evidenceRows.map(x=>({id:x.id,introduced:x.introduced,status:x.status,evidence_note:x.evidence_note}))},audit:{total:auditRows.length,integrity:audit.verify(),recent:auditRows.slice(-20).reverse()}});
+    const capabilities=await capabilitySnapshot(),taskRows=taskStore.list({limit:10000}),approvalRows=approvalStore.list({limit:10000}),shadowRuns=shadow.runs.list({limit:10000}),lightPatches=light.list({limit:10000});
+    return send(res,200,{state:"SUCCESS",generatedFor:featureEvidence.generated_for,tasks:{total:taskRows.length,states:countBy(taskRows)},capabilities:{total:capabilities.length,availability:countBy(capabilities,"availability")},approvals:{total:approvalRows.length,states:countBy(approvalRows)},shadowRuns:{total:shadowRuns.length,states:countBy(shadowRuns)},lightPatches:{total:lightPatches.length,states:countBy(lightPatches)} });
   }
-  if(req.method==="GET"&&url.pathname==="/api/control-plane/jobs")return send(res,200,{state:"SUCCESS",jobs:agentScheduler.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null,queue:url.searchParams.get("queue")||null})});
-  if(req.method==="POST"&&url.pathname==="/api/control-plane/dispatch"){const b=await readBody(req),queue=String(b.queue||"").trim(),workerId=String(b.workerId||`api-${queue||"worker"}`);if(queue==="shadow")return send(res,200,await shadow.dispatchNext(workerId));if(queue==="light")return send(res,200,await light.dispatchNext(workerId));return send(res,400,{state:"BLOCKED",message:"queue must be shadow or light."});}
-  if(req.method==="POST"&&url.pathname==="/api/control-plane/maintenance"){const b=await readBody(req),now=Number(b.now)||Date.now();return send(res,200,{state:"SUCCESS",shadow:shadow.maintenance(now),light:light.maintenance(now),scheduler:agentScheduler.status()});}
+  if(req.method==="GET"&&url.pathname==="/api/control-plane/jobs")return send(res,200,{state:"SUCCESS",jobs:agentScheduler.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null})});
+  if(req.method==="POST"&&url.pathname==="/api/control-plane/dispatch"){const b=await readBody(req),queue=String(b.queue||"").trim(),workerId=String(b.workerId||`api-${queue||"worker"}`);if(queue==="")return send(res,400,{state:"BLOCKED",message:"queue is required"});return send(res,200,agentScheduler.dispatch({queue,workerId,task:b.task||null,meta:b.meta||{}}));}
+  if(req.method==="POST"&&url.pathname==="/api/control-plane/maintenance"){const b=await readBody(req),now=Number(b.now)||Date.now();return send(res,200,{state:"SUCCESS",shadow:shadow.maintenance(now),light:light.maintenance(now)});}
   if(req.method==="GET"&&url.pathname==="/api/shadow/status")return send(res,200,shadow.status());
   if(req.method==="GET"&&url.pathname==="/api/shadow/agents")return send(res,200,{state:"SUCCESS",agents:shadow.registry.list()});
   if(req.method==="GET"&&url.pathname==="/api/shadow/runs")return send(res,200,{state:"SUCCESS",runs:shadow.runs.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null})});
@@ -324,7 +351,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/shadow/runs")return send(res,200,shadow.submit(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/shadow/dispatch"){const b=await readBody(req);return send(res,200,await shadow.dispatchNext(String(b.workerId||"shadow-api-worker")));}
   if(req.method==="POST"&&url.pathname==="/api/shadow/maintenance"){const b=await readBody(req);return send(res,200,shadow.maintenance(Number(b.now)||Date.now()));}
-  if(req.method==="POST"&&url.pathname==="/api/shadow/simulate"){const b=await readBody(req);return send(res,200,await shadow.simulate(b.id,{evidence:b.evidence||[],observations:b.observations||[],outputs:b.outputs||[]}));}
+  if(req.method==="POST"&&url.pathname==="/api/shadow/simulate"){const b=await readBody(req);return send(res,200,await shadow.simulate(b.id,{evidence:b.evidence||[],observations:b.observations||[]},b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/shadow/reject"){const b=await readBody(req);return send(res,200,shadow.reject(b.candidateId,b.reason));}
   if(req.method==="GET"&&url.pathname==="/api/light/status")return send(res,200,light.status());
   if(req.method==="GET"&&url.pathname==="/api/light/agents")return send(res,200,{state:"SUCCESS",agents:light.registry.list()});
@@ -336,7 +363,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/light/implementation"){const b=await readBody(req);return send(res,200,light.recordImplementation(b.id,{changedFiles:b.changedFiles||[],evidence:b.evidence||[]}));}
   if(req.method==="POST"&&url.pathname==="/api/light/evaluate"){const b=await readBody(req),{id,...input}=b;return send(res,200,light.evaluate(id,input));}
   if(req.method==="POST"&&url.pathname==="/api/light/rollback"){const b=await readBody(req);return send(res,200,light.rollback(b.id,b.reason));}
-  if(req.method==="POST"&&url.pathname==="/api/promotion/shadow"){const b=await readBody(req);return send(res,200,shadow.promote(b.candidateId,req.uaiSecurity,{evidence:b.evidence===true,evaluation:b.evaluation===true}));}
+  if(req.method==="POST"&&url.pathname==="/api/promotion/shadow"){const b=await readBody(req);return send(res,200,shadow.promote(b.candidateId,req.uaiSecurity,{evidence:b.evidence===true,evaluation:b.evaluation||null}));}
   if(req.method==="POST"&&url.pathname==="/api/promotion/light"){const b=await readBody(req);return send(res,200,light.markPromotionEligible(b.patchId,req.uaiSecurity));}
   if(req.method==="GET"&&url.pathname==="/api/plugins")return send(res,200,control.plugins.list());
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
@@ -349,7 +376,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/accounts")return send(res,200,{state:"SUCCESS",account:control.addAccount(await readBody(req))});
   if(req.method==="POST"&&url.pathname==="/api/subscriptions")return send(res,200,{state:"SUCCESS",subscription:control.addSubscription(await readBody(req))});
   if(req.method==="POST"&&url.pathname==="/api/knowledge/export"){const b=await readBody(req);const record=store.get(b.id);return record?send(res,200,{state:"SUCCESS",record:exportKnowledgeRecord(record)}):send(res,404,{state:"FAILURE",message:"Knowledge record not found."});}
-  if(req.method==="POST"&&url.pathname==="/api/knowledge/import"){const b=await readBody(req);const decoded=importKnowledgeRecord(b.record);const stored=store.importRecord(decoded);audit.append({type:"knowledge.import",knowledgeId:stored.id,originalId:decoded.id||null});return send(res,200,{state:"SUCCESS",knowledgeId:stored.id});}
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/import"){const b=await readBody(req);const decoded=importKnowledgeRecord(b.record);const stored=store.importRecord(decoded);audit.append({type:"knowledge.imported",id:decoded.id,ownerId:req.uaiSecurity.auth.identityId});return send(res,200,{state:"SUCCESS",record:stored});}
   if(req.method==="POST"&&url.pathname==="/api/agents/spawn")return send(res,200,agents.spawn(await readBody(req)));
   if(req.method==="GET"&&url.pathname==="/api/tasks")return send(res,200,{state:"SUCCESS",tasks:taskStore.list({limit:Number(url.searchParams.get("limit")||100),state:url.searchParams.get("state")||null})});
   if(req.method==="GET"&&url.pathname==="/api/tasks/status")return send(res,200,tasks.status(url.searchParams.get("id")||""));
@@ -357,7 +384,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/tasks/run")return send(res,200,await tasks.run(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/tasks/resume"){const b=await readBody(req);return send(res,200,await tasks.resume(b.id||b.taskId||""));}
   if(req.method==="POST"&&url.pathname==="/api/tasks/cancel"){const b=await readBody(req);return send(res,200,tasks.cancel(b.id||b.taskId||""));}
-  if(req.method==="GET"&&url.pathname==="/api/actions")return send(res,200,{state:"SUCCESS",actions:url.searchParams.get("id")?[actionEnvelopes.get(url.searchParams.get("id"))].filter(Boolean):actionEnvelopes.list(Number(url.searchParams.get("limit")||100))});
+  if(req.method==="GET"&&url.pathname==="/api/actions")return send(res,200,{state:"SUCCESS",actions:url.searchParams.get("id")?[actionEnvelopes.get(url.searchParams.get("id"))].filter(Boolean):actionEnvelopes.list({limit:Number(url.searchParams.get("limit")||100)})});
   if(req.method==="GET"&&url.pathname==="/api/availability")return send(res,200,{state:"SUCCESS",snapshot:availabilityLedger.latest()});
   if(req.method==="POST"&&url.pathname==="/api/policy/evaluate")return send(res,200,policyEngine.evaluate(await readBody(req)));
   if(req.method==="GET"&&url.pathname==="/api/approvals")return send(res,200,{state:"SUCCESS",approvals:approvalStore.list({status:url.searchParams.get("status")||null,limit:Number(url.searchParams.get("limit")||100)})});
@@ -372,7 +399,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/develop")return send(res,200,development.propose(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/develop/apply"){const b=await readBody(req);return send(res,200,development.apply(b.proposalId,b.approvalId));}
   if(req.method==="POST"&&url.pathname==="/api/source/rollback"){const b=await readBody(req);return send(res,200,workspace.rollback(b.snapshotId,b.approval===true));}
-  if(req.method==="POST"&&url.pathname==="/api/provider/chat"){const b=await readBody(req);const result=await providerHub.chat(b.provider,b.message,b.system);if(result.state==="SUCCESS"&&b.store!==false)store.add({kind:"provider-result",title:`${b.provider} result`,source:`provider:${b.provider}`,text:result.text,provider:b.provider,model:result.model});return send(res,200,result);}
+  if(req.method==="POST"&&url.pathname==="/api/provider/chat"){const b=await readBody(req);const result=await providerHub.chat(b.provider,b.message,b.system);if(result.state==="SUCCESS"&&b.store){await store.put(b.store,{...result,provider:b.provider});}return send(res,200,result);}
   if(req.method==="POST"&&url.pathname==="/api/selfdev/stage"){const b=await readBody(req);return send(res,200,selfdev.stage(b.proposalId));}
   if(req.method==="POST"&&url.pathname==="/api/selfdev/promote"){const b=await readBody(req);return send(res,200,selfdev.promote(b.stageId,b.approvalId));}
   if(req.method==="GET"&&url.pathname==="/api/selfdev")return send(res,200,selfdev.list());
@@ -383,11 +410,12 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/model/benchmark")return send(res,200,await modelLab.benchmark());
   if(req.method==="POST"&&url.pathname==="/api/model/tokenizer/train"){const b=await readBody(req);return send(res,200,await modelLab.trainTokenizer(b.vocabSize||512));}
   if(req.method==="POST"&&url.pathname==="/api/research/source-snapshot")return send(res,200,await modelLab.analyzeSources());
-  if(req.method==="POST"&&url.pathname==="/api/model/train"){const b=await readBody(req);return send(res,200,await modelLab.train({steps:b.steps||80,preset:b.preset||"termux-tiny",gradAccum:b.gradAccum||1}));}
-  if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);return send(res,200,await forgelm.chat(b.message||"",b.maxNewTokens||64));}
+  if(req.method==="POST"&&url.pathname==="/api/model/train"){const b=await readBody(req);return send(res,200,await modelLab.train({steps:b.steps||80,preset:b.preset||"termux-tiny",gradAccum:b.gradAccum||1,lr:b.lr||0.003}));}
+  if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);const local=await localOrchestrator.chat(b.message||b.prompt||"", b.context || "");return send(res,200,local);}
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
-  if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp)&&fs.statSync(fp).isFile()){const ext=path.extname(fp);const type=ext===".css"?"text/css":ext===".js"?"text/javascript":"text/html";return send(res,200,fs.readFileSync(fp),type);}}
+  if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp))return send(res,200,fs.readFileSync(fp),fp.endsWith(".html")?"text/html":"application/octet-stream");}
   send(res,404,{state:"FAILURE",message:"Not found.",requestId:res.getHeader("x-request-id")||null});
-}catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;const status=Number(e?.statusCode)||500;const publicMessage=status===400?String(e?.message||"Invalid request."):"Internal request failure.";audit.append({type:"api.error",requestId,status,errorName:e?.name||"Error",errorMessage:String(e?.message||"Internal request failure.").slice(0,1000)});send(res,status,{state:status===400?"BLOCKED":"ERROR",message:publicMessage,requestId});}});
+}catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;const status=Number(e?.statusCode)||500;const publicMessage=status===400?String(e?.message||"Invalid request."):"Internal server error";audit.append({type:"api.error",requestId,code:status,message:String(e?.message||e)});send(res,status,{state:"FAILURE",message:publicMessage,requestId,correlationId:res.getHeader("x-correlation-id")||requestId});}}
+);
 server.listen(PORT,"127.0.0.1",()=>console.log(`IntraultUniversalion v${APP_VERSION} running at http://127.0.0.1:${PORT}`));
