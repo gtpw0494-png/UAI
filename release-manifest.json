@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "eae561833719054cd500a432bf38b6abaa7e860763a488bf3a1584194205cb12",
-      "bytes": 4513
+      "sha256": "e5f90d5e76bd4a3c320bb3a780169794b53db3b8e6b69845fb238a403a09526f",
+      "bytes": 4603
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "6f231fa43d7abc57f7f7cf5815eec8c9b629265b0abd1a96b72ae1a16f33994f",
-      "bytes": 17715
+      "sha256": "21b81e98fd7dc7ffb7d929165a12840e7be639e9cb1bf5926e6c4cef694bc572",
+      "bytes": 17760
     },
     {
       "path": "model/adaptation.py",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "8c234d4604e025eb4862a476da89ac9440e94beba10429cc7b3e4a674ed63477",
-      "bytes": 2690
+      "sha256": "94b77810675d2f5171819fd47909442731b7113f2bbb23a1a11c0954242be8ef",
+      "bytes": 2756
     },
     {
       "path": "public/app.js",
