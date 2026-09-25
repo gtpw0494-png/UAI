@@ -1,6 +1,15 @@
-# IntraultUniversalion v0.51.0
+# IntraultUniversalion v0.52.0
 
-A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
+UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.52 bounded research + source-improvement control plane
+
+- Added bounded virtual shadow-agent R&D with explicit resource budgets, persistent run states, quarantined candidates, disagreement detection and independent promotion gates.
+- Added bounded light-agent source maintenance with detached Git worktrees, patch evidence records, test/security/shadow-review gates and rollback cleanup.
+- Light agents do not receive direct protected-`main` merge authority. Shadow agents cannot deploy themselves or move candidates directly into training.
+- Expanded the local governance kernel with protected-rule declarations, emergency stop, policy storage, capability-boundary primitives, audit verification and truthful trusted-device registration.
+- Added a machine-readable platform roadmap for model/runtime, learning, retrieval, memory, plugin, connector, tool and benchmark categories. Registration never implies runtime availability.
+- Full multimodal ingestion, dense embeddings/reranking, formal governance verification, OS/kernel plugin isolation, federated learning, large-scale training, encrypted multi-device sync, full IDE integration and independent hardware-backed ownership proof remain explicitly incomplete.
 
 ## v0.51 durable conversation rehydration
 
