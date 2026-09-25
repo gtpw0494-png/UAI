@@ -1374,8 +1374,8 @@
     },
     {
       "path": "verification/knowledge-training-job.test.mjs",
-      "sha256": "4834bad7bf5b2da795854cf44ca2c4d8848b93880183d4eeb4dac244561b6372",
-      "bytes": 1052
+      "sha256": "df782bfbfc91427e496f7558941e92783e04634eedd8d522418acbfb41ea8f41",
+      "bytes": 2075
     },
     {
       "path": "verification/model-catalog.test.mjs",
