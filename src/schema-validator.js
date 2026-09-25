@@ -10,9 +10,11 @@ export function validateSchema(schema,value,path="$"){
       if(!candidates.some(x=>x.state==="SUCCESS"))add(errors,p,"does not match any allowed schema");
       return;
     }
+    const actual=typeOf(v);
+    const matchesType=t=>t==="integer"?(typeof v==="number"&&Number.isInteger(v)):actual===t;
     if(Array.isArray(s.type)){
-      if(!s.type.includes(typeOf(v))){add(errors,p,`expected one of ${s.type.join(", ")}, got ${typeOf(v)}`);return;}
-    }else if(s.type&&typeOf(v)!==s.type){add(errors,p,`expected ${s.type}, got ${typeOf(v)}`);return;}
+      if(!s.type.some(matchesType)){add(errors,p,`expected one of ${s.type.join(", ")}, got ${actual}`);return;}
+    }else if(s.type&&!matchesType(s.type)){add(errors,p,`expected ${s.type}, got ${actual}`);return;}
     if(Object.hasOwn(s,"const")&&v!==s.const)add(errors,p,"does not match required constant");
     if(Array.isArray(s.enum)&&!s.enum.some(x=>Object.is(x,v)))add(errors,p,"is not in the allowed enum");
     if(typeof v==="string"){
