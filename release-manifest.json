@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "22f10c507eb25ab6b5146b0f49f95f8cfeed626b46da5a393c684fd19e9bccc5",
-      "bytes": 5902
+      "sha256": "f48ea7a3820356fe521e6fa09316a7e2a968c8b744223c4b77e386e3f43049b9",
+      "bytes": 6017
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "6f4832dec38d96d6b14dae713c4080b55397ca1908b39795f82ed9319afdc63b",
-      "bytes": 25673
+      "sha256": "e5d1596991eb5dc3b0423d128c49eeb75cd4a0d1ce9ee41c4161c6674e88a713",
+      "bytes": 26361
     },
     {
       "path": "model/adaptation.py",
@@ -599,8 +599,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "14790dcc77a4c40ba6acbd35d8e0585d01a1511339e4d385082beedde33e1f49",
-      "bytes": 26562
+      "sha256": "b08554ca9be5c9431a9b59c5a30f4ae7bff5ff913125bafe7ac70597a2578000",
+      "bytes": 26801
     },
     {
       "path": "src/plugin-executor.js",
