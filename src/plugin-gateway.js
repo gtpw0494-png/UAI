@@ -99,6 +99,9 @@ export class PluginGateway{
 
     if(policy.decision!=="ALLOW"){
       const expected={operation:"plugin."+operation.name,arguments:bindingArgs,capability:"plugin."+operation.name,actor:"user:onechat",toolVersion:plugin.version,actionEnvelopeId:options.actionEnvelopeId||null,taskId:options.taskId||null};
+      if(!options.approvalId){
+        return {state:policy.decision==="ESCALATE"?"ESCALATED":"ASK",message:"Exact plugin invocation approval is required.",policy,approval:null,binding:expected};
+      }
       const approval=this.approvalStore?.validate(options.approvalId,expected);
       if(!approval||approval.state!=="SUCCESS"){
         return {state:policy.decision==="ESCALATE"?"ESCALATED":"ASK",message:"Exact plugin invocation approval is required.",policy,approval:approval||null,binding:expected};
