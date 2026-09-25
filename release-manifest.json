@@ -34,8 +34,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "3defd02b15ccaa8bcfd82b0da23d725328f9db764adf66814cf4bbf405e6f577",
-      "bytes": 19272
+      "sha256": "6c16669d545ebd217dd685c0cce68f7f5a08f339fbb2ee41d24b56d207fc3b1b",
+      "bytes": 19227
     },
     {
       "path": "README.md",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "0deaccfa5f201e919ced2dcd40997bd1ad4c7496f70cbfa331f1cbdaf666b177",
-      "bytes": 30403
+      "sha256": "556601502958cc83cfb6a4b2a49e52dfc2a34b8cf8f21ede1dec3bbb4ed3f7ac",
+      "bytes": 30327
     },
     {
       "path": "model/adaptation.py",
