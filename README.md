@@ -1,6 +1,15 @@
-# IntraultUniversalion v0.45.0
+# IntraultUniversalion v0.48.2
 
 A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
+
+## v0.48.2 repaired conversation/security checkpoint
+
+- First-run local Owner enrollment uses email/password credentials, scrypt-derived password hashes, server-side sessions, HttpOnly session cookies and CSRF validation for cookie-authenticated state changes.
+- The HTTP authorization layer applies route schemas, local identity, per-route rate limits, policy decisions, exact approval binding, request/correlation IDs and audited actor identity.
+- Native OneChat conversation routing keeps bounded per-chat context, prefers a connected local llama.cpp runtime and falls back to a verified ForgeLM runtime.
+- Capability truth now has explicit CONNECTED, CONFIGURED, REGISTERED_SOURCE, DEGRADED, UNAVAILABLE, BLOCKED and EXPIRED states.
+- Regression tests now verify behavior rather than obsolete literal greeting text, and all live HTTP system tests authenticate through the current Owner session flow.
+- First-run enrollment is localhost-oriented and closes after successful enrollment, but independent trusted-device/bootstrap ownership proof remains PARTIAL and is not overstated.
 
 ## v0.45 provenance document data plane
 
@@ -45,6 +54,6 @@ A local-first, evidence-governed OneChat platform combining durable agent orches
 
 Existing OneChat, ForgeLM, WordNet/OASST storage, capability truth, source research, self-development, rollback, approvals and bounded autonomy remain additive.
 
-Run `npm test`, `npm run test:security`, `npm run test:control-plane`, `npm run test:plugin-gateway`, `npm run test:plugin-http`, `npm run test:document-data`, and `npm run test:document-http`, then `npm start`.
+Run `npm test`, `npm run test:security`, `npm run test:control-plane`, `npm run test:plugin-gateway`, `npm run test:plugin-http`, `npm run test:document-data`, `npm run test:document-http`, `npm run test:api-security`, and `npm run test:conversation-capability`, then `npm start`.
 
 See `docs/ARCHITECTURE.md`, `docs/DATA-FLOW.md`, `docs/SECURITY.md`, `docs/PLUGIN-SDK.md`, `docs/MODEL-SUPPORT.md`, and `docs/OPERATIONS.md`.
