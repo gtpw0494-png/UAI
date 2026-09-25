@@ -224,8 +224,8 @@
     },
     {
       "path": "public/index.html",
-      "sha256": "e6737a2ad6ffe7cd0cebf5ef507653f279d9e37c19374356f63ee2bb7cda73e5",
-      "bytes": 1960
+      "sha256": "1a0a270b9f271ca71b855cca377f8180cc5e8dc7b192d0c0870ef649da6ae738",
+      "bytes": 2090
     },
     {
       "path": "public/styles.css",
@@ -419,8 +419,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "6317ee9f2c47a113710f5cc44908992354db64bd66b4fae1fe5d2a1dfb23e7e4",
-      "bytes": 28643
+      "sha256": "a52e8bb4bdedc88ea24e8fa0a193d6e83350b5bd48545774775ee0c4f7d81bd8",
+      "bytes": 29355
     },
     {
       "path": "src/action-envelope.js",
@@ -504,8 +504,8 @@
     },
     {
       "path": "src/governance/identity.js",
-      "sha256": "6485b0472d251062885568e2c039bbf505760f811ff4353ce6fbed629045457f",
-      "bytes": 6032
+      "sha256": "cdf6f32eef0118128bd1c242d098cdf32216a06b0d7163cf297392b682d43cd7",
+      "bytes": 5446
     },
     {
       "path": "src/governance/kernel.js",
@@ -514,8 +514,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "f309340126b4217dec068fa0d72a7fa0cd943be7ea6568b8da88de30a007899f",
-      "bytes": 4813
+      "sha256": "4f2c9940e52d516ffbe4e70e15b6bd29309d802274e1403c1488bcbb39a9f182",
+      "bytes": 5090
     },
     {
       "path": "src/governance-db.js",
