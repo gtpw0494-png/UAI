@@ -724,8 +724,8 @@
     },
     {
       "path": "verification/api-security-v046.test.mjs",
-      "sha256": "5a4e60c51c4fe67236f88024eaa5980071183c2663e93bc10aa7f389c04d98c8",
-      "bytes": 7520
+      "sha256": "f766ab62e3e4598c3f39f665f89d10e59d3730a92c9d5b6e35c49cfbb7e68237",
+      "bytes": 9324
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
