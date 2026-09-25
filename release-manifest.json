@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "be43ac316d25ca1d9262f06896a92fb9a67a4610c922e596e608f5853e27a533",
-      "bytes": 5785
+      "sha256": "22f10c507eb25ab6b5146b0f49f95f8cfeed626b46da5a393c684fd19e9bccc5",
+      "bytes": 5902
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -49,8 +49,8 @@
     },
     {
       "path": "TERMUX-RUN.md",
-      "sha256": "7d56b677eb817c77a27a58c4ef1fdf3d869cf4676e6041ab7b4004eb0b957a6b",
-      "bytes": 1574
+      "sha256": "a6b27b5bdf89524e6440acc4850f3865d6e6ba4b232e05e0b34d8bd67eacc0a1",
+      "bytes": 2428
     },
     {
       "path": "docs/ACTION-LIFECYCLE.md",
@@ -124,8 +124,8 @@
     },
     {
       "path": "docs/SECURITY.md",
-      "sha256": "838dda3e0725597d10d78563caf8e9dfa82d2d67ecd38b542b3f25a08e680f27",
-      "bytes": 2857
+      "sha256": "48e790fd0aace0795826d5d3ff4940e6cd966efad8a05628ea423a92610d5942",
+      "bytes": 3608
     },
     {
       "path": "governance/feature-evidence.json",
