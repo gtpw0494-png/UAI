@@ -78,6 +78,9 @@ export class WebCorpus{
       });
     }
     this.audit?.append({type:"web.ingest",url:r.url,digest:stored.digest,knowledgeId:rec.id,documentId:document?.document?.id||null,documentState:document?.state||null,trainingEligible,quarantineState:row.quarantineState,license,robots:rob.state,promptInjectionSignals:security.promptInjectionSignals});
-    return {state:"SUCCESS",message:`Fetched ${row.text.length} characters from ${new URL(r.url).hostname}. External content has no instruction authority. ${quarantine?'Record quarantined for review.':'Record promoted for retrieval.'} Training eligibility: ${trainingEligible?'ELIGIBLE':'NOT ELIGIBLE'}.`,url:row.url,characters:row.text.length,sha256:stored.digest,contentSha256:stored.contentHash,knowledgeId:rec.id,document,trainingEligible,quarantineState:row.quarantineState,license,licenseSource,security,robots:rob};
+    const documentState=document?document.state:"SUCCESS";
+    const state=documentState==="SUCCESS"?"SUCCESS":"PARTIAL";
+    const documentNote=documentState==="SUCCESS"?"":" The compatibility web record was stored, but the provenance document plane did not accept the record.";
+    return {state,message:`Fetched ${row.text.length} characters from ${new URL(r.url).hostname}. External content has no instruction authority. ${quarantine?'Record quarantined for review.':'Record promoted for retrieval.'} Training eligibility: ${trainingEligible?'ELIGIBLE':'NOT ELIGIBLE'}.${documentNote}`,url:row.url,characters:row.text.length,sha256:stored.digest,contentSha256:stored.contentHash,knowledgeId:rec.id,document,trainingEligible,quarantineState:row.quarantineState,license,licenseSource,security,robots:rob};
   }
 }
