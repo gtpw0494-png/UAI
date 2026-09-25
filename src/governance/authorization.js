@@ -1,3 +1,4 @@
+import {validateRequestBody} from "./request-schemas.js";
 import crypto from "node:crypto";
 
 const stable=v=>Array.isArray(v)?`[${v.map(stable).join(",")}]`:v&&typeof v==="object"?`{${Object.keys(v).sort().map(k=>JSON.stringify(k)+":"+stable(v[k])).join(",")}}`:JSON.stringify(v);
@@ -60,6 +61,7 @@ export class RequestAuthorizer{
       const csrf=String(req.headers["x-uai-csrf"]||"");
       if(!this.identity.verifyCsrf(auth,csrf))return {state:"BLOCKED",allowed:false,httpStatus:403,message:"CSRF token is required for cookie-authenticated state changes.",meta,auth,rate};
     }
+    if(meta.stateChanging){const validation=validateRequestBody(req.method,url.pathname,body);if(validation.state!=="SUCCESS")return {state:"BLOCKED",allowed:false,httpStatus:400,message:"Request body failed route schema validation.",meta,auth,rate,validation};}
     const args=cleanBody(body),operation=`http.${req.method} ${url.pathname}`;
     const policy=this.policyEngine.evaluate({operation,risk:meta.risk,external:meta.external,mutatesSource:meta.mutatesSource,requiresCredential:meta.requiresCredential});
     const binding={operation,arguments:{body:args,query:Object.fromEntries(url.searchParams.entries())},capability:meta.capability,actor:auth.identityId,toolVersion:this.appVersion,actionEnvelopeId:body.actionEnvelopeId||null,taskId:body.taskId||null};
