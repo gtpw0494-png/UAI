@@ -73,6 +73,11 @@
       "bytes": 3569
     },
     {
+      "path": "docs/CLOUD-KNOWLEDGE-STORAGE.md",
+      "sha256": "6b52792bd0fd7d15b60e29d3163f623e61c5176d5ec04b2b188ea96623720c7b",
+      "bytes": 1165
+    },
+    {
       "path": "docs/DATA-FLOW.md",
       "sha256": "0a9a200e9d239f7c9dc2285e99b85d92dc5b623599a1b67c4e5a61f8287d28e4",
       "bytes": 3969
@@ -608,6 +613,11 @@
       "bytes": 1196
     },
     {
+      "path": "src/cloud-knowledge-store.js",
+      "sha256": "5ea286b6b81145a0cabb38edead76d951be859ef8117c82f3886943143f00ea5",
+      "bytes": 1797
+    },
+    {
       "path": "src/code/repository-intelligence.js",
       "sha256": "e884819bfed7c51cee8b5470b947b3098df4da0bbeb35cd78335c8b7f9fbfa89",
       "bytes": 7252
@@ -751,6 +761,11 @@
       "path": "src/governance-db.js",
       "sha256": "a57bb4cbb719a9a3bc9a2a52d72c8a72927ee4cdb9cc40bb90a633018882df1b",
       "bytes": 5372
+    },
+    {
+      "path": "src/hybrid-knowledge-store.js",
+      "sha256": "eb128eaa18f150355e65fa3cc89dc984e1fc5dd6a02beab18bf48714c55a8f73",
+      "bytes": 901
     },
     {
       "path": "src/idempotency-store.js",
