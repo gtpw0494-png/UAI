@@ -26,7 +26,7 @@ export class ResearchEngine{
     const uniq=[];for(const r of all){if(!uniq.some(x=>x.url===r.url))uniq.push(r);}
     const selected=diversify(uniq,Math.max(2,Math.min(12,Number(maxSources)||8))),sources=[];
     for(const hit of selected){
-      const page=await this.provider.open(hit.url);if(page.state!=="SUCCESS")continue;
+      const page=await this.provider.open(hit.url);if(page.state!=="SUCCESS"||page.security?.risk==="HIGH")continue;
       const ranked=sentences(page.text).map(text=>({text,score:overlap(query,text)})).sort((a,b)=>b.score-a.score).filter(x=>x.score>0).slice(0,4);
       const source={source_id:"web-"+crypto.createHash("sha256").update(page.url).digest("hex").slice(0,16),title:page.title||hit.title,url:page.url,domain:page.domain,retrieved_at:page.retrievedAt,security:page.security,instruction_authority:"NONE",snippets:ranked};
       sources.push(source);
