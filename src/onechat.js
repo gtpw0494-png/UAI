@@ -168,6 +168,7 @@ export class OneChatRouter{
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
   const researchRun=this.researchRuns.get(chatId)||null;
+  const webResultForEvidence=contributions.find(x=>x.agent==="web-research")?.result||null;
   const localSupport=(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}}));
   const webSupport=(researchRun?.evidence||[]).slice(0,16).map(x=>({source_id:x.source_id,document_id:null,document_revision:null,chunk_id:null,uri:x.url,quote:x.text,score:x.score??null,freshness:x.retrieved_at,provenance:{title:x.title,domain:x.domain,researchRunId:researchRun.run_id,instructionAuthority:"NONE"}}));
   const support=[...localSupport,...webSupport];
@@ -175,7 +176,7 @@ export class OneChatRouter{
   const claimStatus=support.length?"SUPPORTED":(composed.mode==="native-conversation"||composed.mode==="governed-composer"?"INFERENCE":(finalState==="SUCCESS"?"INFERENCE":"UNSUPPORTED"));
   const evidenceEnvelope=new EvidenceEnvelope({
     responseId,answer,
-    model:conversationResult?.modelUsed?{id:conversationResult.model||conversationResult.modelRoute?.selected?.id||null,provider:conversationResult.runtime||conversationResult.modelRoute?.selected?.provider||null,route:conversationResult.modelRoute||null}:null,
+    model:conversationResult?.modelUsed?{id:conversationResult.model||conversationResult.modelRoute?.selected?.id||null,provider:conversationResult.runtime||conversationResult.modelRoute?.selected?.provider||null,route:conversationResult.modelRoute||null}:(webResultForEvidence?.modelUsed?{id:webResultForEvidence.model?.id||null,provider:webResultForEvidence.model?.provider||null,route:webResultForEvidence.modelRoute||null}:null),
     promptVersion:"onechat-v0.49",
     claims:[{claim:answer,support,status:claimStatus,confidence:null}],
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
