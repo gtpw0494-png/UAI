@@ -29,3 +29,14 @@ If implementation changes materially, the feature must leave `VERIFIED` until th
 ## Main branch rule
 
 `main` remains the last known-good cumulative checkpoint. A pull request may remain open or draft indefinitely without changing `main`. Merge readiness is a consequence of evidence, not development completeness claims.
+
+## Release metadata consistency
+
+Promotion candidates must keep these three values aligned:
+
+- `package.json.version`
+- `governance/feature-evidence.json.generated_for`
+- `release-manifest.json.version`
+
+The feature-evidence validator rejects package/evidence version drift. Authoritative CI independently rebuilds the release manifest and rejects byte-level manifest drift. A manifest refresh is metadata maintenance only and does not substitute for implementation or behavioral verification.
+
