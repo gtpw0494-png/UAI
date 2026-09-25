@@ -39,7 +39,8 @@ try{
   assert.equal(ready,true,`server did not start\nstdout=${stdout}\nstderr=${stderr}`);
 
   const status=await json("/api/status");
-  const expectedVersion=JSON.parse(fs.readFileSync(path.resolve("package.json"),"utf8")).version;\n  assert.equal(status.version,expectedVersion);
+  const expectedVersion=JSON.parse(fs.readFileSync(path.resolve("package.json"),"utf8")).version;
+  assert.equal(status.version,expectedVersion);
   assert.equal(status.documentDataPlane.state,"SUCCESS");
 
   const doc={
