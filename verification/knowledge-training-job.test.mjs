@@ -10,6 +10,7 @@ fs.mkdirSync(path.join(root,"model","runs"),{recursive:true});
 let call=null;
 const job=new KnowledgeTrainingJob({
   root,
+  stateRoot:path.join(root,"state"),
   runner:async(command,args,opts)=>{
     call={command,args,opts};
     const runName=args[args.indexOf("--run-name")+1];
