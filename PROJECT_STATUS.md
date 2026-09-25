@@ -183,9 +183,9 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - BOUNDARY — this is local persisted conversation continuity, not hidden chain-of-thought persistence and not a claim of proprietary-model parity.
 
 ## v0.52.0 additions
-- IMPLEMENTED, PENDING AUTHORITATIVE CI — bounded virtual shadow-agent R&D with resource ceilings, persistent lifecycle records, research-agent registry, disagreement detection, quarantined candidate storage and independent promotion gates.
-- IMPLEMENTED, PENDING AUTHORITATIVE CI — bounded light-agent source-maintenance system with isolated detached worktrees, patch lifecycle records, mandatory changed-file/reason/test/risk/dependency/rollback/evidence fields, test/security/shadow review and cleanup/rollback.
-- IMPLEMENTED, PENDING AUTHORITATIVE CI — protected local governance extensions covering policy storage, protected-rule classification, emergency stop, capability boundary, audit verification and trusted-device enrollment/revocation records.
+- IMPLEMENTED + VERIFIED — bounded virtual shadow-agent R&D with resource ceilings, persistent lifecycle records, research-agent registry, disagreement detection, quarantined candidate storage and independent promotion gates.
+- IMPLEMENTED + VERIFIED — bounded light-agent source-maintenance system with isolated detached worktrees, patch lifecycle records, mandatory changed-file/reason/test/risk/dependency/rollback/evidence fields, test/security/shadow review and cleanup/rollback.
+- IMPLEMENTED + VERIFIED — protected local governance extensions covering policy storage, protected-rule classification, emergency stop, capability boundary, audit verification and trusted-device enrollment/revocation records.
 - IMPLEMENTED — runtime roadmap catalog for model categories/runtimes, learning methods, retrieval layers, memory classes, plugin/connector/tool categories, benchmark tracks and observability metrics.
 - BOUNDARY — a shadow candidate remains `productionEligible=false` and `trainingEligible=false` after research acceptance; a separate governed downstream process must act on it.
 - BOUNDARY — light-agent promotion only makes a tested patch promotion-eligible; light agents cannot commit or merge directly to protected `main`.
