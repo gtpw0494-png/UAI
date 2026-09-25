@@ -544,8 +544,8 @@
     },
     {
       "path": "src/plugin-gateway.js",
-      "sha256": "1ae32a892d3e1f2677b4560ce48d96d669c61039592d9b89fa5f8a83d0e4648e",
-      "bytes": 8375
+      "sha256": "3cbba8a351d2e622f68d057d7afcae116b60d61f0bfe61d0313f4971d0a5593a",
+      "bytes": 8391
     },
     {
       "path": "src/plugin-registry.js",
@@ -589,8 +589,8 @@
     },
     {
       "path": "src/schema-validator.js",
-      "sha256": "41315d56f6b62a6805ae2560c9de0e42037000fbc93b2e8adc96ad6f54a326e7",
-      "bytes": 2913
+      "sha256": "ad20cc36a2dd8cad6c9dd32db0911628edd6ca755873b1be434b4ce809b96182",
+      "bytes": 3029
     },
     {
       "path": "src/self-development.js",
