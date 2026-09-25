@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.46.0",
+  "version": "0.47.0",
   "private": true,
-  "description": "Secure local API governance with owner identity, authenticated sessions, CSRF, route authorization, request schemas, rate limits and exact high-risk approval.",
+  "description": "Local-first governed AI with first-run owner enrollment, email/password authentication, authenticated sessions, CSRF, route authorization and approval-bound execution.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
