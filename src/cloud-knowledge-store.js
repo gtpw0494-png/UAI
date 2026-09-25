@@ -31,7 +31,7 @@ export class CloudKnowledgeStore {
   headers(extra={}){return{"content-type":"application/json","apikey":this.apiKey,"authorization":`Bearer ${this.apiKey}`,...extra}}
   async putMany(facts=[]){
     if(!this.status().configured)return{state:"UNAVAILABLE",written:0,message:"Cloud knowledge store is not configured."};
-    const rows=facts.filter(x=>x?.verification?.verified===true&&x?.training_eligible===true).map(rowFor);
+    const rows=facts.filter(x=>x?.verification?.verified===true&&x?.verification?.training_rights_verified===true&&x?.training_eligible===true).map(rowFor);
     if(!rows.length)return{state:"SUCCESS",written:0};
     try{
       const r=await this.fetch(`${this.endpoint}/rest/v1/${encodeURIComponent(this.table)}?on_conflict=cloud_record_id`,{method:"POST",headers:this.headers({prefer:"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify(rows)});
