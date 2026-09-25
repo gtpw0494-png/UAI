@@ -698,6 +698,11 @@
       "bytes": 1174
     },
     {
+      "path": "src/forgelm-candidate-promotion.js",
+      "sha256": "6c0f1385be94c5e30b98d834ee8b9e3efa495493a59b0d8f0f68594d5185c590",
+      "bytes": 5145
+    },
+    {
       "path": "src/governance/audit-integrity.js",
       "sha256": "42ebc75fe70c35fd70e22dfeafe5d17d437bce481865e2c7dc2d493e59902f6b",
       "bytes": 288
