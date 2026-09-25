@@ -45,6 +45,6 @@ A local-first, evidence-governed OneChat platform combining durable agent orches
 
 Existing OneChat, ForgeLM, WordNet/OASST storage, capability truth, source research, self-development, rollback, approvals and bounded autonomy remain additive.
 
-Run `npm test`, `npm run test:security`, `npm run test:control-plane`, and `npm run test:plugin-gateway`, then `npm start`.
+Run `npm test`, `npm run test:security`, `npm run test:control-plane`, `npm run test:plugin-gateway`, `npm run test:plugin-http`, `npm run test:document-data`, and `npm run test:document-http`, then `npm start`.
 
 See `docs/ARCHITECTURE.md`, `docs/DATA-FLOW.md`, `docs/SECURITY.md`, `docs/PLUGIN-SDK.md`, `docs/MODEL-SUPPORT.md`, and `docs/OPERATIONS.md`.
