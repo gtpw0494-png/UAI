@@ -19,7 +19,7 @@ if(process.env.IU_SELFDEV_SANDBOX!=="1"){
  const selfroot=path.join(dir,"self-workspace");fs.cpSync(new URL(".",import.meta.url),selfroot,{recursive:true,filter:(src)=>!src.includes("node_modules")&&!src.includes("state/sandboxes")});
  const selfStore=new KnowledgeStore(path.join(selfroot,"data"));const selfAudit=new AuditLog(path.join(selfroot,"state"));const selfWorkspace=new WorkspaceManager(selfroot,path.join(selfroot,"state"),selfAudit);const selfEngine=new SelfDevelopmentEngine({root:selfroot,stateRoot:path.join(selfroot,"state"),store:selfStore,workspace:selfWorkspace,audit:selfAudit});
  const selfOriginal=fs.readFileSync(path.join(selfroot,"src","truth.js"),"utf8");const selfTarget=selfWorkspace.inspect("src/truth.js");const selfProp=selfStore.add({kind:"development-proposal",request:"validated no-op additive comment",targetPath:"src/truth.js",proposedContent:selfOriginal+"\n// self-development validation marker\n",expectedHash:selfTarget.hash,approvalId:"approval-test",status:"PROPOSED_NOT_EXECUTED"});
- const staged=selfEngine.stage(selfProp.id);assert.equal(staged.state,"SUCCESS");const promoted=selfEngine.promote(staged.stageId,"approval-test");assert.equal(promoted.state,"SUCCESS");assert.ok(fs.readFileSync(path.join(selfroot,"src","truth.js"),"utf8").includes("validation marker"));
+ const staged=selfEngine.stage(selfProp.id);assert.equal(staged.state,"SUCCESS",JSON.stringify(staged.checks,null,2));const promoted=selfEngine.promote(staged.stageId,"approval-test");assert.equal(promoted.state,"SUCCESS");assert.ok(fs.readFileSync(path.join(selfroot,"src","truth.js"),"utf8").includes("validation marker"));
  console.log("v0.11.0 self-development tests passed");
 }
 // v0.12 integration checks
