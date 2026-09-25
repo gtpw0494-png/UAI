@@ -112,6 +112,7 @@ export class PluginGateway{
 
     const idemRequired=operation.idempotencyRequired===true||operation.external===true||rank[risk]>=rank.high||operation.reversible===false;
     if(idemRequired&&!options.idempotencyKey)return {state:"BLOCKED",message:"This plugin operation requires an Idempotency-Key."};
+    if(idemRequired&&!this.idempotencyStore)return {state:"UNAVAILABLE",message:"Idempotency persistence is required but not configured."};
     const requestHash=requestDigest({pluginId,manifestDigest:plugin.manifestDigest,operation:operation.name,input});
     const idem=this.idempotencyStore?.begin(options.idempotencyKey,{operation:"plugin."+operation.name,requestHash,ttlMs:operation.idempotencyTtlMs||86400000});
     if(idem?.state==="DENIED"||idem?.state==="BLOCKED")return idem;
