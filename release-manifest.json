@@ -508,6 +508,16 @@
       "bytes": 3815
     },
     {
+      "path": "src/control-plane-scheduler.js",
+      "sha256": "7899082f52f5bcbb710453044bafc8625ba7edb08e51cfd34f535b4859c5cd9e",
+      "bytes": 7585
+    },
+    {
+      "path": "src/control-plane-store.js",
+      "sha256": "93ba9bb339455f005fb27d136f5ae07cab83593d5ce89b918868d4deb5e31600",
+      "bytes": 7138
+    },
+    {
       "path": "src/conversation-engine.js",
       "sha256": "1f8c7cc765c0d0d316938783801b1cfad1940e774f6316a0aa0322a6f493a558",
       "bytes": 7172
@@ -926,6 +936,11 @@
       "path": "src/workspace.js",
       "sha256": "3cab65ed340059d30d7eea23e596b9a811f56a36e5ce222fc15724cf2cb21ca3",
       "bytes": 4259
+    },
+    {
+      "path": "storage/control_plane.py",
+      "sha256": "e7f8dd1eaf2b25ad76e4c3568578bffb82149d1917cdd399a3f076cf911cc98b",
+      "bytes": 6646
     },
     {
       "path": "storage/db.py",
