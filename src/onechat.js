@@ -139,6 +139,6 @@ export class OneChatRouter{
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,verified:finalState==="SUCCESS"});
   this.audit?.append({type:"onechat.turn",chatId,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
-  return {state:finalState,chatId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Raw seed-model text is quality-gated before it may become the primary reply."};
+  return {state:finalState,chatId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Raw seed-model text is quality-gated before it may become the primary reply."};
  }
 }
