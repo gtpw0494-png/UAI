@@ -249,8 +249,8 @@
     },
     {
       "path": "model/knowledge_pipeline.py",
-      "sha256": "fc394be6e179351c27f4f53c7aa6808843caa380c410bdff0282f395b549dbb2",
-      "bytes": 4356
+      "sha256": "1171bd7d351528bbff793f45df3f958fa282d02de2876ebaac4452c95193485d",
+      "bytes": 4036
     },
     {
       "path": "model/knowledge_sources.json",
@@ -269,8 +269,8 @@
     },
     {
       "path": "model/knowledge_verifier.py",
-      "sha256": "b2807b00ca9e4cae15f25a430a516f0c013be2a7c95a140750da53b9dbe18089",
-      "bytes": 2103
+      "sha256": "f3fa256d1140c72412437da1866047ad79c6a6c68519ca22b50e68d9b15bd2b0",
+      "bytes": 4085
     },
     {
       "path": "model/orchestration.py",
