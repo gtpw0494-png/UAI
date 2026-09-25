@@ -503,6 +503,11 @@
       "bytes": 1980
     },
     {
+      "path": "src/evidence-envelope.js",
+      "sha256": "48ab452bd501cf515e67015025cf256cbd87ca6f3b320f31c8b97423c60f1ac3",
+      "bytes": 1386
+    },
+    {
       "path": "src/forgelm-bridge.js",
       "sha256": "614944543d9a95cc1cccd1325a7f16041152970f8771d1ca89d251bab48f5fe2",
       "bytes": 1107
@@ -571,6 +576,11 @@
       "path": "src/model-runtime-adapter.js",
       "sha256": "29cfcf48813fda28d5f95cd0c95e83e8e5168e802a86e6e642fa56de92bd8a64",
       "bytes": 1978
+    },
+    {
+      "path": "src/models/router.js",
+      "sha256": "b529fd52948d50336849a15ce063383b6f6017e20a81bda1460cb23bb80d953a",
+      "bytes": 1014
     },
     {
       "path": "src/observability.js",
