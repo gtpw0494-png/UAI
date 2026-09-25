@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.53.0",
+  "generated_for": "0.54.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -898,6 +898,67 @@
         "verification/conversation-research-v050.test.mjs"
       ],
       "evidence_note": "Multi-query public-web research and an optional Brave Search API path are implemented. Brave remains runtime/configuration dependent, HTML search fallbacks remain best-effort, and UAI does not claim exhaustive internet-wide coverage."
+    },
+    {
+      "id": "user-owned-memory-v054",
+      "introduced": "0.54.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "storage/platform_state.py",
+        "src/platform-state-store.js",
+        "src/memory/consent.js",
+        "src/memory/retention.js",
+        "src/memory/memory-store.js",
+        "src/memory/deletion.js",
+        "src/memory/retrieval.js",
+        "src/onechat.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/platform-intelligence-v054.test.mjs",
+        "verification/platform-intelligence-http-v054.test.mjs"
+      ],
+      "evidence_note": "Typed user-owned memory with explicit consent, separate namespaces, retention/expiry, inspectable source/reason, training-disabled default, soft deletion, hard purge, export and optional AES-256-GCM via IUV_MEMORY_KEY is implemented. UAI does not silently persist every conversation or silently train from memory. Awaiting authoritative exact-commit CI."
+    },
+    {
+      "id": "provenance-policy-plane-v054",
+      "introduced": "0.54.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/provenance/graph.js",
+        "src/provenance/lineage.js",
+        "src/provenance/purge.js",
+        "src/provenance/citation.js",
+        "src/governance/policy-simulator.js",
+        "src/policy-engine.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/platform-intelligence-v054.test.mjs",
+        "verification/platform-intelligence-http-v054.test.mjs"
+      ],
+      "evidence_note": "Queryable provenance nodes/edges, trace, dry-run purge planning, memory-node purge propagation, non-executing policy workflow simulation and richer policy decision metadata/proofs are implemented. Full deletion propagation into every document/index/model artifact remains PARTIAL and is reported as externalDeletionRequired. Awaiting authoritative exact-commit CI."
+    },
+    {
+      "id": "model-artifact-evaluation-v054",
+      "introduced": "0.54.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/models/artifact-verifier.js",
+        "src/evaluation/evaluation-store.js",
+        "src/evaluation/benchmark-runner.js",
+        "src/evaluation/promotion-score.js",
+        "scripts/platform-intelligence-cli.js",
+        "public/app.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/platform-intelligence-v054.test.mjs",
+        "verification/platform-intelligence-http-v054.test.mjs"
+      ],
+      "evidence_note": "Model artifact SHA-256 verification, optional Ed25519 signature verification, persistent artifact records, evidence-backed evaluation records, verified-only leaderboards and promotion evidence scoring are implemented. Artifact registration never implies runtime availability or production eligibility. Awaiting authoritative exact-commit CI."
     }
   ]
 }
