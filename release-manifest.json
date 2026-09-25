@@ -759,8 +759,8 @@
     },
     {
       "path": "verification/model-router-evidence-v049.test.mjs",
-      "sha256": "794b9670f04ba0361cca0d5ca77fb3e15327d8192683b5c2f73a3d510c5f7683",
-      "bytes": 6188
+      "sha256": "88772fad9b005bc0fb3e9db0daf461504140f420f1298de2973c35cae2516198",
+      "bytes": 10627
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
