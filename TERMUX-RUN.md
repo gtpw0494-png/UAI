@@ -8,7 +8,7 @@ First local bootstrap:
 
 ```bash
 cd ~/UAI
-export UAI_OWNER_EMAIL="owner@example.com"
+export UAI_OWNER_EMAIL="gtpw0494@gmail.com"
 read -rsp 'Owner password: ' UAI_OWNER_PASSWORD; echo
 export UAI_OWNER_PASSWORD
 chmod +x scripts/run-owner-local.sh
@@ -19,7 +19,7 @@ Existing installation credential rotation:
 
 ```bash
 cd ~/UAI
-export UAI_OWNER_EMAIL="owner@example.com"
+export UAI_OWNER_EMAIL="gtpw0494@gmail.com"
 read -rsp 'Owner password: ' UAI_OWNER_PASSWORD; echo
 export UAI_OWNER_PASSWORD
 node scripts/configure-owner.mjs --replace
