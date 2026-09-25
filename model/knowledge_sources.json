@@ -1,0 +1,82 @@
+{
+  "version": "v1",
+  "sources": [
+    {
+      "id": "arxiv",
+      "name": "arXiv",
+      "domain": "arxiv.org",
+      "type": "academic",
+      "allowed": true,
+      "license": "research-use",
+      "trust": 0.96,
+      "priority": 100,
+      "extractors": ["text", "metadata", "references"]
+    },
+    {
+      "id": "github-docs",
+      "name": "GitHub Docs",
+      "domain": "docs.github.com",
+      "type": "official-docs",
+      "allowed": true,
+      "license": "open-docs",
+      "trust": 0.97,
+      "priority": 95,
+      "extractors": ["text", "metadata"]
+    },
+    {
+      "id": "python-docs",
+      "name": "Python Docs",
+      "domain": "docs.python.org",
+      "type": "official-docs",
+      "allowed": true,
+      "license": "open-docs",
+      "trust": 0.97,
+      "priority": 95,
+      "extractors": ["text", "metadata"]
+    },
+    {
+      "id": "wikipedia",
+      "name": "Wikipedia",
+      "domain": "wikipedia.org",
+      "type": "reference",
+      "allowed": true,
+      "license": "cc-by-sa",
+      "trust": 0.82,
+      "priority": 70,
+      "extractors": ["text", "metadata"]
+    },
+    {
+      "id": "huggingface-docs",
+      "name": "Hugging Face Docs",
+      "domain": "huggingface.co",
+      "type": "official-docs",
+      "allowed": true,
+      "license": "open-docs",
+      "trust": 0.9,
+      "priority": 85,
+      "extractors": ["text", "metadata"]
+    },
+    {
+      "id": "mozilla-mdn",
+      "name": "MDN",
+      "domain": "developer.mozilla.org",
+      "type": "official-docs",
+      "allowed": true,
+      "license": "open-docs",
+      "trust": 0.96,
+      "priority": 92,
+      "extractors": ["text", "metadata"]
+    },
+    {
+      "id": "public-domain-books",
+      "name": "Public Domain Book Archive",
+      "domain": "archive.org",
+      "type": "released-data",
+      "allowed": true,
+      "license": "public-domain",
+      "trust": 0.9,
+      "priority": 75,
+      "extractors": ["text", "metadata"]
+    }
+  ]
+}
