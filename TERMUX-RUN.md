@@ -96,3 +96,36 @@ show autonomy
 ```
 
 To bulk-import web material for retrieval only, omit `--training-approved`. Add that flag only after source/license/security review when the records are genuinely approved for training.
+
+
+## v0.52 bounded R&D commands
+
+Run these from the UAI repository root:
+
+```bash
+cd ~/UAI
+git pull --ff-only origin main
+npm install --ignore-scripts --omit=optional
+
+npm run shadow:status
+npm run shadow:agents
+npm run shadow:runs
+
+npm run light:status
+npm run light:agents
+npm run light:patches
+
+npm run test:shadow-light
+npm run test:shadow-light-http
+npm test
+```
+
+Create bounded proposals from the CLI:
+
+```bash
+node scripts/shadow-cli.js submit research-discovery "compare approved retrieval evidence and identify gaps"
+node scripts/light-cli.js propose test-repair "reproduce and repair the failing deterministic test"
+```
+
+The shadow CLI creates quarantined research runs/candidates only. The light CLI creates source-maintenance proposals only; it does not merge protected `main`. Promotion remains a separate owner-authorized path.
+
