@@ -828,6 +828,11 @@
       "bytes": 1439
     },
     {
+      "path": "src/knowledge-research-worker.js",
+      "sha256": "c2cf8df693ac2f9cceba11408b2f2cfb587d5686d6be4f0008424ea075e405c2",
+      "bytes": 2383
+    },
+    {
       "path": "src/knowledge-rollback.js",
       "sha256": "31898f0100aced5b87db6cecf179d18a1f74a3699a211a8aa9733160b7b99c7c",
       "bytes": 1528
