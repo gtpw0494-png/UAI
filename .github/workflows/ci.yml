@@ -75,7 +75,7 @@ jobs:
       - name: Verify v0.51 durable conversation rehydration
         run: npm run test:conversation-memory
 
-      - name: Verify lifecycle retrieval and learning foundations
+      - name: Verify v0.52 bounded research and source-maintenance agents\n        run: npm run test:shadow-light\n\n      - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
       - name: Compile all Python source
