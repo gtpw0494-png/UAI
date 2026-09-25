@@ -1,6 +1,17 @@
-# IntraultUniversalion v0.52.0
+# IntraultUniversalion v0.53.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.53 persistent agent control plane
+
+- Added dedicated SQLite control-plane tables for shadow runs/candidates, light patches/worktrees, and persistent agent jobs, with migration of existing v0.52 generic governance records.
+- Added a bounded lease-based worker scheduler with queue ceilings, concurrency ceilings, job priority, expiry, crash/lease recovery, and explicit dispatch rather than unbounded process generation.
+- Shadow and light submissions now create durable scheduled jobs. Manual/API execution settles those jobs, and explicit worker dispatch can execute one queued unit under the same lifecycle.
+- Added authenticated control-plane status, jobs, dispatch, maintenance, and operations-dashboard APIs. State-changing scheduling remains session/CSRF governed and is blocked by the emergency stop.
+- Added a single-chat operations dashboard for tasks, capabilities, models, plugins, approvals, shadow runs, light patches, scheduler jobs, feature evidence, and audit integrity.
+- Added Termux control-plane commands and v0.53 unit/HTTP regression suites.
+- Expanded governed public-web research with multi-query discovery and an optional Brave Search API adapter; exhaustive internet coverage is not claimed.
+- Promotion authority remains separate: scheduler completion cannot deploy a shadow candidate, merge a light patch to protected `main`, or promote training data.
 
 ## v0.52 bounded research + source-improvement control plane
 
