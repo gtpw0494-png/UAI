@@ -79,7 +79,10 @@
     "knowledge:benchmark": "python3 model/eval/knowledge_benchmark.py",
     "knowledge:store": "python3 model/knowledge_store.py",
     "test:cloud-knowledge": "node verification/cloud-knowledge-store.test.mjs",
-    "test:knowledge-training-job": "node verification/knowledge-training-job.test.mjs"
+    "test:knowledge-training-job": "node verification/knowledge-training-job.test.mjs",
+    "test:forgelm-candidate-promotion": "node verification/forgelm-candidate-promotion.test.mjs",
+    "test:knowledge-learning-pipeline": "node verification/knowledge-learning-pipeline.test.mjs",
+    "test:knowledge-production": "npm run test:knowledge-autonomy && npm run test:cloud-knowledge && npm run test:knowledge-training-job && npm run test:forgelm-candidate-promotion && npm run test:knowledge-learning-pipeline"
   },
   "engines": {
     "node": ">=20"
