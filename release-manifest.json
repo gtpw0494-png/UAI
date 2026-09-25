@@ -1054,8 +1054,8 @@
     },
     {
       "path": "verification/shadow-light-http-v052.test.mjs",
-      "sha256": "ed86bf7770590dd9e9eab05d42f6478832c56b112c3ae2fb00202d72644e1404",
-      "bytes": 4800
+      "sha256": "bca3135b26a19376e8d7843c7920b82797273e2e815143bfb0a3cf1b12a1dfbf",
+      "bytes": 4928
     },
     {
       "path": "verification/shadow-light-v052.test.mjs",
