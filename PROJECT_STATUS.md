@@ -194,9 +194,9 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - NOT SUPPORTED — unbounded/infinite live agent generation and automated source-code promotion without separate local-owner authority.
 
 ## v0.53.0 additions
-- IMPLEMENTED, PENDING FINAL PROMOTION — dedicated `shadow_runs`, `shadow_candidates`, `light_patches`, `light_worktrees` and `agent_jobs` SQLite tables with v0.52 compatibility migration.
-- IMPLEMENTED, PENDING FINAL PROMOTION — persistent bounded worker scheduling with queue/concurrency ceilings, priority, TTL expiry, lease ownership and stale-lease recovery.
-- IMPLEMENTED, PENDING FINAL PROMOTION — authenticated scheduler status/jobs/dispatch/maintenance APIs and single-chat operations dashboard covering tasks, capabilities, models, plugins, approvals, shadow/light state, evidence and audit integrity.
+- IMPLEMENTED + VERIFIED — dedicated `shadow_runs`, `shadow_candidates`, `light_patches`, `light_worktrees` and `agent_jobs` SQLite tables with v0.52 compatibility migration.
+- IMPLEMENTED + VERIFIED — persistent bounded worker scheduling with queue/concurrency ceilings, priority, TTL expiry, lease ownership and stale-lease recovery.
+- IMPLEMENTED + VERIFIED — authenticated scheduler status/jobs/dispatch/maintenance APIs and single-chat operations dashboard covering tasks, capabilities, models, plugins, approvals, shadow/light state, evidence and audit integrity.
 - IMPLEMENTED — Termux control-plane status/jobs/dispatch/maintenance CLI.
 - PARTIAL — multi-query public-web research plus optional Brave Search API adapter; provider/network/index coverage remains conditional and exhaustive internet coverage is not claimed.
 - BOUNDARY — scheduler completion grants no promotion authority. Shadow candidates remain quarantined/governed and light patches remain outside protected-`main` merge authority until a separate owner-authorized promotion path acts.
