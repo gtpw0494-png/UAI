@@ -329,8 +329,8 @@
     },
     {
       "path": "research/model_registry.json",
-      "sha256": "499250f3548ebf4b415c50aa204341f04fedd8fcf220f176461d9d8cb5baeef2",
-      "bytes": 1880
+      "sha256": "fcf0ce7a208cf546fcc8bf3e32e0dbbad78217e974cf95da553839ad7e130cb3",
+      "bytes": 4804
     },
     {
       "path": "research/source_registry.json",
