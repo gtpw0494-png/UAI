@@ -20,3 +20,22 @@ const unavailable=new CloudKnowledgeStore();
 assert.equal(unavailable.status().state,"UNAVAILABLE");
 assert.equal((await unavailable.putMany([fact])).state,"UNAVAILABLE");
 console.log("cloud knowledge storage: ok");
+
+const recoveryRoot=fs.mkdtempSync(path.join(os.tmpdir(),"uai-cloud-recovery-"));
+const recoveryLocal=new VerifiedKnowledgeStore({stateRoot:recoveryRoot});
+const fakeCloud={
+  status:()=>({state:"CONFIGURED",configured:true}),
+  list:async()=>({state:"SUCCESS",records:[{
+    subject:"recovery",claim:"must be reverified",training_eligible:true,
+    supporting_sources:[
+      {source_id:"a",source_url:"https://a.example/doc",content_hash:"1"},
+      {source_id:"b",source_url:"https://b.example/doc",content_hash:"2"}
+    ]
+  }]})
+};
+let verifierCalls=0;
+const recoveryHybrid=new HybridKnowledgeStore({local:recoveryLocal,cloud:fakeCloud});
+const recovery=await recoveryHybrid.recoverFromCloud({verifier:{verifyFacts(items){verifierCalls++;assert.equal(items.length,2);return{state:"SUCCESS",verified:0,training_eligible:0,facts:[{subject:"recovery",claim:"must be reverified",source_id:"a",source_url:"https://a.example/doc",verification:{verified:false,training_rights_verified:false},training_eligible:false}]};}}});
+assert.equal(verifierCalls,1);
+assert.equal(recovery.recovered,0);
+assert.equal(recoveryLocal.filterTrainingEligible(10).length,0);
