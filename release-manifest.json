@@ -398,6 +398,11 @@
       "bytes": 1065
     },
     {
+      "path": "scripts/run-owner-local.sh",
+      "sha256": "e1d2699835f12f80cf8147c4a04ed580d191f307a4d6f61f8a7db28656cd4bee",
+      "bytes": 507
+    },
+    {
       "path": "scripts/setup-ai.sh",
       "sha256": "7c4f5a620443478c8cd52cb694b138c1a6f931812057a60c982d062a10b5566c",
       "bytes": 1034
@@ -766,6 +771,11 @@
       "path": "verification/model-router-evidence-v049.test.mjs",
       "sha256": "88772fad9b005bc0fb3e9db0daf461504140f420f1298de2973c35cae2516198",
       "bytes": 10627
+    },
+    {
+      "path": "verification/owner-bootstrap-v049.test.mjs",
+      "sha256": "805b445d0c5e1699861a9dc6130b8fda5a6cb13dd7fb47e2b5b706cedaefbdc8",
+      "bytes": 5836
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
