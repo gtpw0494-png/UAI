@@ -343,6 +343,11 @@
       "bytes": 580
     },
     {
+      "path": "schemas/document.schema.json",
+      "sha256": "8a694d53e6d3ef78beb5ade123e616666056161e09f9ce4c7202d8b6566931dc",
+      "bytes": 2012
+    },
+    {
       "path": "schemas/event-envelope.schema.json",
       "sha256": "761431dc04388ffac55e5f3fd2eb78fb86f3378f74e750ab75c8e15644ada40f",
       "bytes": 1119
@@ -476,6 +481,11 @@
       "path": "src/doctrine.js",
       "sha256": "6cc91b7db83832bfeb0384aa1447601f322f5c63c03dbbd64b5325666f00dc2b",
       "bytes": 1166
+    },
+    {
+      "path": "src/document-store.js",
+      "sha256": "50030cb8ecfd0c46b6374b02ec798020731d49ae053ca75da10d1745958e46b9",
+      "bytes": 1980
     },
     {
       "path": "src/forgelm-bridge.js",
@@ -643,6 +653,11 @@
       "bytes": 15270
     },
     {
+      "path": "storage/documents.py",
+      "sha256": "883bea9a0a960153e5142ab73a5f6a484050f286cdf5b31f8e3c1768af1874b5",
+      "bytes": 17411
+    },
+    {
       "path": "storage/export_training.py",
       "sha256": "31253439f2b84f9579e6012673578b59f85c787cefd76fc145ccbb45297d99d9",
       "bytes": 2290
@@ -676,6 +691,11 @@
       "path": "verification/control-plane-modernization.test.mjs",
       "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
       "bytes": 6818
+    },
+    {
+      "path": "verification/document-data-plane.test.py",
+      "sha256": "5ba44e00158aa741ca5c7f08c4046d170e040c4fef5081d27fca3657da2f880c",
+      "bytes": 4206
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
