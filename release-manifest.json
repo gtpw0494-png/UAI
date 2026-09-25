@@ -299,8 +299,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "d446441f015e45e3741b26a764a1cdcd795655c37bf9f3eabf321195db5fab48",
-      "bytes": 5199
+      "sha256": "bf4035a4a274174322a194f3b65d1b207a3810bb84f3d6ed2cb04819308d076a",
+      "bytes": 5415
     },
     {
       "path": "public/app.js",
@@ -764,8 +764,8 @@
     },
     {
       "path": "src/knowledge-autonomy.js",
-      "sha256": "7f6a223e1ff153e7b192e79813fe20f8bdbbc8896589aaa1f2cdd0cb0b8f68a4",
-      "bytes": 1920
+      "sha256": "77f3e11800f8d02652a7bce7528b11943f8a25f74af026634812cc784e5cb255",
+      "bytes": 1547
     },
     {
       "path": "src/knowledge-eligibility.js",
@@ -779,8 +779,8 @@
     },
     {
       "path": "src/knowledge-integration.js",
-      "sha256": "b64d7ef2b1eebb771e2c1d8bcc12b8e5da0459fb49fbf08269d6904c8d69e218",
-      "bytes": 1773
+      "sha256": "d5449e84a5796bd0157ce168ce8bb7395f397c92298c8809f9c8988f64bd2df4",
+      "bytes": 2157
     },
     {
       "path": "src/knowledge-metrics.js",
