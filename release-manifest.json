@@ -219,8 +219,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "74f970172f0e52cad89b719fb929f7fdb1a2bc4776ba1b9969e80245d98ef70b",
-      "bytes": 9191
+      "sha256": "a6bde006ce7cbd2c645f8733903344d769832133222acfc3d9779294d50c380d",
+      "bytes": 9858
     },
     {
       "path": "public/index.html",
@@ -403,6 +403,11 @@
       "bytes": 718
     },
     {
+      "path": "scripts/platform-intelligence-cli.js",
+      "sha256": "a120067d408c73174d2cf9905f3bc54cde5e40b448c879c3b0c94df1079b5065",
+      "bytes": 2507
+    },
+    {
       "path": "scripts/probe-capabilities.js",
       "sha256": "814158f940e14ce73aa6dd479d13de8cf8e42339c9405c3212b100f7ba1a6185",
       "bytes": 1065
@@ -444,8 +449,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "f248c564b21a8b08746b8af328b28568aae8dbdbf2234412a6d57b68a5b92269",
-      "bytes": 40342
+      "sha256": "7c78fecf5806f05b7a53ba5788d418a514a12eb700fd378ef26deccc45bd12d2",
+      "bytes": 47612
     },
     {
       "path": "src/action-envelope.js",
@@ -543,6 +548,21 @@
       "bytes": 1980
     },
     {
+      "path": "src/evaluation/benchmark-runner.js",
+      "sha256": "e8b0e6b80307ae0fdf70739eb7b992d964aab7ba457c6212ef62b775673f677e",
+      "bytes": 1085
+    },
+    {
+      "path": "src/evaluation/evaluation-store.js",
+      "sha256": "b71aa9fe8fd06fe723737a7a2e691b9ded4e46af54681fc4a3a2677e4f984517",
+      "bytes": 2601
+    },
+    {
+      "path": "src/evaluation/promotion-score.js",
+      "sha256": "08464dd565ea5214cae2ef99222cdd13d24bf1ebaff910843631d5732c71decf",
+      "bytes": 645
+    },
+    {
       "path": "src/evidence-envelope.js",
       "sha256": "7ab4cfeccba44d830042d2befb6079682138956e321e63bbd0b95493c51527a6",
       "bytes": 3109
@@ -559,8 +579,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "446f815f0efdc8915250f996516a40dded39b57a63b22f0fa60b98f0c845ce04",
-      "bytes": 7999
+      "sha256": "6c6d87fca048d2d11817cc445c0be5f30513a5efe84654655e8b1cd6a19c36b8",
+      "bytes": 8469
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -593,6 +613,11 @@
       "bytes": 2122
     },
     {
+      "path": "src/governance/policy-simulator.js",
+      "sha256": "b00652aab0fba58cccb79df5172a7963e8c8b83371182dcac8d31dc1a6ed5e5e",
+      "bytes": 3143
+    },
+    {
       "path": "src/governance/policy-store.js",
       "sha256": "f816e2e3e992342c75e0053bfe8dd45447041c1d443a5279caaf8da083941725",
       "bytes": 1256
@@ -604,8 +629,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "cc0a823e04ebfc07bffa86aa50b7eea2c49bb1d271eebaecf13c6751eb73a593",
-      "bytes": 9351
+      "sha256": "2052fc1bad0fb81229c4306450a6892416302df9fb329ebf8ee7a8f6bc1f97b8",
+      "bytes": 13886
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -768,6 +793,11 @@
       "bytes": 2179
     },
     {
+      "path": "src/models/artifact-verifier.js",
+      "sha256": "43a8feea02254307e79498483cc95b9388a1a350168546b295fa5bc41263060b",
+      "bytes": 3937
+    },
+    {
       "path": "src/models/router.js",
       "sha256": "8539b88556c79371e0bb32b04e4c0a66d4ac6310f31cfc3019353df5d4573536",
       "bytes": 5812
@@ -779,8 +809,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "90e1c0ba48c67b014a0232a7d8917a3e7130c71efd32ea3b3550bdc86fb4f882",
-      "bytes": 26821
+      "sha256": "4f483cc435b1de6570104753cdb8cdec368bcac31f903b4815a5e670587ee836",
+      "bytes": 30882
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -814,8 +844,8 @@
     },
     {
       "path": "src/policy-engine.js",
-      "sha256": "7542d81411fe10e3218f717dbd9a72be2eeca8253bedbe04beada09ac79c2cc5",
-      "bytes": 1146
+      "sha256": "bf5488c367d4f72da0b49562e9bcd54240c3a6f98ac90d638983953fb6f24a32",
+      "bytes": 3193
     },
     {
       "path": "src/provenance/citation.js",
@@ -1096,6 +1126,16 @@
       "path": "verification/owner-bootstrap-v049.test.mjs",
       "sha256": "805b445d0c5e1699861a9dc6130b8fda5a6cb13dd7fb47e2b5b706cedaefbdc8",
       "bytes": 5836
+    },
+    {
+      "path": "verification/platform-intelligence-http-v054.test.mjs",
+      "sha256": "76edf6c78cc318d6eeeb1a0060a6f3daac9518a10874ba469957f82a43dae99e",
+      "bytes": 7691
+    },
+    {
+      "path": "verification/platform-intelligence-v054.test.mjs",
+      "sha256": "a1b7ff42adb686c3564b808f6602e868995e59c1956a6f6f70f3e21ae89eed85",
+      "bytes": 7114
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
