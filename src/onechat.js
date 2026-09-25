@@ -7,7 +7,7 @@ function result(state,message,data={}){return {state,message,...data};}
 function parseDevelop(message){const m=String(message).match(/^develop\s+file\s+([^\n]+)\n([\s\S]+)$/i);return m?{path:m[1].trim(),content:m[2]}:null;}
 function ids(message,re){const m=String(message).match(re);return m?m.slice(1):null;}
 export class OneChatRouter{
- constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();this.lastEvidence=new Map();}
+ constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();this.lastEvidence=new Map();this.researchRuns=new Map();}
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
   try{
@@ -20,7 +20,7 @@ export class OneChatRouter{
   const t=String(message||""),a=[];
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
-  if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
+  if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website|latest|current|today|recent|research|look up|search for/i.test(t))a.push({agent:"web-research",reason:"governed live web research/corpus intent"});
   if(/document|citation|provenance|source graph|evidence search|retrieval source/i.test(t))a.push({agent:"documents",reason:"provenance-aware document retrieval intent"});
   if(/research|analyse|analyze|compare|definition|knowledge|evidence|study|semantic search|semantic retrieve/i.test(t))a.push({agent:"knowledge",reason:"knowledge/research intent"});
   if(/\bdefine\b|definition of|meaning of|wordnet|lexicon|dictionary|synonym|antonym|hypernym|hyponym|related word|lexical relation/i.test(t))a.push({agent:"lexicon",reason:"local lexical-definition intent"});
@@ -39,7 +39,16 @@ export class OneChatRouter{
     if(/web corpus status|web sources|source classes|common crawl|fineweb|wikimedia|wikipedia|stack exchange/i.test(message)){const s=this.webCorpus?.status();return s?{...s,message:`Web corpus registry contains ${s.sourceClasses} governed source classes and ${s.records} locally ingested record(s).`}:result("UNAVAILABLE","Web corpus service is not configured.");}
     const m=String(message).match(/(?:ingest|fetch|research)\s+url\s+(https?:\/\/\S+)(?:\s+license\s+([A-Za-z0-9_.+-]+))?/i);
     if(m)return this.webCorpus?await this.webCorpus.ingestUrl({url:m[1],license:m[2]||"UNKNOWN",licenseSource:m[2]?"USER_DECLARED":"UNVERIFIED",promoteTraining:/training[- ]approved/i.test(message)}):result("UNAVAILABLE","Web corpus service is not configured.");
-    return result("SUCCESS","Web Research Agent is ready. Ask for web corpus status or `ingest url https://...`; fetched content keeps URL, retrieval time, robots result, license state and training eligibility.");
+    if(this.researchEngine){
+      const explicit=String(message).match(/(?:deep\s+research|research|search(?:\s+the)?\s+web|look\s+up)\s*:?\s*([\s\S]+)/i);
+      const query=(explicit?.[1]||message).trim(),depth=/deep\s+research|comprehensive|thorough|in[- ]depth/i.test(message)?"deep":"standard";
+      const run=await this.researchEngine.research(query,{depth,maxSources:depth==="deep"?10:6,store:true});
+      this.researchRuns.set(chatId,run);
+      if(run.state==="UNAVAILABLE")return result("UNAVAILABLE",run.limitations?.join(" ")||"Live web research could not retrieve readable evidence.",{researchRun:run});
+      const composed=this.researchComposer?await this.researchComposer.compose(run):null;
+      return result(composed?.state==="SUCCESS"?"SUCCESS":"PARTIAL",composed?.message||`Retrieved ${run.sources.length} live web source(s) and ${run.evidence.length} evidence excerpt(s).`,{researchRun:run,modelUsed:composed?.modelUsed===true,model:composed?.model||null,modelRoute:composed?.route||null});
+    }
+    return result("UNAVAILABLE","Live web research engine is not configured. URL ingestion remains available through the governed corpus service.");
   }
   if(agent==="documents"){
     if(!this.documentStore)return result("UNAVAILABLE","Provenance document store is not configured.");
@@ -156,7 +165,10 @@ export class OneChatRouter{
   const answer=composed.message||best.message||"Collaboration completed.";
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
-  const support=(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}}));
+  const researchRun=this.researchRuns.get(chatId)||null;
+  const localSupport=(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}}));
+  const webSupport=(researchRun?.evidence||[]).slice(0,16).map(x=>({source_id:x.source_id,document_id:null,document_revision:null,chunk_id:null,uri:x.url,quote:x.text,score:x.score??null,freshness:x.retrieved_at,provenance:{title:x.title,domain:x.domain,researchRunId:researchRun.run_id,instructionAuthority:"NONE"}}));
+  const support=[...localSupport,...webSupport];
   const conversationResult=contributions.find(x=>x.agent==="conversation")?.result||null;
   const claimStatus=support.length?"SUPPORTED":(composed.mode==="native-conversation"||composed.mode==="governed-composer"?"INFERENCE":(finalState==="SUCCESS"?"INFERENCE":"UNSUPPORTED"));
   const evidenceEnvelope=new EvidenceEnvelope({
@@ -165,9 +177,9 @@ export class OneChatRouter{
     promptVersion:"onechat-v0.49",
     claims:[{claim:answer,support,status:claimStatus,confidence:null}],
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
-    metadata:{chatId,responseMode:composed.mode,finalState}
+    metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchRun?.run_id||null,researchSourceCount:researchRun?.sources?.length||0}
   });
-  this.lastEvidence.set(chatId,evidenceEnvelope);
+  this.lastEvidence.set(chatId,evidenceEnvelope);if(researchRun)this.researchRuns.delete(chatId);
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,verified:finalState==="SUCCESS"});
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
   return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
