@@ -48,7 +48,7 @@ try{
   assert.equal(cp.x.storage.tables["agent-job"],"agent_jobs");
 
   const dashboard=await req("/api/control-plane/dashboard",{headers:read});
-  assert.equal(dashboard.r.status,200);assert.equal(dashboard.x.generatedFor,"0.53.0");
+  assert.equal(dashboard.r.status,200);assert.equal(dashboard.x.generatedFor,JSON.parse(fs.readFileSync(path.join(repoRoot,"package.json"),"utf8")).version);
   assert.ok(dashboard.x.tasks&&dashboard.x.capabilities&&dashboard.x.models&&dashboard.x.plugins&&dashboard.x.approvals);
   assert.ok(dashboard.x.shadow&&dashboard.x.light&&dashboard.x.scheduler&&dashboard.x.evidence&&dashboard.x.audit);
   assert.ok(dashboard.x.evidence.features.some(x=>x.id==="typed-agent-control-plane-v053"));
