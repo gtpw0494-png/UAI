@@ -274,8 +274,8 @@
     },
     {
       "path": "model/knowledge_verifier.py",
-      "sha256": "f3fa256d1140c72412437da1866047ad79c6a6c68519ca22b50e68d9b15bd2b0",
-      "bytes": 4085
+      "sha256": "61db0ed01baded842da7dcd9659bdf093103001236e3d9d7ef214a8d1b89c6fa",
+      "bytes": 5363
     },
     {
       "path": "model/orchestration.py",
@@ -1394,8 +1394,8 @@
     },
     {
       "path": "verification/knowledge-autonomy-v055.test.mjs",
-      "sha256": "e6df0bf2ba9419b7882f21a8c68a289d259a820cf081bed17865eeff39dd3c59",
-      "bytes": 1984
+      "sha256": "853140a8ede8cd726bbb0652d125ffbafca9c6af2a0aed7d2c6ea1cb2d72705b",
+      "bytes": 2068
     },
     {
       "path": "verification/knowledge-governance.test.mjs",
