@@ -38,7 +38,7 @@ try{
   const read={cookie:auth.cookie},write={cookie:auth.cookie,"x-uai-csrf":auth.csrf};
 
   const status=await req("/api/status");
-  assert.equal(status.x.version,"0.52.0");
+  assert.equal(status.x.version,JSON.parse(fs.readFileSync(path.join(path.resolve(path.dirname(new URL(import.meta.url).pathname),".."),"package.json"),"utf8")).version);
   assert.equal(status.x.shadow.mode,"BOUNDED_VIRTUAL_AGENTS");
   assert.equal(status.x.light.mode,"ISOLATED_WORKTREE_ONLY");
   assert.equal(status.x.light.directMainCommit,false);
