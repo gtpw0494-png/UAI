@@ -65,6 +65,8 @@ import { KnowledgeJobStore } from "./src/knowledge-job-store.js";
 import { ForgeLMCandidatePromotion } from "./src/forgelm-candidate-promotion.js";
 import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js";
 import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
+import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
+import { KnowledgeScheduler } from "./src/knowledge-scheduler.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -130,6 +132,17 @@ const forgeLMCandidatePromotion = new ForgeLMCandidatePromotion({root:__dirname,
 const knowledgeLearningPipeline = new KnowledgeLearningPipeline({trainingJob:knowledgeTrainingJob,promotion:forgeLMCandidatePromotion,jobStore:knowledgeJobStore,audit});
 const autonomousKnowledgeSources = JSON.parse(fs.readFileSync(path.join(__dirname,"model","knowledge_sources.json"),"utf8")).sources;
 const autonomousKnowledge = new KnowledgeAutonomy({registry:autonomousKnowledgeSources});
+const knowledgeResearchWorker = new KnowledgeResearchWorker({webResearch,webCorpus,sources:autonomousKnowledgeSources,audit});
+const knowledgeResearchScheduler = new KnowledgeScheduler({
+  stateRoot:stateDir,
+  runner:(topic)=>knowledgeResearchWorker.researchTopic(topic,{perSource:Number(process.env.IUV_KNOWLEDGE_PER_SOURCE||2),maxSources:Number(process.env.IUV_KNOWLEDGE_MAX_SOURCES||12)})
+});
+if(String(process.env.IUV_KNOWLEDGE_TOPICS||"").trim()){
+  knowledgeResearchScheduler.configure({topics:String(process.env.IUV_KNOWLEDGE_TOPICS).split(",")});
+}
+if(String(process.env.IUV_KNOWLEDGE_AUTOSTART||"").toLowerCase()==="true"){
+  knowledgeResearchScheduler.start();
+}
 const agentScheduler = new BoundedWorkerScheduler({
   stateRoot:stateDir,
   audit,
@@ -259,6 +272,22 @@ const server=http.createServer(async(req,res)=>{try{
     const b=await readBody(req);
     const result=await localOrchestrator.structured(b.payload || b.text || b.prompt || b.message || "{}", b.context || "");
     return send(res,200,result);
+  }
+
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/research/status"){
+    return send(res,200,knowledgeResearchScheduler.status());
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/research/run"){
+    const b=await readBody(req);
+    const out=await knowledgeResearchScheduler.runOnce(String(b.topic||""));
+    return send(res,["SUCCESS","PARTIAL"].includes(out.state)?200:409,out);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/research/schedule"){
+    const b=await readBody(req);
+    knowledgeResearchScheduler.configure({topics:b.topics,intervalMs:b.intervalMs,enabled:b.enabled});
+    const out=b.enabled===true?knowledgeResearchScheduler.start():b.enabled===false?knowledgeResearchScheduler.stop():knowledgeResearchScheduler.status();
+    audit.append({type:"knowledge.research.schedule",requestId,correlationId,actor:req.uaiSecurity?.auth?.identityId||null,enabled:out.enabled,intervalMs:out.intervalMs,topics:out.topics});
+    return send(res,200,out);
   }
 
   if(req.method==="GET"&&url.pathname==="/api/knowledge/autonomy/status"){
