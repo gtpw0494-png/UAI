@@ -373,6 +373,11 @@
       "bytes": 1130
     },
     {
+      "path": "schemas/multimodal-artifact.schema.json",
+      "sha256": "61674d0c8fcc0a5a7917845c5d78e8acf052afbe185b15ce8b5c9d0217356f00",
+      "bytes": 1714
+    },
+    {
       "path": "schemas/plugin-manifest.schema.json",
       "sha256": "3555ca419f32516984dd2931e5f1044cf3c83212cae636cbd4ddb04cadef15f8",
       "bytes": 6301
@@ -826,6 +831,11 @@
       "path": "src/models/router.js",
       "sha256": "8539b88556c79371e0bb32b04e4c0a66d4ac6310f31cfc3019353df5d4573536",
       "bytes": 5812
+    },
+    {
+      "path": "src/multimodal/pipeline.js",
+      "sha256": "cb4521a4e120972161292fa0130477f1fa80481bc9f8cf0766ab58ee2ee425c7",
+      "bytes": 7592
     },
     {
       "path": "src/observability.js",
