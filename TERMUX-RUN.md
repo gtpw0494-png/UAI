@@ -129,3 +129,39 @@ node scripts/light-cli.js propose test-repair "reproduce and repair the failing 
 
 The shadow CLI creates quarantined research runs/candidates only. The light CLI creates source-maintenance proposals only; it does not merge protected `main`. Promotion remains a separate owner-authorized path.
 
+## v0.53 persistent agent control plane
+
+The v0.53 control plane uses dedicated SQLite tables for shadow runs/candidates, light patches/worktrees, and scheduler jobs. Workers are bounded and lease-based; expired leases are recovered rather than spawning unbounded descendants.
+
+```bash
+cd ~/UAI
+git checkout main
+git pull --ff-only origin main
+npm install --ignore-scripts --omit=optional
+
+node -p "'UAI version: ' + require('./package.json').version"
+
+npm run control:status
+npm run control:jobs
+npm run control:jobs -- 100 shadow
+npm run control:jobs -- 100 light
+
+npm run test:agent-control
+npm run test:agent-control-http
+```
+
+Run one queued unit of work explicitly:
+
+```bash
+npm run control:dispatch -- shadow termux-shadow-1
+npm run control:dispatch -- light termux-light-1
+```
+
+Run expiry/lease recovery maintenance:
+
+```bash
+npm run control:maintenance
+```
+
+The local CLI never grants promotion authority. Shadow output remains quarantined/promotion-gated, and light work remains isolated from protected `main`. The authenticated HTTP control plane additionally enforces session/CSRF policy and the governance emergency stop.
+
