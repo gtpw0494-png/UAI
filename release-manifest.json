@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.47.0",
+  "version": "0.48.2",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "d64d947176d8301cbc9f24479f59397bbc5b1184604f3eb77a6fefba7962381f",
-      "bytes": 3120
+      "sha256": "e8d36ec4b7fce62c8922c7d89199d6c89dfc3fba478e4cb4e3807cbbb722d8d5",
+      "bytes": 3203
     },
     {
       "path": "public/app.js",
@@ -399,8 +399,8 @@
     },
     {
       "path": "scripts/validate-feature-evidence.mjs",
-      "sha256": "b1cad8500430708ff56f22b30cb076fd8c269d38f268d0dc84e259d4b68b60d8",
-      "bytes": 1558
+      "sha256": "969b5f16df6485681a925c14904021153e3fb32e1801a64230537b5b55e2a61d",
+      "bytes": 1924
     },
     {
       "path": "scripts/web-ingest.js",
