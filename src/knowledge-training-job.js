@@ -25,7 +25,7 @@ function sha256File(file){
 function writeJsonl(file,rows){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,rows.map(x=>JSON.stringify(x)).join("\n")+(rows.length?"\n":""),"utf8")}
 function materializeDataset(stateRoot,jobId,items=[]){
   const dir=path.join(stateRoot,"knowledge-autonomy","training-jobs",jobId,"dataset");
-  const rows=items.filter(x=>x?.training_eligible===true&&x?.verification?.verified===true).map(x=>({
+  const rows=items.filter(x=>x?.training_eligible===true&&x?.verification?.verified===true&&x?.verification?.training_rights_verified===true).map(x=>({
     text:[String(x.subject||"").trim(),String(x.claim||"").trim()].filter(Boolean).join(": "),
     fact_id:x.fact_id||null,source_id:x.source_id||null,source_url:x.source_url||null,
     verification:x.verification,training_eligible:true
