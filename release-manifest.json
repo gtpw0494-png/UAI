@@ -764,8 +764,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "8430092e255d4b7ef91325cb38eabca2d7e312efcb107fce46f6ddaac2400ceb",
-      "bytes": 16653
+      "sha256": "849fdeaffa27559847018ef6e46b95e9c3074003b6950bcff0eade7cce8a1888",
+      "bytes": 16838
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -779,8 +779,8 @@
     },
     {
       "path": "src/hybrid-knowledge-store.js",
-      "sha256": "358357fd86f957f46b397f19523715446d85c8700ab11fcb618d4a23bb97449f",
-      "bytes": 2453
+      "sha256": "329f83278aa3e303b56c1bc8d137ded7fc73660597d7b1281b00cd0440ebab18",
+      "bytes": 2543
     },
     {
       "path": "src/idempotency-store.js",
@@ -1349,8 +1349,8 @@
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
-      "sha256": "6479a569bbea121961c1ea8545d439f1bd3c63891d10eafe522d5f8a63bdb37e",
-      "bytes": 1429
+      "sha256": "7954cb54ae28096b94508445bc792ee0eff6ba1457fa5acf5aa3c88afec293de",
+      "bytes": 2583
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
