@@ -834,8 +834,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "0ff10931d6ff7ba895c784ecb27c99cac85739bc3695972497b35fbfd83ecfe9",
-      "bytes": 8106
+      "sha256": "adc7ba3f12e9a2f9297c337a19bac25db7f2932b6f6f650dcab8759036aad45c",
+      "bytes": 8223
     },
     {
       "path": "src/plugin-executor.js",
@@ -1069,8 +1069,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "60be4ad0f325a846e9f89f34eff5c9d5555dd4d2e94c358feed35169677f9a67",
-      "bytes": 7936
+      "sha256": "be66df0d62a8f344b6b418264c19672eb750214549a2e2ed6758f04ae25e84dc",
+      "bytes": 8062
     },
     {
       "path": "storage/retrieval_eval.py",
