@@ -919,8 +919,8 @@
     },
     {
       "path": "src/web-research-engine.js",
-      "sha256": "25bb8e228600ac0c064cb2a8109ec4f91adb28612479a8af43ff7dcd74b023a3",
-      "bytes": 4952
+      "sha256": "917fecedd50cf7efadd17a24db51d7344db9fe0d396e464cc904d252de512b00",
+      "bytes": 6525
     },
     {
       "path": "src/workspace.js",
