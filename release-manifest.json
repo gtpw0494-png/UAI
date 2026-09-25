@@ -564,8 +564,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "7d2cce87e530e6d0d8e8e81273c519836123c83dacd50d2838474e2921aa73c5",
-      "bytes": 48611
+      "sha256": "ae8578b3c6dc31b8607093ff86e587fdb76a96a34341e8f02657d9e0f139f997",
+      "bytes": 50428
     },
     {
       "path": "src/action-envelope.js",
@@ -839,8 +839,8 @@
     },
     {
       "path": "src/knowledge-scheduler.js",
-      "sha256": "4cefd67deac5f0b7405867f009e06ddb79e5bd0cc6484d8ea8510f03002498fe",
-      "bytes": 996
+      "sha256": "5d1c8c3bf0dc6e949bc5ecf062a0265d597e74a29c55de483cc89e9970eb09bb",
+      "bytes": 3454
     },
     {
       "path": "src/knowledge-training-job.js",
