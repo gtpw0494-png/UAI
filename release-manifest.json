@@ -569,8 +569,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "b49124632400a894b7be28210579e586dc5d94baf146ae5f092ed3b9cc093eff",
-      "bytes": 51324
+      "sha256": "e0b948d0c07732bc2a3b656f77fb4d8dbc6ff6592f88bff412fda79edcc5cc40",
+      "bytes": 51770
     },
     {
       "path": "src/action-envelope.js",
@@ -779,8 +779,8 @@
     },
     {
       "path": "src/hybrid-knowledge-store.js",
-      "sha256": "eb128eaa18f150355e65fa3cc89dc984e1fc5dd6a02beab18bf48714c55a8f73",
-      "bytes": 901
+      "sha256": "358357fd86f957f46b397f19523715446d85c8700ab11fcb618d4a23bb97449f",
+      "bytes": 2453
     },
     {
       "path": "src/idempotency-store.js",
@@ -859,8 +859,8 @@
     },
     {
       "path": "src/knowledge-verifier.js",
-      "sha256": "e85d7aab8340e0b8fdf3ad3e0e596cefdeb96a13486551312519f3e205a8010d",
-      "bytes": 3561
+      "sha256": "7892b48cbad5c5a5b29a6390ea9ad1ac30750b1723c7230b8c1eab646a26a54e",
+      "bytes": 3799
     },
     {
       "path": "src/knowledge.js",
