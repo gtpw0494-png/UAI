@@ -33,7 +33,8 @@ const store={rows:[],add(x){const row={id:"k-"+(this.rows.length+1),...x};this.r
 const explorative={chat:async()=>({state:"SUCCESS",message:"Research helper context."})};
 const knowledge={search:()=>[]};
 const sourceRegistry=[];
-const onechat=new OneChatRouter({conversation,webResearch,store,audit,explorative,knowledge,sourceRegistry,responseComposer:{compose({contributions}){const x=contributions.find(c=>c.agent==="conversation")?.result;return {message:x?.message||"none",mode:"native-conversation",modelUsed:true,evidence:null};}}});
+const modelLab={analyzeSources:async()=>({state:"SUCCESS",message:"Fixture source snapshot.",sources:[]})};
+const onechat=new OneChatRouter({conversation,webResearch,store,audit,explorative,knowledge,sourceRegistry,modelLab,responseComposer:{compose({contributions}){const x=contributions.find(c=>c.agent==="conversation")?.result;return {message:x?.message||"none",mode:"native-conversation",modelUsed:true,evidence:null};}}});
 const out=await onechat.handle({chatId:"c2",message:"research the latest local-first evidence"});
 assert.ok(["SUCCESS","PARTIAL"].includes(out.state));assert.equal(out.evidenceEnvelope.metadata.researchRunId!=null,true);assert.equal(out.evidenceEnvelope.claims[0].support.length,2);assert.match(out.message,/\[S1\]/);
 console.log("v0.50.0 conversational continuity and governed web-research tests passed");
