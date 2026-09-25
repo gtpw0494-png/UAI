@@ -1328,6 +1328,11 @@
       "bytes": 6721
     },
     {
+      "path": "storage/verified_knowledge.py",
+      "sha256": "37cf51ba8625a85bfb36c8cc036a2a221b4c02098e5587b43363daa82c553f72",
+      "bytes": 5075
+    },
+    {
       "path": "test.js",
       "sha256": "cee3bf383998ce87ee22bb6c3e6db7a4074efba4379dfa0b8d29169c1d7696c5",
       "bytes": 30405
