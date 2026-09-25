@@ -584,8 +584,8 @@
     },
     {
       "path": "src/response-composer.js",
-      "sha256": "ee19ebab0c9cb7250ecefb402ec3b3f07e6a67b18230fff411ea2078589829ef",
-      "bytes": 4898
+      "sha256": "77826af6d1c6b2e15fa83e486469ec54b55577474d4933801921d221f2da55e9",
+      "bytes": 5548
     },
     {
       "path": "src/runtime-services.js",
