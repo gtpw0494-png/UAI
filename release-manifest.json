@@ -368,6 +368,11 @@
       "bytes": 1518
     },
     {
+      "path": "scripts/configure-owner.mjs",
+      "sha256": "a7422971ae4f721b00282f3ce567ba98634dd580c607ddd8171cdd72d1cd7609",
+      "bytes": 1131
+    },
+    {
       "path": "scripts/enable-termux-capabilities.sh",
       "sha256": "606e00c15401618a2e17203b291f8d405fc4e75d627fb4c72841ce2e8bee88d0",
       "bytes": 1290
@@ -519,8 +524,8 @@
     },
     {
       "path": "src/governance/identity.js",
-      "sha256": "0ebb7c85acf6f190dc777e3aff5058e3d6abca3b2fb31fd9fd8733c2f6748af6",
-      "bytes": 6524
+      "sha256": "d151f436a81ad4bccdc90f5a821ac3ff469c4941e0ecf43c1adc33afe06c18b0",
+      "bytes": 8456
     },
     {
       "path": "src/governance/kernel.js",
