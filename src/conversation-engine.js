@@ -27,7 +27,7 @@ export class ConversationEngine{
   const transcript=prior.map(x=>`${x.role}: ${x.content}`).join("\n");
   const prompt=[transcript,extra,msg?`user: ${msg}`:""].filter(Boolean).join("\n");
   if(this.modelRouter){
-    const routed=await this.modelRouter.generate({task:"chat",modality:"text",privacy:"local-only",offline:true,contextTokens:approxTokens(prompt)},{toString(){return prompt;}},{system,maxTokens:768});
+    const routed=await this.modelRouter.generate({task:"chat",modality:"text",privacy:"local-only",offline:true,contextTokens:approxTokens(prompt)},prompt,{system,maxTokens:768});
     if(routed.state==="SUCCESS"&&usable(routed.text)){
       this._remember(id,"user",msg);this._remember(id,"assistant",routed.text);
       const selected=routed.route?.selected||{};
