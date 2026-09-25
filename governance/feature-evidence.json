@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.51.0",
+  "generated_for": "0.52.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -790,6 +790,70 @@
         "verification/conversation-research-v050.test.mjs"
       ],
       "evidence_note": "The research engine can discover and fetch multiple public web sources, but no implementation can guarantee literally all web sources; access remains subject to indexing, robots, authentication, paywalls, network availability, content type and policy."
+    },
+    {
+      "id": "bounded-shadow-rd",
+      "introduced": "0.52.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/agent-budget.js",
+        "src/shadow/shadow-agent-registry.js",
+        "src/shadow/shadow-run-store.js",
+        "src/shadow/candidate-store.js",
+        "src/shadow/shadow-coordinator.js",
+        "src/shadow/disagreement-detector.js",
+        "src/shadow/promotion-gate.js"
+      ],
+      "tests": [
+        "verification/shadow-light-v052.test.mjs"
+      ],
+      "evidence_note": "Bounded virtual research agents, persistent run/candidate records, resource budgets, quarantine and separate promotion gate are implemented. Candidates remain ineligible for production/training by default."
+    },
+    {
+      "id": "isolated-light-source-maintenance",
+      "introduced": "0.52.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/light/light-agent-registry.js",
+        "src/light/worktree-manager.js",
+        "src/light/patch-evaluator.js",
+        "src/light/light-coordinator.js"
+      ],
+      "tests": [
+        "verification/shadow-light-v052.test.mjs"
+      ],
+      "evidence_note": "Source-maintenance agents use detached worktrees, bounded workers and required test/security/shadow-review evidence. No direct protected-main merge authority is granted."
+    },
+    {
+      "id": "protected-local-governance-kernel-v2",
+      "introduced": "0.52.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/governance/kernel.js",
+        "src/governance/promotion-rules.js",
+        "src/governance/emergency-stop.js",
+        "src/governance/policy-store.js",
+        "src/governance/capability-boundary.js",
+        "src/governance/trusted-device.js",
+        "src/governance/audit-integrity.js"
+      ],
+      "tests": [
+        "verification/shadow-light-v052.test.mjs"
+      ],
+      "evidence_note": "Protected governance rule catalog, emergency stop, local policy store, capability boundary, audit verification and trusted-device registry are present. Independent hardware/bootstrap ownership proof remains unavailable."
+    },
+    {
+      "id": "platform-roadmap-truth-catalog",
+      "introduced": "0.52.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/platform-capability-catalog.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/shadow-light-v052.test.mjs"
+      ],
+      "evidence_note": "Model, runtime, learning, retrieval, plugin, connector, tool and benchmark categories are exposed without treating declarations as connected capabilities; incomplete items remain explicitly non-complete."
     }
   ]
 }
