@@ -719,8 +719,8 @@
     },
     {
       "path": "src/light/worktree-manager.js",
-      "sha256": "e75db29a13bd03da977566b62ac9de2122418df07db68e46d4e26ff364990c16",
-      "bytes": 3183
+      "sha256": "8acd359271d4e2305868d61ea74aa271285c65d1e5742ffd9d432a998377a462",
+      "bytes": 3354
     },
     {
       "path": "src/model-lab.js",
@@ -824,8 +824,8 @@
     },
     {
       "path": "src/shadow/candidate-store.js",
-      "sha256": "9cac8a68165446d30e92ba868873b88249a3c55a6bad7486b4b9deb27172826f",
-      "bytes": 1709
+      "sha256": "76f7d63b6dfe30a8df2e765506e2d3d6ebb65d77bcda01804cdf8642668e8d7e",
+      "bytes": 1933
     },
     {
       "path": "src/shadow/dataset-quality-agent.js",
