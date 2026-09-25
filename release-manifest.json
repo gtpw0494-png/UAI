@@ -314,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "657e7257d10659c49bc875ef92c3a50db4b08730b69057d9501acdfaea23679a",
-      "bytes": 6646
+      "sha256": "5d9f7874ab88a40254be6a2ba87fafda1787998e2c043c7b0aee2a15cd8c630c",
+      "bytes": 6787
     },
     {
       "path": "public/app.js",
@@ -1329,8 +1329,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "e2108cb3ef3dc2bdc61e57b4542d076db2796e3856c87346ba12676f26ade7f2",
-      "bytes": 30333
+      "sha256": "cee3bf383998ce87ee22bb6c3e6db7a4074efba4379dfa0b8d29169c1d7696c5",
+      "bytes": 30405
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
