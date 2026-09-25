@@ -169,8 +169,8 @@
     },
     {
       "path": "model/cli.py",
-      "sha256": "484cd8fa334d99f8cc425d6d7848e38f5900f602038541ef6197069ed2d26422",
-      "bytes": 2784
+      "sha256": "8fd6518bdb7abfb63ef85c5e123bb9484069d07da707c11c397ba1cca5e1179e",
+      "bytes": 3304
     },
     {
       "path": "model/config_presets.json",
@@ -314,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "4089d0c8d28abaf76f48699e92fb95b1d12e2d5a6096f046988f280a9c059062",
-      "bytes": 6531
+      "sha256": "657e7257d10659c49bc875ef92c3a50db4b08730b69057d9501acdfaea23679a",
+      "bytes": 6646
     },
     {
       "path": "public/app.js",
@@ -1329,8 +1329,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "e25a3354355f8c51685f5b1f7a540e00a1eca77138213665dc7cc061bfc88c53",
-      "bytes": 30273
+      "sha256": "e2108cb3ef3dc2bdc61e57b4542d076db2796e3856c87346ba12676f26ade7f2",
+      "bytes": 30333
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
@@ -1386,6 +1386,11 @@
       "path": "verification/forgelm-candidate-promotion.test.mjs",
       "sha256": "b5f997d0d2acb19b901079dcb42ae7bcef4bc5b2d2c7c5a0e37e98aa6cfd4ff4",
       "bytes": 1812
+    },
+    {
+      "path": "verification/forgelm-cli-policy.test.mjs",
+      "sha256": "338748005e2e83ae19db4a0ecb053183eecc48cf18fe9919ac3478658c2b411a",
+      "bytes": 521
     },
     {
       "path": "verification/forgelm-self-sufficient.test.mjs",
