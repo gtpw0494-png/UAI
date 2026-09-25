@@ -1308,6 +1308,11 @@
       "bytes": 9324
     },
     {
+      "path": "verification/cloud-knowledge-store.test.mjs",
+      "sha256": "4ecdb39abf5f6edadfe3809fb6d4ff7a53fa98e364e0640aace5058b996b55b9",
+      "bytes": 1399
+    },
+    {
       "path": "verification/control-plane-modernization.test.mjs",
       "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
       "bytes": 6818
