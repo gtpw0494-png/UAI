@@ -805,7 +805,8 @@
         "src/shadow/promotion-gate.js"
       ],
       "tests": [
-        "verification/shadow-light-v052.test.mjs"
+        "verification/shadow-light-v052.test.mjs",
+        "verification/shadow-light-http-v052.test.mjs"
       ],
       "evidence_note": "Bounded virtual research agents, persistent run/candidate records, resource budgets, quarantine and separate promotion gate are implemented. Candidates remain ineligible for production/training by default."
     },
@@ -820,7 +821,8 @@
         "src/light/light-coordinator.js"
       ],
       "tests": [
-        "verification/shadow-light-v052.test.mjs"
+        "verification/shadow-light-v052.test.mjs",
+        "verification/shadow-light-http-v052.test.mjs"
       ],
       "evidence_note": "Source-maintenance agents use detached worktrees, bounded workers and required test/security/shadow-review evidence. No direct protected-main merge authority is granted."
     },
@@ -838,7 +840,8 @@
         "src/governance/audit-integrity.js"
       ],
       "tests": [
-        "verification/shadow-light-v052.test.mjs"
+        "verification/shadow-light-v052.test.mjs",
+        "verification/shadow-light-http-v052.test.mjs"
       ],
       "evidence_note": "Protected governance rule catalog, emergency stop, local policy store, capability boundary, audit verification and trusted-device registry are present. Independent hardware/bootstrap ownership proof remains unavailable."
     },
@@ -851,7 +854,8 @@
         "server.js"
       ],
       "tests": [
-        "verification/shadow-light-v052.test.mjs"
+        "verification/shadow-light-v052.test.mjs",
+        "verification/shadow-light-http-v052.test.mjs"
       ],
       "evidence_note": "Model, runtime, learning, retrieval, plugin, connector, tool and benchmark categories are exposed without treating declarations as connected capabilities; incomplete items remain explicitly non-complete."
     }
