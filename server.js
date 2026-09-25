@@ -169,7 +169,7 @@ function send(res,status,data,type="application/json"){
     const small=JSON.stringify({state:"BLOCKED",message:"Response exceeded the configured API size limit.",maxBytes:MAX_RESPONSE_BYTES,requestId:res.getHeader("x-request-id")||null},null,2);
     res.writeHead(413,{"content-type":"application/json; charset=utf-8","cache-control":"no-store"});return res.end(small);
   }
-  res.writeHead(status,{"content-type":`${type}; charset=utf-8","cache-control":"no-store"});res.end(payload);
+  res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(payload);
 }
 function readBody(req){
   if(req._uaiBodyPromise)return req._uaiBodyPromise;
