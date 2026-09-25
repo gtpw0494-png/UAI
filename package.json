@@ -61,7 +61,8 @@
     "shadow:runs": "node scripts/shadow-cli.js runs",
     "light:status": "node scripts/light-cli.js status",
     "light:agents": "node scripts/light-cli.js agents",
-    "light:patches": "node scripts/light-cli.js patches"
+    "light:patches": "node scripts/light-cli.js patches",
+    "test:shadow-light-http": "node verification/shadow-light-http-v052.test.mjs"
   },
   "engines": {
     "node": ">=20"
