@@ -599,8 +599,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "d0c8478867247114422ec9a4bb5b753b5180e92a3e0cf33d3f724ab6e5c7a3ce",
-      "bytes": 8467
+      "sha256": "cc0a823e04ebfc07bffa86aa50b7eea2c49bb1d271eebaecf13c6751eb73a593",
+      "bytes": 9351
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -981,6 +981,11 @@
       "path": "test.js",
       "sha256": "884b2f729da2a875538365838d286832ecd1363a1fa06816bd0909333376166d",
       "bytes": 29056
+    },
+    {
+      "path": "verification/agent-control-v053.test.mjs",
+      "sha256": "7ef6e3720b3b10a924e9c9adb12c2691b33dc6657b08e043488198fe651a93da",
+      "bytes": 5707
     },
     {
       "path": "verification/api-security-v046.test.mjs",
