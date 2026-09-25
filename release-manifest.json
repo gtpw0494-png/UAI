@@ -828,6 +828,11 @@
       "bytes": 3354
     },
     {
+      "path": "src/local-capability-router.js",
+      "sha256": "a03ca48c6da51de83f48b8bcd25de307b0afeb213d20ae09d62fad46da4913d4",
+      "bytes": 3757
+    },
+    {
       "path": "src/memory/consent.js",
       "sha256": "35460696e7a17c38c10adea3dfe0a362d0c29ac26854dae5cc5eb478f9d2b76c",
       "bytes": 715
