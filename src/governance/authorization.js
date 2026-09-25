@@ -15,6 +15,7 @@ export function routeSecurity(method,path){
   const stateChanging=!["GET","HEAD","OPTIONS"].includes(m);
   let risk=stateChanging?"medium":"low",capability="api.read",external=false,mutatesSource=false,requiresCredential=false,delegateApproval=false;
   if(p.startsWith("/api/documents/"))capability=stateChanging?"documents.write":"documents.read";
+  else if(p.startsWith("/api/models"))capability="models.read";
   else if(p.startsWith("/api/plugins-v1/"))capability=p.endsWith("/execute")?"plugins.execute":"plugins.manage";
   else if(p.startsWith("/api/model/"))capability=stateChanging?"models.execute":"models.read";
   else if(p.startsWith("/api/tasks/"))capability=stateChanging?"tasks.execute":"tasks.read";

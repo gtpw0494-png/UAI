@@ -1,12 +1,21 @@
 import {ResponseComposer} from "./response-composer.js";
 import crypto from "node:crypto";
+import {EvidenceEnvelope} from "./evidence-envelope.js";
 const stateRank=new Map([["SUCCESS",6],["PARTIAL",5],["UNKNOWN",4],["UNAVAILABLE",3],["BLOCKED",2],["DENIED",2],["FAILURE",1],["ERROR",0]]);
 const ok=s=>s==="SUCCESS";
 function result(state,message,data={}){return {state,message,...data};}
 function parseDevelop(message){const m=String(message).match(/^develop\s+file\s+([^\n]+)\n([\s\S]+)$/i);return m?{path:m[1].trim(),content:m[2]}:null;}
 function ids(message,re){const m=String(message).match(re);return m?m.slice(1):null;}
 export class OneChatRouter{
- constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();}
+ constructor(services){Object.assign(this,{sourceRegistry:[]},services);this.responseComposer=services.responseComposer||new ResponseComposer();this.lastEvidence=new Map();}
+ _previousEvidence(chatId){
+  if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
+  try{
+    const rows=this.store?.list?.()||[];
+    for(let i=rows.length-1;i>=Math.max(0,rows.length-100);i--){const x=this.store.get(rows[i].id);if(x?.kind==="chat-turn"&&x.chatId===chatId&&x.evidenceEnvelope)return x.evidenceEnvelope;}
+  }catch{}
+  return null;
+ }
  allocations(message){
   const t=String(message||""),a=[];
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
@@ -107,7 +116,7 @@ export class OneChatRouter{
     const grantLease=String(message).match(/grant\s+autonomy(?:\s+scope\s+([\w.,-]+))?(?:\s+max\s+(\d+))?(?:\s+(\d+)\s+minutes?)?/i);if(grantLease&&this.autonomyStore){const scope=(grantLease[1]||"explore,research").split(',').filter(Boolean);const maxActions=Math.min(1000,Math.max(1,Number(grantLease[2]||10)));const minutes=Math.min(1440,Math.max(1,Number(grantLease[3]||60)));return this.autonomyStore.grant({scope,riskCeiling:"medium",maxActions,durationMs:minutes*60000});}
     if(/availability/i.test(message)&&this.availabilityStatus){const s=await this.availabilityStatus();return result("SUCCESS",`Availability evidence snapshot: ${s.connected}/${s.total} core capabilities CONNECTED${s.configured?`, ${s.configured} CONFIGURED`:""}.`,{availability:s});}
     if(/model registry|runtime model/i.test(message)&&this.modelRegistry){const s=this.modelRegistry.status();return result("SUCCESS",`Model registry tracks ${s.models.length} model/runtime entries without treating registration as runtime availability.`,s);}
-    if(/llama|gguf/i.test(message)&&this.llamaRuntime){const s=await this.llamaRuntime.status();return result(s.availability==="CONNECTED"?"SUCCESS":s.availability,s.availability==="CONNECTED"?`llama.cpp runtime is connected with ${s.models?.length||0} loaded model record(s).`:(s.reason||"llama.cpp runtime unavailable."),s);}
+    if(/model route|route model|select model/i.test(message)&&this.modelRouter){const task=(message.match(/\b(chat|reasoning|planning|summarization|classification)\b/i)||[])[1]||"chat";const r=await this.modelRouter.route({task:task.toLowerCase(),modality:"text",privacy:"local-only",offline:/offline/i.test(message)});if(r.ranked)delete r.ranked;return result(r.state,r.state==="SUCCESS"?`Model router selected ${r.selected.id} via ${r.selected.provider}.`:(r.message||"No connected model satisfies the route."),r);}    if(/llama|gguf/i.test(message)&&this.llamaRuntime){const s=await this.llamaRuntime.status();return result(s.availability==="CONNECTED"?"SUCCESS":s.availability,s.availability==="CONNECTED"?`llama.cpp runtime is connected with ${s.models?.length||0} loaded model record(s).`:(s.reason||"llama.cpp runtime unavailable."),s);}
     if(/observability|metrics/i.test(message)&&this.observability)return this.observability.summary();
     if(/plugin/i.test(message)&&this.pluginRegistry){const plugins=this.pluginRegistry.list();return result("SUCCESS",`${plugins.length} v1 plugin manifest(s) are registered. Third-party execution remains sandbox-gated.`,{plugins});}
     if(/data lifecycle|retention/i.test(message)&&this.storageDb?.lifecycleStatus)return this.storageDb.lifecycleStatus();
@@ -130,7 +139,15 @@ export class OneChatRouter{
  }
  async handle(input={}){
   const message=String(input.message||"").trim();if(!message)return {state:"BLOCKED",message:"Chat message is empty.",allocations:[],contributions:[]};
-  const chatId=input.chatId||`chat-${crypto.randomUUID()}`,allocations=this.allocations(message),contributions=[];
+  const chatId=input.chatId||`chat-${crypto.randomUUID()}`;
+  if(/^explain\s+answer[.! ]*$/i.test(message)){
+    const prior=this._previousEvidence(chatId);
+    if(!prior)return {state:"UNAVAILABLE",chatId,message:"No prior answer evidence is available for this chat yet.",responseMode:"evidence-explanation",evidenceEnvelope:null,allocations:[],contributions:[]};
+    const summary=prior.claims?.reduce((m,x)=>(m[x.status]=(m[x.status]||0)+1,m),{})||{};
+    const sources=(prior.claims||[]).flatMap(x=>x.support||[]).filter(x=>x.source_id||x.chunk_id);
+    return {state:"SUCCESS",chatId,message:`Previous answer evidence: ${prior.claims?.length||0} claim(s); statuses ${JSON.stringify(summary)}; ${sources.length} cited source chunk(s); model ${prior.model?.id||prior.model?.provider||"none"}.`,responseMode:"evidence-explanation",modelUsed:Boolean(prior.model),evidenceEnvelope:prior,allocations:[],contributions:[],truth:"This explanation exposes structured evidence and execution metadata, not private chain-of-thought."};
+  }
+  const allocations=this.allocations(message),contributions=[];
   for(const a of allocations)contributions.push({agent:a.agent,reason:a.reason,result:await this.execute(a.agent,message,chatId)});
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
@@ -138,8 +155,21 @@ export class OneChatRouter{
   const composed=this.responseComposer.compose({message,allocations,contributions});
   const answer=composed.message||best.message||"Collaboration completed.";
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
-  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,verified:finalState==="SUCCESS"});
-  this.audit?.append({type:"onechat.turn",chatId,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
-  return {state:finalState,chatId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Raw seed-model text is quality-gated before it may become the primary reply."};
+  const responseId=`response-${crypto.randomUUID()}`;
+  const support=(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}}));
+  const conversationResult=contributions.find(x=>x.agent==="conversation")?.result||null;
+  const claimStatus=support.length?"SUPPORTED":(composed.mode==="native-conversation"||composed.mode==="governed-composer"?"INFERENCE":(finalState==="SUCCESS"?"INFERENCE":"UNSUPPORTED"));
+  const evidenceEnvelope=new EvidenceEnvelope({
+    responseId,answer,
+    model:conversationResult?.modelUsed?{id:conversationResult.model||conversationResult.modelRoute?.selected?.id||null,provider:conversationResult.runtime||conversationResult.modelRoute?.selected?.provider||null,route:conversationResult.modelRoute||null}:null,
+    promptVersion:"onechat-v0.49",
+    claims:[{claim:answer,support,status:claimStatus,confidence:null}],
+    toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
+    metadata:{chatId,responseMode:composed.mode,finalState}
+  });
+  this.lastEvidence.set(chatId,evidenceEnvelope);
+  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,verified:finalState==="SUCCESS"});
+  this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
+  return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
 }

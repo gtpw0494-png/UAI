@@ -1,5 +1,8 @@
-UAI v0.48.2 promotion candidate
-source-manifest-head=34b2350373c4a7b78b437890a0b1c0dfcedb6b78
+UAI v0.49.0 promotion candidate
+source-manifest-head=bd38047a4fcea002327e3d2760d6af9a62146d49
 requirements=authoritative-ci+feature-evidence-gate
+owner-auth=email-password-session
+legacy-owner-bearer-token=disabled
+owner-password-storage=scrypt-local-governance-db
+model-routing=evidence-native-local-router
 main-advance=only-after-all-required-jobs-success
-excluded=v0.48.1 evidence-envelope/model-router until integrated tests

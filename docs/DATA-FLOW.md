@@ -109,3 +109,22 @@ Soft deletion removes chunks from retrieval and marks document/chunk state `DELE
 
 v0.45 is text-document lineage. Dense embeddings/reranking, page/frame/timestamp/bounding-box lineage, graph-wide derived-artifact purge and multimodal parsers remain separate future capabilities.
 
+## v0.49 answer evidence
+
+OneChat answers now create an integrity-hashed `uai.evidence.v1` envelope:
+
+```text
+answer
+ -> claim support state
+ -> cited source/document/chunk excerpts when retrieved
+ -> selected model/provider route
+ -> bounded tool/agent result summary
+ -> SHA-256 integrity digest
+```
+
+Supported claim states are `SUPPORTED`, `PARTIALLY_SUPPORTED`, `CONFLICTING`, `STALE`, `INFERENCE`, `OPINION`, and `UNSUPPORTED`.
+
+`explain answer` returns this structured evidence for the previous answer in the same chat. It does not expose private model chain-of-thought.
+
+Conversation turns and evidence records are persisted through the existing knowledge store, but full model-context rehydration after process restart remains PARTIAL.
+

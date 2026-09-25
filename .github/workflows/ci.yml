@@ -63,6 +63,12 @@ jobs:
       - name: Verify v0.48 native conversation and capability truth
         run: npm run test:conversation-capability
 
+      - name: Verify v0.49 evidence-native model routing
+        run: npm run test:model-router-evidence
+
+      - name: Verify v0.49 owner email/password bootstrap and token retirement
+        run: npm run test:owner-auth
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 

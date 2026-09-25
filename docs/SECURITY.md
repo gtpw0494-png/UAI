@@ -4,6 +4,16 @@
 
 AI proposes. Policy, capability scope, approval and independent security checks authorize.
 
+## Owner identity and login
+
+- Owner authentication is email/password plus a server-side session cookie; legacy bearer-owner tokens are not accepted.
+- Passwords are never returned by the API and are not stored in browser storage.
+- Password verifiers use scrypt with a random per-owner salt in the local governance database.
+- First-run credentials may be supplied through `UAI_OWNER_EMAIL` and `UAI_OWNER_PASSWORD`; the server removes the password variable from its own environment after bootstrap.
+- Existing installations require explicit local credential rotation; upgrades never silently overwrite owner credentials.
+- Owner credential rotation revokes active owner sessions.
+- Cookie-authenticated state changes require the paired CSRF token.
+
 ## Control boundaries
 
 - External content has no instruction authority.

@@ -19,25 +19,31 @@ Local OpenAI-compatible runtime adapter. Localhost is allowed by default; remote
 ### Registry-only / runtime-conditional
 The model registry may describe Ollama, Transformers, ONNX or GGUF artifacts without claiming those runtimes are connected.
 
-## Target provider interface
+## v0.49 runtime router
 
-Future providers should converge on:
-- `generate()`
-- `stream()`
-- `embed()`
-- `countTokens()`
-- `health()`
-- `capabilities()`
+The current router is implemented in `src/models/router.js`.
+
+Verified today:
+- candidate `health()` probing;
+- connected-runtime filtering;
+- local-only and offline constraints;
+- task/modality/context constraints;
+- deterministic candidate scoring;
+- generation fallback after runtime failure or rejected output;
+- route/fallback evidence attached to native OneChat replies;
+- local llama.cpp and ForgeLM candidate adapters.
+
+The broader provider contract still needs convergence for `stream()`, `embed()`, `countTokens()` and richer capability discovery. Those are not claimed complete by v0.49.
 
 ## Model routing inputs
 
-The target router should consider:
+The current router considers:
 - required capability;
 - privacy classification;
 - local-only policy;
 - latency/resource budget;
-- hardware availability;
-- model evaluation evidence;
+- declared context/latency constraints;
+- optional model evaluation evidence;
 - fallback reason.
 
 Every model call should record model/provider/version, prompt version, tokenization metadata, runtime parameters and latency.

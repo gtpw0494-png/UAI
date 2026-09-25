@@ -2,6 +2,9 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const cookie=name=>document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="))?.slice(name.length+1)||"";
 let authState={authenticated:false};
+const CHAT_KEY="uai_onechat_id";
+let chatId=sessionStorage.getItem(CHAT_KEY)||("chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)));
+sessionStorage.setItem(CHAT_KEY,chatId);
 
 async function api(url,{method="GET",body=null}={}){
   const headers={};
@@ -45,9 +48,9 @@ $("#composer").addEventListener("submit",async e=>{
   e.preventDefault();const input=$("#chatIn"),text=input.value.trim();if(!text)return;input.value="";
   bubble("user","You",`<p>${esc(text)}</p>`);bubble("working","System","<p>Allocating collaborators and verifying result states…</p>");const wait=$("#stream .working:last-child");
   try{
-    const x=await post("/api/onechat",{message:text});wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
+    const x=await post("/api/onechat",{message:text,chatId});if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
     const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
-    const evidence=x.evidence?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(x.evidence,null,2))}</pre></details>`:"";
+    const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
     bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${evidence}${ev}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
   }catch(err){
     wait.remove();if(err.status===401){await refreshAuth();bubble("error","Authentication","<p>Unlock the local owner session before using OneChat actions.</p>");}
