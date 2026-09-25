@@ -17,6 +17,29 @@ async function api(url,{method="GET",body=null}={}){
 }
 async function post(url,body){return api(url,{method:"POST",body});}
 function bubble(kind,title,html,meta=""){const el=document.createElement("article");el.className=`msg ${kind}`;el.innerHTML=`<b>${esc(title)}</b>${meta?`<small>${esc(meta)}</small>`:""}<div>${html}</div>`;$("#stream").appendChild(el);el.scrollIntoView({behavior:"smooth",block:"end"});}
+function stateText(states={}){return Object.entries(states).map(([k,v])=>`${k} ${v}`).join(" · ")||"none";}
+async function refreshOperations(){
+  const el=$("#opsDashboard");if(!el)return;
+  if(!authState.authenticated){el.innerHTML='<p class="muted">Unlock the local owner session to inspect governed operations.</p>';return;}
+  try{
+    const d=await api("/api/control-plane/dashboard"),modelCount=d.models?.models?.length||0,jobRecent=d.scheduler?.recent||[],featureRows=d.evidence?.features||[],auditRecent=d.audit?.recent||[];
+    el.innerHTML=`<div class="context-grid">
+      <article><b>Tasks</b><span>${d.tasks?.total||0} · ${esc(stateText(d.tasks?.states))}</span></article>
+      <article><b>Capabilities</b><span>${d.capabilities?.total||0} · ${esc(stateText(d.capabilities?.availability))}</span></article>
+      <article><b>Models</b><span>${modelCount} registered · ${esc(stateText(Object.fromEntries(Object.entries(d.models?.runtimes||{}).map(([k,v])=>[k,v.availability]))))}</span></article>
+      <article><b>Plugins</b><span>${d.plugins?.enabled||0}/${d.plugins?.total||0} enabled</span></article>
+      <article><b>Approvals</b><span>${d.approvals?.total||0} · ${esc(stateText(d.approvals?.states))}</span></article>
+      <article><b>Shadow runs</b><span>${d.shadow?.runs||0} · ${esc(stateText(d.shadow?.states))}</span></article>
+      <article><b>Light patches</b><span>${d.light?.patches||0} · ${esc(stateText(d.light?.states))}</span></article>
+      <article><b>Worker queue</b><span>${d.scheduler?.queued||0} queued · ${d.scheduler?.running||0} running · max ${d.scheduler?.maxWorkers||0}</span></article>
+      <article><b>Feature evidence</b><span>${d.evidence?.total||0} · ${esc(stateText(d.evidence?.statuses))}</span></article>
+      <article><b>Audit</b><span>${d.audit?.total||0} records · ${esc(d.audit?.integrity?.state||"UNKNOWN")}</span></article>
+    </div>
+    <details><summary>Recent scheduler jobs</summary><pre>${esc(JSON.stringify(jobRecent,null,2))}</pre></details>
+    <details><summary>Feature evidence registry · ${esc(d.generatedFor||"unknown")}</summary><pre>${esc(JSON.stringify(featureRows,null,2))}</pre></details>
+    <details><summary>Recent audit records</summary><pre>${esc(JSON.stringify(auditRecent,null,2))}</pre></details>`;
+  }catch(e){el.innerHTML=`<p class="muted">Operations dashboard unavailable: ${esc(e.message)}</p>`;}
+}
 
 async function refreshAuth(){
   try{
@@ -25,6 +48,7 @@ async function refreshAuth(){
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
     $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
     $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
+    await refreshOperations();
   }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
@@ -34,6 +58,7 @@ async function refresh(){
   $("#systemContext").innerHTML=`<article><b>Version</b><span>${esc(s.version)}</span></article><article><b>Knowledge</b><span>${s.knowledgeCount}</span></article><article><b>Documents</b><span>${s.documentDataPlane?.documents||0}</span></article><article><b>Definitions</b><span>${s.languageData?.definitions||0}</span></article><article><b>Dialogue</b><span>${s.languageData?.dialogueMessages||0}</span></article><article><b>Agents</b><span>${s.agentCount}</span></article><article><b>Shadow R&D</b><span>${s.shadow?.runs||0} runs · ${s.shadow?.active||0} active</span></article><article><b>Light patches</b><span>${s.light?.patches||0} patches · ${s.light?.active||0} active</span></article><article><b>Governance stop</b><span>${s.governanceKernel?.emergencyStop?.engaged?"ENGAGED":"ready"}</span></article><article><b>Source refs</b><span>${s.sourceResearch?.count||0}</span></article><article><b>ForgeLM</b><span>${esc(s.forgelm?.state||"UNKNOWN")}</span></article><article><b>Audit</b><span>${s.auditCount}</span></article>`;
   const deps=s.neuralDependencies?.dependencies||{};$("#depSummary").innerHTML=`<p class="muted">Neural dependencies: ${Object.entries(deps).map(([k,v])=>`${esc(k)}=${esc(v)}`).join(" · ")}</p>`;
   $("#doctrine").innerHTML=`<ol>${s.doctrine.laws.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><p>${esc(s.doctrine.governance.truthRule)}</p><div class="caps">${s.capabilities.map(c=>`<span class="cap ${c.availability.toLowerCase()}">${esc(c.id)} · ${esc(c.availability)}</span>`).join("")}</div>`;
+  if(authState.authenticated)refreshOperations();
 }
 
 $("#authForm").addEventListener("submit",async e=>{
