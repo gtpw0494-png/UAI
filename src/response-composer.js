@@ -17,8 +17,9 @@ export function modelTextQuality(text){
 export class ResponseComposer{
   constructor({allowRawModel=process.env.FORGELM_ALLOW_RAW_RESPONSES==="1"}={}){this.allowRawModel=allowRawModel;}
   compose({message,contributions=[]}){
-    const msg=textOf(message), fm=byAgent(contributions,"forgelm"), exp=byAgent(contributions,"explorative"), kn=byAgent(contributions,"knowledge"), res=byAgent(contributions,"research"), web=byAgent(contributions,"web-research"), docs=byAgent(contributions,"documents"), dev=byAgent(contributions,"development"), learn=byAgent(contributions,"learning"), sys=byAgent(contributions,"systems"), lex=byAgent(contributions,"lexicon"), dlg=byAgent(contributions,"dialogue");
-    if(isGreeting(msg))return {message:"Hello. OneChat is responding correctly. I can coordinate the local research, knowledge, development, learning, systems and ForgeLM agents from this single conversation.",mode:"governed-composer",modelUsed:false};
+    const msg=textOf(message), conv=byAgent(contributions,"conversation"), fm=byAgent(contributions,"forgelm"), exp=byAgent(contributions,"explorative"), kn=byAgent(contributions,"knowledge"), res=byAgent(contributions,"research"), web=byAgent(contributions,"web-research"), docs=byAgent(contributions,"documents"), dev=byAgent(contributions,"development"), learn=byAgent(contributions,"learning"), sys=byAgent(contributions,"systems"), lex=byAgent(contributions,"lexicon"), dlg=byAgent(contributions,"dialogue");
+    if(conv?.state==="SUCCESS"&&conv.message)return {message:conv.message,mode:"native-conversation",modelUsed:conv.modelUsed===true,quality:{usable:true,reason:"runtime-pass"}};
+    if(isGreeting(msg))return {message:"Hello. OneChat is ready. I can chat naturally and coordinate governed local tools and agents when your request needs them.",mode:"governed-composer",modelUsed:false};
     if(fm){
       if(fm.message&&!fm.text)return {message:fm.message,mode:"agent-result",modelUsed:false};
       if(fm.text){const q=modelTextQuality(fm.text);if(this.allowRawModel&&q.usable)return {message:fm.text,mode:"forgelm-raw",modelUsed:true,quality:q};
