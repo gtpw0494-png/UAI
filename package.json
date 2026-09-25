@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "private": true,
-  "description": "Control-plane modernization: transactional registries, tamper-evident audit, plugin idempotency and generalized verification automation.",
+  "description": "Governed plugin gateway: operation schemas, capability evidence, exact authorization, scoped secrets, idempotency, cancellation and bounded sandbox I/O.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -40,7 +40,8 @@
     "continual:snapshot": "python3 model/continual.py snapshot",
     "data:lifecycle": "python3 storage/lifecycle.py status",
     "retrieval:eval": "python3 storage/retrieval_eval.py",
-    "test:control-plane": "node verification/control-plane-modernization.test.mjs"
+    "test:control-plane": "node verification/control-plane-modernization.test.mjs",
+    "test:plugin-gateway": "node verification/plugin-gateway.test.mjs"
   },
   "engines": {
     "node": ">=20"
