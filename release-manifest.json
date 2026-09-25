@@ -724,8 +724,8 @@
     },
     {
       "path": "verification/document-http.test.mjs",
-      "sha256": "e4e26aade17a7e46e4b151311ab8108a78f526b3531790f7e60baba581f0fba7",
-      "bytes": 4017
+      "sha256": "7a77ed2677ee0c3bf4946900c056e6014b569ef10997bf32e28b34604dd41230",
+      "bytes": 4219
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
@@ -734,8 +734,8 @@
     },
     {
       "path": "verification/plugin-http.test.mjs",
-      "sha256": "7c50128fee126849c424d73acc2866c6a119defb200552437f9106a801b9ee1c",
-      "bytes": 4283
+      "sha256": "179180aa4c9796f26212370225be659b5051daaee6850d8b3dc887563785599f",
+      "bytes": 4462
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
