@@ -34,8 +34,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "cf787395c20bc0a4275f9a6480fe7e54daae2c3d9ccbbd4098a63e4138b5b0c9",
-      "bytes": 16081
+      "sha256": "33aa4345b751e495fe5b5bb34bc211ffe20fd8a2c6d3bfeb66beb6bc18b1275a",
+      "bytes": 15971
     },
     {
       "path": "README.md",
@@ -74,8 +74,8 @@
     },
     {
       "path": "docs/DATA-FLOW.md",
-      "sha256": "aa6aff45c798bcada645625e524bde4ece24678361cb5a559a3c6e506db8c7e3",
-      "bytes": 3224
+      "sha256": "0a9a200e9d239f7c9dc2285e99b85d92dc5b623599a1b67c4e5a61f8287d28e4",
+      "bytes": 3969
     },
     {
       "path": "docs/FEATURE-PROMOTION.md",
@@ -109,13 +109,13 @@
     },
     {
       "path": "docs/MODEL-SUPPORT.md",
-      "sha256": "2b3d623eb81321356a1ac610ce1b54fe810f81e1a0a6dbc891a244a705189673",
-      "bytes": 1462
+      "sha256": "b9cca3e486a9683539c9011e9c7c667bf569572e57086d094e09fac6ea5ded46",
+      "bytes": 1948
     },
     {
       "path": "docs/OPERATIONS.md",
-      "sha256": "f095bf3719a05622d7fd0b99a935dff4b862799d061b86922a1a0d84a2fcaa2c",
-      "bytes": 1415
+      "sha256": "3e50b6e17035a7a6397ef868951d596b8c578d745bd0ccf20ed55adb09d942a2",
+      "bytes": 2233
     },
     {
       "path": "docs/PLUGIN-SDK.md",
@@ -129,8 +129,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "2a96daadda68f4f562aba54719e0759b7e892e436ece2ab1d8b6c2cc88a0f74f",
-      "bytes": 24768
+      "sha256": "66f372080fad3ec367b077050a22cabd352019c19e2ef6d6d55c66caf19b41ec",
+      "bytes": 24851
     },
     {
       "path": "model/adaptation.py",
