@@ -1423,6 +1423,11 @@
       "bytes": 686
     },
     {
+      "path": "verification/model-lab-promotion.test.mjs",
+      "sha256": "1c26a84f45305220408eb48f014f5f5e446812a2e9f4e4faa657b18c3bc494c4",
+      "bytes": 2085
+    },
+    {
       "path": "verification/model-router-evidence-v049.test.mjs",
       "sha256": "88772fad9b005bc0fb3e9db0daf461504140f420f1298de2973c35cae2516198",
       "bytes": 10627
