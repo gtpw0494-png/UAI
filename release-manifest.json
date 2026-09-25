@@ -233,6 +233,11 @@
       "bytes": 3675
     },
     {
+      "path": "requirements/README.md",
+      "sha256": "965b775edcac96833b616a2be87b3a68092bd32bc56d304b7565d49f31783f44",
+      "bytes": 851
+    },
+    {
       "path": "requirements/core.txt",
       "sha256": "a69a6abb03689cc4181936cbac485cb87fe12d83c20ec30143b1e84fc9121022",
       "bytes": 59
@@ -261,6 +266,11 @@
       "path": "requirements/research-backends.txt",
       "sha256": "4e7b6d93349424740d5678d1824ea41241690db88362ddf11097c3009c9eba71",
       "bytes": 31
+    },
+    {
+      "path": "requirements/runtime-matrix.json",
+      "sha256": "99e6cfd2c32c8574c7de5b4c8482d87d07d2362455913e70565a93fd67db222e",
+      "bytes": 1934
     },
     {
       "path": "requirements/training.txt",
@@ -431,6 +441,11 @@
       "path": "scripts/validate-feature-evidence.mjs",
       "sha256": "969b5f16df6485681a925c14904021153e3fb32e1801a64230537b5b55e2a61d",
       "bytes": 1924
+    },
+    {
+      "path": "scripts/verify-authoritative-source.mjs",
+      "sha256": "353f8c7880f247fc4c02a45a168d1caa5b5cebe4024bbb080d5deba17558bb5b",
+      "bytes": 1406
     },
     {
       "path": "scripts/web-ingest.js",
