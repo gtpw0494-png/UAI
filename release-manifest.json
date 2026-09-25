@@ -708,6 +708,11 @@
       "bytes": 190
     },
     {
+      "path": "src/shadow/synthesis-agent.js",
+      "sha256": "45da4b04eee33f18f5f6db475a8adb9b8fbbb9e87b114e43739000b818782e3d",
+      "bytes": 179
+    },
+    {
       "path": "src/source-capabilities.js",
       "sha256": "4e846bfea0679532e4a2207345b1ee04026d9ae51dbbb777b2a17c0be6bb5c6f",
       "bytes": 1637
