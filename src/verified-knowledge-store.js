@@ -27,7 +27,7 @@ export class VerifiedKnowledgeStore {
     const rows=this.read(); const byId=new Map(rows.map(x=>[x.fact_id,x]));
     let written=0;
     for (const raw of facts) {
-      if (!raw?.verification?.verified || !raw?.training_eligible) continue;
+      if (!raw?.verification?.verified || !raw?.verification?.training_rights_verified || !raw?.training_eligible) continue;
       const fact={...raw,fact_id:raw.fact_id||this.factId(raw),stored_at:new Date().toISOString()};
       byId.set(fact.fact_id,fact); written++;
     }
@@ -36,7 +36,7 @@ export class VerifiedKnowledgeStore {
     return {state:"SUCCESS",written,total:next.length};
   }
   filterTrainingEligible(limit=100) {
-    return this.read().filter(x=>x.training_eligible===true && x.verification?.verified===true).slice(0,Math.max(0,Number(limit)||100));
+    return this.read().filter(x=>x.training_eligible===true && x.verification?.verified===true && x.verification?.training_rights_verified===true).slice(0,Math.max(0,Number(limit)||100));
   }
   snapshot() {
     const rows=this.read();
