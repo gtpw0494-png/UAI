@@ -44,8 +44,8 @@
     },
     {
       "path": "RELEASES.md",
-      "sha256": "5d49a13947bad69ad289141a43f05d84103740abf0a6895ef0abdcf835508bc7",
-      "bytes": 11873
+      "sha256": "bfc420b00442a88678fbc53fe3ed48bfba29b29c562ddba2a4d367f380b74381",
+      "bytes": 12833
     },
     {
       "path": "TERMUX-RUN.md",
