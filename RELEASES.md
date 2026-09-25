@@ -1,5 +1,14 @@
 # Release history
 
+## v0.53.0 — Persistent Agent Control Plane
+- Migrated shadow runs/candidates and light patches/worktrees into dedicated SQLite tables while preserving v0.52 records through compatibility migration.
+- Added persistent bounded `agent_jobs` scheduling with concurrency/queue limits, priority, TTL expiry, lease recovery and explicit worker dispatch.
+- Added owner-governed control-plane HTTP routes, emergency-stop inheritance, explicit request schemas, Termux CLI commands and a live operations dashboard.
+- Added deterministic unit and HTTP regression suites for storage migration, lease recovery, scheduler limits, dispatch, dashboard aggregation, worktree isolation and emergency-stop blocking.
+- Added multi-query governed public-web research and an optional Brave Search path without claiming exhaustive web coverage.
+- Shadow/light completion still cannot self-promote, self-deploy or merge protected `main`.
+
+
 ## v0.30.0
 GitHub-ready cumulative checkpoint: dependency-free tokenizer core, GitHub Actions CI, repository ignore policy, and migration guidance.
 
