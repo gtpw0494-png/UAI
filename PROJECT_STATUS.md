@@ -154,3 +154,14 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — document soft deletion and hard purge with retrieval-index removal and unreferenced object cleanup.
 - PARTIAL — multimodal page/frame/timestamp/bounding-box lineage, dense embeddings/reranking, derived-artifact purge and full provenance graph are not yet claimed.
 
+## v0.46-v0.48.2 additions
+- IMPLEMENTED, pending exact promotion verification — local self-governance kernel with request/correlation identity, per-route authorization metadata, policy evaluation and exact approval binding.
+- IMPLEMENTED, pending exact promotion verification — first-run email/password Owner enrollment, scrypt credential verification, server-side session records, HttpOnly session cookie, CSRF validation and logout/revocation.
+- IMPLEMENTED, pending exact promotion verification — authenticated browser/API state-change flow and route-level request schemas/rate limits.
+- IMPLEMENTED, pending exact promotion verification — native bounded-context conversation engine using connected llama.cpp first and ForgeLM fallback, with truthful UNAVAILABLE when no promoted runtime exists.
+- IMPLEMENTED, pending exact promotion verification — explicit capability truth states CONNECTED/CONFIGURED/REGISTERED_SOURCE/DEGRADED/UNAVAILABLE/BLOCKED/EXPIRED.
+- FIXED — cumulative self-development sandbox regression now checks greeting behavior semantically rather than requiring an obsolete literal sentence.
+- FIXED — plugin/document HTTP tests and CI localhost smoke use the current Owner session + CSRF flow rather than retired bearer-token assumptions.
+- PARTIAL — first-run enrollment does not yet require an independent bootstrap file, trusted-device key, or equivalent ownership proof before the first local Owner is claimed.
+- UNMERGED — v0.48.1 evidence-envelope/model-router foundations remain outside this repair checkpoint until they gain integrated system tests.
+
