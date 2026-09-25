@@ -639,8 +639,8 @@
     },
     {
       "path": "src/self-development.js",
-      "sha256": "343768d50327b6057fabddae21ab8c39992b67efb7e1e994baec640fe2dff8e4",
-      "bytes": 4147
+      "sha256": "0b9f9e3f5eb0c5010d3640bdc8971e9c4cc9e3c608745842dc2bf1cee922e58c",
+      "bytes": 4288
     },
     {
       "path": "src/source-capabilities.js",
