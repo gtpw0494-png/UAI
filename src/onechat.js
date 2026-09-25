@@ -21,10 +21,11 @@ export class OneChatRouter{
   if(/learning|training data|dataset|verified trace|prepare corpus/i.test(t))a.push({agent:"learning",reason:"learning-fabric intent"});
   if(/agent|orchestrate|collaborat|workflow|task\b|resume task|cancel task|action envelope/i.test(t))a.push({agent:"explorative",reason:"agent/orchestration/task-lifecycle intent"});
   if(/account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
-  if(!a.length)a.push({agent:"explorative",reason:"general conversation/knowledge exploration"});
+  if(!a.length)a.push({agent:"conversation",reason:"general conversational response"});
   return a.filter((x,i)=>a.findIndex(y=>y.agent===x.agent)===i);
  }
- async execute(agent,message){
+ async execute(agent,message,chatId=null){
+  if(agent==="conversation")return this.conversation?this.conversation.chat({chatId,message}):result("UNAVAILABLE","Conversational model engine is not configured.");
   if(agent==="web-research"){
     if(/web corpus status|web sources|source classes|common crawl|fineweb|wikimedia|wikipedia|stack exchange/i.test(message)){const s=this.webCorpus?.status();return s?{...s,message:`Web corpus registry contains ${s.sourceClasses} governed source classes and ${s.records} locally ingested record(s).`}:result("UNAVAILABLE","Web corpus service is not configured.");}
     const m=String(message).match(/(?:ingest|fetch|research)\s+url\s+(https?:\/\/\S+)(?:\s+license\s+([A-Za-z0-9_.+-]+))?/i);
@@ -130,7 +131,7 @@ export class OneChatRouter{
  async handle(input={}){
   const message=String(input.message||"").trim();if(!message)return {state:"BLOCKED",message:"Chat message is empty.",allocations:[],contributions:[]};
   const chatId=input.chatId||`chat-${crypto.randomUUID()}`,allocations=this.allocations(message),contributions=[];
-  for(const a of allocations)contributions.push({agent:a.agent,reason:a.reason,result:await this.execute(a.agent,message)});
+  for(const a of allocations)contributions.push({agent:a.agent,reason:a.reason,result:await this.execute(a.agent,message,chatId)});
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
   const ranked=contributions.filter(x=>x.agent!=="verifier").map(x=>x.result).sort((a,b)=>(stateRank.get(b.state)||0)-(stateRank.get(a.state)||0));const best=ranked[0]||verification;
