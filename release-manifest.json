@@ -528,9 +528,34 @@
       "bytes": 1107
     },
     {
+      "path": "src/governance/audit-integrity.js",
+      "sha256": "42ebc75fe70c35fd70e22dfeafe5d17d437bce481865e2c7dc2d493e59902f6b",
+      "bytes": 288
+    },
+    {
       "path": "src/governance/authorization.js",
       "sha256": "07da0c3761d04e5f94aab57838f3a33707f0e96a7eb97f530de0092d91f445fa",
       "bytes": 7305
+    },
+    {
+      "path": "src/governance/capability-boundary.js",
+      "sha256": "15ea0ca1457722a6939b0ca1c52fa694bc6d8cb00fdd96a3a7182ede22be9b77",
+      "bytes": 1033
+    },
+    {
+      "path": "src/governance/deletion-rules.js",
+      "sha256": "fc55a740d016e76861de5b9641555ad0bcbbc6249a7b1038098bf270cb471954",
+      "bytes": 615
+    },
+    {
+      "path": "src/governance/emergency-stop.js",
+      "sha256": "b016f3a7fa5614fc6222aef98eacb12608d05aae0a17084ccc45d620fe651a00",
+      "bytes": 1695
+    },
+    {
+      "path": "src/governance/governance-version.js",
+      "sha256": "211140985f15e46462639bcf06521110aabe6667008b304dbdad7f9d8ea27685",
+      "bytes": 83
     },
     {
       "path": "src/governance/identity.js",
@@ -539,13 +564,28 @@
     },
     {
       "path": "src/governance/kernel.js",
-      "sha256": "fecdeee421662a050026bff6d3daab9d3eb06c3f12f04e6e8e4c7d389803aeee",
-      "bytes": 783
+      "sha256": "262edf0d995e32e34f8653c1eddfcf8aedc176d748964362440bbe5e79bbb413",
+      "bytes": 2122
+    },
+    {
+      "path": "src/governance/policy-store.js",
+      "sha256": "f816e2e3e992342c75e0053bfe8dd45447041c1d443a5279caaf8da083941725",
+      "bytes": 1256
+    },
+    {
+      "path": "src/governance/promotion-rules.js",
+      "sha256": "10cd9da74471638905e4af08c08678a7a476631caa88a9a2f072b1a4bae5c74a",
+      "bytes": 555
     },
     {
       "path": "src/governance/request-schemas.js",
       "sha256": "4f2c9940e52d516ffbe4e70e15b6bd29309d802274e1403c1488bcbb39a9f182",
       "bytes": 5090
+    },
+    {
+      "path": "src/governance/trusted-device.js",
+      "sha256": "f581fb98f43dd71e65005752e2041da04c50235e082f61f3161e46605bffb1aa",
+      "bytes": 1853
     },
     {
       "path": "src/governance-db.js",
@@ -578,6 +618,91 @@
       "bytes": 3315
     },
     {
+      "path": "src/light/bug-repair-agent.js",
+      "sha256": "06db7703e6f1775565fbd7e236b14a137ba09683da23e2eb563d83f53bbd92e7",
+      "bytes": 172
+    },
+    {
+      "path": "src/light/dependency-agent.js",
+      "sha256": "ef61da48a1b5a5fb74845e88d77785faeb70c1b3a20ab0f3036538dd7a531b3a",
+      "bytes": 166
+    },
+    {
+      "path": "src/light/documentation-agent.js",
+      "sha256": "d435e2b82c78c7d1514f14328307f6745e296f8cbe44804cf2014a4fa311b7f2",
+      "bytes": 145
+    },
+    {
+      "path": "src/light/light-agent-registry.js",
+      "sha256": "7ab294b8f4455ffeb04e2b36f45ff999d1f6fbfc2c926aadc270a4caa2669712",
+      "bytes": 2465
+    },
+    {
+      "path": "src/light/light-coordinator.js",
+      "sha256": "050bce2329746fa66ba0fab071d85ef84fccde6d3ac75130f76209beb665c37b",
+      "bytes": 8364
+    },
+    {
+      "path": "src/light/lint-agent.js",
+      "sha256": "aba3083444aea4e60277fea53d0b45a9941ea6ddd62bbc2bf91a771b7c1a4307",
+      "bytes": 124
+    },
+    {
+      "path": "src/light/migration-agent.js",
+      "sha256": "d185dc80619a9488d483834f68050f30e34e841870882f35efa9f65e001092ad",
+      "bytes": 153
+    },
+    {
+      "path": "src/light/patch-evaluator.js",
+      "sha256": "afa25feed7b53b6f790ecbd9164e97b576815eed8a475a69821ea258f619ee86",
+      "bytes": 890
+    },
+    {
+      "path": "src/light/performance-agent.js",
+      "sha256": "78f1fccace7798fee86d210dc3b9e23b66ef296a6219ea2197f7fe7d5dcc4c79",
+      "bytes": 164
+    },
+    {
+      "path": "src/light/refactoring-agent.js",
+      "sha256": "cd783fb833eff1a46bedf5c194d61a807fca64731685bac349dbe55894153f62",
+      "bytes": 144
+    },
+    {
+      "path": "src/light/regression-agent.js",
+      "sha256": "ab2826e4157d649124e51214d997eb54ab43e480c5220bae75d8039dfcd0c4d1",
+      "bytes": 147
+    },
+    {
+      "path": "src/light/release-agent.js",
+      "sha256": "4bc2f2f3d705e9bdb9016b6000bbc4fdeacb3f86151ca74b3bc19c483909693e",
+      "bytes": 160
+    },
+    {
+      "path": "src/light/rollback-agent.js",
+      "sha256": "2e5d2d90bea29d0c88ec3b984f4afdf717dd688f4b29192a29dac7d9e3b0cef7",
+      "bytes": 145
+    },
+    {
+      "path": "src/light/security-agent.js",
+      "sha256": "20601ec6325a73c0e99a08a6e88e68762e9527f6ba7fe74d83a4df325b9f2315",
+      "bytes": 154
+    },
+    {
+      "path": "src/light/test-agent.js",
+      "sha256": "7d7afe04477d627db31d011e140b84021da1e3be4d8a2352ed64d3edf4db2650",
+      "bytes": 141
+    },
+    {
+      "path": "src/light/type-contract-agent.js",
+      "sha256": "ddc371b555f3e5c2c8b498f2f38a39e9a99bda1c5c2e2b0e50781800644f4035",
+      "bytes": 149
+    },
+    {
+      "path": "src/light/worktree-manager.js",
+      "sha256": "e75db29a13bd03da977566b62ac9de2122418df07db68e46d4e26ff364990c16",
+      "bytes": 3183
+    },
+    {
       "path": "src/model-lab.js",
       "sha256": "84298839c917ea29d33bf4d9a5a0ba258cd74dbef0db4b6e367b1ed056e04ed0",
       "bytes": 3732
@@ -606,6 +731,11 @@
       "path": "src/onechat.js",
       "sha256": "90e1c0ba48c67b014a0232a7d8917a3e7130c71efd32ea3b3550bdc86fb4f882",
       "bytes": 26821
+    },
+    {
+      "path": "src/platform-capability-catalog.js",
+      "sha256": "141005dbe4399a2c22ebb2824154d99389a0f8f5556c1b0f07dea5e8c1fd4852",
+      "bytes": 9165
     },
     {
       "path": "src/plugin-executor.js",
@@ -673,9 +803,19 @@
       "bytes": 188
     },
     {
+      "path": "src/shadow/candidate-store.js",
+      "sha256": "9cac8a68165446d30e92ba868873b88249a3c55a6bad7486b4b9deb27172826f",
+      "bytes": 1709
+    },
+    {
       "path": "src/shadow/dataset-quality-agent.js",
       "sha256": "b35ee059113db81ad659294ff18c96a1dda73679ccdfcab469704c52650af21b",
       "bytes": 177
+    },
+    {
+      "path": "src/shadow/disagreement-detector.js",
+      "sha256": "f73617ea82dd07b742014264e3846d2b29734953e5c727498d0f7ea1dcd29721",
+      "bytes": 800
     },
     {
       "path": "src/shadow/experiment-agent.js",
@@ -693,6 +833,11 @@
       "bytes": 174
     },
     {
+      "path": "src/shadow/promotion-gate.js",
+      "sha256": "9d2fb2147a80d733af98dbaf18097da46cb482bd4e23927b9287cd27f48f2d57",
+      "bytes": 955
+    },
+    {
       "path": "src/shadow/research-agent.js",
       "sha256": "ab331bc9333b13b4d3ae584ab764d6b4af361145a2f22ebdb6f590a00f71f37c",
       "bytes": 185
@@ -706,6 +851,21 @@
       "path": "src/shadow/safety-red-team-agent.js",
       "sha256": "392f8d2dbc849d6e14cf90c26e2c06e3d2159336fa9a7596dadf3f1e10936e22",
       "bytes": 190
+    },
+    {
+      "path": "src/shadow/shadow-agent-registry.js",
+      "sha256": "8d105b3283d2685e0e6eb9f4df97612f8d1d817db7512d7ed884a81edcb47886",
+      "bytes": 2723
+    },
+    {
+      "path": "src/shadow/shadow-coordinator.js",
+      "sha256": "454bf3cf873de82d96d24c0a4a8843ac0a841166031be5690747e6e493678aca",
+      "bytes": 5348
+    },
+    {
+      "path": "src/shadow/shadow-run-store.js",
+      "sha256": "9dd64a1277a7bb8a8472768addd993aa9ad5f6f6801fc419d48af8657a5d3bc7",
+      "bytes": 2935
     },
     {
       "path": "src/shadow/synthesis-agent.js",
