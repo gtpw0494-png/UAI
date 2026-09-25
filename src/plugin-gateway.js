@@ -97,11 +97,6 @@ export class PluginGateway{
       requiresCredential:(operation.secrets||[]).length>0
     })||{decision:"ASK",reason:"No policy engine configured."};
 
-    if(options.autonomyLeaseId){
-      const lease=this.autonomyStore?.authorize(options.autonomyLeaseId,{operation:"plugin."+operation.name,risk});
-      if(!lease||lease.state!=="SUCCESS")return {state:"DENIED",message:"Autonomy lease does not authorize this invocation.",lease:lease||null,policy};
-    }
-
     if(policy.decision!=="ALLOW"){
       const expected={operation:"plugin."+operation.name,arguments:bindingArgs,capability:"plugin."+operation.name,actor:"user:onechat",toolVersion:plugin.version,actionEnvelopeId:options.actionEnvelopeId||null,taskId:options.taskId||null};
       const approval=this.approvalStore?.validate(options.approvalId,expected);
@@ -114,6 +109,20 @@ export class PluginGateway{
     if(idemRequired&&!options.idempotencyKey)return {state:"BLOCKED",message:"This plugin operation requires an Idempotency-Key."};
     if(idemRequired&&!this.idempotencyStore)return {state:"UNAVAILABLE",message:"Idempotency persistence is required but not configured."};
     const requestHash=requestDigest({pluginId,manifestDigest:plugin.manifestDigest,operation:operation.name,input});
+    if(options.idempotencyKey&&this.idempotencyStore){
+      const existing=this.idempotencyStore.get(options.idempotencyKey);
+      if(existing&&Date.parse(existing.expiresAt||0)>Date.now()){
+        if(existing.operation!=="plugin."+operation.name||existing.requestHash!==requestHash)return {state:"DENIED",message:"Idempotency key was already used for a different request.",record:existing};
+        if(existing.status==="COMPLETED")return {...existing.result,idempotentReplay:true,idempotencyKey:String(options.idempotencyKey)};
+        return {state:"BLOCKED",message:"An identical request with this idempotency key is already in progress or already failed.",record:existing};
+      }
+    }
+
+    if(options.autonomyLeaseId&&policy.decision==="ALLOW"){
+      const lease=this.autonomyStore?.authorize(options.autonomyLeaseId,{operation:"plugin."+operation.name,risk});
+      if(!lease||lease.state!=="SUCCESS")return {state:"DENIED",message:"Autonomy lease does not authorize this invocation.",lease:lease||null,policy};
+    }
+
     const idem=this.idempotencyStore?.begin(options.idempotencyKey,{operation:"plugin."+operation.name,requestHash,ttlMs:operation.idempotencyTtlMs||86400000});
     if(idem?.state==="DENIED"||idem?.state==="BLOCKED")return idem;
     if(idem?.state==="REPLAY")return {...idem.result,idempotentReplay:true,idempotencyKey:String(options.idempotencyKey)};
