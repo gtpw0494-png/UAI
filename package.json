@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.44.0",
+  "version": "0.45.0",
   "private": true,
-  "description": "Governed plugin gateway: operation schemas, capability evidence, exact authorization, scoped secrets, idempotency, cancellation and bounded sandbox I/O.",
+  "description": "Provenance-aware document data plane with content-addressed storage, revisioned chunks, retrieval/training separation, citations and deletion propagation.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -42,7 +42,11 @@
     "retrieval:eval": "python3 storage/retrieval_eval.py",
     "test:control-plane": "node verification/control-plane-modernization.test.mjs",
     "test:plugin-gateway": "node verification/plugin-gateway.test.mjs",
-    "test:plugin-http": "node verification/plugin-http.test.mjs"
+    "test:plugin-http": "node verification/plugin-http.test.mjs",
+    "test:document-data": "python3 verification/document-data-plane.test.py",
+    "test:document-http": "node verification/document-http.test.mjs",
+    "documents:status": "python3 storage/documents.py status",
+    "documents:reindex": "python3 storage/documents.py reindex"
   },
   "engines": {
     "node": ">=20"

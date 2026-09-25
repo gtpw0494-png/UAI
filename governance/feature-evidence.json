@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.44.0",
+  "generated_for": "0.45.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -563,6 +563,38 @@
         "verification/plugin-gateway.test.mjs"
       ],
       "evidence_note": "Host process enforces timeout, cancellation, output size, minimal environment and declared policy metadata. Filesystem/network/CPU/memory hard isolation still depends on the explicitly configured external sandbox runtime and is not claimed as kernel-enforced by Node itself."
+    },
+    {
+      "id": "provenance-document-data-plane",
+      "introduced": "0.45.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "storage/documents.py",
+        "src/document-store.js",
+        "schemas/document.schema.json",
+        "src/web-corpus.js",
+        "src/onechat.js",
+        "src/response-composer.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/document-data-plane.test.py",
+        "verification/document-http.test.mjs"
+      ],
+      "evidence_note": "Dedicated SQLite/object-store and live HTTP/OneChat suites pass on v0.45: canonical URI handling, immutable content-addressed objects, revisions, deterministic chunks, quarantine exclusion, retrieval/training separation, source/document/chunk citations, soft deletion, hard purge, reindexing and API composition. Final promotion still requires exact-commit authoritative CI."
+    },
+    {
+      "id": "multimodal-document-lineage",
+      "introduced": "0.45.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "schemas/document.schema.json",
+        "storage/documents.py"
+      ],
+      "tests": [
+        "verification/document-data-plane.test.py"
+      ],
+      "evidence_note": "The document contract is ready for modality metadata, but OCR/page/bounding-box, audio timestamps, video frame lineage and visual embeddings are not yet implemented."
     }
   ]
 }

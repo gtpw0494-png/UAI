@@ -150,3 +150,14 @@ WordNet relationship graph import and OneChat lexical relationship queries (anto
 - HTTP plugin execution now forwards `Idempotency-Key` into transactional replay protection and accepts explicit operation names.
 - Added dedicated adversarial/behavioral verification for schema rejection, allowlist denial, replay/collision behavior, approval mutation rejection, secret redaction, missing capability evidence, output-schema failure, output limits, timeout, cancellation and autonomy exhaustion.
 - Hard OS-level filesystem/network/CPU/memory isolation remains external-sandbox dependent and is retained as PARTIAL rather than overstated.
+
+## v0.45.0 — Provenance Document Data Plane
+- Added a local SQLite/WAL document plane with canonical source identity, revision history, content hashes, immutable content-addressed text objects and deterministic chunks.
+- Added explicit retrieval eligibility, source training eligibility and separate training approval.
+- Added FTS5 document-chunk retrieval with source/document/chunk/revision provenance.
+- Added citation-bearing OneChat document retrieval and document HTTP APIs.
+- Governed direct-web ingestion now also persists into the provenance document plane and reports PARTIAL if that persistence step fails.
+- Added soft deletion and hard purge behavior that removes searchable chunks and cleans unreferenced objects.
+- Added direct storage and live HTTP/OneChat verification suites.
+- Multimodal evidence locations, dense retrieval/reranking and the full cross-artifact provenance graph remain PARTIAL/future rather than being claimed complete.
+

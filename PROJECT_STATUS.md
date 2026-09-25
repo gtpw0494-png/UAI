@@ -145,3 +145,12 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — input URL destination allowlists, timeout, request cancellation and maximum output-byte enforcement.
 - IMPLEMENTED — v2 plugin manifest fields for operations, secrets, runtime requirements and resource budgets while preserving v1 compatibility.
 - PARTIAL — filesystem/network/CPU/memory hard isolation is delegated to the explicitly configured external sandbox. The Node host passes declared restrictions and uses a minimal environment but does not claim kernel/container isolation by itself.
+
+## v0.45.0 additions
+- IMPLEMENTED + VERIFIED — provenance-aware document store with canonical URIs, content hashes, immutable content-addressed text objects, revisions and deterministic chunks.
+- IMPLEMENTED + VERIFIED — separate retrieval eligibility, source training eligibility and explicit training approval.
+- IMPLEMENTED + VERIFIED — document FTS retrieval with source/document/chunk/revision/provenance evidence exposed through HTTP and OneChat.
+- IMPLEMENTED + VERIFIED — web ingestion bridge into the provenance document plane while retaining legacy web-corpus compatibility.
+- IMPLEMENTED + VERIFIED — document soft deletion and hard purge with retrieval-index removal and unreferenced object cleanup.
+- PARTIAL — multimodal page/frame/timestamp/bounding-box lineage, dense embeddings/reranking, derived-artifact purge and full provenance graph are not yet claimed.
+

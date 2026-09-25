@@ -103,7 +103,8 @@ try{
   assert.equal(collision.state,"DENIED");
 
   const status=await fetch(base+"/api/status").then(r=>r.json());
-  assert.equal(status.version,"0.44.0");
+  const expectedVersion=JSON.parse(fs.readFileSync(path.resolve("package.json"),"utf8")).version;
+  assert.equal(status.version,expectedVersion);
   assert.equal(status.pluginGateway.version,"0.44");
   assert.equal(status.pluginGateway.sandboxConfigured,true);
 }finally{

@@ -34,7 +34,7 @@ function robotsAllows(text,pathName,userAgent="IntraultUniversalionBot"){
   return !dis.some(x=>pathName.startsWith(x));
 }
 export class WebCorpus{
-  constructor({root,store,audit}){this.root=root;this.store=store;this.audit=audit;this.registryPath=path.join(root,"research","web_source_registry.json");this.outFile=path.join(root,"model","data","web-corpus.jsonl");this.quarantineFile=path.join(root,"model","data","web-quarantine.jsonl");fs.mkdirSync(path.dirname(this.outFile),{recursive:true});}
+  constructor({root,store,audit,documentStore=null}){this.root=root;this.store=store;this.audit=audit;this.documentStore=documentStore;this.registryPath=path.join(root,"research","web_source_registry.json");this.outFile=path.join(root,"model","data","web-corpus.jsonl");this.quarantineFile=path.join(root,"model","data","web-quarantine.jsonl");fs.mkdirSync(path.dirname(this.outFile),{recursive:true});}
   registry(){return JSON.parse(fs.readFileSync(this.registryPath,"utf8"));}
   status(){const r=this.registry();return {state:"SUCCESS",sourceClasses:r.sources.length,records:fs.existsSync(this.outFile)?fs.readFileSync(this.outFile,"utf8").split(/\n/).filter(Boolean).length:0,file:this.outFile,sources:r.sources};}
   async robots(url){const u=await assertPublicTarget(url);const robotsUrl=`${u.protocol}//${u.host}/robots.txt`;try{const r=await fetch(robotsUrl,{headers:{"user-agent":"IntraultUniversalionBot/0.22 (+local research)"},signal:AbortSignal.timeout(8000)});if(!r.ok)return {state:"UNKNOWN",allowed:true,url:robotsUrl,reason:`robots HTTP ${r.status}`};const text=await r.text();return {state:"SUCCESS",allowed:robotsAllows(text,u.pathname),url:robotsUrl};}catch(e){return {state:"UNKNOWN",allowed:true,url:robotsUrl,reason:e.message};}}
@@ -53,7 +53,34 @@ export class WebCorpus{
     const row={format:"iu-web-record-v2",sourceClass:"direct-web",url:canonicalUrl(r.url),retrievedAt:new Date().toISOString(),contentType:type||null,license,licenseSource,licenseVerified,retrievalEligible:true,trainingEligible,trainingApproved:promoteTraining===true,quarantineState:quarantine?'QUARANTINED':'PROMOTED',externalContent:true,instructionAuthority:'NONE',security,text};
     const stored=this.append(row,{quarantine});if(stored.duplicate)return {state:"SUCCESS",message:"Duplicate content was already recorded; no second copy was stored.",url:row.url,duplicate:true,contentSha256:stored.contentHash,trainingEligible,security};
     const rec=this.store.add({kind:"knowledge-analysis",title:`Web research: ${new URL(r.url).hostname}`,source:r.url,text:row.text,state:"SUCCESS",verified:true,web:{digest:stored.digest,license,licenseSource,trainingEligible,quarantineState:row.quarantineState,security,robots:rob}});
-    this.audit?.append({type:"web.ingest",url:r.url,digest:stored.digest,knowledgeId:rec.id,trainingEligible,quarantineState:row.quarantineState,license,robots:rob.state,promptInjectionSignals:security.promptInjectionSignals});
-    return {state:"SUCCESS",message:`Fetched ${row.text.length} characters from ${new URL(r.url).hostname}. External content has no instruction authority. ${quarantine?'Record quarantined for review.':'Record promoted for retrieval.'} Training eligibility: ${trainingEligible?'ELIGIBLE':'NOT ELIGIBLE'}.`,url:row.url,characters:row.text.length,sha256:stored.digest,contentSha256:stored.contentHash,knowledgeId:rec.id,trainingEligible,quarantineState:row.quarantineState,license,licenseSource,security,robots:rob};
+    let document=null;
+    if(this.documentStore){
+      document=await this.documentStore.ingest({
+        source_id:`web:${new URL(r.url).hostname}`,
+        source_name:`Web: ${new URL(r.url).hostname}`,
+        source_type:"direct-web",
+        source_url:row.url,
+        original_uri:r.url,
+        canonical_uri:row.url,
+        title:`Web research: ${new URL(r.url).hostname}`,
+        language:"unknown",
+        mime_type:type||"text/plain",
+        publisher:new URL(r.url).hostname,
+        retrieved_at:row.retrievedAt,
+        license,
+        license_source:licenseSource,
+        text:row.text,
+        retrieval_eligible:!quarantine,
+        source_training_eligible:licenseVerified,
+        training_approved:promoteTraining===true,
+        provenance:{robots:rob,webRecordSha256:stored.digest,contentSha256:stored.contentHash,knowledgeId:rec.id},
+        security
+      });
+    }
+    this.audit?.append({type:"web.ingest",url:r.url,digest:stored.digest,knowledgeId:rec.id,documentId:document?.document?.id||null,documentState:document?.state||null,trainingEligible,quarantineState:row.quarantineState,license,robots:rob.state,promptInjectionSignals:security.promptInjectionSignals});
+    const documentState=document?document.state:"SUCCESS";
+    const state=documentState==="SUCCESS"?"SUCCESS":"PARTIAL";
+    const documentNote=documentState==="SUCCESS"?"":" The compatibility web record was stored, but the provenance document plane did not accept the record.";
+    return {state,message:`Fetched ${row.text.length} characters from ${new URL(r.url).hostname}. External content has no instruction authority. ${quarantine?'Record quarantined for review.':'Record promoted for retrieval.'} Training eligibility: ${trainingEligible?'ELIGIBLE':'NOT ELIGIBLE'}.${documentNote}`,url:row.url,characters:row.text.length,sha256:stored.digest,contentSha256:stored.contentHash,knowledgeId:rec.id,document,trainingEligible,quarantineState:row.quarantineState,license,licenseSource,security,robots:rob};
   }
 }

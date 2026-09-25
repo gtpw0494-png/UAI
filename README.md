@@ -1,6 +1,16 @@
-# IntraultUniversalion v0.44.0
+# IntraultUniversalion v0.45.0
 
 A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
+
+## v0.45 provenance document data plane
+
+- Content-addressed local document objects with canonical URIs, document revisions and deterministic chunks.
+- Explicit retrieval eligibility, source training eligibility and separate training approval.
+- FTS5 document retrieval with source/document/chunk/revision provenance.
+- Citation-bearing OneChat evidence responses for document search.
+- Governed web ingestion now also persists into the document plane and reports PARTIAL if provenance persistence fails.
+- Soft deletion and hard purge remove searchable chunks and clean unreferenced content objects.
+- Multimodal location metadata, dense reranking and the full cross-artifact provenance graph remain PARTIAL/future.
 
 ## v0.44 governed plugin gateway
 

@@ -12,6 +12,7 @@ export class OneChatRouter{
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
   if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
+  if(/document|citation|provenance|source graph|evidence search|retrieval source/i.test(t))a.push({agent:"documents",reason:"provenance-aware document retrieval intent"});
   if(/research|analyse|analyze|compare|definition|knowledge|evidence|study|semantic search|semantic retrieve/i.test(t))a.push({agent:"knowledge",reason:"knowledge/research intent"});
   if(/\bdefine\b|definition of|meaning of|wordnet|lexicon|dictionary|synonym|antonym|hypernym|hyponym|related word|lexical relation/i.test(t))a.push({agent:"lexicon",reason:"local lexical-definition intent"});
   if(/banter|chitchat|chat example|conversation example|dialogue example|oasst|openassistant|casual reply|humorous reply|technical banter/i.test(t))a.push({agent:"dialogue",reason:"local conversational-corpus intent"});
@@ -29,6 +30,16 @@ export class OneChatRouter{
     const m=String(message).match(/(?:ingest|fetch|research)\s+url\s+(https?:\/\/\S+)(?:\s+license\s+([A-Za-z0-9_.+-]+))?/i);
     if(m)return this.webCorpus?await this.webCorpus.ingestUrl({url:m[1],license:m[2]||"UNKNOWN",licenseSource:m[2]?"USER_DECLARED":"UNVERIFIED",promoteTraining:/training[- ]approved/i.test(message)}):result("UNAVAILABLE","Web corpus service is not configured.");
     return result("SUCCESS","Web Research Agent is ready. Ask for web corpus status or `ingest url https://...`; fetched content keeps URL, retrieval time, robots result, license state and training eligibility.");
+  }
+  if(agent==="documents"){
+    if(!this.documentStore)return result("UNAVAILABLE","Provenance document store is not configured.");
+    if(/document(?: data)? plane status|document store status|documents status/i.test(message)){const s=await this.documentStore.status();return {...s,message:"Document data plane contains "+(s.documents||0)+" document revision(s) and "+(s.chunks||0)+" chunk(s)."};}
+    if(/(?:list|show)\s+documents/i.test(message)){const s=await this.documentStore.list({limit:50});return result(s.state||"SUCCESS",(s.documents?.length||0)+" document revision(s) are visible in the local data plane.",s);}
+    const get=String(message).match(/(?:show|get|inspect)\s+document\s+(doc-[\w-]+)/i);if(get)return this.documentStore.get(get[1]);
+    const del=String(message).match(/(?:forget|delete|soft delete)\s+document\s+(doc-[\w-]+)/i);if(del)return this.documentStore.delete(del[1],"OneChat user-requested deletion");
+    const purge=String(message).match(/purge\s+document\s+(doc-[\w-]+)/i);if(purge)return this.documentStore.purge(purge[1],"OneChat user-requested purge");
+    const q=String(message).match(/(?:document|evidence|provenance)\s+(?:search|retrieve|find)\s+(.+)/i);if(q)return this.documentStore.search(q[1].trim(),8);
+    return result("SUCCESS","Document agent is ready. Ask for document data plane status, list documents, or document search <query>.",{commands:["document data plane status","list documents","document search <query>","show document <doc-id>"]});
   }
   if(agent==="lexicon"){
     if(!this.storageDb)return result("UNAVAILABLE","SQLite language database is not configured.");
@@ -128,6 +139,6 @@ export class OneChatRouter{
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,verified:finalState==="SUCCESS"});
   this.audit?.append({type:"onechat.turn",chatId,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
-  return {state:finalState,chatId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Raw seed-model text is quality-gated before it may become the primary reply."};
+  return {state:finalState,chatId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Raw seed-model text is quality-gated before it may become the primary reply."};
  }
 }
