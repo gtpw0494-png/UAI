@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.53.0",
+  "version": "0.54.0",
   "private": true,
-  "description": "Independent local-first AI operating environment with durable conversation, evidence-native research, typed agent control-plane storage, bounded lease scheduling, isolated light-agent source improvement, local model routing and owner-governed promotion.",
+  "description": "Independent local-first AI operating environment with user-owned memory, provenance, evidence-native research, typed agent scheduling, policy simulation, verified model artifacts, evaluation records, local model routing and owner-governed promotion.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -68,7 +68,13 @@
     "control:status": "node scripts/control-plane-cli.js status",
     "control:jobs": "node scripts/control-plane-cli.js jobs",
     "control:dispatch": "node scripts/control-plane-cli.js dispatch",
-    "control:maintenance": "node scripts/control-plane-cli.js maintenance"
+    "control:maintenance": "node scripts/control-plane-cli.js maintenance",
+    "test:platform-intelligence": "node verification/platform-intelligence-v054.test.mjs",
+    "test:platform-intelligence-http": "node verification/platform-intelligence-http-v054.test.mjs",
+    "platform:status": "node scripts/platform-intelligence-cli.js status",
+    "memory:status": "node scripts/platform-intelligence-cli.js memory-status",
+    "provenance:status": "node scripts/platform-intelligence-cli.js provenance-status",
+    "evaluations:status": "node scripts/platform-intelligence-cli.js evaluations"
   },
   "engines": {
     "node": ">=20"
