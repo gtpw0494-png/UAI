@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.51.0",
+  "version": "0.52.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "bafc566da470c545604165a38fc911fc15ce5e94436efae61985cc82f97d1097",
-      "bytes": 6137
+      "sha256": "425016229e30d863761d29f437c779d841f0720570b884a83fffdedb1eaa88a3",
+      "bytes": 6254
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "a23b96991d540686d73654bba0274be35d53cdfbfdfbc5f990b99a794aa7857a",
-      "bytes": 3688
+      "sha256": "8a90f920389b763a45b49a313ec76b821e24416f7ce72f3949718a99a83e5fe0",
+      "bytes": 4127
     },
     {
       "path": "public/app.js",
@@ -393,6 +393,11 @@
       "bytes": 934
     },
     {
+      "path": "scripts/light-cli.js",
+      "sha256": "80e1cacd499ff117c9200706aea58901f1d82ba5772fc03276949964545f4be7",
+      "bytes": 718
+    },
+    {
       "path": "scripts/probe-capabilities.js",
       "sha256": "814158f940e14ce73aa6dd479d13de8cf8e42339c9405c3212b100f7ba1a6185",
       "bytes": 1065
@@ -406,6 +411,11 @@
       "path": "scripts/setup-ai.sh",
       "sha256": "7c4f5a620443478c8cd52cb694b138c1a6f931812057a60c982d062a10b5566c",
       "bytes": 1034
+    },
+    {
+      "path": "scripts/shadow-cli.js",
+      "sha256": "bb3dd05bd113784cdb2ff6832907436c3899377465712fd9cea161ed7cce6ff4",
+      "bytes": 815
     },
     {
       "path": "scripts/validate-feature-evidence.mjs",
@@ -429,8 +439,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "5d455bc289d592617daafd7a8a34fa8d3eb38f6b38aba4ff063fb29f905d63e1",
-      "bytes": 30944
+      "sha256": "179bf4214782272885b06d52c76025925832ae092078f17a7aa5fa1a6bb34b81",
+      "bytes": 36305
     },
     {
       "path": "src/action-envelope.js",
@@ -534,8 +544,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "07da0c3761d04e5f94aab57838f3a33707f0e96a7eb97f530de0092d91f445fa",
-      "bytes": 7305
+      "sha256": "ba5f0a3114971b216e1299e60d128da8e1b308b5fa2e3c4bc24a8394779552b4",
+      "bytes": 7886
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -579,8 +589,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "4f2c9940e52d516ffbe4e70e15b6bd29309d802274e1403c1488bcbb39a9f182",
-      "bytes": 5090
+      "sha256": "d0c8478867247114422ec9a4bb5b753b5180e92a3e0cf33d3f724ab6e5c7a3ce",
+      "bytes": 8467
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -1016,6 +1026,11 @@
       "path": "verification/runtime-boundaries.test.mjs",
       "sha256": "11772eb7930bf5ac5fa112d4572d92bc0fe08e3aaae69a796d2d598a33e7e14c",
       "bytes": 4267
+    },
+    {
+      "path": "verification/shadow-light-v052.test.mjs",
+      "sha256": "0160b562f954ddb4568e2420876c204693f78b6badc58d001a9dd32309b6b80d",
+      "bytes": 2989
     },
     {
       "path": "verification/test_data_learning.py",
