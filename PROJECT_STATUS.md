@@ -165,3 +165,11 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - PARTIAL — first-run enrollment does not yet require an independent bootstrap file, trusted-device key, or equivalent ownership proof before the first local Owner is claimed.
 - UNMERGED — v0.48.1 evidence-envelope/model-router foundations remain outside this repair checkpoint until they gain integrated system tests.
 
+## v0.49.0 additions
+- IMPLEMENTED, pending repository verification — health-aware local model router with runtime probes, execution constraints, deterministic ranking and fallback traces.
+- IMPLEMENTED, pending repository verification — native conversation routed through the model router with output-quality acceptance before fallback.
+- IMPLEMENTED, pending repository verification — integrity-hashed OneChat evidence envelope with claim support states, cited chunks, model route and tool-call summaries.
+- IMPLEMENTED, pending repository verification — user-facing `explain answer` evidence summary without private chain-of-thought.
+- IMPLEMENTED, pending repository verification — stable per-tab browser chat ID for live context continuity.
+- PARTIAL — persisted chat-turn/evidence records are not yet rehydrated into full model context after a process restart.
+
