@@ -53,7 +53,10 @@ export class RequestAuthorizer{
   authorize({req,url,body={},requestId,correlationId}={}){
     const meta=routeSecurity(req.method,url.pathname);
     const auth=this.identity.authenticateRequest(req);
-    if(meta.public)return {state:"SUCCESS",allowed:true,meta,auth,policy:null};
+    if(meta.public){
+      if(meta.stateChanging){const validation=validateRequestBody(req.method,url.pathname,body);if(validation.state!=="SUCCESS")return {state:"BLOCKED",allowed:false,httpStatus:400,message:"Request body failed route schema validation.",meta,auth,validation};}
+      return {state:"SUCCESS",allowed:true,meta,auth,policy:null};
+    }
     if(!auth.authenticated)return {state:"UNAUTHENTICATED",allowed:false,httpStatus:401,message:"Local owner authentication is required.",meta,auth};
     const rate=this._rate(auth.identityId,url.pathname);
     if(!rate.allowed)return {state:"BLOCKED",allowed:false,httpStatus:429,message:"Local API rate limit exceeded.",meta,auth,rate};
