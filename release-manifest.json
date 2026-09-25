@@ -729,8 +729,8 @@
     },
     {
       "path": "verification/document-http.test.mjs",
-      "sha256": "aa39cb4a7e5d1b016ddd89e677efc06cea32b8fd37d64197756149f930fa4b22",
-      "bytes": 4325
+      "sha256": "143f7e7d651cc54a4e2211d47ba692cab7cb57114bd1f50391f690e98cc297f3",
+      "bytes": 4324
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
