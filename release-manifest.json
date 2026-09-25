@@ -983,6 +983,11 @@
       "bytes": 29056
     },
     {
+      "path": "verification/agent-control-http-v053.test.mjs",
+      "sha256": "ed5c3ed2f38e8d217843007a7889b9380b0713350f4f4f5ef5f36f69c11f5269",
+      "bytes": 5943
+    },
+    {
       "path": "verification/agent-control-v053.test.mjs",
       "sha256": "7ef6e3720b3b10a924e9c9adb12c2691b33dc6657b08e043488198fe651a93da",
       "bytes": 5707
