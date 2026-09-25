@@ -83,6 +83,11 @@
       "bytes": 2233
     },
     {
+      "path": "docs/FORGELM-SELF-SUFFICIENT.md",
+      "sha256": "54b6e579c5575154295c8a14e538034c101fba00ea36493cd21fac04c35fa364",
+      "bytes": 1276
+    },
+    {
       "path": "docs/GITHUB-MIGRATION.md",
       "sha256": "b4543a0c80d769fca48aa276d85cf5a0736d3b52e85c5d4a48744f85c70d68d8",
       "bytes": 398
@@ -153,14 +158,19 @@
       "bytes": 874
     },
     {
+      "path": "model/capabilities.py",
+      "sha256": "e0f0db9a24f18d000a744d5283f58f92b06d954bf590be8f4fe6a476552a6a0c",
+      "bytes": 5351
+    },
+    {
       "path": "model/cli.py",
       "sha256": "484cd8fa334d99f8cc425d6d7848e38f5900f602038541ef6197069ed2d26422",
       "bytes": 2784
     },
     {
       "path": "model/config_presets.json",
-      "sha256": "88680bc3011852acda561094108b2c970d79cd13fdfd4e87003e110051c255fd",
-      "bytes": 1497
+      "sha256": "466a983c8306f95518d62d5272dd62e714b417f6263f5fb17a4030c5c11ad501",
+      "bytes": 1113
     },
     {
       "path": "model/continual.py",
@@ -196,6 +206,11 @@
       "path": "model/orchestration.py",
       "sha256": "cd58704f6146d89a62851a74eea8e9502fad2511487e8f027e5a7eeaf13a8b55",
       "bytes": 440
+    },
+    {
+      "path": "model/self_sufficient.py",
+      "sha256": "fa713c311727631fa57c4de7d33a2b0f5e68d7da3e39061a6cebdfa866ffc28d",
+      "bytes": 2203
     },
     {
       "path": "model/test_advanced.py",
@@ -604,8 +619,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "614944543d9a95cc1cccd1325a7f16041152970f8771d1ca89d251bab48f5fe2",
-      "bytes": 1107
+      "sha256": "55a0de5f190856b377734aed6ebd52ec1724a4a23b479fd44dd993a39e5a841b",
+      "bytes": 1174
     },
     {
       "path": "src/governance/audit-integrity.js",
@@ -1176,6 +1191,11 @@
       "path": "verification/document-http.test.mjs",
       "sha256": "4a4510121ffedaa128d748b932cafae7749c1c4fed6b5f779c5f57d9122efa5c",
       "bytes": 5085
+    },
+    {
+      "path": "verification/forgelm-self-sufficient.test.mjs",
+      "sha256": "a0ee33eeadc9a7ae7e176f0c71ccffc65c219a1056d12ef37017e7a06d034486",
+      "bytes": 408
     },
     {
       "path": "verification/model-catalog.test.mjs",
