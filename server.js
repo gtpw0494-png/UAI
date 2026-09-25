@@ -504,6 +504,9 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/model/tokenizer/train"){const b=await readBody(req);return send(res,200,await modelLab.trainTokenizer(b.vocabSize||512));}
   if(req.method==="POST"&&url.pathname==="/api/research/source-snapshot")return send(res,200,await modelLab.analyzeSources());
   if(req.method==="POST"&&url.pathname==="/api/model/train"){const b=await readBody(req);return send(res,200,await modelLab.train({steps:b.steps||80,preset:b.preset||"termux-tiny",gradAccum:b.gradAccum||1,lr:b.lr||0.003}));}
+  if(req.method==="POST"&&url.pathname==="/api/model/evaluate"){const b=await readBody(req);const out=await modelLab.evaluateCandidate(String(b.runId||""),{maxRelativeRegression:Number(b.maxRelativeRegression??0.02)});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/model/promote"){const b=await readBody(req);const out=modelLab.promoteCandidate(String(b.runId||""),{approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/model/rollback"){const b=await readBody(req);const out=modelLab.rollback(String(b.runId||""),{reason:String(b.reason||"owner-requested rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);const local=await localOrchestrator.chat(b.message||b.prompt||"", b.context || "");return send(res,200,local);}
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
