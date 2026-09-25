@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.43.0",
+  "generated_for": "0.44.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -531,6 +531,38 @@
         "verification/control-plane-modernization.test.mjs"
       ],
       "evidence_note": "Transactional exactly-once/replay behavior verified by authoritative repository CI and dedicated behavioral tests."
+    },
+    {
+      "id": "operation-scoped-plugin-gateway",
+      "introduced": "0.44.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/plugin-gateway.js",
+        "src/sandbox-runner.js",
+        "src/plugin-secret-broker.js",
+        "src/schema-validator.js",
+        "src/plugin-registry.js",
+        "server.js",
+        "schemas/plugin-manifest.schema.json"
+      ],
+      "tests": [
+        "verification/plugin-gateway.test.mjs",
+        "verification/plugin-http.test.mjs"
+      ],
+      "evidence_note": "Dedicated gateway and HTTP integration suites pass on the v0.44 implementation: schema validation, network-destination allowlists, runtime capability evidence, exact approval binding, autonomy budgeting, scoped secret injection/redaction, transactional replay protection, output verification/limits, timeout, cancellation and HTTP Idempotency-Key forwarding. Final main promotion still requires authoritative CI on the exact promotion commit."
+    },
+    {
+      "id": "os-level-plugin-hard-isolation",
+      "introduced": "0.44.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/sandbox-runner.js",
+        "src/plugin-gateway.js"
+      ],
+      "tests": [
+        "verification/plugin-gateway.test.mjs"
+      ],
+      "evidence_note": "Host process enforces timeout, cancellation, output size, minimal environment and declared policy metadata. Filesystem/network/CPU/memory hard isolation still depends on the explicitly configured external sandbox runtime and is not claimed as kernel-enforced by Node itself."
     }
   ]
 }

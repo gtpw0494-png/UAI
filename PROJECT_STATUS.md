@@ -137,3 +137,11 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED — generic `build/*` CI and manifest automation, removing v0.34 branch hard-coding.
 - IMPLEMENTED — repository architecture contracts for control/execution/evidence/data planes.
 - PARTIAL — full blueprint module decomposition remains incremental; the current flat `src/` layout is retained until behavior-preserving refactors are independently verified.
+## v0.44.0 additions
+- IMPLEMENTED + VERIFIED — operation-scoped plugin gateway with inline JSON-schema input/output validation.
+- IMPLEMENTED + VERIFIED — per-operation policy, exact approval binding, bounded autonomy checks and transactional idempotency.
+- IMPLEMENTED + VERIFIED — capability-evidence checks for explicitly required runtime capabilities.
+- IMPLEMENTED + VERIFIED — scoped secret injection using allowlisted secret names and exact-value output redaction.
+- IMPLEMENTED + VERIFIED — input URL destination allowlists, timeout, request cancellation and maximum output-byte enforcement.
+- IMPLEMENTED — v2 plugin manifest fields for operations, secrets, runtime requirements and resource budgets while preserving v1 compatibility.
+- PARTIAL — filesystem/network/CPU/memory hard isolation is delegated to the explicitly configured external sandbox. The Node host passes declared restrictions and uses a minimal environment but does not claim kernel/container isolation by itself.

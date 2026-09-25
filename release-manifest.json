@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "80ee121f4952da2d75d51e80ea41a55fbed6663b0abdf0b71ee3d3f01bd0223c",
-      "bytes": 4420
+      "sha256": "e5f90d5e76bd4a3c320bb3a780169794b53db3b8e6b69845fb238a403a09526f",
+      "bytes": 4603
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -34,18 +34,18 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "6a298bcbca7dd278d9ba88a5d1241321d7c011c3c2523fe0b354cbd6eb6a822b",
-      "bytes": 11837
+      "sha256": "e5b33dfb6da517b84029f5f6006c144dd970add59151141a9d87e112ead3a37b",
+      "bytes": 12844
     },
     {
       "path": "README.md",
-      "sha256": "d98f50d762f812d292b2fc04c045b036de4074d9ed258d4f2b03bc43d3d402e8",
-      "bytes": 2299
+      "sha256": "f951aed5fcb8ff988867e566c357a308e2b2e86e50d92ac75b2a090fb1f058cd",
+      "bytes": 3290
     },
     {
       "path": "RELEASES.md",
-      "sha256": "1adf53ba4775a16532c9ad1821043c7d702ecd98a3e7288dea3ec34d5d2e3a3b",
-      "bytes": 10653
+      "sha256": "5d49a13947bad69ad289141a43f05d84103740abf0a6895ef0abdcf835508bc7",
+      "bytes": 11873
     },
     {
       "path": "TERMUX-RUN.md",
@@ -119,18 +119,18 @@
     },
     {
       "path": "docs/PLUGIN-SDK.md",
-      "sha256": "362250e09cb1ea344cc666ab0fbd49ce468f49d64c96dd5543020a7e916bcb9f",
-      "bytes": 1727
+      "sha256": "8ac937aa1cddd543680ab14495b56a45ef8aa42ce5468d64a061fd0ffd0545be",
+      "bytes": 6455
     },
     {
       "path": "docs/SECURITY.md",
-      "sha256": "756414490f47367ba79de192fbcacb448603be3687d00de922e8583111a26a2f",
-      "bytes": 1718
+      "sha256": "838dda3e0725597d10d78563caf8e9dfa82d2d67ecd38b542b3f25a08e680f27",
+      "bytes": 2857
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "c24a01edde63dde06e599c7e78b245ccabe4bd12458e5cc69b0f53b1dbb2b2f6",
-      "bytes": 16348
+      "sha256": "3be9e418c059158515252b5acdb7cb5e80381171f171ac9711f4717c9c79a448",
+      "bytes": 17917
     },
     {
       "path": "model/adaptation.py",
@@ -214,8 +214,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "d22aed9faef00bd76a14a90d561201350b35d337eae728425e4213cb54ff0873",
-      "bytes": 2602
+      "sha256": "94b77810675d2f5171819fd47909442731b7113f2bbb23a1a11c0954242be8ef",
+      "bytes": 2756
     },
     {
       "path": "public/app.js",
@@ -349,8 +349,8 @@
     },
     {
       "path": "schemas/plugin-manifest.schema.json",
-      "sha256": "6115b6a76be01d58981fbecd3c24cc1d17cdc6d42ed629baccf95e309e89aad9",
-      "bytes": 1780
+      "sha256": "3555ca419f32516984dd2931e5f1044cf3c83212cae636cbd4ddb04cadef15f8",
+      "bytes": 6301
     },
     {
       "path": "scripts/build-release-manifest.py",
@@ -409,8 +409,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "a3cced76ae46b78fd3979364ef2f094b7bcc38b57e1b58f8d23ac2e9d10f352c",
-      "bytes": 19544
+      "sha256": "c664ddf6fb0c144ee62e51262b743434988609f351419382cff45ec24b976935",
+      "bytes": 20495
     },
     {
       "path": "src/action-envelope.js",
@@ -543,9 +543,19 @@
       "bytes": 3930
     },
     {
+      "path": "src/plugin-gateway.js",
+      "sha256": "3527cef86b3ec52f8b9c73318dedc95845d9abc2faf1c3005fbd89c83a510fc2",
+      "bytes": 9459
+    },
+    {
       "path": "src/plugin-registry.js",
-      "sha256": "66a91f0fc37ae23cbb63c451cbb21224a59d3e93f21892a749f61044fa37ed72",
-      "bytes": 4107
+      "sha256": "96fe7456f39d615e418596b88184e1b2723f00a347f0e84163ef0a5a72d7e500",
+      "bytes": 8462
+    },
+    {
+      "path": "src/plugin-secret-broker.js",
+      "sha256": "709a0c9bab725be6c2794193072a08587fc1b893c6e26b95a7a6fda06f4ef9c3",
+      "bytes": 1477
     },
     {
       "path": "src/policy-engine.js",
@@ -571,6 +581,16 @@
       "path": "src/runtime-services.js",
       "sha256": "52ddf5ad0aa65b08b636f8e458b83627ccfa909de8b7f06a0d154ac16cdac233",
       "bytes": 8175
+    },
+    {
+      "path": "src/sandbox-runner.js",
+      "sha256": "6796c88f7455b282cc0700d4239d777f527fc75363fd4cd59f8bfa69a1248879",
+      "bytes": 4521
+    },
+    {
+      "path": "src/schema-validator.js",
+      "sha256": "ad20cc36a2dd8cad6c9dd32db0911628edd6ca755873b1be434b4ce809b96182",
+      "bytes": 3029
     },
     {
       "path": "src/self-development.js",
@@ -656,6 +676,16 @@
       "path": "verification/control-plane-modernization.test.mjs",
       "sha256": "8228ce9952893a004b4dc67c998c79b0fc9d32977bede398524305f56b9bb5ac",
       "bytes": 6818
+    },
+    {
+      "path": "verification/plugin-gateway.test.mjs",
+      "sha256": "6aa96d3fd2f6c652e93d220160db65067a55c1ff26f85bc6ee829ca42a41604a",
+      "bytes": 9060
+    },
+    {
+      "path": "verification/plugin-http.test.mjs",
+      "sha256": "b1d5aecc756ee86b32451b3e445e724a9cca69005a22146b419375f752137517",
+      "bytes": 4178
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",

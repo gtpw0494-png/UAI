@@ -1,6 +1,18 @@
-# IntraultUniversalion v0.43.0
+# IntraultUniversalion v0.44.0
 
 A local-first, evidence-governed OneChat platform combining durable agent orchestration, governed data ingestion, local knowledge/retrieval, ForgeLM research/training foundations and explicit capability truth.
+
+## v0.44 governed plugin gateway
+
+- Operation-scoped plugin manifests with input/output schemas, risk, capabilities, secrets, idempotency and resource budgets.
+- HTTP plugin execution now flows through a single governed gateway.
+- Exact policy/approval binding is evaluated per operation.
+- Optional autonomy leases are consumed only for policy-allowed operations and are not consumed by idempotent replays.
+- Plugin inputs are checked against declared network-destination allowlists.
+- Only explicitly declared secrets are injected; returned secret values are redacted from results/log output.
+- Sandbox execution uses a minimal environment, isolated temporary HOME/TMPDIR, timeout/cancellation and output-byte limits.
+- Runtime capability requirements must have CONNECTED + executable evidence.
+- OS/kernel-level filesystem, network, CPU and memory isolation remains dependent on the configured external sandbox and is not falsely claimed as host-enforced.
 
 ## v0.43 control-plane modernization
 
@@ -23,6 +35,6 @@ A local-first, evidence-governed OneChat platform combining durable agent orches
 
 Existing OneChat, ForgeLM, WordNet/OASST storage, capability truth, source research, self-development, rollback, approvals and bounded autonomy remain additive.
 
-Run `npm test`, `npm run test:security`, and `npm run test:control-plane`, then `npm start`.
+Run `npm test`, `npm run test:security`, `npm run test:control-plane`, and `npm run test:plugin-gateway`, then `npm start`.
 
 See `docs/ARCHITECTURE.md`, `docs/DATA-FLOW.md`, `docs/SECURITY.md`, `docs/PLUGIN-SDK.md`, `docs/MODEL-SUPPORT.md`, and `docs/OPERATIONS.md`.

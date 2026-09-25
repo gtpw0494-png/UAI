@@ -20,6 +20,14 @@ v0.43 audit records form a SHA-256 hash chain. Existing legacy audit lines are n
 
 The HTTP surface exposes `GET /api/audit/verify`.
 
+## Plugin gateway controls
+
+v0.44 routes HTTP plugin execution through a single governed gateway. Before execution it validates the declared operation and input schema, checks passed URL destinations against the manifest allowlist, verifies required runtime capability evidence, evaluates policy, checks exact approval binding when required, optionally consumes a bounded autonomy lease, claims transactional idempotency, and resolves only explicitly allowed secret names.
+
+Sandbox children receive a minimal environment plus only scoped secret values. The host enforces timeout, cancellation and captured-output limits and validates the JSON output schema before returning it. Exact injected secret values are redacted from returned results/stdout/stderr.
+
+Filesystem, network, CPU and memory **hard isolation** remain the responsibility of the configured external sandbox runtime. UAI passes the declared restrictions but does not claim that the Node process itself is a kernel firewall/container boundary.
+
 ## Replay protection
 
 Plugin execution supports transactional idempotency:
@@ -41,9 +49,9 @@ Authoritative CI scans this boundary.
 ## Known security work still ahead
 
 - policy-as-data and declarative transition rules;
-- full capability checks before every adapter invocation;
-- hardened OS-level sandbox profiles;
-- secret broker with narrowly scoped injection;
+- full capability checks before every non-plugin external adapter invocation;
+- verified hardened OS-level sandbox profiles for plugin filesystem/network/CPU/memory confinement;
+- encrypted-at-rest secret storage and rotation beyond the scoped environment-variable broker;
 - encrypted-at-rest options;
 - systematic dependency/secret scanning;
 - stronger identity/session layer for multi-user deployments.

@@ -36,11 +36,12 @@ import { PluginExecutor } from "./src/plugin-executor.js";
 import { LlamaCppRuntime } from "./src/model-runtime-adapter.js";
 import { Observability } from "./src/observability.js";
 import { IdempotencyStore } from "./src/idempotency-store.js";
+import { PluginGateway } from "./src/plugin-gateway.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
 const APP_VERSION = packageMeta.version || "UNKNOWN";
-const stateDir = path.join(__dirname, "state");
+const stateDir = process.env.IUV_STATE_DIR ? path.resolve(process.env.IUV_STATE_DIR) : path.join(__dirname, "state");
 const store = new KnowledgeStore(path.join(__dirname, "data"));
 const audit = new AuditLog(stateDir);
 const workspace = new WorkspaceManager(__dirname, stateDir, audit);
@@ -73,7 +74,9 @@ const runtimeServices = new RuntimeServices();
 const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});},availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
+const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
+const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
 const PORT = Number(process.env.PORT || 8787);
 
 function send(res,status,data,type="application/json"){res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(type==="application/json"?JSON.stringify(data,null,2):data);}
@@ -81,14 +84,28 @@ function readBody(req){return new Promise((resolve,reject)=>{let d="";req.on("da
 
 const server=http.createServer(async(req,res)=>{try{
   const url=new URL(req.url,`http://${req.headers.host}`);
-  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},auditIntegrity:audit.verify()});}
+  if(req.method==="GET"&&url.pathname==="/api/status"){const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const services=runtimeServices.status();const storage=await storageDb.status();const capabilities=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:services,sourceRegistry});const availability=availabilityLedger.record(capabilities);return send(res,200,{name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",doctrine:{laws:THREE_LAWS,governance:GOVERNANCE},sourceResearch:{count:sourceRegistry.length,policy:"Core research capabilities use governed public/open source references; proprietary model internals are never assumed."},capabilities,capabilitySummary:{connected:capabilities.filter(x=>x.availability==="CONNECTED").length,total:capabilities.length,configured:capabilities.filter(x=>x.availability==="CONFIGURED").length},availabilityEvidence:availability,taskSummary:{persisted:taskStore.list({limit:10000}).length},actionEnvelopeSummary:{persisted:actionEnvelopes.list(10000).length},optionalExternalAdapters:providerHub.list(),runtimeServices:services,langgraph:lg,storageDatabase:storage,languageData:{definitions:storage.counts?.definitions||0,dialogueMessages:storage.counts?.dialogue_messages||0,sources:storage.counts?.sources||0},knowledgeCount:store.list().length,auditCount:audit.list(10000).length,agentCount:agents.list().length,pluginCount:control.plugins.list().length,accountCount:control.accounts.list().length,subscriptionCount:control.subscriptions.list().length,neuralDependencies:deps,forgelm:model,releaseIntegrity:verifyRelease(__dirname),modelLab:modelLab.status(),governanceDatabase:taskStore.db.status(),modelRegistry:modelRegistry.status(),pluginRegistry:{count:pluginRegistry.list().length},pluginGateway:{version:"0.44",sandboxConfigured:pluginGateway.sandboxRunner.configured()},auditIntegrity:audit.verify()});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/model-runtime/llamacpp")return send(res,200,await llamaRuntime.status());
   if(req.method==="GET"&&url.pathname==="/api/observability")return send(res,200,observability.summary());
   if(req.method==="GET"&&url.pathname==="/api/plugins-v1")return send(res,200,{state:"SUCCESS",plugins:pluginRegistry.list()});
   if(req.method==="POST"&&url.pathname==="/api/plugins-v1/register"){const b=await readBody(req);return send(res,200,pluginRegistry.register(b.manifest||b));}
-  if(req.method==="POST"&&url.pathname==="/api/plugins-v1/execute"){const b=await readBody(req);return send(res,200,await pluginExecutor.execute(String(b.pluginId||''),b.input||{},b.approvalId||null));}
+  if(req.method==="POST"&&url.pathname==="/api/plugins-v1/execute"){
+    const b=await readBody(req);
+    const controller=new AbortController();
+    req.once("aborted",()=>controller.abort());
+    res.once("close",()=>{if(!res.writableEnded)controller.abort();});
+    const idempotencyKey=String(req.headers["idempotency-key"]||b.idempotencyKey||"").trim()||null;
+    return send(res,200,await pluginGateway.execute(String(b.pluginId||""),String(b.operation||"execute"),b.input||{},{
+      approvalId:b.approvalId||null,
+      autonomyLeaseId:b.autonomyLeaseId||b.leaseId||null,
+      idempotencyKey,
+      actionEnvelopeId:b.actionEnvelopeId||null,
+      taskId:b.taskId||null,
+      signal:controller.signal
+    }));
+  }
   if(req.method==="GET"&&url.pathname==="/api/data-lifecycle")return send(res,200,await storageDb.lifecycleStatus());
   if(req.method==="GET"&&url.pathname==="/api/storage/status")return send(res,200,await storageDb.status());
   if(req.method==="GET"&&url.pathname==="/api/definitions"){return send(res,200,await storageDb.define(url.searchParams.get("term")||"",Number(url.searchParams.get("limit")||8)));}
