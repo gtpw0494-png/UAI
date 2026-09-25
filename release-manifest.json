@@ -544,8 +544,8 @@
     },
     {
       "path": "src/plugin-gateway.js",
-      "sha256": "1f37162a907668fa2033b6e4164ea08cc6d72f30f430dcd049f51012a709bfd4",
-      "bytes": 8531
+      "sha256": "85e4ac1db1668feac2195a43f9bb50237dbf72de18e6d17417fdb6abd8501b74",
+      "bytes": 9255
     },
     {
       "path": "src/plugin-registry.js",
