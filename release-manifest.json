@@ -619,8 +619,8 @@
     },
     {
       "path": "src/cloud-knowledge-store.js",
-      "sha256": "5ea286b6b81145a0cabb38edead76d951be859ef8117c82f3886943143f00ea5",
-      "bytes": 1797
+      "sha256": "7d5a3d6586848412531de461fdb4fcb4583ea9cc876d5d1ec82991b18c1cd49e",
+      "bytes": 3544
     },
     {
       "path": "src/code/repository-intelligence.js",
@@ -1266,6 +1266,11 @@
       "path": "src/workspace.js",
       "sha256": "3cab65ed340059d30d7eea23e596b9a811f56a36e5ce222fc15724cf2cb21ca3",
       "bytes": 4259
+    },
+    {
+      "path": "storage/cloud/uai_verified_knowledge.sql",
+      "sha256": "043aed972e1d19d364a3ce729e95246c985ac6ba11eb8a9d9db99c818c0ab365",
+      "bytes": 1204
     },
     {
       "path": "storage/control_plane.py",
