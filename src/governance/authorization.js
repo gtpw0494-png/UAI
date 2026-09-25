@@ -28,9 +28,9 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/knowledge"))capability=stateChanging?"knowledge.write":"knowledge.read";
   else if(p.startsWith("/api/accounts")||p.startsWith("/api/subscriptions")||p.startsWith("/api/billing"))capability="accounts.manage";
 
-  if(/\/purge$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|\/plugins-v1\/register$/.test(p))risk="high";
+  if(/\/purge$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$/.test(p))risk="high";
   if(/\/fabrication\/job$/.test(p))risk="critical";
-  if(p.startsWith("/api/develop")||p.startsWith("/api/selfdev")||p.startsWith("/api/source/"))mutatesSource=true;
+  if(["/api/develop/apply","/api/selfdev/promote","/api/source/rollback"].includes(p))mutatesSource=true;
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.endsWith("/execute"))external=true;
   if(p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/provider/"))requiresCredential=true;
   if(["/api/plugins-v1/execute","/api/develop/apply","/api/selfdev/promote","/api/fabrication/job"].includes(p))delegateApproval=true;
