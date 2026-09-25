@@ -56,6 +56,14 @@ import { ProvenanceGraph } from "./src/provenance/graph.js";
 import { PolicySimulator } from "./src/governance/policy-simulator.js";
 import { ModelArtifactVerifier } from "./src/models/artifact-verifier.js";
 import { EvaluationStore } from "./src/evaluation/evaluation-store.js";
+import { VerifiedKnowledgeStore } from "./src/verified-knowledge-store.js";
+import { CloudKnowledgeStore } from "./src/cloud-knowledge-store.js";
+import { HybridKnowledgeStore } from "./src/hybrid-knowledge-store.js";
+import { KnowledgeTraining } from "./src/knowledge-training.js";
+import { KnowledgeTrainingJob } from "./src/knowledge-training-job.js";
+import { KnowledgeJobStore } from "./src/knowledge-job-store.js";
+import { ForgeLMCandidatePromotion } from "./src/forgelm-candidate-promotion.js";
+import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -111,6 +119,14 @@ const provenanceGraph = new ProvenanceGraph({stateRoot:stateDir,audit,memoryStor
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
 const evaluationStore = new EvaluationStore({stateRoot:stateDir,audit});
+const verifiedKnowledgeLocal = new VerifiedKnowledgeStore({stateRoot:stateDir});
+const verifiedKnowledgeCloud = new CloudKnowledgeStore();
+const verifiedKnowledgeStore = new HybridKnowledgeStore({local:verifiedKnowledgeLocal,cloud:verifiedKnowledgeCloud,audit});
+const knowledgeTraining = new KnowledgeTraining({store:verifiedKnowledgeStore});
+const knowledgeTrainingJob = new KnowledgeTrainingJob({root:__dirname,stateRoot:stateDir});
+const knowledgeJobStore = new KnowledgeJobStore({stateRoot:stateDir});
+const forgeLMCandidatePromotion = new ForgeLMCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
+const knowledgeLearningPipeline = new KnowledgeLearningPipeline({trainingJob:knowledgeTrainingJob,promotion:forgeLMCandidatePromotion,jobStore:knowledgeJobStore,audit});
 const agentScheduler = new BoundedWorkerScheduler({
   stateRoot:stateDir,
   audit,
@@ -240,6 +256,37 @@ const server=http.createServer(async(req,res)=>{try{
     const b=await readBody(req);
     const result=await localOrchestrator.structured(b.payload || b.text || b.prompt || b.message || "{}", b.context || "");
     return send(res,200,result);
+  }
+
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/store/status"){
+    return send(res,200,{state:"SUCCESS",...verifiedKnowledgeStore.snapshot()});
+  }
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/jobs"){
+    return send(res,200,{state:"SUCCESS",jobs:knowledgeJobStore.list(Number(url.searchParams.get("limit")||50))});
+  }
+  if(req.method==="GET"&&url.pathname==="/api/knowledge/learning/status"){
+    return send(res,200,knowledgeLearningPipeline.status());
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/learning/train"){
+    const b=await readBody(req);
+    const batch=knowledgeTraining.buildBatch(Number(b.limit||100));
+    const out=await knowledgeLearningPipeline.trainCandidate(batch,{steps:Number(b.steps||20),preset:String(b.preset||"termux-tiny")});
+    return send(res,out.state==="SUCCESS"?200:409,out);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/learning/evaluate"){
+    const b=await readBody(req);
+    const out=await knowledgeLearningPipeline.evaluateCandidate(String(b.jobId||""),{maxRelativeRegression:Number(b.maxRelativeRegression??0.02)});
+    return send(res,out.state==="SUCCESS"?200:409,out);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/model/promote"){
+    const b=await readBody(req);
+    const out=knowledgeLearningPipeline.promoteCandidate(String(b.jobId||""),{approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});
+    return send(res,out.state==="SUCCESS"?200:409,out);
+  }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/model/rollback"){
+    const b=await readBody(req);
+    const out=knowledgeLearningPipeline.rollbackPromotion(String(b.jobId||""),{reason:String(b.reason||"owner-requested rollback")});
+    return send(res,out.state==="SUCCESS"?200:409,out);
   }
 
   if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const local=await localOrchestrator.promotionSnapshot();return send(res,200,{state:"SUCCESS",auth:identity.status(auth),deps,model,langgraph:lg,local,requestId,correlationId});}
