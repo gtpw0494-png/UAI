@@ -84,7 +84,7 @@ export class PluginGateway{
     const secretResolution=this.secretBroker.resolve(plugin.permissions?.secrets||[],operation.secrets||[]);
     if(secretResolution.state!=="SUCCESS")return secretResolution;
 
-    const required=[...new Set([...(plugin.capabilities||[]),...(operation.capabilities||[])])];
+    const required=[...new Set([...(plugin.requiresCapabilities||[]),...(operation.requiresCapabilities||[])])];
     const capability=await this._capabilities(required);
     if(capability.state!=="SUCCESS")return capability;
 
