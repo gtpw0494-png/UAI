@@ -34,18 +34,18 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "33aa4345b751e495fe5b5bb34bc211ffe20fd8a2c6d3bfeb66beb6bc18b1275a",
-      "bytes": 15971
+      "sha256": "71ab68911a249ccb6406b5b0a31f3162680b390b9e579da52eb150a0b45535b1",
+      "bytes": 16217
     },
     {
       "path": "README.md",
-      "sha256": "64f16a23979b174e34ad6089c0237b35f40cfbbf6be5e1fcf38035527dac9c3c",
-      "bytes": 6188
+      "sha256": "dc780a827fcdcf3ee1d571d8801f0e5b99cdd3c1175c84bad959431dd23ef99b",
+      "bytes": 6810
     },
     {
       "path": "RELEASES.md",
-      "sha256": "4c5796ad26d54da64e53c8d31ed3ced090c8f1a15974a21b480056a5b65d05d5",
-      "bytes": 14484
+      "sha256": "6ea681bc44f0ec8d4ed397ab48256f97ab8ffcee81eb8e7c783a573a8c4c03af",
+      "bytes": 14676
     },
     {
       "path": "TERMUX-RUN.md",
