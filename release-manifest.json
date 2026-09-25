@@ -1413,6 +1413,11 @@
       "bytes": 1843
     },
     {
+      "path": "verification/knowledge-production-http-v055.test.mjs",
+      "sha256": "ef063d9ab9f1b875b0f67ac24b66f70da3c12b2729b2a86900211e367e99b2f8",
+      "bytes": 4431
+    },
+    {
       "path": "verification/knowledge-research-scheduler.test.mjs",
       "sha256": "13b3c90583ab3c5aede45742cca74119816ca4be6f4e336dd1961c636c497a4c",
       "bytes": 1728
