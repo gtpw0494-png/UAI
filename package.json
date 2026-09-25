@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.47.0",
+  "version": "0.48.2",
   "private": true,
-  "description": "Local-first governed AI with first-run owner enrollment, email/password authentication, authenticated sessions, CSRF, route authorization and approval-bound execution.",
+  "description": "Local-first governed AI with credential-backed owner sessions, secured HTTP authorization, native local conversation routing and explicit capability truth.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -47,7 +47,8 @@
     "test:document-http": "node verification/document-http.test.mjs",
     "documents:status": "python3 storage/documents.py status",
     "documents:reindex": "python3 storage/documents.py reindex",
-    "test:api-security": "node verification/api-security-v046.test.mjs"
+    "test:api-security": "node verification/api-security-v046.test.mjs",
+    "test:conversation-capability": "node verification/conversation-capability-v048.test.mjs"
   },
   "engines": {
     "node": ">=20"

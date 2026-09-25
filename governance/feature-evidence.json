@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.45.0",
+  "generated_for": "0.48.2",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -595,6 +595,80 @@
         "verification/document-data-plane.test.py"
       ],
       "evidence_note": "The document contract is ready for modality metadata, but OCR/page/bounding-box, audio timestamps, video frame lineage and visual embeddings are not yet implemented."
+    },
+    {
+      "id": "local-self-governance-kernel",
+      "introduced": "0.46.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/governance/kernel.js",
+        "src/governance/authorization.js",
+        "src/policy-engine.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/api-security-v046.test.mjs"
+      ],
+      "evidence_note": "Verified by the current live API security suite: local governance composition, request/correlation identity, per-route authorization metadata, policy evaluation, exact approval binding and audited actor identity all execute successfully."
+    },
+    {
+      "id": "credential-backed-owner-session-auth",
+      "introduced": "0.47.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/governance/identity.js",
+        "src/governance/request-schemas.js",
+        "src/governance/authorization.js",
+        "server.js",
+        "public/app.js",
+        "public/index.html"
+      ],
+      "tests": [
+        "verification/api-security-v046.test.mjs",
+        "verification/plugin-http.test.mjs",
+        "verification/document-http.test.mjs"
+      ],
+      "evidence_note": "Verified by direct identity and live HTTP suites: first-run email/password enrollment, scrypt verification, server-side session records, HttpOnly session cookies, CSRF enforcement, logout/revocation, and authenticated plugin/document/OneChat flows all execute successfully."
+    },
+    {
+      "id": "native-local-conversation-engine",
+      "introduced": "0.48.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/conversation-engine.js",
+        "src/onechat.js",
+        "src/response-composer.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/conversation-capability-v048.test.mjs"
+      ],
+      "evidence_note": "Verified by the v0.48 conversation suite: bounded per-chat continuity, connected llama.cpp preference, ForgeLM fallback, truthful no-runtime UNAVAILABLE behavior and OneChat native-conversation integration all pass."
+    },
+    {
+      "id": "explicit-capability-truth-contract",
+      "introduced": "0.48.0",
+      "status": "VERIFIED",
+      "implementation": [
+        "src/capability-truth.js"
+      ],
+      "tests": [
+        "verification/conversation-capability-v048.test.mjs"
+      ],
+      "evidence_note": "Verified by the v0.48 capability suite across CONNECTED, CONFIGURED, REGISTERED_SOURCE, DEGRADED, UNAVAILABLE, BLOCKED and EXPIRED states plus ranking behavior."
+    },
+    {
+      "id": "trusted-first-run-ownership-proof",
+      "introduced": "0.47.0",
+      "status": "PARTIAL",
+      "implementation": [
+        "src/governance/identity.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/api-security-v046.test.mjs"
+      ],
+      "evidence_note": "First-run enrollment closes after the first owner is created and is localhost-oriented, but no independent bootstrap-file/device-key ownership proof is currently required before first enrollment. This remains a hardening gap rather than being overstated."
     }
   ]
 }

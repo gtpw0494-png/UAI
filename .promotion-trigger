@@ -1,5 +1,5 @@
-UAI v0.45.0 finalized checkpoint
-source-manifest-head=806ae1adb400d9e99521289ffd1099cbe79bdd91
-purpose=metadata-truth-finalization
+UAI v0.48.2 promotion candidate
+source-manifest-head=34b2350373c4a7b78b437890a0b1c0dfcedb6b78
 requirements=authoritative-ci+feature-evidence-gate
 main-advance=only-after-all-required-jobs-success
+excluded=v0.48.1 evidence-envelope/model-router until integrated tests
