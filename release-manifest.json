@@ -659,8 +659,8 @@
     },
     {
       "path": "src/light/light-coordinator.js",
-      "sha256": "050bce2329746fa66ba0fab071d85ef84fccde6d3ac75130f76209beb665c37b",
-      "bytes": 8364
+      "sha256": "d8489595ff8f98e65815a095a3039c84b553bf85e8145aca85f83bf435b6e15b",
+      "bytes": 10488
     },
     {
       "path": "src/light/lint-agent.js",
