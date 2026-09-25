@@ -719,8 +719,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "57ca849bb013ea6f777dbbc193a9d66b5ed7c72eeae1e1ee4216f09951447dc8",
-      "bytes": 29046
+      "sha256": "884b2f729da2a875538365838d286832ecd1363a1fa06816bd0909333376166d",
+      "bytes": 29056
     },
     {
       "path": "verification/api-security-v046.test.mjs",
