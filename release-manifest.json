@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.46.0",
+  "version": "0.47.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -214,18 +214,18 @@
     },
     {
       "path": "package.json",
-      "sha256": "f66be5f351c8e790725fd90a542295133edf2c5bc8e6ecd9df5fc479bf4859fb",
-      "bytes": 3111
+      "sha256": "d64d947176d8301cbc9f24479f59397bbc5b1184604f3eb77a6fefba7962381f",
+      "bytes": 3120
     },
     {
       "path": "public/app.js",
-      "sha256": "e1d7fe596398d391a314d8c0d7b0e4297cdfb9cb3eee7fdcf34d1ea6e8162e99",
-      "bytes": 6030
+      "sha256": "c7535938ed8ca71b74522cc738939579dd1c9429dc3d53d7f3d9ebc1ab84f5a7",
+      "bytes": 6022
     },
     {
       "path": "public/index.html",
-      "sha256": "e6737a2ad6ffe7cd0cebf5ef507653f279d9e37c19374356f63ee2bb7cda73e5",
-      "bytes": 1960
+      "sha256": "1a0a270b9f271ca71b855cca377f8180cc5e8dc7b192d0c0870ef649da6ae738",
+      "bytes": 2090
     },
     {
       "path": "public/styles.css",
@@ -419,8 +419,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "6317ee9f2c47a113710f5cc44908992354db64bd66b4fae1fe5d2a1dfb23e7e4",
-      "bytes": 28643
+      "sha256": "04ba87c2e33b5b0de8c03779f6aa80863a0fe636fab71430b7db6f4a22052244",
+      "bytes": 29516
     },
     {
       "path": "src/action-envelope.js",
@@ -463,6 +463,11 @@
       "bytes": 6154
     },
     {
+      "path": "src/capability-truth.js",
+      "sha256": "c6d41c62ea7757842343476a4476e75b717d11a868bcf927988937633ec796c9",
+      "bytes": 1196
+    },
+    {
       "path": "src/content-security.js",
       "sha256": "5a20cbd1864b9c0acac86149825238e13132890e4dd392c11e4951d4f1023abf",
       "bytes": 1630
@@ -476,6 +481,11 @@
       "path": "src/control-center.js",
       "sha256": "73cc456e4b95b3a125fb0031e42fdd0f7f2c9061cb12529930128cfe870b5ab6",
       "bytes": 3815
+    },
+    {
+      "path": "src/conversation-engine.js",
+      "sha256": "bf3ed5910f97985ac760ea558121f1b75b44e95f44c655dc30941ee12c27f6d9",
+      "bytes": 3535
     },
     {
       "path": "src/dependency-status.js",
@@ -504,8 +514,8 @@
     },
     {
       "path": "src/governance/identity.js",
-      "sha256": "6485b0472d251062885568e2c039bbf505760f811ff4353ce6fbed629045457f",
-      "bytes": 6032
+      "sha256": "cdf6f32eef0118128bd1c242d098cdf32216a06b0d7163cf297392b682d43cd7",
+      "bytes": 5446
     },
     {
       "path": "src/governance/kernel.js",
@@ -514,8 +524,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "f309340126b4217dec068fa0d72a7fa0cd943be7ea6568b8da88de30a007899f",
-      "bytes": 4813
+      "sha256": "4f2c9940e52d516ffbe4e70e15b6bd29309d802274e1403c1488bcbb39a9f182",
+      "bytes": 5090
     },
     {
       "path": "src/governance-db.js",
@@ -569,8 +579,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "19e822eca87e2dbe933fd0b355848603b5959908db679e0b6e7b8ce982b0166a",
-      "bytes": 21310
+      "sha256": "3e2316e8e9a2c98b8b07804f45a4fb427bb61de96528391c8a8c19bf9fd49b19",
+      "bytes": 21485
     },
     {
       "path": "src/plugin-executor.js",
@@ -609,8 +619,8 @@
     },
     {
       "path": "src/response-composer.js",
-      "sha256": "77826af6d1c6b2e15fa83e486469ec54b55577474d4933801921d221f2da55e9",
-      "bytes": 5548
+      "sha256": "201e0bc71e039a75c43be4774ed544024b2d667879c85d9d587d11fa67027fb4",
+      "bytes": 5725
     },
     {
       "path": "src/runtime-services.js",
@@ -629,8 +639,8 @@
     },
     {
       "path": "src/self-development.js",
-      "sha256": "343768d50327b6057fabddae21ab8c39992b67efb7e1e994baec640fe2dff8e4",
-      "bytes": 4147
+      "sha256": "0b9f9e3f5eb0c5010d3640bdc8971e9c4cc9e3c608745842dc2bf1cee922e58c",
+      "bytes": 4288
     },
     {
       "path": "src/source-capabilities.js",

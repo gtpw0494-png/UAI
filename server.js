@@ -42,6 +42,7 @@ import { DocumentStore } from "./src/document-store.js";
 import { LocalIdentity, sessionCookies, clearSessionCookies } from "./src/governance/identity.js";
 import { RequestAuthorizer } from "./src/governance/authorization.js";
 import { GovernanceKernel } from "./src/governance/kernel.js";
+import { ConversationEngine } from "./src/conversation-engine.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -74,6 +75,7 @@ const pluginExecutor = new PluginExecutor({registry:pluginRegistry,approvalStore
 const tasks = new TaskEngine({store,knowledge,providers:providerHub,research,development,explorative,agents,audit,taskStore,actionEnvelopes,policyEngine,approvalStore});
 const control = new ControlCenter(stateDir, audit);
 const forgelm = new ForgeLMBridge();
+const conversation = new ConversationEngine({llamaRuntime,forgelm,store,audit});
 const learning = new LearningFabric({store,audit,root:__dirname});
 const selfdev = new SelfDevelopmentEngine({root:__dirname,stateRoot:stateDir,store,workspace,audit});
 const modelLab = new ModelLab({learning,audit,stateRoot:stateDir});
@@ -85,7 +87,7 @@ const storageDb = new StorageDatabase();
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,documentStore,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,documentStore,runtimeServices,langgraph,storageDb,policyEngine,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>{const deps=dependencyStatus(),model=await forgelm.status(),lg=await langgraph.status();const caps=buildCapabilityRegistry(providerHub,{deps,model,langgraph:lg,runtimeServices:runtimeServices.status(),sourceRegistry});return availabilityLedger.record(caps);}});
 const PORT = Number(process.env.PORT || 8787);
 
 const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
@@ -142,12 +144,20 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/auth/status"){
     const auth=identity.authenticateRequest(req);return send(res,200,{...identity.status(auth),governance:governanceKernel.status(auth),requestId,correlationId});
   }
+  if(req.method==="POST"&&url.pathname==="/api/auth/enroll"){
+    const b=await readBody(req),loginRate=allowLoginAttempt(req);
+    if(!loginRate.allowed)return send(res,429,{state:"BLOCKED",message:"Too many owner enrollment attempts.",rate:loginRate,requestId,correlationId});
+    const out=identity.enroll(b.email,b.password);
+    if(out.state!=="SUCCESS")return send(res,out.state==="DENIED"?409:400,{...out,requestId,correlationId});
+    const login=identity.login(b.email,b.password);res.setHeader("set-cookie",sessionCookies(login,{secure:Boolean(req.socket.encrypted)}));
+    const {sessionToken,...safe}=login;return send(res,201,{...safe,enrollment:"COMPLETE",requestId,correlationId});
+  }
   if(req.method==="POST"&&url.pathname==="/api/auth/login"){
     const b=await readBody(req),loginRate=allowLoginAttempt(req);
     if(!loginRate.allowed)return send(res,429,{state:"BLOCKED",message:"Too many owner login attempts.",rate:loginRate,requestId,correlationId});
     const loginGate=requestAuthorizer.authorize({req,url,body:b,requestId,correlationId});
     if(!loginGate.allowed)return send(res,loginGate.httpStatus||400,{state:loginGate.state,message:loginGate.message,validation:loginGate.validation||null,requestId,correlationId});
-    const login=identity.login(b.token);
+    const login=identity.login(b.email,b.password);
     if(login.state!=="SUCCESS"){audit.append({type:"identity.login.denied",requestId,correlationId,remote:String(req.socket.remoteAddress||"")});return send(res,401,{state:login.state,message:login.message,requestId,correlationId});}
     res.setHeader("set-cookie",sessionCookies(login,{secure:Boolean(req.socket.encrypted)}));
     const {sessionToken,...safe}=login;return send(res,200,{...safe,requestId,correlationId});

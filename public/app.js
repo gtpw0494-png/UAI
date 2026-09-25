@@ -18,13 +18,10 @@ function bubble(kind,title,html,meta=""){const el=document.createElement("articl
 async function refreshAuth(){
   try{
     const s=await api("/api/auth/status");authState=s;
-    $("#authTitle").textContent=s.authenticated?"Local owner authenticated":"Local owner session locked";
+    $("#authTitle").textContent=s.authenticated?"Owner authenticated":s.enrollmentRequired?"Create Owner Account":"Owner sign in";
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
-    $("#authHelp").innerHTML=s.authenticated
-      ?`Authenticated as <code>${esc(s.identity?.id||"owner-local")}</code> using ${esc(s.identity?.authMode||"session")}. State-changing API calls are locally authorized and audited.`
-      :s.bootstrapTokenPath
-        ?`Unlock once with the token stored locally at <code>${esc(s.bootstrapTokenPath)}</code>. In Termux: <code>cat "${esc(s.bootstrapTokenPath)}"</code>. The token is not saved in browser storage.`
-        :"Enter the configured <code>IUV_OWNER_TOKEN</code> to create a local session.";
+    $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
+    $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
   }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
@@ -37,8 +34,8 @@ async function refresh(){
 }
 
 $("#authForm").addEventListener("submit",async e=>{
-  e.preventDefault();const input=$("#ownerToken"),token=input.value.trim();if(!token)return;
-  try{await post("/api/auth/login",{token});input.value="";await refreshAuth();await refresh();bubble("system","Security","<p>Local owner session unlocked. The credential remains local and is not stored in browser storage.</p>");}
+  e.preventDefault();const email=$("#ownerEmail").value.trim(),password=$("#ownerPassword").value;if(!email||!password)return;
+  try{const endpoint=authState.enrollmentRequired?"/api/auth/enroll":"/api/auth/login";await post(endpoint,{email,password});$("#ownerPassword").value="";await refreshAuth();await refresh();bubble("system","Security","<p>Owner session authenticated. The password is not stored in browser storage.</p>");}
   catch(err){bubble("error","Authentication",`<p>${esc(err.message)}</p>`);}
 });
 $("#logoutBtn").addEventListener("click",async()=>{
