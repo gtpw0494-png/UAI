@@ -563,6 +563,28 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/video/describe"){const b=await readBody(req);const roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"video-inputs"),path.resolve(stateDir,"media-input")],target=path.resolve(String(b.video||""));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:"Video input path is outside approved local roots."});const out=await forgelm.videoDescribe(target,String(b.prompt||"Describe the video using only the temporal and visual evidence."),Number(b.maxTokens||96));return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="GET"&&url.pathname==="/api/media/status")return send(res,200,multimodalPipeline.status());
   if(req.method==="GET"&&url.pathname==="/api/media/list")return send(res,200,{state:"SUCCESS",artifacts:multimodalPipeline.list(Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||100))))});
+  if(req.method==="POST"&&url.pathname==="/api/media/upload"){
+    const b=await readBody(req),uploadId=String(b.uploadId||"");
+    if(!/^[A-Za-z0-9_-]{8,128}$/.test(uploadId))return send(res,400,{state:"BLOCKED",message:"Invalid uploadId."});
+    const index=Number(b.index),total=Number(b.total),name=String(b.name||"attachment.bin").replace(/[^A-Za-z0-9._-]/g,"_").slice(-180);
+    if(!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||total>256||index>=total)return send(res,400,{state:"BLOCKED",message:"Invalid upload chunk coordinates."});
+    const raw=Buffer.from(String(b.data||""),"base64");
+    if(!raw.length||raw.length>1_600_000)return send(res,413,{state:"BLOCKED",message:"Upload chunk must be between 1 byte and 1.6 MB."});
+    const tempRoot=path.join(stateDir,"upload-temp"),mediaRoot=path.join(stateDir,"media-input");fs.mkdirSync(tempRoot,{recursive:true});fs.mkdirSync(mediaRoot,{recursive:true});
+    const part=path.join(tempRoot,uploadId+".part"),metaPath=path.join(tempRoot,uploadId+".json");
+    let meta={uploadId,name,total,next:0,bytes:0,mime:String(b.mime||"application/octet-stream"),sourceId:b.sourceId||null};
+    if(index===0){try{fs.unlinkSync(part)}catch{};try{fs.unlinkSync(metaPath)}catch{};}
+    else{if(!fs.existsSync(metaPath))return send(res,409,{state:"BLOCKED",message:"Upload session is missing; restart from chunk 0."});meta=JSON.parse(fs.readFileSync(metaPath,"utf8"));}
+    if(index!==Number(meta.next)||total!==Number(meta.total))return send(res,409,{state:"BLOCKED",message:"Upload chunk is out of sequence.",expectedIndex:meta.next});
+    fs.appendFileSync(part,raw);meta.next=index+1;meta.bytes=Number(meta.bytes||0)+raw.length;
+    if(meta.bytes>400_000_000){try{fs.unlinkSync(part)}catch{};try{fs.unlinkSync(metaPath)}catch{};return send(res,413,{state:"BLOCKED",message:"Upload exceeds 400 MB media limit."});}
+    fs.writeFileSync(metaPath,JSON.stringify(meta),"utf8");
+    if(meta.next<total)return send(res,200,{state:"PARTIAL",uploadId,index,nextIndex:meta.next,total,bytes:meta.bytes});
+    const digest=crypto.createHash("sha256").update(fs.readFileSync(part)).digest("hex"),finalName=digest.slice(0,16)+"-"+name,finalPath=path.join(mediaRoot,finalName);
+    fs.renameSync(part,finalPath);try{fs.unlinkSync(metaPath)}catch{}
+    const registered=multimodalPipeline.register({path:finalPath,sourceId:meta.sourceId||("upload:"+name),ownerId:req.uaiSecurity.auth.identityId,metadata:{originalName:name,mime:meta.mime,uploadId,sha256:digest}});
+    return send(res,registered.state==="SUCCESS"?200:409,{...registered,upload:{uploadId,name,path:finalPath,sha256:digest,bytes:meta.bytes}});
+  }
   if(req.method==="POST"&&url.pathname==="/api/media/register"){const b=await readBody(req);const out=multimodalPipeline.register({path:String(b.path||""),sourceId:b.sourceId||null,ownerId:req.uaiSecurity.auth.identityId,metadata:b.metadata||{}});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/media/extract"){const b=await readBody(req);const out=multimodalPipeline.extract(String(b.id||""));return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="GET"&&url.pathname==="/api/multimodal/status")return send(res,200,await forgelm.multimodalStatus());
