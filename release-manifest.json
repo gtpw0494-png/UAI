@@ -164,8 +164,8 @@
     },
     {
       "path": "model/capabilities.py",
-      "sha256": "ed00ef3eb4072bf54260bd978bf9eff98058e567f4267dd5c0d938b78f032647",
-      "bytes": 6866
+      "sha256": "fcb6b1a7f4ebcec6409512a412272e44e6c9279c86f789957989c7030dc9b970",
+      "bytes": 7742
     },
     {
       "path": "model/cli.py",
