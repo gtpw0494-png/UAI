@@ -29,6 +29,14 @@ export class MultimodalPipeline{
     if(r.state==="SUCCESS")this.audit?.append({type:"media.registered",mediaId:id,modality,bytes:data.length});return r.state==="SUCCESS"?{state:"SUCCESS",artifact:rec,provenanceNodeId}:r;
   }
   get(id){return this.db.get("media-artifact",id).record||null;}
+  contentDescriptor(id,{ownerId=null}={}){
+    const a=this.get(id);if(!a)return {state:"UNAVAILABLE",message:"Media artifact not found."};
+    if(a.ownerId&&ownerId&&a.ownerId!==ownerId)return {state:"DENIED",message:"Media artifact is owned by another identity."};
+    const target=this._resolve(a.path);if(!target)return {state:"DENIED",message:"Registered media path is outside approved local roots."};
+    if(!fs.existsSync(target)||!fs.statSync(target).isFile())return {state:"UNAVAILABLE",message:"Registered media file is unavailable."};
+    const [modality,mediaType]=mimeFor(target),stat=fs.statSync(target);
+    return {state:"SUCCESS",id:a.id,file:target,modality,mediaType:a.mediaType||mediaType,bytes:stat.size,label:a.metadata?.originalName||path.basename(target),contentHash:a.contentHash||null,sourceId:a.sourceId||null};
+  }
   list(limit=100){return this.db.list("media-artifact",limit).records||[];}
   _save(rec,event){const cur=this.db.get("media-artifact",rec.id);if(!cur.record)return {state:"FAILURE",message:"Media artifact not found."};const r=this.db.cas("media-artifact",rec.id,cur.version,rec,{type:event});return r.state==="SUCCESS"?rec:r;}
   _deriveProvenance(artifact,derived){
