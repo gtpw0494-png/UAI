@@ -1,6 +1,10 @@
-# IntraultUniversalion v0.64.0
+# IntraultUniversalion v0.65.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.65 single-chat attachment UI
+
+OneChat's existing composer now handles local attachments directly. Browser-selected files are uploaded in bounded chunks into UAI-controlled storage, content-hashed, registered with provenance, previewed with progress/status chips, and then submitted through the same OneChat conversation contract. Attachment-only turns are supported, and the design keeps the user-facing product to one chat surface.
 
 ## v0.64 OneChat multimodal attachments
 
