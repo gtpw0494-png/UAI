@@ -1,5 +1,13 @@
 # Release history
 
+## v0.63.0 — Unified ForgeMultimodal Fusion
+- Added a parameter-free local fusion assembler that combines image, audio, video, document/context and text tokens into one bounded ForgeLM prefill.
+- Added a unified native multimodal runtime and governed /api/multimodal/status + /api/multimodal/chat surface.
+- Kept each modality independently health-gated; supplying an unavailable modality fails truthfully rather than falling back to an external model.
+- Added token budgeting across modalities and local path validation before media reaches Python.
+- Added an optional trainable ForgeFusion transformer architecture, kept separate from the production assembler until a separately trained/evaluated checkpoint exists.
+- Added CPU fusion tests. No external AI model participates in the unified path.
+
 ## v0.62.0 — Native ForgeVideo Runtime
 - Added ForgeVideo, reusing ForgeVision for local frame semantics and adding temporal transformer modeling across frame sequences.
 - Added local ffmpeg-based frame extraction, video-text alignment training against ForgeLM embeddings, and held-out candidate evaluation.
