@@ -628,6 +628,11 @@
       "bytes": 1518
     },
     {
+      "path": "scripts/check-browser-syntax.mjs",
+      "sha256": "b72bf6796af540f83eee8e27b4a49306f1cc264782e1766b80d675e6f3c279c3",
+      "bytes": 615
+    },
+    {
       "path": "scripts/configure-owner.mjs",
       "sha256": "a7422971ae4f721b00282f3ce567ba98634dd580c607ddd8171cdd72d1cd7609",
       "bytes": 1131
