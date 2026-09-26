@@ -1,5 +1,14 @@
 # Release history
 
+## v0.67.0 — OneChat Conversation Management
+- Added owner-bound local conversation listing, search, switching and new-chat creation inside the same OneChat surface.
+- Added append-only rename/archive controls and sanitized JSON export.
+- Added explicit conversation deletion for local chat/control records while retaining registered media artifacts.
+- Added per-conversation turn, attachment and evidence counts.
+- Added owner-bound history reads and conversation exports.
+- Added governed request schemas and regression coverage for search, rename, archive, export and delete.
+- Repaired the stale v0.49 model-routing UI assertion without weakening its routing/evidence checks.
+
 ## v0.66.0 — Persistent Attachment-Aware OneChat History
 - Added sanitized OneChat history retrieval with persisted attachment metadata and no filesystem-path disclosure.
 - Added governed media reopening by registered media ID with owner, approved-root and file-existence checks.
