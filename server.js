@@ -71,6 +71,7 @@ import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js"
 import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
 import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
 import { KnowledgeScheduler } from "./src/knowledge-scheduler.js";
+import { MultimodalPipeline } from "./src/multimodal/pipeline.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -129,6 +130,7 @@ const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
 const memoryStore = new MemoryStore({stateRoot:stateDir,audit});
 const provenanceGraph = new ProvenanceGraph({stateRoot:stateDir,audit,memoryStore});
+const multimodalPipeline = new MultimodalPipeline({stateRoot:stateDir,audit,provenanceGraph,allowedRoots:[path.join(stateDir,"media-input"),path.join(__dirname,"model","data"),path.join(__dirname,"data")]});
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
 const evaluationStore = new EvaluationStore({stateRoot:stateDir,audit});
@@ -167,7 +169,7 @@ const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research"
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
 const PORT = Number(process.env.PORT || 8787);
 
 const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
