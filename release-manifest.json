@@ -1194,8 +1194,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "10073546373d103c2bf0fcd9302ad3e900c12a04eeea2659755eb4f738685549",
-      "bytes": 42873
+      "sha256": "a1fc0091f354b600badc216839623b65649f80c3cc2db8e3c7e5b25e28a1c526",
+      "bytes": 43051
     },
     {
       "path": "src/platform-capability-catalog.js",
