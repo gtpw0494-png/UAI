@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.56.0",
+  "generated_for": "0.57.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1073,6 +1073,24 @@
         "model/test_forgelm.py"
       ],
       "evidence_note": "Promoted ForgeLM checkpoints can produce normalized mean-pooled hidden-state embeddings and deterministic cosine reranking locally. Retrieval quality remains dependent on the trained checkpoint and is not claimed to equal frontier embedding models without benchmark evidence."
+    },
+    {
+      "id": "forgelm-native-long-context-v057",
+      "introduced": "0.57.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/forgelm.py",
+        "model/long_context.py",
+        "model/capabilities.py",
+        "model/self_sufficient.py",
+        "src/forgelm-bridge.js",
+        "src/models/router.js",
+        "model/config_presets.json"
+      ],
+      "tests": [
+        "model/test_long_context.py"
+      ],
+      "evidence_note": "ForgeLM now has native RoPE context scaling plus offline dense context memory using its own hidden-state embeddings. Sources larger than the active transformer window are chunked, ranked and assembled locally with evidence. This does not claim that the base transformer attends to the entire source simultaneously or that frontier long-context quality has been reached."
     }
   ]
 }
