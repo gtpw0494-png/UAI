@@ -1,6 +1,14 @@
-# IntraultUniversalion v0.57.0
+# IntraultUniversalion v0.58.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.58 native ForgeVision
+
+ForgeVision is the first native multimodal front-end for the independent ForgeLM stack. It converts RGB images into local visual tokens and projects those tokens into ForgeLM's hidden-state dimension.
+
+The training path is self-contained: image-caption pairs are decoded locally, ForgeLM supplies the text embedding target, and ForgeVision learns the alignment directly. No GPT, Claude, Gemini, Grok, or other external AI model is required.
+
+Capability truth remains strict: source code and a trainable architecture do not equal useful semantic vision. Until a trained and evaluated ForgeVision checkpoint is explicitly promoted, semantic image inference remains unavailable.
 
 ## v0.57 independent ForgeLM context
 
