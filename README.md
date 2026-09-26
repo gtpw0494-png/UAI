@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.69.0
+# IntraultUniversalion v0.70.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.70 true ForgeLM token streaming
+
+ForgeLM now emits text updates from the actual local sampling loop while inference is running. Plain-text and unified multimodal generation serialize cumulative decoded output as token events; the local subprocess bridge parses those events, the ModelRouter preserves them, OneChat journals them, and the browser progressively updates the active answer over its existing SSE session.
+
+This is distinct from v0.69 execution-event streaming. v0.70's ForgeLM token stream originates inside token sampling itself. Stop generation uses the same AbortSignal and terminates the local process producing those tokens. Other model runtimes are not labeled token-streaming unless they independently emit equivalent runtime events.
 
 ## v0.69 live OneChat turn sessions
 
