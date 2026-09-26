@@ -14,10 +14,21 @@ assert.ok(!/<textarea[^>]+id="chatIn"[^>]+required/i.test(html));
 
 assert.ok(app.includes('UPLOAD_CHUNK_BYTES=1_500_000'));
 assert.ok(app.includes('post("/api/media/upload"'));
-assert.ok(app.includes('post("/api/onechat"'));\nassert.ok(app.includes('/api/onechat/history'));\nassert.ok(app.includes('/api/media/content?id='));\nassert.ok(app.includes('data-turn-action'));\nassert.ok(app.includes('/api/onechat/retry'));\nassert.ok(app.includes('/api/onechat/branch'));\nassert.ok(app.includes('/api/onechat/turn-export'));\nassert.ok(app.includes('/api/onechat/start'));\nassert.ok(app.includes('/api/onechat/events'));\nassert.ok(app.includes('/api/onechat/stop'));\nassert.ok(html.includes('id="stopBtn"'));\nassert.ok(app.includes('mediaId:item.mediaId'));
+assert.ok(app.includes('post("/api/onechat"'));
+assert.ok(app.includes('/api/onechat/history'));
+assert.ok(app.includes('/api/media/content?id='));
+assert.ok(app.includes('data-turn-action'));
+assert.ok(app.includes('/api/onechat/retry'));
+assert.ok(app.includes('/api/onechat/branch'));
+assert.ok(app.includes('/api/onechat/turn-export'));
+assert.ok(app.includes('/api/onechat/start'));
+assert.ok(app.includes('/api/onechat/events'));
+assert.ok(app.includes('/api/onechat/stop'));
+assert.ok(html.includes('id="stopBtn"'));
+assert.ok(app.includes('mediaId:item.mediaId'));
 assert.ok(app.includes('attachments:uploaded'));
 assert.ok(app.includes('pendingAttachments.length>=MAX_ATTACHMENTS'));
-assert.ok(app.includes('item.uploadedPath'));
+assert.ok(app.includes('item.mediaId'));
 assert.ok(css.includes(".attachment-tray"));
 assert.ok(css.includes(".upload-bar"));
 
