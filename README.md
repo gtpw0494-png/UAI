@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.59.0
+# IntraultUniversalion v0.60.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.60 native ForgeAudio
+
+ForgeAudio adds independent local audio intelligence to the ForgeLM stack. PCM WAV is decoded locally, transformed into log-spectral features, encoded into audio tokens, projected into ForgeLM hidden space, and jointly prefilled with text tokens through ForgeLM's transformer.
+
+Training and evaluation use local audio-text pairs and ForgeLM's own embedding space. Promotion is candidate-first, hash-bound, owner-approved and rollback-capable. Semantic audio inference is CONNECTED only after both ForgeAudio and ForgeLM promoted checkpoints pass local runtime health.
 
 ## v0.59 governed native vision runtime
 
