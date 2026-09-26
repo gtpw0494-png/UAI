@@ -18,6 +18,7 @@ TABLES={
   "code-symbol":"code_symbols",
   "code-edge":"code_edges",
   "media-artifact":"media_artifacts",
+  "verified-knowledge":"verified_knowledge",
 }
 def now(): return datetime.now(timezone.utc).isoformat()
 def connect():
