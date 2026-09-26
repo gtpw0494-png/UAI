@@ -1628,6 +1628,11 @@
       "bytes": 2053
     },
     {
+      "path": "verification/onechat-multimodal-attachments.test.mjs",
+      "sha256": "e7fe71bd0da2a1ace7b12208772bb10134093ed09970c7e8d8493e8c7836cdda",
+      "bytes": 2338
+    },
+    {
       "path": "verification/owner-bootstrap-v049.test.mjs",
       "sha256": "805b445d0c5e1699861a9dc6130b8fda5a6cb13dd7fb47e2b5b706cedaefbdc8",
       "bytes": 5836
