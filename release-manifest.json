@@ -228,6 +228,11 @@
       "bytes": 3256
     },
     {
+      "path": "model/eval/vision_compare.py",
+      "sha256": "c860e2371e403353f48b55bec8cb735c71ec4ca50d7f2441c305e61615fbce31",
+      "bytes": 4520
+    },
+    {
       "path": "model/forgecode.py",
       "sha256": "99abc296cd8d0effd72e97749870ed182065f16e39bc6da3d4289591402f657f",
       "bytes": 7216
