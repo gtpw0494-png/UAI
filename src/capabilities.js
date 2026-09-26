@@ -1,6 +1,6 @@
 import {buildSourceResearchCapabilities} from "./source-capabilities.js";
 export function buildCapabilityRegistry(providerHub,extras={}){
-  const model=extras.model||{},vision=extras.vision||{},audio=extras.audio||{},speech=extras.speech||{},video=extras.video||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
+  const model=extras.model||{},vision=extras.vision||{},audio=extras.audio||{},speech=extras.speech||{},video=extras.video||{},multimodal=extras.multimodal||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
   const modelReady=model.state==="SUCCESS"&&model.checkpointExists===true;
   const service=(name,fallback)=>runtime?.[name]||fallback;
   const billing=service("billing",{availability:"UNAVAILABLE",executable:false,reason:"Live billing adapter has not been probed."});
@@ -41,6 +41,7 @@ export function buildCapabilityRegistry(providerHub,extras={}){
     {id:"local.forgevideo.architecture",availability:"CONNECTED",executable:true,reason:"Trainable local frame encoder plus temporal transformer is present."},
     {id:"local.forgevideo.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"ForgeVideo alignment training can run locally against ForgeLM text embeddings.":"Training requires a working local PyTorch runtime.",constraints:["local video-text data required","ffmpeg frame extraction required","candidate checkpoint only","evaluation and explicit promotion required"]},
     {id:"local.forgevideo.semantic_infer",availability:video.state==="CONNECTED"?"CONNECTED":(video.videoCheckpointExists?"CONFIGURED":"UNAVAILABLE"),executable:video.state==="CONNECTED",reason:video.message||"No promoted/evaluated ForgeVideo runtime is connected.",constraints:["promoted ForgeVideo checkpoint required","promoted ForgeLM checkpoint required","local runtime health check required","no external video model fallback"]},
+    {id:"local.forgemultimodal.fusion",availability:multimodal.state==="CONNECTED"?"CONNECTED":"UNAVAILABLE",executable:multimodal.state==="CONNECTED",reason:multimodal.message||"Unified ForgeMultimodal runtime is unavailable.",constraints:["ForgeLM checkpoint required","individual modality checkpoints remain independently truth-gated","parameter-free fusion assembler is default","no external AI fallback"]},
     {id:"local.forgelm.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"Local neural training runtime verified.":"Training requires a working PyTorch runtime; Termux provides python-torch."},
     {id:"local.langgraph.orchestration",availability:langgraph.availability||"UNAVAILABLE",executable:langgraph.availability==="CONNECTED",reason:langgraph.reason||"Install @langchain/langgraph and @langchain/core; built-in OneChat orchestration remains available without it."},
     {id:"local.ui.serve",availability:"CONNECTED",executable:true},
