@@ -1,5 +1,15 @@
 # Release history
 
+## v0.55.0 — Governed Knowledge Autonomy and Candidate-First ForgeLM
+- Added bounded approved-domain research scheduling with persistent process-bound state.
+- Added independent-source corroboration and separate training-rights gates.
+- Migrated verified knowledge to the existing SQLite/WAL platform-state database with legacy JSON migration.
+- Added optional Postgres/PostgREST-compatible cloud durability with local-first fallback and mandatory local reverification on recovery.
+- Changed ForgeLM CLI, Model Lab, OneChat and autonomous knowledge training to candidate-first operation.
+- Added held-out knowledge and general regression comparison before owner-bound promotion, plus checkpoint hashing and rollback.
+- Added authenticated HTTP and cumulative regression coverage for the v0.55 knowledge/model lifecycle.
+- Status remains IMPLEMENTED_UNVERIFIED_REPO until authoritative exact-state CI passes.
+
 ## v0.54.0 — User-Owned Intelligence Plane
 - Added typed local memory with explicit consent, inspectable source/reason, retention, expiry, training opt-in, deletion controls and optional AES-256-GCM at-rest protection.
 - Added queryable provenance nodes/edges, lineage tracing, dry-run purge planning and memory deletion propagation without overstating full cross-store erasure.
