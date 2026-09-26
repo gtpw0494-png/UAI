@@ -1,5 +1,13 @@
 # Release history
 
+## v0.59.0 — Governed ForgeVision Runtime
+- Added local image-caption candidate evaluation with ForgeLM embedding compatibility and regression thresholds.
+- Added hash-bound, owner-approved ForgeVision promotion with atomic live checkpoint replacement and rollback snapshots.
+- Added native ForgeVision-to-ForgeLM multimodal prefill so promoted visual tokens condition the same local ForgeLM transformer/cache used for text generation.
+- Added runtime health that reports CONNECTED only when both promoted checkpoints load and their dimensions match.
+- Added governed, path-bounded local vision inference API plus explicit request schemas and high-risk promotion/rollback authorization.
+- Added lifecycle and multimodal runtime CI tests. No external AI model is used for the native vision path.
+
 ## v0.58.0 — Native ForgeVision Foundation
 - Added a trainable local visual patch encoder with transformer blocks and a projector into ForgeLM hidden-state space.
 - Added a local image-caption alignment trainer that learns against ForgeLM's own text embeddings; no external AI teacher/model is required.
