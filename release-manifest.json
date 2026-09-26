@@ -738,6 +738,11 @@
       "bytes": 5145
     },
     {
+      "path": "src/forgevision-candidate-promotion.js",
+      "sha256": "5d17d186bfcd6ca466524d1ffa5af28f69d4deca400771c82d87702d5f63042c",
+      "bytes": 6371
+    },
+    {
       "path": "src/governance/audit-integrity.js",
       "sha256": "42ebc75fe70c35fd70e22dfeafe5d17d437bce481865e2c7dc2d493e59902f6b",
       "bytes": 288
