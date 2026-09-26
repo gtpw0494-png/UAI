@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.62.0",
+  "generated_for": "0.63.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1190,6 +1190,24 @@
         "verification/forgevideo-candidate-promotion.test.mjs"
       ],
       "evidence_note": "ForgeVideo reuses the native ForgeVision frame encoder, adds local temporal transformer modeling, projects video tokens into ForgeLM space, and supports local ffmpeg frame extraction, video-text alignment training, evaluation, hash-bound owner-approved promotion, rollback, runtime health, and path-bounded native video-language inference. No external AI/video model is used."
+    },
+    {
+      "id": "forgemultimodal-fusion-v063",
+      "introduced": "0.63.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/multimodal.py",
+        "model/multimodal_runtime.py",
+        "src/forgelm-bridge.js",
+        "src/capabilities.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "model/test_multimodal.py"
+      ],
+      "evidence_note": "A parameter-free local FusionAssembler combines healthy promoted image/audio/video encoder tokens with local document/context/text embeddings into one bounded ForgeLM prefill. Individual modality health remains independently truth-gated and there is no external AI fallback. A separate trainable ForgeFusion transformer exists as an experimental architecture but is not used or claimed as trained unless independently checkpointed/evaluated."
     }
   ]
 }
