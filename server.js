@@ -348,7 +348,7 @@ const server=http.createServer(async(req,res)=>{try{
     return send(res,out.state==="SUCCESS"?200:409,out);
   }
 
-  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const local=await localOrchestrator.promotionSnapshot();return send(res,200,{state:"SUCCESS",auth:identity.status(auth),deps,model,langgraph:lg,local,requestId,correlationId});}
+  if(req.method==="GET"&&url.pathname==="/api/status"){const auth=identity.authenticateRequest(req);const deps=dependencyStatus();const model=await forgelm.status();const lg=await langgraph.status();const local=await localOrchestrator.promotionSnapshot();return send(res,200,{state:"SUCCESS",name:"IntraultUniversalion",version:APP_VERSION,surface:"OneChat",auth:identity.status(auth),governanceKernel:governanceKernel.status(auth),pluginGateway:{version:"0.44",sandboxConfigured:Boolean(process.env.IUV_PLUGIN_SANDBOX_COMMAND)},deps,model,langgraph:lg,local,requestId,correlationId});}
   if(req.method==="GET"&&url.pathname==="/api/research/sources")return send(res,200,{state:"SUCCESS",sources:sourceRegistry});
   if(req.method==="GET"&&url.pathname==="/api/models")return send(res,200,modelRegistry.status());
   if(req.method==="GET"&&url.pathname==="/api/models/route"){
