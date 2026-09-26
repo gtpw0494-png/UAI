@@ -231,3 +231,7 @@ jobs:
       - name: Run ForgeVideo v0.62 native video test
         working-directory: model
         run: python3 test_video.py
+
+      - name: Run ForgeMultimodal v0.63 fusion test
+        working-directory: model
+        run: python3 test_multimodal.py
