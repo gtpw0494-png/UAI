@@ -1,6 +1,14 @@
-# IntraultUniversalion v0.58.0
+# IntraultUniversalion v0.59.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.59 governed native vision runtime
+
+ForgeVision now follows the same evidence-first lifecycle as ForgeLM: train a candidate, evaluate it against local image-caption evidence, bind the result to the candidate hash, obtain explicit owner approval, promote atomically, and retain rollback evidence.
+
+A promoted ForgeVision checkpoint can feed projected visual tokens directly into ForgeLM's native transformer prefill. Runtime capability truth remains separate from checkpoint presence: semantic vision is CONNECTED only when both promoted ForgeLM and ForgeVision checkpoints load successfully and their dimensions match.
+
+The HTTP inference surface is restricted to approved local image roots. External model adapters are not used by this path.
 
 ## v0.58 native ForgeVision
 
