@@ -33,7 +33,7 @@ export class OneChatRouter{
       a=reg.artifact;
     }else return {state:"BLOCKED",message:"Each attachment requires mediaId or path.",media,document:docs.join("\n\n"),evidence,artifacts};
     artifacts.push({id:a.id,modality:a.modality,path:a.path,label:String(item?.label||a.metadata?.originalName||"").trim()||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash,bytes:a.bytes});
-    evidence.push({source_id:a.sourceId||a.id,uri:"file:"+a.path,provenance:{mediaId:a.id,modality:a.modality,contentHash:a.contentHash}});
+    evidence.push({source_id:a.sourceId||a.id,uri:"media:"+a.id,provenance:{mediaId:a.id,modality:a.modality,contentHash:a.contentHash}});
     if(["image","audio","video"].includes(a.modality)){
       if(!media[a.modality])media[a.modality]=a.path;
       continue;
@@ -135,12 +135,38 @@ export class OneChatRouter{
   if(control.ownerId&&ownerId&&control.ownerId!==ownerId)return {state:"DENIED",message:"Conversation is owned by another identity."};
   return {state:"SUCCESS",format:"uai.onechat.export.v1",exportedAt:new Date().toISOString(),chatId:id,title:control.title||null,archived:control.archived===true,turns:history.turns};
  }
+ _safeEvidence(envelope){
+  if(!envelope)return null;
+  const claims=(envelope.claims||[]).map(c=>({
+    claim:String(c.claim||""),
+    status:c.status||"UNKNOWN",
+    confidence:c.confidence??null,
+    support:(c.support||[]).map(x=>({
+      source_id:x.source_id||null,
+      document_id:x.document_id||null,
+      document_revision:x.document_revision??null,
+      chunk_id:x.chunk_id||null,
+      uri:String(x.uri||"").startsWith("file:")?(x.provenance?.mediaId?"media:"+x.provenance.mediaId:null):(x.uri||null),
+      quote:x.quote||null,
+      score:x.score??null,
+      provenance:{
+        ...(x.provenance?.mediaId?{mediaId:x.provenance.mediaId}:{}),
+        ...(x.provenance?.modality?{modality:x.provenance.modality}:{}),
+        ...(x.provenance?.contentHash?{contentHash:x.provenance.contentHash}:{}),
+        ...(x.provenance?.title?{title:x.provenance.title}:{}),
+        ...(x.provenance?.publisher?{publisher:x.provenance.publisher}:{}),
+        ...(x.provenance?.retrievedAt?{retrievedAt:x.provenance.retrievedAt}:{})
+      }
+    }))
+  }));
+  return {id:envelope.id||null,responseId:envelope.responseId||null,promptVersion:envelope.promptVersion||null,model:envelope.model||null,claims,toolCalls:(envelope.toolCalls||[]).map(x=>({agent:x.agent||null,state:x.state||"UNKNOWN",reason:x.reason||null})),integrity:{digest:envelope.integrity?.digest||null}};
+ }
  turn(turnId,{ownerId=null}={}){
   const id=String(turnId||"").trim();if(!id)return {state:"BLOCKED",message:"turnId is required."};
   const x=this.store?.get?.(id);if(!x||x.kind!=="chat-turn")return {state:"UNAVAILABLE",message:"Chat turn not found."};
   if(x.ownerId&&ownerId&&x.ownerId!==ownerId)return {state:"DENIED",message:"Chat turn is owned by another identity."};
   const attachments=(x.attachments||[]).map(a=>({id:a.id||null,modality:a.modality||"structured",label:a.label||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash||null,bytes:Number(a.bytes||0)})).filter(a=>a.id);
-  return {state:"SUCCESS",turn:{id:x.id,chatId:x.chatId,createdAt:x.createdAt||null,user:String(x.user||""),answer:String(x.answer||""),state:x.state||"UNKNOWN",responseMode:x.responseMode||null,attachments,evidenceEnvelope:x.evidenceEnvelope||null}};
+  return {state:"SUCCESS",turn:{id:x.id,chatId:x.chatId,createdAt:x.createdAt||null,user:String(x.user||""),answer:String(x.answer||""),state:x.state||"UNKNOWN",responseMode:x.responseMode||null,attachments,evidenceEnvelope:this._safeEvidence(x.evidenceEnvelope)}};
  }
  exportTurn(turnId,{ownerId=null}={}){
   const t=this.turn(turnId,{ownerId});if(t.state!=="SUCCESS")return t;
