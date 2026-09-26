@@ -30,3 +30,16 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .history-attachment b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 .history-attachment small{display:block;margin-top:3px;font-size:10px}
 .attachment-open{display:inline-block;border:1px solid #31516b;border-radius:999px;padding:7px 12px;color:#bfe9ff;text-decoration:none;font-size:12px}
+
+.conversation-toolbar{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-top:10px}
+.conversation-toolbar input[type="search"]{width:100%;border:1px solid #29455f;background:#07131e;color:white;border-radius:10px;padding:10px 12px}
+.archive-toggle{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:12px}
+.conversation-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.conversation-row{display:grid;grid-template-columns:1fr auto;gap:8px;border:1px solid #203449;border-radius:12px;padding:8px;background:#0a1722}
+.conversation-row.active{border-color:#4a86b4;background:#0d2131}
+.conversation-main{display:block;text-align:left;background:transparent;border:0;padding:6px;align-self:stretch}
+.conversation-main b,.conversation-main small{display:block}
+.conversation-main small{margin-top:3px;font-size:10px}
+.conversation-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.conversation-actions button{padding:7px 9px;font-size:11px}
+@media(max-width:650px){.conversation-toolbar{grid-template-columns:1fr}.conversation-row{grid-template-columns:1fr}.conversation-actions{justify-content:flex-start}}
