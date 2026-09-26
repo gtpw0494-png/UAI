@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.54.0",
+  "generated_for": "0.55.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -959,6 +959,86 @@
         "verification/platform-intelligence-http-v054.test.mjs"
       ],
       "evidence_note": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: artifact path confinement, SHA-256 verification, runtime-availability separation, persistent evaluation records, verified-only leaderboards, benchmark runner and promotion-evidence scoring passed, alongside ForgeLM train-save-load and advanced neural-objective CI. Artifact registration still does not imply runtime connectivity or production eligibility."
+    },
+    {
+      "id": "verified-knowledge-sqlite-v055",
+      "introduced": "0.55.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/verified-knowledge-store.js",
+        "src/platform-state-store.js",
+        "storage/platform_state.py"
+      ],
+      "tests": [
+        "verification/knowledge-autonomy-v055.test.mjs",
+        "verification/verified-knowledge-sqlite.test.mjs",
+        "verification/knowledge-production-http-v055.test.mjs"
+      ],
+      "evidence_note": "Verified knowledge now persists in the existing SQLite/WAL platform-state database with legacy JSON migration, deduplication, rights gating and integrity snapshots. Exact-state authoritative CI has not yet been observed for this promotion commit."
+    },
+    {
+      "id": "governed-knowledge-autonomy-v055",
+      "introduced": "0.55.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/knowledge-verifier.js",
+        "src/knowledge-research-worker.js",
+        "src/knowledge-scheduler.js",
+        "src/knowledge-autonomy.js",
+        "model/knowledge_verifier.py",
+        "model/knowledge_pipeline.py",
+        "model/knowledge_sources.json"
+      ],
+      "tests": [
+        "verification/knowledge-autonomy-v055.test.mjs",
+        "verification/knowledge-research-scheduler.test.mjs",
+        "verification/knowledge-governance.test.mjs",
+        "model/eval/knowledge_benchmark.py"
+      ],
+      "evidence_note": "Research is bounded to approved source domains, external content remains untrusted, registry trust cannot be caller-spoofed, independent corroboration is required, and research approval is separated from training-rights approval. Scheduled research is process-bound and does not claim execution while localhost is stopped."
+    },
+    {
+      "id": "hybrid-cloud-knowledge-durability-v055",
+      "introduced": "0.55.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/cloud-knowledge-store.js",
+        "src/hybrid-knowledge-store.js",
+        "storage/cloud/uai_verified_knowledge.sql",
+        "docs/CLOUD-KNOWLEDGE-STORAGE.md"
+      ],
+      "tests": [
+        "verification/cloud-knowledge-store.test.mjs"
+      ],
+      "evidence_note": "Optional Postgres/PostgREST-compatible cloud persistence is secondary to local storage. Cloud records are reverified locally before recovery; configured credentials do not imply connectivity. Free-tier capacity is not guaranteed."
+    },
+    {
+      "id": "forgelm-candidate-first-promotion-v055",
+      "introduced": "0.55.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/cli.py",
+        "model/eval/checkpoint_compare.py",
+        "model/eval/regression_corpus.jsonl",
+        "src/knowledge-training-job.js",
+        "src/forgelm-candidate-promotion.js",
+        "src/knowledge-learning-pipeline.js",
+        "src/model-lab.js",
+        "src/onechat.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/knowledge-training-job.test.mjs",
+        "verification/forgelm-candidate-promotion.test.mjs",
+        "verification/knowledge-learning-pipeline.test.mjs",
+        "verification/model-lab-promotion.test.mjs",
+        "verification/onechat-model-lifecycle.test.mjs",
+        "verification/forgelm-cli-policy.test.mjs",
+        "verification/knowledge-production-http-v055.test.mjs"
+      ],
+      "evidence_note": "Training paths now create candidate checkpoints rather than silently replacing the live ForgeLM checkpoint. Held-out knowledge and stable regression loss gates precede exact owner-bound promotion; rollback artifacts are integrity-checked. Exact-state authoritative CI remains pending."
     }
   ]
 }
