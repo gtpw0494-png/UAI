@@ -99,6 +99,9 @@ jobs:
       - name: Verify v0.56 frontier provider routing and catalog
         run: npm run test:frontier-models
 
+      - name: Verify first ForgeLM bootstrap promotion
+        run: npm run test:forgelm-bootstrap
+
       - name: Verify ForgeVision governed lifecycle
         run: npm run test:vision-lifecycle
 
