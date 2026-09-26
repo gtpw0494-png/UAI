@@ -152,20 +152,23 @@ class ForgeLM(nn.Module):
             sorted_logits=sorted_logits.masked_fill(remove,-float("inf"));filtered=torch.full_like(logit,-float("inf")).scatter(-1,sorted_idx,sorted_logits);logit=filtered
         return torch.multinomial(F.softmax(logit,dim=-1),1)
     @torch.no_grad()
-    def generate(self,ids,max_new_tokens=80,temperature=.8,top_k=40,top_p=1.0,use_cache=True):
+    def generate(self,ids,max_new_tokens=80,temperature=.8,top_k=40,top_p=1.0,use_cache=True,on_token=None):
         self.eval();ids=ids.to(next(self.parameters()).device)
         if ids.shape[1]==0:raise ValueError("prompt must contain at least one token")
         if not use_cache:
             for _ in range(max_new_tokens):
-                x=ids[:,-self.config.max_seq_len:];logits,_=self(x);nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1)
-                if int(nxt[0,0])==SPECIAL["<|end|>"]:break
+                x=ids[:,-self.config.max_seq_len:];logits,_=self(x);nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1);token=int(nxt[0,0])
+                if token!=SPECIAL["<|end|>"] and on_token is not None:on_token(token)
+                if token==SPECIAL["<|end|>"]:break
             return ids
         prompt=ids[:,-self.config.max_seq_len:];start=max(0,ids.shape[1]-prompt.shape[1]);logits,_,cache=self(prompt,start_pos=start,use_cache=True)
-        nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1);position=start+prompt.shape[1]
-        if int(nxt[0,0])==SPECIAL["<|end|>"]:return ids
+        nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1);position=start+prompt.shape[1];token=int(nxt[0,0])
+        if token!=SPECIAL["<|end|>"] and on_token is not None:on_token(token)
+        if token==SPECIAL["<|end|>"]:return ids
         for _ in range(max(0,max_new_tokens-1)):
-            logits,_,cache=self(nxt,cache=cache,start_pos=position,use_cache=True);position+=1;nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1)
-            if int(nxt[0,0])==SPECIAL["<|end|>"]:break
+            logits,_,cache=self(nxt,cache=cache,start_pos=position,use_cache=True);position+=1;nxt=self._sample(logits[:,-1,:],temperature,top_k,top_p);ids=torch.cat([ids,nxt],1);token=int(nxt[0,0])
+            if token!=SPECIAL["<|end|>"] and on_token is not None:on_token(token)
+            if token==SPECIAL["<|end|>"]:break
         return ids
     def save(self,path,metadata=None):
         path=Path(path);path.parent.mkdir(parents=True,exist_ok=True);torch.save({"format":"ForgeLM-2","config":asdict(self.config),"state_dict":self.state_dict(),"metadata":metadata or {}},path)
