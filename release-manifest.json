@@ -1514,8 +1514,8 @@
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
-      "sha256": "63cbdca550eca5d4a4f11e78a870fb983f57709a4ffb93fbd4db47d9ecc9b391",
-      "bytes": 6630
+      "sha256": "09a4e5601c4052454f41779348e85e00bf7511e61b1bfc6aa2c2d54100cab1c4",
+      "bytes": 6644
     },
     {
       "path": "verification/agent-control-v053.test.mjs",
@@ -1524,8 +1524,8 @@
     },
     {
       "path": "verification/api-security-v046.test.mjs",
-      "sha256": "f766ab62e3e4598c3f39f665f89d10e59d3730a92c9d5b6e35c49cfbb7e68237",
-      "bytes": 9324
+      "sha256": "01ebc39ac13eff4d9c7c64fd9ba82519b19d62a18718d8cfeeb36a3ec510153f",
+      "bytes": 9338
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
@@ -1559,8 +1559,8 @@
     },
     {
       "path": "verification/document-http.test.mjs",
-      "sha256": "4a4510121ffedaa128d748b932cafae7749c1c4fed6b5f779c5f57d9122efa5c",
-      "bytes": 5085
+      "sha256": "5e68f26ae374cef9931f245fc08dde05a65dd1ddb0264ed4b0de01d689695251",
+      "bytes": 5099
     },
     {
       "path": "verification/forgeaudio-candidate-promotion.test.mjs",
@@ -1624,8 +1624,8 @@
     },
     {
       "path": "verification/knowledge-production-http-v055.test.mjs",
-      "sha256": "989e1fddd9c6ff1736204f892ca364f0d3ad2dc200e4f77b32bf1b8c2c6fda8e",
-      "bytes": 4659
+      "sha256": "6e023fdb793d80043a453acbb9e1e113112b0af4c730fd64bfdb7133f8ae1060",
+      "bytes": 4673
     },
     {
       "path": "verification/knowledge-research-scheduler.test.mjs",
@@ -1649,8 +1649,8 @@
     },
     {
       "path": "verification/model-router-evidence-v049.test.mjs",
-      "sha256": "b75f5401a6296cfcc897df799d4b522e4996f83e7c380f71d3afb85a7b9f7f3c",
-      "bytes": 10703
+      "sha256": "689ef250bf20d8f3d0c1c74ad2b512bf9b2091d7fcb4e1deecfc3ba96d04987d",
+      "bytes": 10717
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
@@ -1694,13 +1694,13 @@
     },
     {
       "path": "verification/owner-bootstrap-v049.test.mjs",
-      "sha256": "805b445d0c5e1699861a9dc6130b8fda5a6cb13dd7fb47e2b5b706cedaefbdc8",
-      "bytes": 5836
+      "sha256": "1edcde108a8574d2415fe4c7b57b81a989859e9dd147bef450016a97d07d7cb6",
+      "bytes": 5850
     },
     {
       "path": "verification/platform-intelligence-http-v054.test.mjs",
-      "sha256": "76edf6c78cc318d6eeeb1a0060a6f3daac9518a10874ba469957f82a43dae99e",
-      "bytes": 7691
+      "sha256": "44765c4c25f4b02b30f880eed13f2b4265b7f2a3a8c3e46a6bbad43e78f819e9",
+      "bytes": 7705
     },
     {
       "path": "verification/platform-intelligence-v054.test.mjs",
@@ -1714,8 +1714,8 @@
     },
     {
       "path": "verification/plugin-http.test.mjs",
-      "sha256": "76cb7ac29d4a4b8470aef81a474bf3ea751007955c085c78dd353ace1a47e8e7",
-      "bytes": 5124
+      "sha256": "588ede53d07920bd86d3ab496e75f314bf9d131af990e5f947ed5f2624ba7e3b",
+      "bytes": 5138
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
@@ -1724,8 +1724,8 @@
     },
     {
       "path": "verification/shadow-light-http-v052.test.mjs",
-      "sha256": "bca3135b26a19376e8d7843c7920b82797273e2e815143bfb0a3cf1b12a1dfbf",
-      "bytes": 4928
+      "sha256": "cb924b75d36ab2dbc66f79251c85be840b8a5c6253b00d8bbcac9bfa8db88430",
+      "bytes": 4942
     },
     {
       "path": "verification/shadow-light-v052.test.mjs",
