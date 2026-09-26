@@ -1,6 +1,6 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.55.0",
+  "version": "0.56.0",
   "private": true,
   "description": "Independent local-first AI operating environment with governed autonomous knowledge research, SQLite/WAL verified knowledge, optional cloud durability, candidate-first ForgeLM learning, regression-gated promotion and owner-bound rollback.",
   "type": "module",
@@ -89,7 +89,8 @@
     "test:onechat-model-lifecycle": "node verification/onechat-model-lifecycle.test.mjs",
     "test:forgelm-cli-policy": "node verification/forgelm-cli-policy.test.mjs",
     "test:knowledge-production-http": "node verification/knowledge-production-http-v055.test.mjs",
-    "test:verified-knowledge-sqlite": "node verification/verified-knowledge-sqlite.test.mjs"
+    "test:verified-knowledge-sqlite": "node verification/verified-knowledge-sqlite.test.mjs",
+    "test:frontier-models": "node verification/model-catalog.test.mjs && node verification/frontier-provider-routing-v056.test.mjs"
   },
   "engines": {
     "node": ">=20"
