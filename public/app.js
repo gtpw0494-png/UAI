@@ -12,6 +12,23 @@ let historyLoadedFor=null;
 const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
 function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
 function attachmentContentUrl(id){return "/api/media/content?id="+encodeURIComponent(String(id||""));}
+function resetStream(message="Local-first workspace ready."){
+  $("#stream").innerHTML=`<article class="msg system"><b>System</b><p>${esc(message)}</p></article>`;
+}
+function newChatId(){return "chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36));}
+async function refreshConversations(){
+  const list=$("#conversationList");if(!list)return;
+  if(!authState.authenticated){list.innerHTML='<p class="muted">Unlock the owner session to load conversations.</p>';return;}
+  try{
+    const q=$("#conversationSearch")?.value.trim()||"",archived=$("#showArchived")?.checked===true;
+    const x=await api("/api/onechat/conversations?q="+encodeURIComponent(q)+"&archived="+String(archived)+"&limit=100");
+    const rows=x.conversations||[];
+    list.innerHTML=rows.length?rows.map(c=>`<article class="conversation-row ${c.chatId===chatId?"active":""}" data-chat-id="${esc(c.chatId)}"><button type="button" class="conversation-main" data-action="switch"><b>${esc(c.title||c.preview||"Untitled chat")}</b><small>${esc(String(c.turns||0))} turns · ${esc(String(c.attachments||0))} attachments · ${esc(String(c.evidence||0))} evidence</small></button><div class="conversation-actions"><button type="button" data-action="rename">Rename</button><button type="button" data-action="archive">${c.archived?"Unarchive":"Archive"}</button><button type="button" data-action="export">Export</button><button type="button" data-action="delete">Delete</button></div></article>`).join(""):'<p class="muted">No conversations match this view.</p>';
+  }catch(e){list.innerHTML=`<p class="muted">Conversation list unavailable: ${esc(e.message)}</p>`;}
+}
+async function switchConversation(id){
+  chatId=String(id);sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;resetStream("Loading governed conversation history…");await loadConversationHistory({force:true});await refreshConversations();
+}
 function attachmentCards(items=[]){
   if(!items.length)return "";
   return `<div class="history-attachments">${items.map(a=>{
@@ -30,8 +47,7 @@ async function loadConversationHistory({force=false}={}){
   try{
     const h=await api("/api/onechat/history?chatId="+encodeURIComponent(chatId)+"&limit=80");
     const turns=h.turns||[];
-    if(turns.length){
-      $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
+    if(!turns.length){resetStream("New local OneChat conversation.");}\n    if(turns.length){      $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
       for(const t of turns){
         bubble("user","You",`<p>${esc(t.user||"")}</p>${attachmentCards(t.attachments||[])}`,t.createdAt||"");
         bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
@@ -115,7 +131,7 @@ async function refreshAuth(){
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
     $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
     $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
-    await refreshOperations();if(s.authenticated)await loadConversationHistory();
+    await refreshOperations();if(s.authenticated){await loadConversationHistory();await refreshConversations();}
   }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
@@ -135,6 +151,32 @@ $("#authForm").addEventListener("submit",async e=>{
 });
 $("#logoutBtn").addEventListener("click",async()=>{
   try{await post("/api/auth/logout",{});await refreshAuth();await refresh();bubble("system","Security","<p>Local owner session locked.</p>");}catch(err){bubble("error","Authentication",`<p>${esc(err.message)}</p>`);}
+});
+$("#newChatBtn").addEventListener("click",async()=>{
+  chatId=newChatId();sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;pendingAttachments=[];renderAttachmentTray();resetStream("New local OneChat conversation.");await refreshConversations();$("#chatIn").focus();
+});
+$("#conversationSearch").addEventListener("input",()=>refreshConversations());
+$("#showArchived").addEventListener("change",()=>refreshConversations());
+$("#conversationList").addEventListener("click",async e=>{
+  const btn=e.target.closest("button[data-action]");if(!btn)return;
+  const row=btn.closest(".conversation-row"),id=row?.dataset.chatId;if(!id)return;
+  const action=btn.dataset.action;
+  try{
+    if(action==="switch")return await switchConversation(id);
+    if(action==="rename"){const title=prompt("Conversation name:","");if(title!==null)await post("/api/onechat/conversation",{chatId:id,title:title.trim()});}
+    if(action==="archive")await post("/api/onechat/conversation",{chatId:id,archived:btn.textContent.trim()==="Archive"});
+    if(action==="export"){
+      const data=await api("/api/onechat/export?chatId="+encodeURIComponent(id));
+      const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);a.download=(data.title||id).replace(/[^A-Za-z0-9._-]/g,"_")+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    }
+    if(action==="delete"){
+      if(!confirm("Delete this conversation's local chat records? Registered media artifacts are retained."))return;
+      await post("/api/onechat/delete",{chatId:id});
+      if(id===chatId){chatId=newChatId();sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;resetStream("Conversation deleted. Started a new local chat.");}
+    }
+    await refreshConversations();
+  }catch(err){bubble("error","Conversation",`<p>${esc(err.message)}</p>`);}
 });
 $("#attachBtn").addEventListener("click",()=>$("#filePicker").click());
 $("#filePicker").addEventListener("change",e=>{
@@ -161,7 +203,7 @@ $("#composer").addEventListener("submit",async e=>{
     for(const item of pendingAttachments){await uploadAttachment(item);uploaded.push({mediaId:item.mediaId,label:item.file.name,sourceId:item.artifact?.sourceId||("onechat-upload:"+item.file.name)});}
     const x=await post("/api/onechat",{message:shownText,chatId,attachments:uploaded});
     if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}
-    input.value="";pendingAttachments=[];renderAttachmentTray();historyLoadedFor=chatId;wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
+    input.value="";pendingAttachments=[];renderAttachmentTray();historyLoadedFor=chatId;wait.remove();await refreshConversations();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
     const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
     const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
     bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${evidence}${ev}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
