@@ -11,7 +11,7 @@ const port=await new Promise((resolve,reject)=>{
   const s=net.createServer();s.once("error",reject);
   s.listen(0,"127.0.0.1",()=>{const p=s.address().port;s.close(()=>resolve(p));});
 });
-const child=spawn(process.execPath,["server.js"],{
+const child=spawn(process.execPath,[path.resolve("server.js")],{
   cwd:repoRoot,
   env:{...process.env,PORT:String(port),IUV_STATE_DIR:root,IUV_DB_PATH:path.join(root,"data.sqlite3"),IUV_OBJECT_ROOT:path.join(root,"objects"),IUV_AGENT_WORKERS:"1",IUV_AGENT_QUEUE:"16",IUV_AGENT_LEASE_MS:"5000"},
   stdio:["ignore","pipe","pipe"]
