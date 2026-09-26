@@ -94,17 +94,19 @@ def build_tokens(lm,tok,*,prompt="",context="",document="",image=None,audio=None
     return assembled,evidence,available
 
 @torch.no_grad()
-def generate(lm,tok,prefill,max_new_tokens=128,temperature=0.2,top_k=40,top_p=0.95):
+def generate(lm,tok,prefill,max_new_tokens=128,temperature=0.2,top_k=40,top_p=0.95,stream=False):
     x=prefill
     caches=[];hidden=x
     for block in lm.blocks:
         hidden,cache=block(hidden,cache=None,start_pos=0,use_cache=True);caches.append(cache)
     hidden=lm.norm(hidden);logits=F.linear(hidden,lm.emb.weight)
     nxt=lm._sample(logits[:,-1,:],temperature,top_k,top_p);generated=[int(nxt[0,0])];position=x.shape[1]
+    if generated[-1]!=SPECIAL["<|end|>"] and stream:print(json.dumps({"type":"token","text":tok.decode(generated),"tokens":len(generated)}),flush=True)
     if generated[-1]==SPECIAL["<|end|>"]:return tok.decode(generated).strip()
     for _ in range(max(0,int(max_new_tokens)-1)):
         logits,_,caches=lm(nxt,cache=caches,start_pos=position,use_cache=True);position+=1
         nxt=lm._sample(logits[:,-1,:],temperature,top_k,top_p);token=int(nxt[0,0]);generated.append(token)
+        if token!=SPECIAL["<|end|>"] and stream:print(json.dumps({"type":"token","text":tok.decode(generated),"tokens":len(generated)}),flush=True)
         if token==SPECIAL["<|end|>"]:break
     return tok.decode(generated).strip()
 
@@ -122,12 +124,12 @@ def status():
 
 def main():
     p=argparse.ArgumentParser();sub=p.add_subparsers(dest="cmd",required=True);sub.add_parser("status")
-    c=sub.add_parser("chat");c.add_argument("--prompt",default="Respond using the supplied evidence.");c.add_argument("--context",default="");c.add_argument("--document",default="");c.add_argument("--image");c.add_argument("--audio");c.add_argument("--video");c.add_argument("--max-tokens",type=int,default=128);c.add_argument("--temperature",type=float,default=0.2);c.add_argument("--device",default="cpu")
+    c=sub.add_parser("chat");c.add_argument("--prompt",default="Respond using the supplied evidence.");c.add_argument("--context",default="");c.add_argument("--document",default="");c.add_argument("--image");c.add_argument("--audio");c.add_argument("--video");c.add_argument("--max-tokens",type=int,default=128);c.add_argument("--temperature",type=float,default=0.2);c.add_argument("--device",default="cpu");c.add_argument("--stream",action="store_true")
     a=p.parse_args()
     if a.cmd=="status":print(json.dumps(status()));return
     try:
         lm,tok=load_lm(a.device);assembled,evidence,available=build_tokens(lm,tok,prompt=a.prompt,context=a.context,document=a.document,image=a.image,audio=a.audio,video=a.video,budget=FusionBudget(max_tokens=max(8,lm.config.max_seq_len-1)),device=a.device)
-        text=generate(lm,tok,assembled["tokens"],a.max_tokens,a.temperature)
+        text=generate(lm,tok,assembled["tokens"],a.max_tokens,a.temperature,stream=a.stream)
         print(json.dumps({"state":"SUCCESS","engine":"ForgeMultimodal+ForgeLM","text":text,"fusion":assembled,"evidence":evidence,"modalities":available,"externalModels":False,"networkRequired":False}))
     except Exception as e:
         print(json.dumps({"state":"FAILURE","message":str(e),"externalModels":False,"networkRequired":False}));raise SystemExit(1)
