@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.63.0",
+  "generated_for": "0.64.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1208,6 +1208,25 @@
         "model/test_multimodal.py"
       ],
       "evidence_note": "A parameter-free local FusionAssembler combines healthy promoted image/audio/video encoder tokens with local document/context/text embeddings into one bounded ForgeLM prefill. Individual modality health remains independently truth-gated and there is no external AI fallback. A separate trainable ForgeFusion transformer exists as an experimental architecture but is not used or claimed as trained unless independently checkpointed/evaluated."
+    },
+    {
+      "id": "onechat-multimodal-attachments-v064",
+      "introduced": "0.64.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/onechat.js",
+        "src/conversation-engine.js",
+        "src/multimodal/pipeline.js",
+        "src/forgelm-bridge.js",
+        "server.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js"
+      ],
+      "tests": [
+        "verification/onechat-multimodal-attachments.test.mjs",
+        "model/test_multimodal.py"
+      ],
+      "evidence_note": "OneChat can register up to 16 governed local attachments, preserve content hashes/provenance with the chat turn, extract local document/text evidence where parsers are available, and send image/audio/video plus document/context/history into the unified native ForgeMultimodal runtime. Attachment paths remain constrained by approved local roots and no external AI fallback is used."
     }
   ]
 }
