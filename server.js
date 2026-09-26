@@ -11,6 +11,7 @@ import { KnowledgeEngine } from "./src/knowledge.js";
 import { AgentRegistry, TaskEngine } from "./src/agent-system.js";
 import { ControlCenter } from "./src/control-center.js";
 import { OneChatRouter } from "./src/onechat.js";
+import { OneChatTurnSessions } from "./src/onechat-turn-sessions.js";
 import { ForgeLMBridge } from "./src/forgelm-bridge.js";
 import { LocalCapabilityRouter } from "./src/local-capability-router.js";
 import { ForgeLocalOrchestrator } from "./src/local-capability-orchestrator.js";
@@ -170,6 +171,7 @@ const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).r
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
 const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
+const onechatTurnSessions = new OneChatTurnSessions({onechat,audit});
 const PORT = Number(process.env.PORT || 8787);
 
 const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
@@ -616,6 +618,25 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/onechat/conversation"){const b=await readBody(req);const out=onechat.conversationControl(String(b.chatId||""),{ownerId:req.uaiSecurity.auth.identityId,title:b.title,archived:b.archived,deleted:b.deleted});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/onechat/delete"){const b=await readBody(req);const out=onechat.deleteConversation(String(b.chatId||""),{ownerId:req.uaiSecurity.auth.identityId});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="GET"&&url.pathname==="/api/onechat/history")return send(res,200,onechat.history(String(url.searchParams.get("chatId")||""),{limit:Number(url.searchParams.get("limit")||50),ownerId:req.uaiSecurity.auth.identityId}));
+  if(req.method==="POST"&&url.pathname==="/api/onechat/start"){const b=await readBody(req);const out=onechatTurnSessions.start({...b,ownerId:req.uaiSecurity.auth.identityId});return send(res,202,{state:"SUCCESS",session:out});}
+  if(req.method==="GET"&&url.pathname==="/api/onechat/session"){const out=onechatTurnSessions.get(String(url.searchParams.get("id")||""),{ownerId:req.uaiSecurity.auth.identityId,since:Number(url.searchParams.get("since")||0)});return send(res,out.state==="DENIED"?403:out.state==="UNAVAILABLE"?404:200,out);}
+  if(req.method==="POST"&&url.pathname==="/api/onechat/stop"){const b=await readBody(req);const out=onechatTurnSessions.cancel(String(b.id||""),{ownerId:req.uaiSecurity.auth.identityId});return send(res,out.state==="DENIED"?403:out.state==="UNAVAILABLE"?404:200,out);}
+  if(req.method==="GET"&&url.pathname==="/api/onechat/events"){
+    const id=String(url.searchParams.get("id")||""),since=Number(url.searchParams.get("since")||0),initial=onechatTurnSessions.get(id,{ownerId:req.uaiSecurity.auth.identityId,since});
+    if(initial.state!=="SUCCESS")return send(res,initial.state==="DENIED"?403:404,initial);
+    res.writeHead(200,{"content-type":"text/event-stream; charset=utf-8","cache-control":"no-cache, no-store","connection":"keep-alive","x-accel-buffering":"no"});
+    let cursor=since,closed=false;req.on("close",()=>{closed=true});
+    const write=payload=>{if(closed)return;res.write(`data: ${JSON.stringify(payload)}\n\n`);};
+    const pump=()=>{
+      if(closed)return;
+      const snap=onechatTurnSessions.get(id,{ownerId:req.uaiSecurity.auth.identityId,since:cursor});
+      if(snap.state!=="SUCCESS"){write({type:"error",state:snap.state,message:snap.message});return res.end();}
+      for(const e of snap.events){cursor=Math.max(cursor,e.seq||0);write(e);}
+      const st=snap.session?.state;if(["SUCCESS","PARTIAL","FAILURE","ERROR","DENIED","BLOCKED","UNAVAILABLE","CANCELLED","TIMEOUT"].includes(st)){write({type:"done",state:st,session:snap.session});return res.end();}
+      setTimeout(pump,250);
+    };
+    pump();return;
+  }
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp))return send(res,200,fs.readFileSync(fp),fp.endsWith(".html")?"text/html":"application/octet-stream");}
