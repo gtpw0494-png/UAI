@@ -1,6 +1,6 @@
 import {buildSourceResearchCapabilities} from "./source-capabilities.js";
 export function buildCapabilityRegistry(providerHub,extras={}){
-  const model=extras.model||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
+  const model=extras.model||{},vision=extras.vision||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
   const modelReady=model.state==="SUCCESS"&&model.checkpointExists===true;
   const service=(name,fallback)=>runtime?.[name]||fallback;
   const billing=service("billing",{availability:"UNAVAILABLE",executable:false,reason:"Live billing adapter has not been probed."});
@@ -31,7 +31,7 @@ export function buildCapabilityRegistry(providerHub,extras={}){
     {id:"local.forgelm.long_context",availability:modelReady?"CONNECTED":"UNAVAILABLE",executable:modelReady,reason:modelReady?"ForgeLM-native chunking, dense retrieval and bounded context assembly are available offline.":"Requires a promoted local ForgeLM checkpoint.",constraints:["retrieval memory extends usable source context","active transformer attention remains bounded by checkpoint configuration","no external model fallback"]},
     {id:"local.forgevision.architecture",availability:"CONNECTED",executable:true,reason:"Trainable native visual patch encoder and ForgeLM-space projector are present in local source."},
     {id:"local.forgevision.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"ForgeVision alignment training can run locally against ForgeLM text embeddings.":"Training requires a working local PyTorch runtime.",constraints:["image-caption data required","candidate checkpoint only","evaluation and explicit promotion required"]},
-    {id:"local.forgevision.semantic_infer",availability:"UNAVAILABLE",executable:false,reason:"No promoted/evaluated ForgeVision semantic checkpoint is assumed by source presence alone."},
+    {id:"local.forgevision.semantic_infer",availability:vision.state==="CONNECTED"?"CONNECTED":(vision.checkpointExists?"CONFIGURED":"UNAVAILABLE"),executable:vision.state==="CONNECTED",reason:vision.message||"No promoted/evaluated ForgeVision runtime is connected.",constraints:["promoted ForgeVision checkpoint required","promoted ForgeLM checkpoint required","local runtime health check required","no external model fallback"]},
     {id:"local.forgelm.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"Local neural training runtime verified.":"Training requires a working PyTorch runtime; Termux provides python-torch."},
     {id:"local.langgraph.orchestration",availability:langgraph.availability||"UNAVAILABLE",executable:langgraph.availability==="CONNECTED",reason:langgraph.reason||"Install @langchain/langgraph and @langchain/core; built-in OneChat orchestration remains available without it."},
     {id:"local.ui.serve",availability:"CONNECTED",executable:true},
