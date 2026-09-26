@@ -29,3 +29,9 @@ assert.equal(validateRequestBody("POST","/api/model/evaluate",{runId:"model-run-
 assert.equal(validateRequestBody("POST","/api/model/promote",{runId:"model-run-1"}).state,"FAILURE");
 assert.equal(validateRequestBody("POST","/api/model/promote",{runId:"model-run-1",approvalId:"approval-1"}).state,"SUCCESS");
 assert.equal(validateRequestBody("POST","/api/model/rollback",{runId:"model-run-1",approvalId:"approval-1",reason:"regression"}).state,"SUCCESS");
+
+let cloudRoute=routeSecurity("POST","/api/knowledge/cloud/sync");
+assert.equal(cloudRoute.risk,"high");
+assert.equal(cloudRoute.external,true);
+assert.equal(cloudRoute.requiresCredential,true);
+assert.equal(validateRequestBody("POST","/api/knowledge/cloud/sync",{limit:500}).state,"SUCCESS");
