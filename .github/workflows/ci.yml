@@ -129,6 +129,9 @@ jobs:
       - name: Verify OneChat turn controls
         run: npm run test:onechat-turn-controls
 
+      - name: Verify OneChat live sessions
+        run: npm run test:onechat-live-sessions
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
