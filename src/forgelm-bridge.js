@@ -38,5 +38,7 @@ export class ForgeLMBridge{
   speechSynthesize(text,output){return run("speech_runtime.py",["synthesize","--text",String(text),"--output",String(output)],120000)}
   videoStatus(){return run("video_runtime.py",["status"],30000)}
   videoDescribe(video,prompt="Describe the video using only the temporal and visual evidence.",max=96){return run("video_runtime.py",["describe","--video",String(video),"--prompt",String(prompt),"--max-tokens",String(max)],180000)}
+  multimodalStatus(){return run("multimodal_runtime.py",["status"],30000)}
+  multimodalChat({prompt="",context="",document="",image=null,audio=null,video=null,max=128}={}){const args=["chat","--prompt",String(prompt),"--context",String(context),"--document",String(document),"--max-tokens",String(max)];if(image)args.push("--image",String(image));if(audio)args.push("--audio",String(audio));if(video)args.push("--video",String(video));return run("multimodal_runtime.py",args,240000)}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
