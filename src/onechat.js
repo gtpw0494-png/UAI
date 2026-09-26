@@ -11,7 +11,9 @@ export class OneChatRouter{
  _intent(message,chatId){
   this.conversation?.ensureHistory?.(chatId);
   const text=String(message||"").trim(),history=this.conversation?._history?.(chatId)||[];
-  const capabilityQuestion=/^(?:can|could|do) you (?:search|browse|access|use) (?:the )?(?:web|internet)\??$/i.test(text);\n  const research=!capabilityQuestion&&/(?:latest|current|today|recent|web|internet|research|sources?|citations?|look up|search for|verify online|news|compare.*sources)/i.test(text);\n  const followup=history.length>0&&/^(?:and|also|but|so|then|what about|how about|why|how|when|where|who|which|can you|could you|would you|continue|go on|tell me more|explain that|expand|more)\b/i.test(text);
+  const capabilityQuestion=/^(?:can|could|do) you (?:search|browse|access|use) (?:the )?(?:web|internet)\??$/i.test(text);
+  const research=!capabilityQuestion&&/(?:latest|current|today|recent|web|internet|research|sources?|citations?|look up|search for|verify online|news|compare.*sources)/i.test(text);
+  const followup=history.length>0&&/^(?:and|also|but|so|then|what about|how about|why|how|when|where|who|which|can you|could you|would you|continue|go on|tell me more|explain that|expand|more)\b/i.test(text);
   return {research,followup,capabilityQuestion,historyTurns:history.length};
  }
  async _prepareAttachments(input={}){
