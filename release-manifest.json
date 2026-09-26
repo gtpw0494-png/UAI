@@ -789,8 +789,8 @@
     },
     {
       "path": "src/conversation-engine.js",
-      "sha256": "47c33c91177788e7ddaa874e94a69863805533323449c1c1ebaaa70f50e67c72",
-      "bytes": 9373
+      "sha256": "b2a38987a2b99cffc4de7729dac878a82c500035aca01ba7fe6a5b5a8833cfbd",
+      "bytes": 10191
     },
     {
       "path": "src/dependency-status.js",
