@@ -1389,8 +1389,8 @@
     },
     {
       "path": "src/store.js",
-      "sha256": "77be2586178383b1be4dba27a150893d1262d075d81770226e4016b4bbd93f26",
-      "bytes": 1378
+      "sha256": "2a5559f5ed30dc69c70423bf80f941aacb0ccea98d5fbe023e24418e980f364b",
+      "bytes": 1756
     },
     {
       "path": "src/task-store.js",
