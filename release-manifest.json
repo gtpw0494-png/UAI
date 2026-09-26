@@ -243,6 +243,11 @@
       "bytes": 3256
     },
     {
+      "path": "model/eval/speech_compare.py",
+      "sha256": "0fe90dacc234ae0d168ed01232d583621117bfa968fb9e2cddf9b066b9487327",
+      "bytes": 3800
+    },
+    {
       "path": "model/eval/vision_compare.py",
       "sha256": "c860e2371e403353f48b55bec8cb735c71ec4ca50d7f2441c305e61615fbce31",
       "bytes": 4520
@@ -316,6 +321,11 @@
       "path": "model/speech.py",
       "sha256": "a4186ca97fff3e207c4cd0ee6b36ef2c1b1417620b06f658de4acb73f766e7d3",
       "bytes": 3012
+    },
+    {
+      "path": "model/speech_runtime.py",
+      "sha256": "226b7462ac99ba1978b54bfc0f4d40bb892c6247fdb22b80e793653a50fb486c",
+      "bytes": 3569
     },
     {
       "path": "model/test_advanced.py",
