@@ -1,6 +1,10 @@
-# IntraultUniversalion v0.63.0
+# IntraultUniversalion v0.64.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.64 OneChat multimodal attachments
+
+The single OneChat surface can now carry governed local attachments into ForgeMultimodal while preserving conversation history. Image, audio and video artifacts remain model-gated by their promoted native checkpoints; text-like and PDF attachments are locally extracted when a verified parser is available. Attachment content hashes and provenance are stored with the chat turn and evidence envelope.
 
 ## v0.63 unified ForgeMultimodal fusion
 
