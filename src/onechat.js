@@ -76,6 +76,63 @@ export class OneChatRouter{
   const n=Math.max(1,Math.min(200,Number(limit)||50));
   return {state:"SUCCESS",chatId:id,turns:turns.slice(-n),count:Math.min(turns.length,n)};
  }
+ _conversationControls(){
+  const controls=new Map(),rows=this.store?.list?.()||[];
+  for(let i=0;i<rows.length;i++){
+    let x=null;try{x=this.store.get(rows[i].id);}catch{}
+    if(!x||x.kind!=="conversation-control"||!x.chatId)continue;
+    controls.set(x.chatId,{...(controls.get(x.chatId)||{}),...x});
+  }
+  return controls;
+ }
+ conversations({ownerId=null,query="",includeArchived=false,limit=100}={}){
+  const rows=this.store?.list?.()||[],controls=this._conversationControls(),map=new Map();
+  for(let i=0;i<rows.length;i++){
+    let x=null;try{x=this.store.get(rows[i].id);}catch{}
+    if(!x||x.kind!=="chat-turn"||!x.chatId)continue;
+    if(x.ownerId&&ownerId&&x.ownerId!==ownerId)continue;
+    const cur=map.get(x.chatId)||{chatId:x.chatId,title:null,createdAt:x.createdAt||null,updatedAt:x.createdAt||null,turns:0,attachments:0,evidence:0,preview:""};
+    cur.turns+=1;cur.attachments+=(x.attachments||[]).length;cur.evidence+=x.evidenceEnvelope?1:0;
+    cur.updatedAt=x.createdAt||cur.updatedAt;cur.preview=String(x.user||x.answer||cur.preview).slice(0,180);
+    map.set(x.chatId,cur);
+  }
+  for(const [chatId,control] of controls){
+    if(control.ownerId&&ownerId&&control.ownerId!==ownerId)continue;
+    const cur=map.get(chatId)||{chatId,title:null,createdAt:control.createdAt||null,updatedAt:control.createdAt||null,turns:0,attachments:0,evidence:0,preview:""};
+    cur.title=control.title??cur.title;cur.archived=control.archived===true;cur.deleted=control.deleted===true;cur.updatedAt=control.createdAt||cur.updatedAt;map.set(chatId,cur);
+  }
+  let out=[...map.values()].filter(x=>!x.deleted&&(includeArchived||!x.archived));
+  const needle=String(query||"").trim().toLowerCase();if(needle)out=out.filter(x=>[x.chatId,x.title,x.preview].some(v=>String(v||"").toLowerCase().includes(needle)));
+  out.sort((a,b)=>String(b.updatedAt||"").localeCompare(String(a.updatedAt||"")));
+  return {state:"SUCCESS",conversations:out.slice(0,Math.max(1,Math.min(500,Number(limit)||100))),total:out.length};
+ }
+ conversationControl(chatId,{ownerId=null,title=undefined,archived=undefined,deleted=undefined}={}){
+  const id=String(chatId||"").trim();if(!id)return {state:"BLOCKED",message:"chatId is required."};
+  const record=this.store.add({kind:"conversation-control",title:"OneChat conversation control",chatId:id,ownerId:ownerId||null,...(title!==undefined?{title:String(title).trim().slice(0,160)||null}:{}),...(archived!==undefined?{archived:archived===true}:{}),...(deleted!==undefined?{deleted:deleted===true}: {})});
+  this.audit?.append({type:"onechat.conversation.control",chatId:id,ownerId:ownerId||null,title:record.title||null,archived:record.archived??null,deleted:record.deleted??null});
+  return {state:"SUCCESS",chatId:id,control:{title:record.title||null,archived:record.archived===true,deleted:record.deleted===true,updatedAt:record.createdAt}};
+ }
+ deleteConversation(chatId,{ownerId=null}={}){
+  const id=String(chatId||"").trim();if(!id)return {state:"BLOCKED",message:"chatId is required."};
+  const rows=this.store?.list?.()||[],targets=[];
+  for(const row of rows){
+    let x=null;try{x=this.store.get(row.id);}catch{}
+    if(!x||x.chatId!==id)continue;
+    if(x.ownerId&&ownerId&&x.ownerId!==ownerId)continue;
+    if(["chat-turn","conversation-control"].includes(x.kind))targets.push(row.id);
+  }
+  for(const rid of targets)this.store.remove(rid);
+  this.lastEvidence.delete(id);this.conversation?.histories?.delete?.(id);
+  this.audit?.append({type:"onechat.conversation.deleted",chatId:id,ownerId:ownerId||null,recordsDeleted:targets.length,mediaDeleted:false});
+  return {state:"SUCCESS",chatId:id,recordsDeleted:targets.length,mediaDeleted:false,message:"Conversation records deleted. Registered media artifacts were retained."};
+ }
+ exportConversation(chatId,{ownerId=null}={}){
+  const id=String(chatId||"").trim(),history=this.history(id,{limit:200});
+  if(history.state!=="SUCCESS")return history;
+  const control=this._conversationControls().get(id)||{};
+  if(control.ownerId&&ownerId&&control.ownerId!==ownerId)return {state:"DENIED",message:"Conversation is owned by another identity."};
+  return {state:"SUCCESS",format:"uai.onechat.export.v1",exportedAt:new Date().toISOString(),chatId:id,title:control.title||null,archived:control.archived===true,turns:history.turns};
+ }
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
   try{
@@ -324,7 +381,7 @@ export class OneChatRouter{
     metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null,attachments:(prepared.artifacts||[]).map(x=>({id:x.id,modality:x.modality,contentHash:x.contentHash}))}
   });
   this.lastEvidence.set(chatId,evidenceEnvelope);
-  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
+  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,ownerId:input.ownerId||null,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
   return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,attachments:prepared.artifacts||[],allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
