@@ -221,7 +221,7 @@ export class OneChatRouter{
     const sources=(prior.claims||[]).flatMap(x=>x.support||[]).filter(x=>x.source_id||x.chunk_id);
     return {state:"SUCCESS",chatId,message:`Previous answer evidence: ${prior.claims?.length||0} claim(s); statuses ${JSON.stringify(summary)}; ${sources.length} cited source chunk(s); model ${prior.model?.id||prior.model?.provider||"none"}.`,responseMode:"evidence-explanation",modelUsed:Boolean(prior.model),evidenceEnvelope:prior,allocations:[],contributions:[],truth:"This explanation exposes structured evidence and execution metadata, not private chain-of-thought."};
   }
-  let allocations=this.allocations(message),contributions=[],researchContext=null;
+  const routing=input.routing||{allowCloud:input.allowCloud===true,provider:input.provider||null,model:input.model||null,task:input.task||null,modality:input.modality||null,maxTokens:input.maxTokens||null,temperature:input.temperature};\n  let allocations=this.allocations(message),contributions=[],researchContext=null;
   if(intent.research&&this.webResearch){
     researchContext=await this.webResearch.research(message,{maxSources:Number(input.maxResearchSources||6)});
     contributions.push({agent:"web-research",reason:"live governed multi-source research",result:{...researchContext,context:undefined}});
@@ -231,7 +231,7 @@ export class OneChatRouter{
   }
   for(const a of allocations){
     const executed=a.agent==="conversation"&&this.conversation
-      ?await this.conversation.chat({chatId,message,researchContext})
+      ?await this.conversation.chat({chatId,message,researchContext,routing})
       :await this.execute(a.agent,message,chatId,{ownerId:input.ownerId||null});
     contributions.push({agent:a.agent,reason:a.reason,result:executed});
   }
