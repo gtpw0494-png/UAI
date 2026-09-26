@@ -1,6 +1,17 @@
-# IntraultUniversalion v0.54.0
+# IntraultUniversalion v0.56.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.56 frontier model fabric
+
+- OneChat now has explicit model-routing controls while preserving local/offline execution as the default.
+- The model router can select truthful CONFIGURED cloud candidates and records CONNECTED only after successful runtime evidence.
+- Provider adapters now cover text/code/reasoning, provider-native vision, image generation, tool/structured-output contracts, embeddings and reranking where the selected provider advertises them.
+- Puter server-side access uses `PUTER_AUTH_TOKEN` with its documented OpenAI-compatible endpoint, enabling the same governed fabric to address supported GPT, Claude, Gemini, Grok, Cohere, MiniMax and open-ecosystem model IDs.
+- ForgeLM itself now exposes normalized neural embeddings and local cosine reranking from the promoted checkpoint.
+- Registry entries remain metadata only. Proprietary model weights/internal source are not copied, and local ForgeLM is not represented as frontier-equivalent without matching trained weights and benchmark evidence.
+- Local ForgeLM vision/image/audio/video generation, million-token context, production-scale distributed training and frontier-scale evaluation remain explicit gaps.
+
 
 ## v0.54 user-owned intelligence plane
 
