@@ -27,5 +27,7 @@ export class ForgeLMBridge{
   train(steps=80,{preset="termux-tiny",gradAccum=1}={}){return run("cli.py",["train","--steps",String(steps),"--preset",String(preset),"--grad-accum",String(gradAccum)],300000)}
   chat(prompt,max=64){return run("self_sufficient.py",["chat","--prompt",String(prompt),"--max-tokens",String(max)])}
   capability(task,prompt="",context="",max=128){return run("self_sufficient.py",[String(task),"--prompt",String(prompt),"--context",String(context),"--max-tokens",String(max)])}
+  embeddings(input){return this.capability("embeddings",JSON.stringify(Array.isArray(input)?input:[String(input)]),"",1)}
+  rerank(query,documents=[]){return this.capability("rerank",String(query),JSON.stringify(documents),1)}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
