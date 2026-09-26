@@ -16,7 +16,7 @@ export class MultimodalPipeline{
   }
   status(){
     const tools={pdftotext:command("pdftotext"),tesseract:command("tesseract"),ffmpeg:command("ffmpeg"),ffprobe:command("ffprobe")};
-    return {state:"SUCCESS",contract:"multimodal-artifact-v1",tools,pdf:tools.pdftotext?"CONNECTED":"UNAVAILABLE",ocr:tools.tesseract?"CONNECTED":"UNAVAILABLE",audioVideoProbe:tools.ffprobe?"CONNECTED":"UNAVAILABLE",audioTranscription:"UNAVAILABLE",videoSceneUnderstanding:"UNAVAILABLE",visionLanguage:"UNAVAILABLE",message:"Registration and evidence locators are local. OCR/PDF extraction require probed local tools; speech/vision/video reasoning remain unavailable until explicit local runtimes are configured."};
+    return {state:"SUCCESS",contract:"multimodal-artifact-v1",tools,pdf:tools.pdftotext?"CONNECTED":"UNAVAILABLE",ocr:tools.tesseract?"CONNECTED":"UNAVAILABLE",audioVideoProbe:tools.ffprobe?"CONNECTED":"UNAVAILABLE",message:"This status reports local artifact parsing/probing only. Native ForgeVision/ForgeAudio/ForgeVideo/ForgeMultimodal model availability is reported separately by the model capability registry."};
   }
   _resolve(file){const target=path.resolve(String(file||""));return this.allowedRoots.some(r=>within(r,target))?target:null;}
   register({path:file,sourceId=null,ownerId=null,metadata={}}={}){
