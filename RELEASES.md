@@ -1,5 +1,16 @@
 # Release history
 
+## v0.69.0 — Live OneChat Turn Sessions
+- Added owner-bound live OneChat turn sessions with queued, running and terminal states.
+- Added replayable SSE execution events for intent, attachments, collaborator allocation, tools, model phases, verification and persistence.
+- Added Stop generation and cancellation state handling.
+- Local ForgeLM subprocesses now receive AbortSignal and are terminated on cancellation.
+- Non-interruptible collaborators are checked at phase boundaries and late results are discarded after cancellation.
+- Added reconnect/resume from the last observed event sequence.
+- Added live progress UI and Stop control in the existing OneChat composer.
+- Added regression coverage for cancellation, ownership, event replay and late-result discard.
+- Truth boundary: v0.69 claims live execution-event streaming. It does not claim token-level model streaming unless a connected runtime actually emits token chunks.
+
 ## v0.68.0 — OneChat Turn Controls
 - Added per-turn Edit, Retry, Regenerate, Branch, Copy, Export and Evidence controls inside the existing OneChat stream.
 - Edit/retry/regenerate are append-only: they create a branch before the selected turn and re-run the user message rather than rewriting prior history.
