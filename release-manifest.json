@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "4671e6f901da70fd95b08800a12f37875eee85c3b23eb4cc9ad972cc1fc58559",
-      "bytes": 7021
+      "sha256": "40759a47be71a41457e56ae32e3434e12f87d569f6516d2cec9f97e6883008d7",
+      "bytes": 7154
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "ab2a0c92c53acfd1accae60cfcd7159bb94a06b1f438fe696d2d69feacee5daa",
-      "bytes": 13156
+      "sha256": "51ff2f5c6703584947519de2a0c40dc35cab1d760285905a95244e036fcc5c56",
+      "bytes": 14116
     },
     {
       "path": "RELEASES.md",
-      "sha256": "df2282dcd5b48fc86e06fa7bc98da977be6db401965a7222d011d358ef378ece",
-      "bytes": 20673
+      "sha256": "f285253299e7f9630821e7f66a44aaf54d087b988f51982efa9820f1322063cc",
+      "bytes": 21617
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "ff6e3d5502da651242ce2141d70a890e476e52f993889245d086bd2b9dee50da",
-      "bytes": 40884
+      "sha256": "ad46c5fbf79b295288a5abdbfe0d4db463b680f681410e660eeab8397d8eb8a4",
+      "bytes": 41746
     },
     {
       "path": "model/adaptation.py",
@@ -303,6 +303,11 @@
       "bytes": 1168
     },
     {
+      "path": "model/test_long_context.py",
+      "sha256": "3d7b47075bf7593d3a341d78836805aa0b22de4fd48bb76e3281babca3bdd6f1",
+      "bytes": 1823
+    },
+    {
       "path": "model/tokenizer.py",
       "sha256": "df8e3374ce933db5ff7861deafdf7a82acf3e7c2ac1626a9460728382d58c0d4",
       "bytes": 6295
@@ -319,8 +324,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "01322ee6f8fa3c6ab3de1bc3cefe62b753c4c74df62cd7765731d073f71d4b3e",
-      "bytes": 7045
+      "sha256": "15e9e13b40d41fbcd0ac595c6ceb13a1a64477a1ec45781a10b81dd8a89b5e2a",
+      "bytes": 7081
     },
     {
       "path": "public/app.js",
