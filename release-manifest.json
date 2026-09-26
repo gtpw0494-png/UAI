@@ -318,6 +318,11 @@
       "bytes": 1351
     },
     {
+      "path": "model/test_vision_runtime.py",
+      "sha256": "1854203ba7520d469526d350fcfe562f5dbf64588b335d8e6a223a010bf04ca0",
+      "bytes": 791
+    },
+    {
       "path": "model/tokenizer.py",
       "sha256": "df8e3374ce933db5ff7861deafdf7a82acf3e7c2ac1626a9460728382d58c0d4",
       "bytes": 6295
@@ -734,8 +739,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "72bacd9b937e3a82f6a40b30c3dd4027761f682d1dfe81002d43ad69cd4f4039",
-      "bytes": 2156
+      "sha256": "ab30749d710d67eb832c503d42e8829f06e9f4b078f76223aef4eb621120abb6",
+      "bytes": 2458
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
