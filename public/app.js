@@ -29,6 +29,19 @@ async function refreshConversations(){
 async function switchConversation(id){
   chatId=String(id);sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;resetStream("Loading governed conversation history…");await loadConversationHistory({force:true});await refreshConversations();
 }
+function turnControls(turnId){
+  const id=String(turnId||"");if(!id)return "";
+  return `<div class="turn-controls" data-turn-id="${esc(id)}"><button type="button" data-turn-action="edit">Edit</button><button type="button" data-turn-action="retry">Retry</button><button type="button" data-turn-action="regenerate">Regenerate</button><button type="button" data-turn-action="branch">Branch</button><button type="button" data-turn-action="copy">Copy</button><button type="button" data-turn-action="export">Export</button><button type="button" data-turn-action="evidence">Evidence</button></div><div class="turn-evidence" hidden></div>`;
+}
+async function fetchTurn(id){
+  const x=await api("/api/onechat/turn?turnId="+encodeURIComponent(id));
+  if(x.state!=="SUCCESS")throw new Error(x.message||"Turn unavailable.");
+  return x.turn;
+}
+async function downloadJson(name,data){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download=String(name||"uai-export").replace(/[^A-Za-z0-9._-]/g,"_")+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
 function attachmentCards(items=[]){
   if(!items.length)return "";
   return `<div class="history-attachments">${items.map(a=>{
@@ -52,7 +65,7 @@ async function loadConversationHistory({force=false}={}){
       $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
       for(const t of turns){
         bubble("user","You",`<p>${esc(t.user||"")}</p>${attachmentCards(t.attachments||[])}`,t.createdAt||"");
-        bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
+        bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>${turnControls(t.id)}`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
       }
     }
     historyLoadedFor=chatId;
@@ -180,6 +193,36 @@ $("#conversationList").addEventListener("click",async e=>{
     await refreshConversations();
   }catch(err){bubble("error","Conversation",`<p>${esc(err.message)}</p>`);}
 });
+$("#stream").addEventListener("click",async e=>{
+  const btn=e.target.closest("button[data-turn-action]");if(!btn)return;
+  const controls=btn.closest(".turn-controls"),turnId=controls?.dataset.turnId;if(!turnId)return;
+  const action=btn.dataset.turnAction;
+  try{
+    if(action==="copy"){
+      const t=await fetchTurn(turnId);await navigator.clipboard.writeText(t.answer||"");btn.textContent="Copied";setTimeout(()=>btn.textContent="Copy",1200);return;
+    }
+    if(action==="export"){
+      const data=await api("/api/onechat/turn-export?turnId="+encodeURIComponent(turnId));await downloadJson("uai-turn-"+turnId,data);return;
+    }
+    if(action==="evidence"){
+      const panel=controls.parentElement.querySelector(".turn-evidence");if(!panel)return;
+      if(!panel.hidden){panel.hidden=true;return;}
+      const t=await fetchTurn(turnId),evidence=t.evidenceEnvelope||{message:"No structured evidence envelope stored for this turn."};
+      panel.innerHTML=`<pre>${esc(JSON.stringify(evidence,null,2))}</pre>`;panel.hidden=false;return;
+    }
+    if(action==="branch"){
+      const b=await post("/api/onechat/branch",{turnId,includeTurn:true});await switchConversation(b.chatId);return;
+    }
+    if(action==="edit"){
+      const t=await fetchTurn(turnId),edited=prompt("Edit this message and create a branch:",t.user||"");
+      if(edited===null||!edited.trim())return;
+      const out=await post("/api/onechat/retry",{turnId,message:edited.trim()});chatId=out.chatId;sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;await loadConversationHistory({force:true});await refreshConversations();return;
+    }
+    if(action==="retry"||action==="regenerate"){
+      const out=await post("/api/onechat/retry",{turnId});chatId=out.chatId;sessionStorage.setItem(CHAT_KEY,chatId);historyLoadedFor=null;await loadConversationHistory({force:true});await refreshConversations();return;
+    }
+  }catch(err){bubble("error","Turn control",`<p>${esc(err.message)}</p>`);}
+});
 $("#attachBtn").addEventListener("click",()=>$("#filePicker").click());
 $("#filePicker").addEventListener("change",e=>{
   const files=[...e.target.files||[]];
@@ -208,7 +251,7 @@ $("#composer").addEventListener("submit",async e=>{
     input.value="";pendingAttachments=[];renderAttachmentTray();historyLoadedFor=chatId;wait.remove();await refreshConversations();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
     const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
     const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
-    bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${evidence}${ev}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
+    bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${turnControls(x.knowledgeId)}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
   }catch(err){
     wait.remove();if(err.status===401){await refreshAuth();bubble("error","Authentication","<p>Unlock the local owner session before using OneChat actions.</p>");}
     else if(err.status===409&&err.data?.binding){bubble("error","Approval required",`<p>${esc(err.message)}</p><pre>${esc(JSON.stringify(err.data.binding,null,2))}</pre>`);}
