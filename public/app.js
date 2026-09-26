@@ -8,6 +8,9 @@ sessionStorage.setItem(CHAT_KEY,chatId);
 const MAX_ATTACHMENTS=16,UPLOAD_CHUNK_BYTES=1_500_000;
 let pendingAttachments=[];
 let historyLoadedFor=null;
+let activeTurnSession=null;
+let activeEventSource=null;
+let activeEventSeq=0;
 
 const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
 function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
@@ -37,6 +40,58 @@ async function fetchTurn(id){
   const x=await api("/api/onechat/turn?turnId="+encodeURIComponent(id));
   if(x.state!=="SUCCESS")throw new Error(x.message||"Turn unavailable.");
   return x.turn;
+}
+function renderLiveProgress(container,event){
+  if(!container)return;
+  const body=container.querySelector("div")||container;
+  let log=body.querySelector(".live-progress");
+  if(!log){log=document.createElement("div");log.className="live-progress";body.appendChild(log);}
+  if(event.type==="allocations"){
+    const names=(event.allocations||[]).map(x=>x.agent).join(" + ");
+    log.insertAdjacentHTML("beforeend",`<div><b>Collaborators</b><span>${esc(names||"none")}</span></div>`);
+  }else if(event.type==="tool"){
+    log.insertAdjacentHTML("beforeend",`<div><b>${esc(event.agent||"tool")}</b><span>${esc(event.state||"UNKNOWN")} · ${esc(event.message||"")}</span></div>`);
+  }else if(["phase","model","state","persisted"].includes(event.type)){
+    log.insertAdjacentHTML("beforeend",`<div><b>${esc(event.phase||event.type)}</b><span>${esc(event.state||"")} ${esc(event.message||"")}</span></div>`);
+  }
+  log.scrollTop=log.scrollHeight;
+}
+function finishLiveTurn(session,wait){
+  activeTurnSession=null;activeEventSeq=0;
+  if(activeEventSource){activeEventSource.close();activeEventSource=null;}
+  $("#stopBtn").hidden=true;$("#sendBtn").hidden=false;$("#sendBtn").disabled=false;$("#attachBtn").disabled=false;
+  const x=session?.result||null;
+  if(wait?.isConnected)wait.remove();
+  if(x){
+    const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
+    bubble(x.state==="SUCCESS"?"assistant":x.state==="PARTIAL"?"partial":x.state==="CANCELLED"?"system":"error","IntraultUniversalion",`<p>${esc(x.message||"No response")}</p>${turnControls(x.knowledgeId)}`,`${esc(x.state||session.state||"UNKNOWN")} · ${esc(x.responseMode||"response")} · ${esc(alloc)}`);
+    historyLoadedFor=chatId;refreshConversations();refresh();
+  }else if(session?.state==="CANCELLED"){
+    bubble("system","Generation stopped","<p>The turn was cancelled. A cancelled result was not persisted as a completed answer.</p>","CANCELLED");
+  }else{
+    bubble("error","Turn session",`<p>${esc(session?.error||("Turn ended in "+(session?.state||"UNKNOWN")))}</p>`);
+  }
+}
+function connectTurnEvents(sessionId,wait){
+  if(activeEventSource)activeEventSource.close();
+  const es=new EventSource("/api/onechat/events?id="+encodeURIComponent(sessionId)+"&since="+encodeURIComponent(activeEventSeq));
+  activeEventSource=es;
+  es.onmessage=e=>{
+    let event=null;try{event=JSON.parse(e.data);}catch{return;}
+    if(event.seq)activeEventSeq=Math.max(activeEventSeq,event.seq);
+    renderLiveProgress(wait,event);
+    if(event.type==="done")finishLiveTurn(event.session,wait);
+  };
+  es.onerror=()=>{
+    es.close();
+    if(activeTurnSession===sessionId)setTimeout(()=>connectTurnEvents(sessionId,wait),500);
+  };
+}
+async function startLiveTurn(payload,wait){
+  const started=await post("/api/onechat/start",payload),session=started.session;
+  if(!session?.id)throw new Error("Turn session did not return an ID.");
+  activeTurnSession=session.id;activeEventSeq=0;$("#sendBtn").hidden=true;$("#stopBtn").hidden=false;
+  connectTurnEvents(session.id,wait);
 }
 async function downloadJson(name,data){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");
@@ -223,6 +278,13 @@ $("#stream").addEventListener("click",async e=>{
     }
   }catch(err){bubble("error","Turn control",`<p>${esc(err.message)}</p>`);}
 });
+$("#stopBtn").addEventListener("click",async()=>{
+  if(!activeTurnSession)return;
+  const id=activeTurnSession;$("#stopBtn").disabled=true;
+  try{await post("/api/onechat/stop",{id});}
+  catch(err){bubble("error","Stop generation",`<p>${esc(err.message)}</p>`);}
+  finally{$("#stopBtn").disabled=false;}
+});
 $("#attachBtn").addEventListener("click",()=>$("#filePicker").click());
 $("#filePicker").addEventListener("change",e=>{
   const files=[...e.target.files||[]];
@@ -237,25 +299,21 @@ $("#attachmentTray").addEventListener("click",e=>{
   const i=Number(btn.dataset.index);if(Number.isInteger(i))pendingAttachments.splice(i,1);renderAttachmentTray();
 });
 $("#composer").addEventListener("submit",async e=>{
-  e.preventDefault();const input=$("#chatIn"),text=input.value.trim(),send=$("#sendBtn"),attach=$("#attachBtn");if(!text&&!pendingAttachments.length)return;
+  e.preventDefault();const input=$("#chatIn"),text=input.value.trim(),send=$("#sendBtn"),attach=$("#attachBtn");if((!text&&!pendingAttachments.length)||activeTurnSession)return;
   send.disabled=true;attach.disabled=true;
   const shownText=text||"Analyse the attached evidence.";
   const names=pendingAttachments.map(x=>`<span class="inline-file">${esc(x.file.name)}</span>`).join(" ");
   bubble("user","You",`<p>${esc(shownText)}</p>${names?`<div class="inline-files">${names}</div>`:""}`);
-  bubble("working","System","<p>Securing attachments, allocating collaborators and verifying result states…</p>");const wait=$("#stream .working:last-child");
+  bubble("working","System","<p>Securing attachments and starting governed turn execution…</p>");const wait=$("#stream .working:last-child");
   try{
     const uploaded=[];
     for(const item of pendingAttachments){await uploadAttachment(item);uploaded.push({mediaId:item.mediaId,label:item.file.name,sourceId:item.artifact?.sourceId||("onechat-upload:"+item.file.name)});}
-    const x=await post("/api/onechat",{message:shownText,chatId,attachments:uploaded});
-    if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}
-    input.value="";pendingAttachments=[];renderAttachmentTray();historyLoadedFor=chatId;wait.remove();await refreshConversations();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
-    const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
-    const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
-    bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${turnControls(x.knowledgeId)}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
+    await startLiveTurn({message:shownText,chatId,attachments:uploaded},wait);
+    input.value="";pendingAttachments=[];renderAttachmentTray();
   }catch(err){
     wait.remove();if(err.status===401){await refreshAuth();bubble("error","Authentication","<p>Unlock the local owner session before using OneChat actions.</p>");}
     else if(err.status===409&&err.data?.binding){bubble("error","Approval required",`<p>${esc(err.message)}</p><pre>${esc(JSON.stringify(err.data.binding,null,2))}</pre>`);}
     else bubble("error","Error",`<p>${esc(err.message)}</p>`);
-  }finally{send.disabled=false;attach.disabled=false;}
+  }finally{if(!activeTurnSession){send.disabled=false;attach.disabled=false;}}
 });
 Promise.all([refresh(),refreshAuth()]);
