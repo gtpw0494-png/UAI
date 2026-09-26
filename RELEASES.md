@@ -1,5 +1,14 @@
 # Release history
 
+## v0.64.0 — OneChat Native Multimodal Attachments
+- Added first-class OneChat attachments for local image, audio, video, text/table/structured and PDF evidence.
+- Added history-aware multimodal conversation routing so attachment turns and later text follow-ups share the same chat continuity.
+- Added local media registration, content hashing, provenance evidence and parser-backed document extraction.
+- Added governed /api/media/status, /list, /register and /extract endpoints.
+- Added attachment request validation and approved-root path enforcement.
+- Added authoritative OneChat attachment regression tests.
+- Clarified that the media pipeline reports parser/probe availability separately from native model runtime availability.
+
 ## v0.63.0 — Unified ForgeMultimodal Fusion
 - Added a parameter-free local fusion assembler that combines image, audio, video, document/context and text tokens into one bounded ForgeLM prefill.
 - Added a unified native multimodal runtime and governed /api/multimodal/status + /api/multimodal/chat surface.
