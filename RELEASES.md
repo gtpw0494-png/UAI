@@ -1,5 +1,14 @@
 # Release history
 
+## v0.71.0 — Durable OneChat Session Recovery
+- Added atomic local state snapshots and append-only JSONL event journals for live OneChat turn sessions.
+- Added startup reconciliation so terminal sessions remain terminal, queued sessions safely resume, and previously running/cancel-requested sessions become INTERRUPTED.
+- Added explicit owner-triggered resume for interrupted turns as a new linked session; interrupted history is never rewritten.
+- Added browser recovery of the active session ID across page reloads and automatic SSE reconnection.
+- Added explicit interrupted-generation UI and Resume interrupted turn control.
+- Added replay recovery from persisted event journals even when the last state snapshot lagged token events.
+- Added regression coverage for restart reconciliation, owner isolation, queued recovery, interrupted state and linked resume.
+
 ## v0.70.0 — True ForgeLM Token Streaming
 - Added generation-time token callbacks directly inside ForgeLM's local sampling loop.
 - Added cumulative decoded token events from the plain-text and multimodal Python runtimes.
