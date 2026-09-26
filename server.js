@@ -182,6 +182,11 @@ function send(res,status,data,type="application/json"){
   }
   res.writeHead(status,{"content-type":`${type}; charset=utf-8`,"cache-control":"no-store"});res.end(payload);
 }
+function sha256FileSync(file){
+  const h=crypto.createHash("sha256"),fd=fs.openSync(file,"r"),buf=Buffer.allocUnsafe(1024*1024);
+  try{let n=0;do{n=fs.readSync(fd,buf,0,buf.length,null);if(n)h.update(buf.subarray(0,n));}while(n);}finally{fs.closeSync(fd);}
+  return h.digest("hex");
+}
 function readBody(req){
   if(req._uaiBodyPromise)return req._uaiBodyPromise;
   req._uaiBodyPromise=new Promise((resolve,reject)=>{let d="";req.on("data",chunk=>{d+=chunk;if(d.length>4_000_000){const e=new Error("Request body exceeds 4 MB limit.");e.statusCode=400;reject(e);}});req.on("end",()=>resolve(JSON.parse(d||"{}")));req.on("error",reject);});
@@ -580,7 +585,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(meta.bytes>400_000_000){try{fs.unlinkSync(part)}catch{};try{fs.unlinkSync(metaPath)}catch{};return send(res,413,{state:"BLOCKED",message:"Upload exceeds 400 MB media limit."});}
     fs.writeFileSync(metaPath,JSON.stringify(meta),"utf8");
     if(meta.next<total)return send(res,200,{state:"PARTIAL",uploadId,index,nextIndex:meta.next,total,bytes:meta.bytes});
-    const digest=crypto.createHash("sha256").update(fs.readFileSync(part)).digest("hex"),finalName=digest.slice(0,16)+"-"+name,finalPath=path.join(mediaRoot,finalName);
+    const digest=sha256FileSync(part),finalName=digest.slice(0,16)+"-"+name,finalPath=path.join(mediaRoot,finalName);
     fs.renameSync(part,finalPath);try{fs.unlinkSync(metaPath)}catch{}
     const registered=multimodalPipeline.register({path:finalPath,sourceId:meta.sourceId||("upload:"+name),ownerId:req.uaiSecurity.auth.identityId,metadata:{originalName:name,mime:meta.mime,uploadId,sha256:digest}});
     return send(res,registered.state==="SUCCESS"?200:409,{...registered,upload:{uploadId,name,path:finalPath,sha256:digest,bytes:meta.bytes}});
