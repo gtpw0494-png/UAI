@@ -81,7 +81,7 @@ export class ConversationEngine{
     const cloudRequested=routing?.allowCloud===true||Boolean(routing?.provider||routing?.model)||String(process.env.IUV_CHAT_ALLOW_CLOUD||"").toLowerCase()==="true";
     const routeRequirements={task:routing?.task||"chat",modality:routing?.modality||"text",privacy:cloudRequested?(routing?.privacy||"cloud-ok"):"local-only",offline:cloudRequested?Boolean(routing?.offline):true,contextTokens:approxTokens(prompt),provider:routing?.provider||null,model:routing?.model||null};
     onEvent?.({type:"model",phase:"routing",message:"Selecting a connected model runtime."});
-    const routed=await this.modelRouter.generate(routeRequirements,prompt,{system,maxTokens:Number(routing?.maxTokens||768),temperature:routing?.temperature??0.7,acceptResult:text=>usable(text)});
+    const routed=await this.modelRouter.generate(routeRequirements,prompt,{system,maxTokens:Number(routing?.maxTokens||768),temperature:routing?.temperature??0.7,acceptResult:text=>usable(text),signal,onEvent});
     if(signal?.aborted)return {state:"CANCELLED",message:"Generation cancelled; routed result discarded.",modelUsed:false};
     if(routed.state==="SUCCESS"&&usable(routed.text)){
       this._remember(id,"user",msg);this._remember(id,"assistant",routed.text);
