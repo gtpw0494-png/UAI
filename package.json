@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.72.0",
+  "version": "0.73.0",
   "private": true,
-  "description": "Independent local-first AI with first-install ForgeLM bootstrap promotion, durable OneChat recovery and true local token streaming.",
+  "description": "Independent local-first AI with Termux-safe Node child execution, first-install ForgeLM bootstrap, durable OneChat recovery and improved natural web/capability responses.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -106,14 +106,15 @@
     "test:onechat-attachments": "node verification/onechat-multimodal-attachments.test.mjs",
     "test:onechat-attachment-ui": "node verification/onechat-attachment-ui.test.mjs",
     "test:onechat-history-attachments": "node verification/onechat-history-attachments.test.mjs",
-    "test:browser-syntax": "node --check public/app.js",
+    "test:browser-syntax": "node scripts/check-browser-syntax.mjs",
     "test:onechat-conversations": "node verification/onechat-conversation-management.test.mjs",
     "test:onechat-turn-controls": "node verification/onechat-turn-controls.test.mjs",
     "test:onechat-live-sessions": "node verification/onechat-live-sessions.test.mjs",
     "test:native-streaming": "python3 model/test_streaming.py",
     "test:onechat-durable-recovery": "node verification/onechat-durable-session-recovery.test.mjs",
     "model:bootstrap": "node scripts/bootstrap-forgelm.mjs",
-    "test:forgelm-bootstrap": "node verification/forgelm-bootstrap-promotion.test.mjs"
+    "test:forgelm-bootstrap": "node verification/forgelm-bootstrap-promotion.test.mjs",
+    "test:termux-onechat-recovery": "node verification/termux-onechat-recovery-v073.test.mjs"
   },
   "engines": {
     "node": ">=20"
