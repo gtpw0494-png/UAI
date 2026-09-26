@@ -47,7 +47,7 @@ export class ModelRouter{
       if(!routable(h)||!satisfies(c,r))continue;
       ranked.push({candidate:c,health:h,score:candidateScore(c,r)});
     }
-    ranked.sort((a,b)=>b.score-a.score||String(a.candidate.id).localeCompare(String(b.candidate.id)));
+    ranked.sort((a,b)=>b.score-a.score);
     if(!ranked.length)return {state:"UNAVAILABLE",message:"No configured model satisfies the requested execution constraints.",requirements:r,candidates:health};
     return {state:"SUCCESS",requirements:r,selected:{id:ranked[0].candidate.id,provider:ranked[0].candidate.provider,model:ranked[0].candidate.model||null,score:ranked[0].score,health:ranked[0].health},alternatives:ranked.slice(1,4).map(x=>({id:x.candidate.id,provider:x.candidate.provider,model:x.candidate.model||null,score:x.score,health:x.health})),ranked};
   }
