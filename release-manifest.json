@@ -454,13 +454,13 @@
     },
     {
       "path": "public/index.html",
-      "sha256": "62ad1e577f90660b42781fef48346ae22a94635c4d31d6f0b1e5034b0d5aa8c9",
-      "bytes": 2684
+      "sha256": "e45a2e55e850b239ec697ac2fffde20fade753389922fec1ab9b370a2f843025",
+      "bytes": 2675
     },
     {
       "path": "public/styles.css",
-      "sha256": "bea163dc0a200dc3b572010ddf8529c19b9584bed92e2f42a9a575e936667a2c",
-      "bytes": 3675
+      "sha256": "68cca66fcc8c2c45787f79b5e416542313da67952b6070e6caa5b153c32cc18d",
+      "bytes": 5280
     },
     {
       "path": "requirements/README.md",
