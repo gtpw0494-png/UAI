@@ -939,8 +939,8 @@
     },
     {
       "path": "src/iubin.js",
-      "sha256": "0b03cb5d2fe5a94569b96dd1d4cff0d93d3de25e4cd04722b587a2bb3d4afe46",
-      "bytes": 1369
+      "sha256": "9deba3237c94280c9081867b5d9aa3aa21d26908033f1be98618234fa159af46",
+      "bytes": 1522
     },
     {
       "path": "src/knowledge-autonomy.js",
