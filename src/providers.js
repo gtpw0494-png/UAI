@@ -62,9 +62,11 @@ export class ProviderHub {
       const raw=await r.text(); let json; try { json=JSON.parse(raw); } catch { json={raw:raw.slice(0,4000)}; }
       if(!r.ok) throw new Error(`HTTP ${r.status}: ${JSON.stringify(json).slice(0,1200)}`);
       const value=extract(json); if(value===undefined||value===null||value==="") throw new Error("Provider response contained no recognized output");
+      const structuredValue=value&&typeof value==="object"&&!Array.isArray(value)&&(Object.hasOwn(value,"text")||Object.hasOwn(value,"toolCalls"));
+      if(structuredValue&&!String(value.text||"")&&!(Array.isArray(value.toolCalls)&&value.toolCalls.length)) throw new Error("Provider response contained neither text nor tool calls.");
       this.runtime.set(id,{availability:"CONNECTED",lastSuccess:now(),operation});
       const evidence={type:"provider-call",provider:id,model:cfg.model,operation,latencyMs:Date.now()-started}; this.audit?.append(evidence);
-      const structured=value&&typeof value==="object"&&!Array.isArray(value)&&(Object.hasOwn(value,"text")||Object.hasOwn(value,"toolCalls"));
+      const structured=structuredValue;
       return {state:"SUCCESS",provider:id,model:cfg.model,output:structured?(value.output??value):value,text:structured?String(value.text||""):(typeof value==="string"?value:undefined),toolCalls:structured?(value.toolCalls||[]):undefined,evidence:[evidence]};
     } catch(error) {
       this.runtime.set(id,{availability:"ERROR",lastError:now(),operation});
