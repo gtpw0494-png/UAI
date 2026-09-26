@@ -155,6 +155,7 @@ const pipeline42=fs.readFileSync(new URL('./model/data_pipeline.py',import.meta.
 console.log('v0.37-v0.42 verification/storage/model/plugin/data-security tests passed');
 // v0.55 autonomous knowledge / candidate-promotion production boundaries
 await import("./verification/knowledge-autonomy-v055.test.mjs");
+await import("./verification/verified-knowledge-sqlite.test.mjs");
 await import("./verification/cloud-knowledge-store.test.mjs");
 await import("./verification/knowledge-training-job.test.mjs");
 await import("./verification/forgelm-candidate-promotion.test.mjs");
