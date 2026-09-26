@@ -618,6 +618,11 @@
       "bytes": 6301
     },
     {
+      "path": "scripts/bootstrap-forgelm.mjs",
+      "sha256": "87819cb92c91788be429facbbefe3dbd5bcb02b54e325977732b834dfc91fd1a",
+      "bytes": 2794
+    },
+    {
       "path": "scripts/build-release-manifest.py",
       "sha256": "5a22cd19702e79e722c6dc146f8bbc39abef40acafb05a0cb20c39626b455a9b",
       "bytes": 1518
