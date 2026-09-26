@@ -1,5 +1,14 @@
 # Release history
 
+## v0.73.0 — Termux Runtime and OneChat Recovery
+- Added a Termux-safe child-process environment that removes libtermux-exec from Node syntax-validation children when necessary.
+- Changed HTTP verification server launches to absolute server.js paths for Android/Termux compatibility.
+- Replaced the browser syntax npm script with a Termux-safe wrapper.
+- Added natural capability/help responses backed by live capability truth.
+- Web capability questions now probe actual search reachability and expose DNS/provider errors rather than returning a generic collaboration failure.
+- Natural bare-domain ingestion such as `ingest www.example.com` is normalized to HTTPS and routed through the governed WebCorpus boundary.
+- Added an exact regression test covering Termux preload handling and the reported OneChat prompts.
+
 ## v0.72.0 — First-Install ForgeLM Bootstrap Recovery
 - Fixed the fresh-install deadlock where ForgeLM candidate evaluation required an already-promoted live checkpoint.
 - Added a dedicated first-checkpoint evaluation covering loadability, finite loss metadata, training-trend sanity and local generation.
