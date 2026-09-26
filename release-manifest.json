@@ -1004,8 +1004,8 @@
     },
     {
       "path": "src/model-catalog.js",
-      "sha256": "ebfc792b2ec321a1c3f92f82c44582a408d35e58df151ad7870b3abf2f336288",
-      "bytes": 4328
+      "sha256": "e3bf4ecdd13ee50ba798750e1d2ce9cdd5dc59986b4421a876467b6bcb109bd7",
+      "bytes": 4686
     },
     {
       "path": "src/model-lab.js",
@@ -1104,8 +1104,8 @@
     },
     {
       "path": "src/providers.js",
-      "sha256": "87d9ed72df98bbecb0864d6b12e56553954ac2263a3eb5d568ae37af7d66380d",
-      "bytes": 14974
+      "sha256": "625c9a52743fbdd239fe8a40325a84339b17d30c5842fd665c9eca4aa2f7ff96",
+      "bytes": 15237
     },
     {
       "path": "src/release-integrity.js",
