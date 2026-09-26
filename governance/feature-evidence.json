@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.60.0",
+  "generated_for": "0.61.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1146,6 +1146,28 @@
         "verification/forgeaudio-candidate-promotion.test.mjs"
       ],
       "evidence_note": "ForgeAudio is a local spectral audio encoder/projector aligned to ForgeLM embeddings, with hash-bound evaluation, explicit owner-approved promotion, rollback, runtime health and path-bounded native audio-language inference. No external AI or speech API is used. PCM WAV is the dependency-free supported input format."
+    },
+    {
+      "id": "forgespeech-native-runtime-v061",
+      "introduced": "0.61.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/speech.py",
+        "model/train_speech.py",
+        "model/eval/speech_compare.py",
+        "model/speech_runtime.py",
+        "src/forgespeech-candidate-promotion.js",
+        "src/forgelm-bridge.js",
+        "src/capabilities.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "model/test_speech.py",
+        "verification/forgespeech-candidate-promotion.test.mjs"
+      ],
+      "evidence_note": "ForgeSpeech is a local ForgeLM-conditioned waveform generator trained from local text/WAV pairs with waveform and spectral losses. Candidate evaluation, hash binding, explicit owner-approved promotion, rollback, runtime health, and path-bounded WAV synthesis are implemented. No external TTS model or cloud speech API is used; output quality depends on locally trained data and checkpoint quality."
     }
   ]
 }
