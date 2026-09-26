@@ -114,8 +114,14 @@ jobs:
       - name: Verify OneChat multimodal attachments
         run: npm run test:onechat-attachments
 
+      - name: Verify browser JavaScript syntax
+        run: npm run test:browser-syntax
+
       - name: Verify OneChat attachment UI contract
         run: npm run test:onechat-attachment-ui
+
+      - name: Verify persistent OneChat attachment history
+        run: npm run test:onechat-history-attachments
 
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
