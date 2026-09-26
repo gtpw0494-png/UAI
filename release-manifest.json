@@ -289,8 +289,8 @@
     },
     {
       "path": "model/self_sufficient.py",
-      "sha256": "cc845bc97434a9d9cba32ef4d40e6792acab369e62f4633d71f35d5de7900bf7",
-      "bytes": 2538
+      "sha256": "66865a15cc612db664d7d15eddf553c0ea812bac95ee71985d8c2ff02a4d4cf2",
+      "bytes": 2996
     },
     {
       "path": "model/test_advanced.py",
