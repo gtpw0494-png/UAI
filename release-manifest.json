@@ -914,8 +914,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "b0e225898bcd88f090cd98a71c9717d65e40c626faf7d69bfa1da562819efded",
-      "bytes": 22680
+      "sha256": "6c18ae20ccd7aab71ebab0d68b9d284c07becd4c33d8afbc548a55c60969119b",
+      "bytes": 23131
     },
     {
       "path": "src/governance/trusted-device.js",
