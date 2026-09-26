@@ -4,11 +4,13 @@ import zlib from "node:zlib";
 const MAGIC = Buffer.from("IUB1");
 
 function canonical(value) {
-  if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
+  if (value === undefined) return "null";
+  if (Array.isArray(value)) return `[${value.map(v=>v===undefined?"null":canonical(v)).join(",")}]`;
   if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map(k => `${JSON.stringify(k)}:${canonical(value[k])}`).join(",")}}`;
+    return `{${Object.keys(value).filter(k=>value[k]!==undefined).sort().map(k => `${JSON.stringify(k)}:${canonical(value[k])}`).join(",")}}`;
   }
-  return JSON.stringify(value);
+  const encoded=JSON.stringify(value);
+  return encoded===undefined?"null":encoded;
 }
 
 export function encodeIU(record) {
