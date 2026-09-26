@@ -153,7 +153,7 @@ const fixture=http.createServer((req,res)=>{
 await new Promise((resolve,reject)=>{fixture.once("error",reject);fixture.listen(llamaPort,"127.0.0.1",resolve);});
 
 const temp=fs.mkdtempSync(path.join(os.tmpdir(),"uai-v049-http-"));
-const child=spawn(process.execPath,["server.js"],{
+const child=spawn(process.execPath,[path.resolve("server.js")],{
   cwd:root,
   env:{...process.env,PORT:String(uaiPort),IUV_STATE_DIR:path.join(temp,"state"),IUV_DB_PATH:path.join(temp,"knowledge.sqlite3"),IUV_OBJECT_ROOT:path.join(temp,"objects"),LLAMA_SERVER_URL:`http://127.0.0.1:${llamaPort}`},
   stdio:["ignore","pipe","pipe"]
