@@ -108,6 +108,9 @@ jobs:
       - name: Verify ForgeSpeech governed lifecycle
         run: npm run test:speech-lifecycle
 
+      - name: Verify ForgeVideo governed lifecycle
+        run: npm run test:video-lifecycle
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
@@ -224,3 +227,7 @@ jobs:
       - name: Run ForgeSpeech v0.61 native speech test
         working-directory: model
         run: python3 test_speech.py
+
+      - name: Run ForgeVideo v0.62 native video test
+        working-directory: model
+        run: python3 test_video.py
