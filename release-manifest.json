@@ -158,6 +158,11 @@
       "bytes": 5176
     },
     {
+      "path": "model/audio_runtime.py",
+      "sha256": "3ba45c96c6b8e9f9aecc16c06c1697e0b3f9514ef2c48b86477444c08198b5e4",
+      "bytes": 4497
+    },
+    {
       "path": "model/benchmark_inference.py",
       "sha256": "0edc961ad107d0ba960cefbe98f10c6a770aca4f2b2f1a431b6281286fe799e3",
       "bytes": 805
@@ -311,6 +316,11 @@
       "path": "model/test_advanced.py",
       "sha256": "fa17781b773e38b698859de8c008f815532b95d5ada5c18ac51876c24f4d4bff",
       "bytes": 697
+    },
+    {
+      "path": "model/test_audio.py",
+      "sha256": "a8b121708940207096c0a6edff4c929f002f0c10b1b8b4cdd899e8337b0d1216",
+      "bytes": 1595
     },
     {
       "path": "model/test_forgelm.py",
@@ -669,8 +679,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "84a27aecf7b5210034a88a0d584cd584a32cf9a694f7e7afca889e31eaa1a383",
-      "bytes": 8150
+      "sha256": "1cd19e1b24cfade055ea3ba8999bd52f369c13629301530003568f9c6f55a02d",
+      "bytes": 9195
     },
     {
       "path": "src/capability-truth.js",
@@ -759,8 +769,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "ab30749d710d67eb832c503d42e8829f06e9f4b078f76223aef4eb621120abb6",
-      "bytes": 2458
+      "sha256": "a9dcad27287e7d138f15d40059a0a29212db29d754899482209dc3f2aba956eb",
+      "bytes": 2758
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -1451,6 +1461,11 @@
       "path": "verification/document-http.test.mjs",
       "sha256": "4a4510121ffedaa128d748b932cafae7749c1c4fed6b5f779c5f57d9122efa5c",
       "bytes": 5085
+    },
+    {
+      "path": "verification/forgeaudio-candidate-promotion.test.mjs",
+      "sha256": "1953d4b64b8f1f7dd8d34f1141efa0c74662fdd56ba4767886335c3cd75197b2",
+      "bytes": 1948
     },
     {
       "path": "verification/forgelm-candidate-promotion.test.mjs",
