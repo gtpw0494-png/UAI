@@ -1,5 +1,16 @@
 # Release history
 
+## v0.70.0 — True ForgeLM Token Streaming
+- Added generation-time token callbacks directly inside ForgeLM's local sampling loop.
+- Added cumulative decoded token events from the plain-text and multimodal Python runtimes.
+- Added newline-delimited token-event parsing in the ForgeLM subprocess bridge.
+- Forwarded token events and cancellation through the local ModelRouter and ConversationEngine.
+- Added progressive assistant-text rendering in the existing OneChat live session.
+- Stop generation terminates the same local ForgeLM process producing the stream.
+- Added a dedicated neural token-callback test plus live-session token-event coverage.
+- Fixed IUB persistence so undefined values cannot generate invalid canonical JSON.
+- Capability truth now exposes local.forgelm.token_stream only when the promoted ForgeLM runtime is ready.
+
 ## v0.69.0 — Live OneChat Turn Sessions
 - Added owner-bound live OneChat turn sessions with queued, running and terminal states.
 - Added replayable SSE execution events for intent, attachments, collaborator allocation, tools, model phases, verification and persistence.
