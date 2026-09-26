@@ -28,6 +28,7 @@ class ForgeConfig:
     d_ff:int=192
     max_seq_len:int=192
     rope_theta:float=10000.0
+    rope_scale:float=1.0
     dropout:float=0.0
     num_experts:int=0
     experts_per_token:int=2
@@ -40,10 +41,10 @@ class RMSNorm(nn.Module):
     def __init__(self,dim,eps=1e-6): super().__init__();self.weight=nn.Parameter(torch.ones(dim));self.eps=eps
     def forward(self,x): return self.weight*x*torch.rsqrt(x.pow(2).mean(-1,keepdim=True)+self.eps)
 
-def rotary(x,positions,theta):
+def rotary(x,positions,theta,scale=1.0):
     d=x.shape[-1];assert d%2==0;half=d//2
     inv=1.0/(theta ** (torch.arange(0,half,device=x.device,dtype=torch.float32)/half))
-    ang=positions.to(torch.float32)[:,None]*inv[None,:]
+    scaled=positions.to(torch.float32)/max(float(scale),1.0)\n    ang=scaled[:,None]*inv[None,:]
     cos,sin=ang.cos().to(x.dtype)[None,None,:,:],ang.sin().to(x.dtype)[None,None,:,:]
     a,b=x[...,:half],x[...,half:]
     return torch.cat([a*cos-b*sin,a*sin+b*cos],dim=-1)
@@ -51,14 +52,14 @@ def rotary(x,positions,theta):
 class CausalAttention(nn.Module):
     def __init__(self,c:ForgeConfig):
         super().__init__();assert c.d_model%c.n_heads==0 and c.n_heads%c.n_kv_heads==0
-        self.h=c.n_heads;self.kv=c.n_kv_heads;self.hd=c.d_model//c.n_heads;self.theta=c.rope_theta;self.cache_window=c.cache_window
+        self.h=c.n_heads;self.kv=c.n_kv_heads;self.hd=c.d_model//c.n_heads;self.theta=c.rope_theta;self.rope_scale=max(float(c.rope_scale),1.0);self.cache_window=c.cache_window
         self.q=nn.Linear(c.d_model,self.h*self.hd,bias=False);self.k=nn.Linear(c.d_model,self.kv*self.hd,bias=False);self.v=nn.Linear(c.d_model,self.kv*self.hd,bias=False);self.o=nn.Linear(c.d_model,c.d_model,bias=False);self.drop=c.dropout
     def forward(self,x,cache=None,start_pos=0,use_cache=False):
         B,T,_=x.shape
         q=self.q(x).view(B,T,self.h,self.hd).transpose(1,2)
         k=self.k(x).view(B,T,self.kv,self.hd).transpose(1,2)
         v=self.v(x).view(B,T,self.kv,self.hd).transpose(1,2)
-        positions=torch.arange(start_pos,start_pos+T,device=x.device);q=rotary(q,positions,self.theta);k=rotary(k,positions,self.theta)
+        positions=torch.arange(start_pos,start_pos+T,device=x.device);q=rotary(q,positions,self.theta,self.rope_scale);k=rotary(k,positions,self.theta,self.rope_scale)
         offset=start_pos
         if cache is not None:
             oldk,oldv=cache["k"],cache["v"];offset=int(cache.get("offset",max(0,start_pos-oldk.shape[2])))
