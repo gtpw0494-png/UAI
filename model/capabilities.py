@@ -10,7 +10,7 @@ import ast, json, re
 from dataclasses import dataclass
 from typing import Any, Callable
 
-TASKS = {"chat", "code", "reasoning", "planning", "json", "tool", "vision", "image"}
+TASKS = {"chat", "code", "reasoning", "planning", "json", "tool", "embeddings", "rerank", "vision", "image"}
 
 @dataclass
 class ToolSpec:
@@ -27,7 +27,7 @@ class ForgeCapabilities:
     def status(self):
         return {"state":"SUCCESS", "engine":"ForgeLM", "selfSufficient":True,
                 "networkRequired":False, "tasks":sorted(TASKS),
-                "implemented":["chat","code","reasoning","planning","json","tool"],
+                "implemented":["chat","code","reasoning","planning","json","tool","embeddings","rerank"],
                 "partial":["vision","image"],
                 "truth":"Vision and image generation require a trained local multimodal encoder/decoder; no external model is silently used."}
 
@@ -40,6 +40,8 @@ class ForgeCapabilities:
           "planning":"Return an ordered plan with prerequisites, risks, verification, and rollback.",
           "json":"Return only valid JSON matching the requested shape. No markdown fences.",
           "tool":"Return a JSON tool proposal only; never claim that a tool ran.",
+          "embeddings":"Return local semantic embedding evidence from the promoted ForgeLM checkpoint.",
+          "rerank":"Rank supplied local documents against the query using ForgeLM embedding similarity.",
           "vision":"Describe only locally supplied image observations; report unavailable when no local vision encoder exists.",
           "image":"Return an image-generation plan or local renderer instruction; do not claim pixels were generated unless a local renderer is installed."
         }
@@ -56,6 +58,28 @@ class ForgeCapabilities:
             missing=[x for x in schema.get("required",[]) if x not in value]
             if missing:return {"state":"FAILURE","message":f"missing required fields: {missing}"}
         return {"state":"SUCCESS","value":value}
+
+
+    def embed_texts(self, texts):
+        import torch
+        rows=[]
+        for text in (texts if isinstance(texts,list) else [texts]):
+            ids=self.tokenizer.encode(str(text))[:self.model.config.max_seq_len]
+            if not ids: ids=[0]
+            tensor=torch.tensor([ids],dtype=torch.long,device=next(self.model.parameters()).device)
+            vector=self.model.embed(tensor)[0].detach().cpu().tolist()
+            rows.append(vector)
+        return {"state":"SUCCESS","engine":"ForgeLM","embeddings":rows,"dimensions":len(rows[0]) if rows else 0,"normalized":True,"externalModels":False}
+
+    def rerank(self, query, documents):
+        import math
+        if not isinstance(documents,list) or not documents:return {"state":"BLOCKED","message":"rerank requires a non-empty document list"}
+        vectors=self.embed_texts([str(query),*map(str,documents)])["embeddings"];q=vectors[0]
+        scored=[]
+        for i,v in enumerate(vectors[1:]):
+            score=sum(a*b for a,b in zip(q,v));scored.append({"index":i,"score":float(score),"document":documents[i]})
+        scored.sort(key=lambda x:(-x["score"],x["index"]))
+        return {"state":"SUCCESS","engine":"ForgeLM","query":str(query),"results":scored,"externalModels":False}
 
     def inspect_code(self, source, language="python"):
         if language.lower() not in ("python","py"): return {"state":"PARTIAL","language":language,"message":"Only Python AST inspection is currently local and built in."}
