@@ -1,6 +1,16 @@
-# IntraultUniversalion v0.56.0
+# IntraultUniversalion v0.57.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.57 independent ForgeLM context
+
+Core intelligence remains local-first. The ordinary model router now contains only local runtimes unless external-model compatibility is explicitly enabled.
+
+ForgeLM v0.57 adds two independent context mechanisms:
+- **RoPE-scaled attention** for checkpoints trained/configured with larger active windows.
+- **Native dense context memory** for source material larger than the active window. ForgeLM tokenizes the source, embeds chunks with its own hidden states, ranks them locally and injects only the relevant evidence into the bounded generation context.
+
+These are intentionally reported separately: retrieval from a 100K-token source is not represented as 100K-token full-attention inference. External GPT/Claude/Gemini/Grok adapters remain optional interoperability/research components and are not required for core ForgeLM chat, reasoning, coding, structured output, embeddings, reranking or long-context retrieval.
 
 ## v0.56 frontier model fabric
 
