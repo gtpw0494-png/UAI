@@ -363,6 +363,11 @@
       "bytes": 1823
     },
     {
+      "path": "model/test_multimodal.py",
+      "sha256": "8ad68d8fa516e88678d3b531c894a367e773b9e7127a89975b8adf7f69d7d4e0",
+      "bytes": 2193
+    },
+    {
       "path": "model/test_speech.py",
       "sha256": "20653567586593ddb06b2a07c6bbeb42c98d8ffdbfa2207536318a5d70294335",
       "bytes": 1199
