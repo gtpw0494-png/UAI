@@ -1004,8 +1004,8 @@
     },
     {
       "path": "src/model-catalog.js",
-      "sha256": "358617fd76045635ca7a536c3ad63ee38f5dae254b0d367ab5f23698846af155",
-      "bytes": 2698
+      "sha256": "ebfc792b2ec321a1c3f92f82c44582a408d35e58df151ad7870b3abf2f336288",
+      "bytes": 4328
     },
     {
       "path": "src/model-lab.js",
