@@ -174,8 +174,8 @@
     },
     {
       "path": "model/config_presets.json",
-      "sha256": "466a983c8306f95518d62d5272dd62e714b417f6263f5fb17a4030c5c11ad501",
-      "bytes": 1113
+      "sha256": "71d07a77a2ee8a1a9a75d6ede2a9241eaec188dca883f085d7c83b93e8b699a0",
+      "bytes": 2327
     },
     {
       "path": "model/continual.py",
@@ -234,8 +234,8 @@
     },
     {
       "path": "model/forgelm.py",
-      "sha256": "7ebe2d4b6cef80b6fcea180ab4a1e3d3e131a94684ec4481f8e5640f62bf366f",
-      "bytes": 12153
+      "sha256": "cced519463ee5ab63ec2d1d88bdb7965056e3356c15bbbddb4d4250c37cb9dde",
+      "bytes": 12306
     },
     {
       "path": "model/forgereason.py",
@@ -574,8 +574,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "63369697d78581fd97dc4412df176dfd6ab2f32bd9df445f47d92d7e0949a7d9",
-      "bytes": 57672
+      "sha256": "50b8ce352626cb2a82f78518a4d33011971e065c27d77b3c0ed6ca675c00e7a8",
+      "bytes": 57807
     },
     {
       "path": "src/action-envelope.js",
@@ -704,8 +704,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "286aae08b2e2c2d63f66450f4196e643d5a732807f0504c8f2235ecdaf1d6871",
-      "bytes": 2039
+      "sha256": "72bacd9b937e3a82f6a40b30c3dd4027761f682d1dfe81002d43ad69cd4f4039",
+      "bytes": 2156
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -1034,8 +1034,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "5320af14d12bf83227e7813d587e21187f2ddda6ffdd3f2e5f696b98ce4c3102",
-      "bytes": 8882
+      "sha256": "75db86591b0e6d6179c86c0f7a8cebcb3b733b9929f9be4da49734c8191b301e",
+      "bytes": 9036
     },
     {
       "path": "src/multimodal/pipeline.js",
