@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "private": true,
-  "description": "Independent local-first AI operating environment with governed autonomous knowledge research, SQLite/WAL verified knowledge, optional cloud durability, candidate-first ForgeLM learning, regression-gated promotion and owner-bound rollback.",
+  "description": "Independent local-first AI operating environment with ForgeLM-native reasoning, code, structured output, embeddings, reranking, long-context memory, governed tools, verified knowledge and owner-bound learning.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -90,7 +90,8 @@
     "test:forgelm-cli-policy": "node verification/forgelm-cli-policy.test.mjs",
     "test:knowledge-production-http": "node verification/knowledge-production-http-v055.test.mjs",
     "test:verified-knowledge-sqlite": "node verification/verified-knowledge-sqlite.test.mjs",
-    "test:frontier-models": "node verification/model-catalog.test.mjs && node verification/frontier-provider-routing-v056.test.mjs"
+    "test:frontier-models": "node verification/model-catalog.test.mjs && node verification/frontier-provider-routing-v056.test.mjs",
+    "test:native-context": "python3 model/test_long_context.py"
   },
   "engines": {
     "node": ">=20"
