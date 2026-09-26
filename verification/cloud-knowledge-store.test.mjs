@@ -39,3 +39,16 @@ const recovery=await recoveryHybrid.recoverFromCloud({verifier:{verifyFacts(item
 assert.equal(verifierCalls,1);
 assert.equal(recovery.recovered,0);
 assert.equal(recoveryLocal.filterTrainingEligible(10).length,0);
+
+const syncRoot=fs.mkdtempSync(path.join(os.tmpdir(),"uai-cloud-sync-"));
+const syncLocal=new VerifiedKnowledgeStore({stateRoot:syncRoot});
+syncLocal.upsertMany([fact]);
+let synced=0;
+const syncHybrid=new HybridKnowledgeStore({local:syncLocal,cloud:{status:()=>({state:"CONFIGURED"}),putMany:async rows=>{synced=rows.length;return{state:"SUCCESS",written:rows.length,connected:true}}}});
+const syncResult=await syncHybrid.syncCloud({limit:10});
+assert.equal(syncResult.state,"SUCCESS");
+assert.equal(syncResult.attempted,1);
+assert.equal(syncResult.written,1);
+assert.equal(synced,1);
+syncLocal.close();
+console.log("cloud reconciliation: ok");
