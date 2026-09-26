@@ -6,7 +6,8 @@ const CHAT_KEY="uai_onechat_id";
 let chatId=sessionStorage.getItem(CHAT_KEY)||("chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)));
 sessionStorage.setItem(CHAT_KEY,chatId);
 const MAX_ATTACHMENTS=16,UPLOAD_CHUNK_BYTES=1_500_000;
-let pendingAttachments=[];\nlet historyLoadedFor=null;
+let pendingAttachments=[];
+let historyLoadedFor=null;
 
 const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
 function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
@@ -50,7 +51,7 @@ function bytesToBase64(buffer){
   return btoa(binary);
 }
 async function uploadAttachment(item){
-  if(item.uploadedPath)return item;
+  if(item.mediaId)return item;
   const file=item.file,total=Math.max(1,Math.ceil(file.size/UPLOAD_CHUNK_BYTES));
   if(total>256)throw new Error(`${file.name} exceeds the 400 MB governed media limit.`);
   const uploadId=(globalThis.crypto?.randomUUID?.()||("upload-"+Date.now()+"-"+Math.random().toString(36).slice(2))).replace(/[^A-Za-z0-9_-]/g,"_");
@@ -114,7 +115,8 @@ async function refreshAuth(){
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
     $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
     $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
-    await refreshOperations();if(s.authenticated)await loadConversationHistory();\n  }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
+    await refreshOperations();if(s.authenticated)await loadConversationHistory();
+  }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
   const s=await api("/api/status"),connected=s.capabilities.filter(x=>x.availability==="CONNECTED").length;
@@ -139,7 +141,7 @@ $("#filePicker").addEventListener("change",e=>{
   const files=[...e.target.files||[]];
   for(const file of files){
     if(pendingAttachments.length>=MAX_ATTACHMENTS)break;
-    if(!pendingAttachments.some(x=>fileKey(x.file)===fileKey(file)))pendingAttachments.push({file,state:"ready",progress:0,uploadedPath:null});
+    if(!pendingAttachments.some(x=>fileKey(x.file)===fileKey(file)))pendingAttachments.push({file,state:"ready",progress:0,mediaId:null});
   }
   e.target.value="";renderAttachmentTray();
 });
