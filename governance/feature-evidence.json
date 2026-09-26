@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.69.0",
+  "generated_for": "0.70.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1324,6 +1324,29 @@
         "verification/onechat-attachment-ui.test.mjs"
       ],
       "evidence_note": "OneChat can start owner-bound asynchronous turn sessions, stream structured phase/tool/model/persistence events over replayable SSE, reconnect from a last-seen event sequence, request cancellation, and discard late results after cancellation. Local ForgeLM subprocess calls receive AbortSignal and are terminated on Stop. Other collaborators are cancellation-checked at phase boundaries. This feature claims event streaming; token streaming is only available when a runtime emits token chunks and is not inferred from progress events."
+    },
+    {
+      "id": "forgelm-token-streaming-v070",
+      "introduced": "0.70.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/forgelm.py",
+        "model/self_sufficient.py",
+        "model/multimodal_runtime.py",
+        "src/forgelm-bridge.js",
+        "src/models/router.js",
+        "src/conversation-engine.js",
+        "src/onechat.js",
+        "src/onechat-turn-sessions.js",
+        "public/app.js",
+        "src/capabilities.js"
+      ],
+      "tests": [
+        "model/test_streaming.py",
+        "verification/onechat-live-sessions.test.mjs",
+        "verification/onechat-attachment-ui.test.mjs"
+      ],
+      "evidence_note": "ForgeLM.generate emits callbacks from the actual local sampling loop. The Python text and multimodal runtimes serialize cumulative decoded text as newline-delimited token events, the Node bridge parses and forwards those events through the local model router and OneChat session journal, and the browser progressively renders them over replayable SSE. Stop uses the same AbortSignal to terminate the local ForgeLM subprocess. Token streaming is only claimed for ForgeLM paths that emit these generation-time events."
     }
   ]
 }
