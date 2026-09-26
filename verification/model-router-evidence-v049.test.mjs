@@ -127,7 +127,7 @@ assert.equal(verifyEvidenceEnvelope(docTurn.evidenceEnvelope).state,"SUCCESS");
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const app=fs.readFileSync(path.join(root,"public","app.js"),"utf8");
 assert.match(app,/sessionStorage\.getItem\(CHAT_KEY\)/);
-assert.match(app,/message:text,chatId/);
+assert.match(app,/post\("\/api\/onechat"/);\nassert.match(app,/chatId,attachments:uploaded/);
 assert.match(app,/evidenceEnvelope\|\|x\.evidence/);
 
 const freePort=()=>new Promise((resolve,reject)=>{
