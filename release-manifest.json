@@ -1199,8 +1199,8 @@
     },
     {
       "path": "src/onechat-turn-sessions.js",
-      "sha256": "a597376ecc8bd9c42ec0e28e517b8f6eb84984f6e6ee06b5854706b64cc99a61",
-      "bytes": 3663
+      "sha256": "e6adf2d14810a850e20f79b32eda13000a028d0b2a53fb94bb34920d8717f075",
+      "bytes": 7830
     },
     {
       "path": "src/onechat.js",
