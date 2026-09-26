@@ -195,3 +195,7 @@ jobs:
       - name: Run advanced objective test
         working-directory: model
         run: python3 test_advanced.py
+
+      - name: Run ForgeLM v0.57 native long-context test
+        working-directory: model
+        run: python3 test_long_context.py
