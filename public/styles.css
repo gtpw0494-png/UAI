@@ -55,3 +55,5 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .live-progress>div{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:11px}
 .live-progress b{color:#a8daf5}
 .live-progress span{color:#c8d6df}
+
+.resume-session{margin-top:8px;background:#17354a;border-color:#4b7ca0}
