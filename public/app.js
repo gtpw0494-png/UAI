@@ -5,6 +5,38 @@ let authState={authenticated:false};
 const CHAT_KEY="uai_onechat_id";
 let chatId=sessionStorage.getItem(CHAT_KEY)||("chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)));
 sessionStorage.setItem(CHAT_KEY,chatId);
+const MAX_ATTACHMENTS=16,UPLOAD_CHUNK_BYTES=1_500_000;
+let pendingAttachments=[];
+
+const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
+function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
+function renderAttachmentTray(){
+  const tray=$("#attachmentTray");if(!tray)return;
+  tray.hidden=!pendingAttachments.length;
+  tray.innerHTML=pendingAttachments.map((x,i)=>`<div class="attachment-chip ${esc(x.state||"ready")}"><div><b>${esc(x.file.name)}</b><small>${esc(humanBytes(x.file.size))} · ${esc(x.file.type||"file")}</small><div class="upload-bar"><span style="width:${Math.max(0,Math.min(100,Number(x.progress||0)))}%"></span></div></div><span class="attachment-state">${esc(x.state||"ready")}</span><button type="button" class="remove-attachment" data-index="${i}" aria-label="Remove attachment">×</button></div>`).join("");
+}
+function bytesToBase64(buffer){
+  const bytes=new Uint8Array(buffer);let binary="",step=0x8000;
+  for(let i=0;i<bytes.length;i+=step)binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+step,bytes.length)));
+  return btoa(binary);
+}
+async function uploadAttachment(item){
+  if(item.uploadedPath)return item;
+  const file=item.file,total=Math.max(1,Math.ceil(file.size/UPLOAD_CHUNK_BYTES));
+  if(total>256)throw new Error(`${file.name} exceeds the 400 MB governed media limit.`);
+  const uploadId=(globalThis.crypto?.randomUUID?.()||("upload-"+Date.now()+"-"+Math.random().toString(36).slice(2))).replace(/[^A-Za-z0-9_-]/g,"_");
+  item.state="uploading";item.progress=0;renderAttachmentTray();
+  for(let index=0;index<total;index++){
+    const part=file.slice(index*UPLOAD_CHUNK_BYTES,Math.min(file.size,(index+1)*UPLOAD_CHUNK_BYTES));
+    const data=bytesToBase64(await part.arrayBuffer());
+    const out=await post("/api/media/upload",{uploadId,index,total,name:file.name,mime:file.type||"application/octet-stream",sourceId:"onechat-upload:"+file.name,data});
+    item.progress=Math.round(((index+1)/total)*100);item.state=out.state==="PARTIAL"?"uploading":"registered";
+    if(out.upload?.path){item.uploadedPath=out.upload.path;item.artifact=out.artifact||null;item.sha256=out.upload.sha256||null;}
+    renderAttachmentTray();
+  }
+  if(!item.uploadedPath)throw new Error("Upload completed without a governed media path.");
+  item.state="ready";item.progress=100;renderAttachmentTray();return item;
+}
 
 async function api(url,{method="GET",body=null}={}){
   const headers={};
@@ -74,11 +106,32 @@ $("#authForm").addEventListener("submit",async e=>{
 $("#logoutBtn").addEventListener("click",async()=>{
   try{await post("/api/auth/logout",{});await refreshAuth();await refresh();bubble("system","Security","<p>Local owner session locked.</p>");}catch(err){bubble("error","Authentication",`<p>${esc(err.message)}</p>`);}
 });
+$("#attachBtn").addEventListener("click",()=>$("#filePicker").click());
+$("#filePicker").addEventListener("change",e=>{
+  const files=[...e.target.files||[]];
+  for(const file of files){
+    if(pendingAttachments.length>=MAX_ATTACHMENTS)break;
+    if(!pendingAttachments.some(x=>fileKey(x.file)===fileKey(file)))pendingAttachments.push({file,state:"ready",progress:0,uploadedPath:null});
+  }
+  e.target.value="";renderAttachmentTray();
+});
+$("#attachmentTray").addEventListener("click",e=>{
+  const btn=e.target.closest(".remove-attachment");if(!btn)return;
+  const i=Number(btn.dataset.index);if(Number.isInteger(i))pendingAttachments.splice(i,1);renderAttachmentTray();
+});
 $("#composer").addEventListener("submit",async e=>{
-  e.preventDefault();const input=$("#chatIn"),text=input.value.trim();if(!text)return;input.value="";
-  bubble("user","You",`<p>${esc(text)}</p>`);bubble("working","System","<p>Allocating collaborators and verifying result states…</p>");const wait=$("#stream .working:last-child");
+  e.preventDefault();const input=$("#chatIn"),text=input.value.trim(),send=$("#sendBtn"),attach=$("#attachBtn");if(!text&&!pendingAttachments.length)return;
+  send.disabled=true;attach.disabled=true;
+  const shownText=text||"Analyse the attached evidence.";
+  const names=pendingAttachments.map(x=>`<span class="inline-file">${esc(x.file.name)}</span>`).join(" ");
+  bubble("user","You",`<p>${esc(shownText)}</p>${names?`<div class="inline-files">${names}</div>`:""}`);
+  bubble("working","System","<p>Securing attachments, allocating collaborators and verifying result states…</p>");const wait=$("#stream .working:last-child");
   try{
-    const x=await post("/api/onechat",{message:text,chatId});if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
+    const uploaded=[];
+    for(const item of pendingAttachments){await uploadAttachment(item);uploaded.push({path:item.uploadedPath,label:item.file.name,sourceId:item.artifact?.sourceId||("onechat-upload:"+item.file.name)});}
+    const x=await post("/api/onechat",{message:shownText,chatId,attachments:uploaded});
+    if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}
+    input.value="";pendingAttachments=[];renderAttachmentTray();wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
     const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
     const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
     bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${evidence}${ev}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
@@ -86,6 +139,6 @@ $("#composer").addEventListener("submit",async e=>{
     wait.remove();if(err.status===401){await refreshAuth();bubble("error","Authentication","<p>Unlock the local owner session before using OneChat actions.</p>");}
     else if(err.status===409&&err.data?.binding){bubble("error","Approval required",`<p>${esc(err.message)}</p><pre>${esc(JSON.stringify(err.data.binding,null,2))}</pre>`);}
     else bubble("error","Error",`<p>${esc(err.message)}</p>`);
-  }
+  }finally{send.disabled=false;attach.disabled=false;}
 });
 Promise.all([refresh(),refreshAuth()]);
