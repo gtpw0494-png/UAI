@@ -7,8 +7,8 @@ const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 function run(script,args,timeout=120000,{signal=null,onEvent=null}={}){
   return new Promise(resolve=>{
     const p=spawn(process.env.PYTHON||"python3",[path.join(root,"model",script),...args],{cwd:path.join(root,"model")});
-    let out="",err="",settled=false,lineBuffer="";
-    const finish=payload=>{if(settled)return;settled=true;clearTimeout(timer);resolve(payload)};
+    let out="",err="",settled=false,lineBuffer="",timer=null;
+    const finish=payload=>{if(settled)return;settled=true;if(timer)clearTimeout(timer);resolve(payload)};
     p.stdout.on("data",x=>{
       const chunk=String(x);out+=chunk;lineBuffer+=chunk;
       let i;
@@ -28,7 +28,7 @@ function run(script,args,timeout=120000,{signal=null,onEvent=null}={}){
     });
     const abort=()=>{try{p.kill("SIGTERM")}catch{};finish({state:"CANCELLED",message:`${script} cancelled`,script})};
     if(signal){if(signal.aborted)return abort();signal.addEventListener("abort",abort,{once:true});}
-    const timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
+    timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
   });
 }
 
