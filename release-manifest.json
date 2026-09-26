@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.55.0",
+  "version": "0.56.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -314,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "240e4c07b759bb0794db0bfbad49df9a8ab90793df2570f8700541190078502e",
-      "bytes": 6912
+      "sha256": "01322ee6f8fa3c6ab3de1bc3cefe62b753c4c74df62cd7765731d073f71d4b3e",
+      "bytes": 7045
     },
     {
       "path": "public/app.js",
@@ -1029,8 +1029,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "ddcb5cbb5b2f6ec4b4214ee61d9d1bba9fab69160df40b1294ba98340521fe30",
-      "bytes": 7948
+      "sha256": "3a84ae1c8cfccb5675066cb1ab04365521f338cb448558eb26a475ddfcb9d7c3",
+      "bytes": 8098
     },
     {
       "path": "src/multimodal/pipeline.js",
@@ -1044,8 +1044,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "466bc602f6ca17373d4d863b24985f4938cfb343cbad2a8d06ed254613cc845f",
-      "bytes": 33643
+      "sha256": "a9c20da685858a10007dea84cc7dcd88e2f005f3e8c333bd5b38b91bece3e584",
+      "bytes": 33889
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -1403,6 +1403,11 @@
       "bytes": 408
     },
     {
+      "path": "verification/frontier-provider-routing-v056.test.mjs",
+      "sha256": "5bb8302bdefb7aaea93cd48a1739e07ffa9be110067cd1998a70d1bd7a9a6433",
+      "bytes": 3274
+    },
+    {
       "path": "verification/knowledge-autonomy-v055.test.mjs",
       "sha256": "853140a8ede8cd726bbb0652d125ffbafca9c6af2a0aed7d2c6ea1cb2d72705b",
       "bytes": 2068
@@ -1434,8 +1439,8 @@
     },
     {
       "path": "verification/model-catalog.test.mjs",
-      "sha256": "50456d564338cbf839ea16832c13d841b7c353c9f2f9a1fdc2d34c7c78fe527b",
-      "bytes": 686
+      "sha256": "ffd9c65b9b55bb30c3a9d5f1af9350cd8f81edb133e3b0602ade13c0517cd02a",
+      "bytes": 1135
     },
     {
       "path": "verification/model-lab-promotion.test.mjs",
