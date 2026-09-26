@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.61.0
+# IntraultUniversalion v0.62.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.62 native ForgeVideo
+
+ForgeVideo extends the independent multimodal stack from still images to temporal visual sequences. Frames are extracted locally, encoded through ForgeVision, modeled across time by a native temporal transformer, projected into ForgeLM hidden space, and jointly processed with text prompts through ForgeLM.
+
+Training and evaluation use local video-text data. Promotion is evaluation-gated, hash-bound, explicitly owner-approved, and rollback-capable. Runtime capability truth remains separate from checkpoint presence: native video understanding is CONNECTED only when promoted ForgeVideo and ForgeLM checkpoints actually load and are dimension-compatible.
 
 ## v0.61 native ForgeSpeech
 
