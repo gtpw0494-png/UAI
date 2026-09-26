@@ -1,6 +1,6 @@
 import {buildSourceResearchCapabilities} from "./source-capabilities.js";
 export function buildCapabilityRegistry(providerHub,extras={}){
-  const model=extras.model||{},vision=extras.vision||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
+  const model=extras.model||{},vision=extras.vision||{},audio=extras.audio||{},deps=extras.deps?.dependencies||{},langgraph=extras.langgraph||{},runtime=extras.runtimeServices||{};
   const modelReady=model.state==="SUCCESS"&&model.checkpointExists===true;
   const service=(name,fallback)=>runtime?.[name]||fallback;
   const billing=service("billing",{availability:"UNAVAILABLE",executable:false,reason:"Live billing adapter has not been probed."});
@@ -32,6 +32,9 @@ export function buildCapabilityRegistry(providerHub,extras={}){
     {id:"local.forgevision.architecture",availability:"CONNECTED",executable:true,reason:"Trainable native visual patch encoder and ForgeLM-space projector are present in local source."},
     {id:"local.forgevision.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"ForgeVision alignment training can run locally against ForgeLM text embeddings.":"Training requires a working local PyTorch runtime.",constraints:["image-caption data required","candidate checkpoint only","evaluation and explicit promotion required"]},
     {id:"local.forgevision.semantic_infer",availability:vision.state==="CONNECTED"?"CONNECTED":(vision.checkpointExists?"CONFIGURED":"UNAVAILABLE"),executable:vision.state==="CONNECTED",reason:vision.message||"No promoted/evaluated ForgeVision runtime is connected.",constraints:["promoted ForgeVision checkpoint required","promoted ForgeLM checkpoint required","local runtime health check required","no external model fallback"]},
+    {id:"local.forgeaudio.architecture",availability:"CONNECTED",executable:true,reason:"Trainable local spectral audio encoder and ForgeLM-space projector are present."},
+    {id:"local.forgeaudio.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"ForgeAudio alignment training can run locally against ForgeLM text embeddings.":"Training requires a working local PyTorch runtime.",constraints:["PCM WAV audio-text data required","candidate checkpoint only","evaluation and explicit promotion required"]},
+    {id:"local.forgeaudio.semantic_infer",availability:audio.state==="CONNECTED"?"CONNECTED":(audio.audioCheckpointExists?"CONFIGURED":"UNAVAILABLE"),executable:audio.state==="CONNECTED",reason:audio.message||"No promoted/evaluated ForgeAudio runtime is connected.",constraints:["promoted ForgeAudio checkpoint required","promoted ForgeLM checkpoint required","local runtime health check required","no external model fallback"]},
     {id:"local.forgelm.train",availability:model.state==="SUCCESS"?"CONNECTED":"UNAVAILABLE",executable:model.state==="SUCCESS",reason:model.state==="SUCCESS"?"Local neural training runtime verified.":"Training requires a working PyTorch runtime; Termux provides python-torch."},
     {id:"local.langgraph.orchestration",availability:langgraph.availability||"UNAVAILABLE",executable:langgraph.availability==="CONNECTED",reason:langgraph.reason||"Install @langchain/langgraph and @langchain/core; built-in OneChat orchestration remains available without it."},
     {id:"local.ui.serve",availability:"CONNECTED",executable:true},
