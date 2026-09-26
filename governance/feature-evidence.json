@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.66.0",
+  "generated_for": "0.67.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1266,6 +1266,26 @@
         "verification/onechat-attachment-ui.test.mjs"
       ],
       "evidence_note": "OneChat can restore persisted turns with sanitized attachment metadata, render governed image/audio/video/document cards, and reopen registered media by media ID through an authenticated content endpoint. Browser uploads and future OneChat turns use media IDs instead of server filesystem paths; history responses omit paths, and media content resolution revalidates owner identity, approved roots and file existence."
+    },
+    {
+      "id": "onechat-conversation-management-v067",
+      "introduced": "0.67.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/store.js",
+        "src/onechat.js",
+        "server.js",
+        "src/governance/request-schemas.js",
+        "public/index.html",
+        "public/app.js",
+        "public/styles.css"
+      ],
+      "tests": [
+        "verification/onechat-conversation-management.test.mjs",
+        "verification/onechat-history-attachments.test.mjs",
+        "verification/onechat-attachment-ui.test.mjs"
+      ],
+      "evidence_note": "OneChat now provides owner-bound local conversation listing/search, in-place switching, new chat, rename, archive/unarchive, sanitized JSON export and explicit deletion of chat/control records while retaining registered media artifacts. The same OneChat surface remains the only user-facing chat UI."
     }
   ]
 }
