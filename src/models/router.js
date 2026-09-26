@@ -85,9 +85,13 @@ export function buildLocalModelCandidates({llamaRuntime=null,forgelm=null}={}){
   });
   if(forgelm)out.push({
     id:"forgelm-local",provider:"forgelm",local:true,offline:true,privacy:"local-only",
-    tasks:["chat","classification","summarization","reasoning","planning","code","structured-output"],modalities:["text"],contextTokens:null,
+    tasks:["chat","classification","summarization","reasoning","planning","code","structured-output","embeddings","rerank"],modalities:["text"],contextTokens:null,
     health:async()=>{const s=await forgelm.status();const ok=s?.state==="SUCCESS"&&s?.checkpointExists===true;return {availability:ok?"CONNECTED":"UNAVAILABLE",executable:ok,reason:ok?"Verified ForgeLM checkpoint is locally available.":(s?.message||"ForgeLM checkpoint is unavailable."),evidence:s};},
-    generate:async({prompt,system="",maxTokens=384})=>forgelm.chat([system,prompt].filter(Boolean).join("\n\n"),maxTokens)
+    generate:async({prompt,system="",maxTokens=384,documents=[],requirements={}})=>{
+      if(requirements.task==="embeddings")return forgelm.embeddings(prompt);
+      if(requirements.task==="rerank")return forgelm.rerank(prompt,documents);
+      return forgelm.chat([system,prompt].filter(Boolean).join("\n\n"),maxTokens);
+    }
   });
   return out;
 }
@@ -100,10 +104,10 @@ export function buildProviderModelCandidates(providerHub){
     modalities:["text",...(cfg.capabilities.includes("vision")?["vision"]:[]),...(cfg.capabilities.includes("image")?["image"]:[])],
     contextTokens:null,
     health:()=>providerHub.health(cfg.id),
-    generate:async({prompt,system="",maxTokens=1024,temperature=0.7,images=[],schema=null,tools=null,requirements={}})=>{
+    generate:async({prompt,system="",maxTokens=1024,temperature=0.7,images=[],documents=[],schema=null,tools=null,requirements={}})=>{
       const task=requirements.task||"chat",modality=requirements.modality||"text";
       if(task==="embeddings")return providerHub.embeddings(cfg.id,prompt,{model:cfg.model});
-      if(task==="rerank")return providerHub.rerank(cfg.id,prompt,Array.isArray(images)?images:[],{model:cfg.model});
+      if(task==="rerank")return providerHub.rerank(cfg.id,prompt,Array.isArray(documents)?documents:[],{model:cfg.model});
       if(modality==="image"||task==="image")return providerHub.image(cfg.id,prompt,{});
       if(modality==="vision")return providerHub.vision(cfg.id,prompt,images,{system,maxTokens});
       if(task==="structured-output"&&schema)return providerHub.structured(cfg.id,prompt,schema,{system,maxTokens,temperature,tools});
