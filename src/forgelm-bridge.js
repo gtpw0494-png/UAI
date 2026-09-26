@@ -18,7 +18,9 @@ function run(script,args,timeout=120000,{signal=null,onEvent=null}={}){
       for(const line of String(out).trim().split(/\r?\n/).reverse()){try{parsed=JSON.parse(line);break}catch{}}
       finish(parsed&&typeof parsed==="object"?{...parsed,exitCode:code,script}:{state:code===0?"SUCCESS":"FAILURE",message:err||out||`exit ${code}`,exitCode:code,script});
     });
-    const abort=()=>{try{p.kill("SIGTERM")}catch{};finish({state:"CANCELLED",message:`${script} cancelled`,script})};\n    if(signal){if(signal.aborted)return abort();signal.addEventListener("abort",abort,{once:true});}\n    const timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
+    const abort=()=>{try{p.kill("SIGTERM")}catch{};finish({state:"CANCELLED",message:`${script} cancelled`,script})};
+    if(signal){if(signal.aborted)return abort();signal.addEventListener("abort",abort,{once:true});}
+    const timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
   });
 }
 
