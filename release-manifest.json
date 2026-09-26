@@ -154,8 +154,8 @@
     },
     {
       "path": "model/audio.py",
-      "sha256": "ca2e4c74a0f67e5a313466ee66141518e66d619d7c03c9715cd9c2921dce2149",
-      "bytes": 5176
+      "sha256": "bd8ecffcfe64e58d4b1bf3c9900c221bfdd98332957d4f0064deefeed751a7a6",
+      "bytes": 5305
     },
     {
       "path": "model/audio_runtime.py",
@@ -319,8 +319,8 @@
     },
     {
       "path": "model/test_audio.py",
-      "sha256": "a8b121708940207096c0a6edff4c929f002f0c10b1b8b4cdd899e8337b0d1216",
-      "bytes": 1595
+      "sha256": "fc00c56a2f11ed6b8b14da148417ad65b17bf76cbc45e2a5ce8c9b0dc329b24c",
+      "bytes": 1656
     },
     {
       "path": "model/test_forgelm.py",
