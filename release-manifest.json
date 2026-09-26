@@ -1649,8 +1649,8 @@
     },
     {
       "path": "verification/onechat-live-sessions.test.mjs",
-      "sha256": "585212d30c88a166027de9a4c10c5d5da12669e8f409a76efee36884af8b8c07",
-      "bytes": 2262
+      "sha256": "20c1138f05b1075c0e7bcd4e6714895288144aacee0afad5ca4421482e90b82a",
+      "bytes": 2259
     },
     {
       "path": "verification/onechat-model-lifecycle.test.mjs",
