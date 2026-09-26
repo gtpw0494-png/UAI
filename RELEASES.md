@@ -1,5 +1,13 @@
 # Release history
 
+## v0.60.0 — Native ForgeAudio Runtime
+- Added ForgeAudio, a trainable local log-spectral audio encoder with transformer blocks and a ForgeLM-space projector.
+- Added dependency-free PCM WAV decoding and local audio-text alignment training against ForgeLM's own text embeddings.
+- Added local candidate evaluation, hash-bound owner-approved promotion, rollback snapshots and runtime health checks.
+- Added native audio-token + text-token ForgeLM transformer prefill for local audio understanding/transcription-style tasks.
+- Added governed, path-bounded audio inference and explicit authorization/request schemas.
+- Added CPU and lifecycle tests. No external speech/AI model is required.
+
 ## v0.59.0 — Governed ForgeVision Runtime
 - Added local image-caption candidate evaluation with ForgeLM embedding compatibility and regression thresholds.
 - Added hash-bound, owner-approved ForgeVision promotion with atomic live checkpoint replacement and rollback snapshots.
