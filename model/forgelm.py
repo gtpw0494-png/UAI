@@ -44,7 +44,8 @@ class RMSNorm(nn.Module):
 def rotary(x,positions,theta,scale=1.0):
     d=x.shape[-1];assert d%2==0;half=d//2
     inv=1.0/(theta ** (torch.arange(0,half,device=x.device,dtype=torch.float32)/half))
-    scaled=positions.to(torch.float32)/max(float(scale),1.0)\n    ang=scaled[:,None]*inv[None,:]
+    scaled=positions.to(torch.float32)/max(float(scale),1.0)
+    ang=scaled[:,None]*inv[None,:]
     cos,sin=ang.cos().to(x.dtype)[None,None,:,:],ang.sin().to(x.dtype)[None,None,:,:]
     a,b=x[...,:half],x[...,half:]
     return torch.cat([a*cos-b*sin,a*sin+b*cos],dim=-1)
