@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.54.0",
+  "version": "0.55.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "25afc7a04210be2df85ef7cc1342f0f14e08f6b4b4673e7e7a73130862403189",
-      "bytes": 6786
+      "sha256": "f064429b7db0a17dfd9bb0cf63519cd543f0473acd20fd740f9a96c1e7a5cd02",
+      "bytes": 6913
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -34,8 +34,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "313dddbb14ac146064e07df71f945f8bacbbd134be192d50be9b528827d388dd",
-      "bytes": 22467
+      "sha256": "6659a760ab1ebd5505c42f3e80ad46737b9d65046c2f4303970e2a75a884c30b",
+      "bytes": 23782
     },
     {
       "path": "README.md",
@@ -44,8 +44,8 @@
     },
     {
       "path": "RELEASES.md",
-      "sha256": "fc9a40b9afdde7879b569abe90ad3ad2b3142d677e50dee7f22eb49f442e22b8",
-      "bytes": 18509
+      "sha256": "0ffc74992e4fe7f64ad297b3e3a41551f837c6fff792c5e41904f13020cf6242",
+      "bytes": 19420
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "6b7310b6890bf7cad8b12f233c2c07bd684a9e2f11c2e08ada5ffe0bb0b417bd",
-      "bytes": 35582
+      "sha256": "93d11419a6b4584caca46d44a61561a6c45a66eb366581285562c2f6504259dd",
+      "bytes": 39401
     },
     {
       "path": "model/adaptation.py",
@@ -314,8 +314,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "5d9f7874ab88a40254be6a2ba87fafda1787998e2c043c7b0aee2a15cd8c630c",
-      "bytes": 6787
+      "sha256": "240e4c07b759bb0794db0bfbad49df9a8ab90793df2570f8700541190078502e",
+      "bytes": 6912
     },
     {
       "path": "public/app.js",
@@ -569,8 +569,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "e0b948d0c07732bc2a3b656f77fb4d8dbc6ff6592f88bff412fda79edcc5cc40",
-      "bytes": 51770
+      "sha256": "141a2133cfa7154ea67dab9ec59a12ba20ce8d57d095b1d1ab55ec3f2db788e4",
+      "bytes": 52018
     },
     {
       "path": "src/action-envelope.js",
@@ -714,8 +714,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "8222839c3cd8d9665c5578be946f20e80aac09bbfde418bd4d40f2103238fe1a",
-      "bytes": 8747
+      "sha256": "256827d514d8bd98d856ae4b5b83aa3b988f97bf6464c93b563f0beea3f80070",
+      "bytes": 8762
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -764,8 +764,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "849fdeaffa27559847018ef6e46b95e9c3074003b6950bcff0eade7cce8a1888",
-      "bytes": 16838
+      "sha256": "ce9c0fcee8f5ae99bc04e926faa9d00fd9a0c55c0ebff49f5bf527d6d02a7346",
+      "bytes": 17020
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -779,8 +779,8 @@
     },
     {
       "path": "src/hybrid-knowledge-store.js",
-      "sha256": "329f83278aa3e303b56c1bc8d137ded7fc73660597d7b1281b00cd0440ebab18",
-      "bytes": 2543
+      "sha256": "a8c62f036c86e07a913956064191d62dfa9bb20326364eb97937a3817c7a41d3",
+      "bytes": 3246
     },
     {
       "path": "src/idempotency-store.js",
@@ -1054,8 +1054,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "adc7ba3f12e9a2f9297c337a19bac25db7f2932b6f6f650dcab8759036aad45c",
-      "bytes": 8223
+      "sha256": "f5195f4488e9aed4506f3279deb6a5c13e9852f3a60c841d351194dc76207472",
+      "bytes": 8265
     },
     {
       "path": "src/plugin-executor.js",
@@ -1259,8 +1259,8 @@
     },
     {
       "path": "src/verified-knowledge-store.js",
-      "sha256": "a1e62a15d0c2a59f1cde4fe63977f064a56b0747671bf8ab98a9bb6690924408",
-      "bytes": 2193
+      "sha256": "49a34bc55e7a5390b536fbe6a61787cb0b71072cc259df278f337736b68630cd",
+      "bytes": 4826
     },
     {
       "path": "src/web-corpus.js",
@@ -1314,8 +1314,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "be66df0d62a8f344b6b418264c19672eb750214549a2e2ed6758f04ae25e84dc",
-      "bytes": 8062
+      "sha256": "bedd4d72be759ff50748f5971bd98a8da6b49c229c866ce9c9060530240139c5",
+      "bytes": 8107
     },
     {
       "path": "storage/retrieval_eval.py",
@@ -1334,8 +1334,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "cee3bf383998ce87ee22bb6c3e6db7a4074efba4379dfa0b8d29169c1d7696c5",
-      "bytes": 30405
+      "sha256": "ab4dfc335a1b502b137a0eef20a4e4ca9922aaf7297e5a5536c9f070c7be2d37",
+      "bytes": 30472
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
@@ -1464,8 +1464,8 @@
     },
     {
       "path": "verification/platform-intelligence-v054.test.mjs",
-      "sha256": "a1b7ff42adb686c3564b808f6602e868995e59c1956a6f6f70f3e21ae89eed85",
-      "bytes": 7114
+      "sha256": "91e1f730086860c25ada2381874e6f9e3f72fbc07d2fe1dc9db09dda88b8a052",
+      "bytes": 7135
     },
     {
       "path": "verification/plugin-gateway.test.mjs",
@@ -1496,6 +1496,11 @@
       "path": "verification/test_data_learning.py",
       "sha256": "73f43bbde9e110d2b42a9df877268ecbe26ce9b99a6732a21a2a8311bbc363f1",
       "bytes": 7971
+    },
+    {
+      "path": "verification/verified-knowledge-sqlite.test.mjs",
+      "sha256": "ef2398c206642d26b161ebf8379c153899833e80e5375aac929aad37a73f1c76",
+      "bytes": 2258
     }
   ],
   "policy": "Manifest covers shipped source/model-support files. Runtime state, fetched vendor references and mutable knowledge are excluded."
