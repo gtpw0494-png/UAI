@@ -749,8 +749,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "8e7e1b6602aa30fc1040343d3abe69ec6978f434e945e750eeece9d53a66a48d",
-      "bytes": 11718
+      "sha256": "35aae0a63b6621abeabb702d0dd5aa0974734f208bf45ee32a5e9fcca122cc2f",
+      "bytes": 12175
     },
     {
       "path": "src/capability-truth.js",
