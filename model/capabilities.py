@@ -9,8 +9,12 @@ from __future__ import annotations
 import ast, json, re
 from dataclasses import dataclass
 from typing import Any, Callable
+try:
+    from long_context import ForgeLongContext
+except ModuleNotFoundError:
+    from model.long_context import ForgeLongContext
 
-TASKS = {"chat", "code", "reasoning", "planning", "json", "tool", "embeddings", "rerank", "vision", "image"}
+TASKS = {"chat", "code", "reasoning", "planning", "json", "tool", "embeddings", "rerank", "long-context", "vision", "image"}
 
 @dataclass
 class ToolSpec:
@@ -23,11 +27,12 @@ class ForgeCapabilities:
     def __init__(self, model, tokenizer, tools=None):
         self.model, self.tokenizer = model, tokenizer
         self.tools = {t.name: t for t in (tools or [])}
+        self.long_context_engine = ForgeLongContext(model, tokenizer)
 
     def status(self):
         return {"state":"SUCCESS", "engine":"ForgeLM", "selfSufficient":True,
                 "networkRequired":False, "tasks":sorted(TASKS),
-                "implemented":["chat","code","reasoning","planning","json","tool","embeddings","rerank"],
+                "implemented":["chat","code","reasoning","planning","json","tool","embeddings","rerank","long-context"],
                 "partial":["vision","image"],
                 "truth":"Vision and image generation require a trained local multimodal encoder/decoder; no external model is silently used."}
 
@@ -42,6 +47,7 @@ class ForgeCapabilities:
           "tool":"Return a JSON tool proposal only; never claim that a tool ran.",
           "embeddings":"Return local semantic embedding evidence from the promoted ForgeLM checkpoint.",
           "rerank":"Rank supplied local documents against the query using ForgeLM embedding similarity.",
+          "long-context":"Retrieve and assemble relevant evidence from text larger than the active attention window using ForgeLM embeddings only.",
           "vision":"Describe only locally supplied image observations; report unavailable when no local vision encoder exists.",
           "image":"Return an image-generation plan or local renderer instruction; do not claim pixels were generated unless a local renderer is installed."
         }
@@ -80,6 +86,11 @@ class ForgeCapabilities:
             score=sum(a*b for a,b in zip(q,v));scored.append({"index":i,"score":float(score),"document":documents[i]})
         scored.sort(key=lambda x:(-x["score"],x["index"]))
         return {"state":"SUCCESS","engine":"ForgeLM","query":str(query),"results":scored,"externalModels":False}
+
+    def long_context(self, query, source_text, top_k=4, token_budget=None):
+        result=self.long_context_engine.assemble(str(query),str(source_text),top_k=int(top_k),token_budget=token_budget)
+        if result.get("state")!="SUCCESS":return result
+        return {**result,"networkRequired":False,"externalModels":False,"truth":"This extends usable context through ForgeLM-native retrieval memory; it does not claim the transformer attention window itself equals the full source length."}
 
     def inspect_code(self, source, language="python"):
         if language.lower() not in ("python","py"): return {"state":"PARTIAL","language":language,"message":"Only Python AST inspection is currently local and built in."}
