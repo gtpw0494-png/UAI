@@ -25,10 +25,10 @@ def generate(model,tok,prompt,max_tokens=128,temperature=.2):
  return tok.decode(out[0].tolist()[len(ids[0]):]).strip()
 
 def main():
- p=argparse.ArgumentParser(); p.add_argument('task',choices=['status','chat','code','reasoning','planning','json','tool','embeddings','rerank','vision','image']); p.add_argument('--prompt',default=''); p.add_argument('--context',default=''); p.add_argument('--max-tokens',type=int,default=128)
+ p=argparse.ArgumentParser(); p.add_argument('task',choices=['status','chat','code','reasoning','planning','json','tool','embeddings','rerank','long-context','vision','image']); p.add_argument('--prompt',default=''); p.add_argument('--context',default=''); p.add_argument('--max-tokens',type=int,default=128)
  a=p.parse_args()
  if a.task=='status':
-  print(json.dumps({"state":"SUCCESS","engine":"ForgeLM","selfSufficient":True,"checkpointExists":CKPT.exists(),"networkRequired":False,"tasks":["chat","code","reasoning","planning","json","tool","embeddings","rerank","vision","image"],"partial":["vision","image"]})); return
+  print(json.dumps({"state":"SUCCESS","engine":"ForgeLM","selfSufficient":True,"checkpointExists":CKPT.exists(),"networkRequired":False,"tasks":["chat","code","reasoning","planning","json","tool","embeddings","rerank","long-context","vision","image"],"partial":["vision","image"]})); return
  model,tok,caps=load()
  if a.task=='planning': print(json.dumps(caps.plan(a.prompt))); return
  if a.task=='embeddings':
@@ -39,6 +39,13 @@ def main():
   try: docs=json.loads(a.context)
   except Exception: docs=[]
   print(json.dumps(caps.rerank(a.prompt,docs))); return
+ if a.task=='long-context':
+  retrieved=caps.long_context(a.prompt,a.context,top_k=4)
+  if retrieved.get("state")!="SUCCESS":
+   print(json.dumps(retrieved)); return
+  bounded=retrieved.get("context","")
+  text=generate(model,tok,caps.prompt("chat",a.prompt,bounded),a.max_tokens)
+  print(json.dumps({"state":"SUCCESS","engine":"ForgeLM","task":"long-context","text":text,"retrieval":retrieved,"externalModels":False})); return
  if a.task in ('vision','image') and not a.prompt: print(json.dumps(caps.status())); return
  text=generate(model,tok,caps.prompt(a.task,a.prompt,a.context),a.max_tokens)
  result={"state":"SUCCESS","engine":"ForgeLM","task":a.task,"text":text,"externalModels":False}
