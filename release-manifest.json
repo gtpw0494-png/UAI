@@ -454,8 +454,8 @@
     },
     {
       "path": "public/index.html",
-      "sha256": "503296c09bc7e9ab81a88d6af2c4209d373a05b234a43e35a194ad200b409624",
-      "bytes": 3175
+      "sha256": "61bf7f539b8ce8bc611d82730da8574401fef339160e57a0b95544910406d4fd",
+      "bytes": 3247
     },
     {
       "path": "public/styles.css",
