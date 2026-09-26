@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "7e5fc76d5246c76bf409bcadd975820c7ce75881ca4a5e297643f4abb90898ae",
-      "bytes": 8797
+      "sha256": "2f3dafd07a1942292041fb689ec8dcc59aca90c1e75b3754cfab4418463478ea",
+      "bytes": 8889
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "61106716f744933a5ea7e634e9c6f0e0de2f1978b114f82a7ad3b10e53094018",
-      "bytes": 20348
+      "sha256": "f511eee1a877544aa95faee5111c8b4a114b2a7755433a72b86ad93446ee4dfd",
+      "bytes": 20979
     },
     {
       "path": "RELEASES.md",
-      "sha256": "35022780e80d01dac17a136083054c64f69fa98c70acc15d37ea02e9eb85f2b5",
-      "bytes": 28889
+      "sha256": "d348a18aff0bbfcbb0722c7760ef722dc638db5db3514bdc7949151b2998defe",
+      "bytes": 29616
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "a07219ef5624bd37f51fd1cf1572b98e91693dec5969cff27969b0d05797c02e",
-      "bytes": 51183
+      "sha256": "6670232a3e458d67a2815654859205cc992a359c1a6296287dac113e2e3fd1a5",
+      "bytes": 52044
     },
     {
       "path": "model/adaptation.py",
@@ -1624,8 +1624,8 @@
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
-      "sha256": "b986417a69f6d494b8a24d2525a32e95abfd2a859254bfcd9025876bb2ca75f6",
-      "bytes": 1240
+      "sha256": "b7409f3522ae57a105d2c2d6503f14297698538656b44ea6a89a7f31557a35da",
+      "bytes": 1437
     },
     {
       "path": "verification/onechat-conversation-management.test.mjs",
