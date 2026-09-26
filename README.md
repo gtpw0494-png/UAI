@@ -1,6 +1,14 @@
-# IntraultUniversalion v0.62.0
+# IntraultUniversalion v0.63.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.63 unified ForgeMultimodal fusion
+
+ForgeMultimodal brings UAI's native modalities into one ForgeLM context. Healthy promoted ForgeVision, ForgeAudio and ForgeVideo encoders can contribute tokens alongside local document/context embeddings and the live text prompt. A deterministic token budget then assembles a single bounded prefill for ForgeLM.
+
+The production fusion path is intentionally parameter-free, so it does not require a new untrained fusion checkpoint to function. A separate trainable ForgeFusion transformer is present for future cross-modal training, but its existence is not treated as evidence of improved semantic fusion.
+
+If a request supplies a modality whose promoted checkpoint is unavailable or incompatible, the request fails explicitly. It never silently routes to GPT, Gemini, Claude, Grok, or another external model.
 
 ## v0.62 native ForgeVideo
 
