@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.63.0",
+  "version": "0.64.0",
   "private": true,
-  "description": "Independent local-first AI with unified governed ForgeMultimodal fusion across ForgeLM, vision, audio, video, documents and context.",
+  "description": "Independent local-first AI with OneChat-native multimodal attachments, provenance, conversation continuity and unified ForgeMultimodal fusion.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -102,7 +102,8 @@
     "test:speech-lifecycle": "node verification/forgespeech-candidate-promotion.test.mjs",
     "test:native-video": "python3 model/test_video.py",
     "test:video-lifecycle": "node verification/forgevideo-candidate-promotion.test.mjs",
-    "test:native-multimodal": "python3 model/test_multimodal.py"
+    "test:native-multimodal": "python3 model/test_multimodal.py",
+    "test:onechat-attachments": "node verification/onechat-multimodal-attachments.test.mjs"
   },
   "engines": {
     "node": ">=20"
