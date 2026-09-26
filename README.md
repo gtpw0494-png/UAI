@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.72.0
+# IntraultUniversalion v0.73.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.73 Termux runtime and OneChat recovery
+
+Termux/Android is now treated as a first-class execution environment. Child Node syntax validation removes the Termux execution preload when required, HTTP verification launches use absolute server paths, and the browser syntax test runs through a dedicated compatibility wrapper.
+
+OneChat also has stronger local fallbacks. Natural capability questions return live capability truth, web-search capability questions perform an actual reachability probe and surface DNS/provider failures, and natural domain ingestion no longer requires hidden command grammar such as `ingest url https://...`.
 
 ## v0.72 first-install ForgeLM bootstrap
 
