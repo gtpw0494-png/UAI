@@ -1,6 +1,10 @@
-# IntraultUniversalion v0.66.0
+# IntraultUniversalion v0.67.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.67 OneChat conversation management
+
+The existing OneChat page now includes an in-place conversation drawer for local conversation search, switching, new-chat creation, rename, archive/unarchive, sanitized JSON export and explicit deletion. Conversation summaries include turn, attachment and evidence counts. History and export operations are owner-bound, while deletion removes chat/control records without silently deleting registered media evidence.
 
 ## v0.66 persistent attachment-aware history
 
