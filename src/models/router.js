@@ -96,7 +96,7 @@ export function buildProviderModelCandidates(providerHub){
   if(!providerHub?.list)return [];
   return providerHub.list().map(cfg=>({
     id:`provider-${cfg.id}`,provider:cfg.id,model:cfg.model,local:false,offline:false,privacy:"external-provider",
-    tasks:["chat","code","reasoning","planning","summarization","classification","structured-output",...(cfg.capabilities.includes("embeddings")?["embeddings"]:[]),...(cfg.capabilities.includes("rerank")?["rerank"]:[])],
+    tasks:["chat",...(cfg.capabilities.includes("code")?["code"]:[]),...(cfg.capabilities.includes("reasoning")?["reasoning","planning"]:[]),"summarization","classification",...(cfg.capabilities.includes("structured-output")?["structured-output"]:[]),...(cfg.capabilities.includes("embeddings")?["embeddings"]:[]),...(cfg.capabilities.includes("rerank")?["rerank"]:[])],
     modalities:["text",...(cfg.capabilities.includes("vision")?["vision"]:[]),...(cfg.capabilities.includes("image")?["image"]:[])],
     contextTokens:null,
     health:()=>providerHub.health(cfg.id),
