@@ -87,11 +87,12 @@ export function buildLocalModelCandidates({llamaRuntime=null,forgelm=null}={}){
   });
   if(forgelm)out.push({
     id:"forgelm-local",provider:"forgelm",local:true,offline:true,privacy:"local-only",
-    tasks:["chat","classification","summarization","reasoning","planning","code","structured-output","embeddings","rerank"],modalities:["text"],contextTokens:null,
+    tasks:["chat","classification","summarization","reasoning","planning","code","structured-output","embeddings","rerank","long-context"],modalities:["text"],contextTokens:null,
     health:async()=>{const s=await forgelm.status();const ok=s?.state==="SUCCESS"&&s?.checkpointExists===true;return {availability:ok?"CONNECTED":"UNAVAILABLE",executable:ok,reason:ok?"Verified ForgeLM checkpoint is locally available.":(s?.message||"ForgeLM checkpoint is unavailable."),evidence:s};},
-    generate:async({prompt,system="",maxTokens=384,documents=[],requirements={}})=>{
+    generate:async({prompt,system="",maxTokens=384,documents=[],sourceText="",requirements={}})=>{
       if(requirements.task==="embeddings")return forgelm.embeddings(prompt);
       if(requirements.task==="rerank")return forgelm.rerank(prompt,documents);
+      if(requirements.task==="long-context")return forgelm.longContext(prompt,sourceText||documents.join("\n\n"),maxTokens);
       return forgelm.chat([system,prompt].filter(Boolean).join("\n\n"),maxTokens);
     }
   });
