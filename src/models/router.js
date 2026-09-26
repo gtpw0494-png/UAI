@@ -35,7 +35,7 @@ export class ModelRouter{
     const out=[];
     for(const c of this.candidates){
       let h;try{h=await c.health();}catch(e){h={availability:"UNAVAILABLE",executable:false,reason:String(e.message||e)};}
-      out.push({id:c.id,provider:c.provider,model:c.model||null,...h});
+      out.push({...h,id:c.id,provider:c.provider,model:c.model||null});
     }
     return out;
   }
