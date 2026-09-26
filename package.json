@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.54.0",
+  "version": "0.55.0",
   "private": true,
-  "description": "Independent local-first AI operating environment with user-owned memory, provenance, evidence-native research, typed agent scheduling, policy simulation, verified model artifacts, evaluation records, local model routing and owner-governed promotion.",
+  "description": "Independent local-first AI operating environment with governed autonomous knowledge research, SQLite/WAL verified knowledge, optional cloud durability, candidate-first ForgeLM learning, regression-gated promotion and owner-bound rollback.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
