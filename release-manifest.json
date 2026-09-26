@@ -44,8 +44,8 @@
     },
     {
       "path": "RELEASES.md",
-      "sha256": "5a3fd36b039698b81a670b77bbe37f834308ad5369b210d2527174ca8144f64b",
-      "bytes": 32264
+      "sha256": "46314748648c8ab0046a28e8f384ab5ecca1bd90d599ab39c4dbd3562852c95c",
+      "bytes": 32991
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "46c4f2752d830f6e9c5716df0f5bf9420bb2f707c3a73fd8603e5b00d73d474d",
-      "bytes": 55460
+      "sha256": "31b8604a5db4695448fb4e882a7f71debc74a34952bc280b150f9c35ae12c2d2",
+      "bytes": 56226
     },
     {
       "path": "model/adaptation.py",
