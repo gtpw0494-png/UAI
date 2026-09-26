@@ -16,7 +16,7 @@ const requiredFields = schema => Array.isArray(schema?.required) ? schema.requir
 const PROVIDERS = [
   { id:"openai", label:"OpenAI", kind:"openai-compatible", keyEnv:"OPENAI_API_KEY", baseEnv:"OPENAI_BASE_URL", defaultBase:"https://api.openai.com/v1", modelEnv:"OPENAI_MODEL", defaultModel:"gpt-6-astra", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings"] },
   { id:"anthropic", label:"Anthropic/Claude", kind:"anthropic", keyEnv:"ANTHROPIC_API_KEY", baseEnv:"ANTHROPIC_BASE_URL", defaultBase:"https://api.anthropic.com/v1", modelEnv:"ANTHROPIC_MODEL", defaultModel:"claude-sonnet-5", capabilities:["chat","code","reasoning","vision","tools","structured-output"] },
-  { id:"gemini", label:"Google Gemini", kind:"gemini", keyEnv:"GEMINI_API_KEY", baseEnv:"GEMINI_BASE_URL", defaultBase:"https://generativelanguage.googleapis.com/v1beta", modelEnv:"GEMINI_MODEL", defaultModel:"gemini-3.8-flash", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings"] },
+  { id:"gemini", label:"Google Gemini", kind:"gemini", keyEnv:"GEMINI_API_KEY", baseEnv:"GEMINI_BASE_URL", defaultBase:"https://generativelanguage.googleapis.com/v1beta", modelEnv:"GEMINI_MODEL", defaultModel:"gemini-3.8-flash", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings","audio","video","pdf"] },
   { id:"xai", label:"xAI/Grok", kind:"openai-compatible", keyEnv:"XAI_API_KEY", baseEnv:"XAI_BASE_URL", defaultBase:"https://api.x.ai/v1", modelEnv:"XAI_MODEL", defaultModel:"grok-4.7", capabilities:["chat","code","reasoning","vision","image","tools","structured-output"] },
   { id:"deepseek", label:"DeepSeek", kind:"openai-compatible", keyEnv:"DEEPSEEK_API_KEY", baseEnv:"DEEPSEEK_BASE_URL", defaultBase:"https://api.deepseek.com", modelEnv:"DEEPSEEK_MODEL", defaultModel:"deepseek-v4.1-flash", capabilities:["chat","code","reasoning","tools","structured-output"] },
   { id:"cohere", label:"Cohere", kind:"cohere", keyEnv:"COHERE_API_KEY", baseEnv:"COHERE_BASE_URL", defaultBase:"https://api.cohere.com/v2", modelEnv:"COHERE_MODEL", defaultModel:"command-a-plus", capabilities:["chat","code","reasoning","vision","tools","structured-output","embeddings","rerank"] },
@@ -64,7 +64,8 @@ export class ProviderHub {
       const value=extract(json); if(value===undefined||value===null||value==="") throw new Error("Provider response contained no recognized output");
       this.runtime.set(id,{availability:"CONNECTED",lastSuccess:now(),operation});
       const evidence={type:"provider-call",provider:id,model:cfg.model,operation,latencyMs:Date.now()-started}; this.audit?.append(evidence);
-      return {state:"SUCCESS",provider:id,model:cfg.model,output:value,text:typeof value==="string"?value:undefined,evidence:[evidence]};
+      const structured=value&&typeof value==="object"&&!Array.isArray(value)&&(Object.hasOwn(value,"text")||Object.hasOwn(value,"toolCalls"));
+      return {state:"SUCCESS",provider:id,model:cfg.model,output:structured?(value.output??value):value,text:structured?String(value.text||""):(typeof value==="string"?value:undefined),toolCalls:structured?(value.toolCalls||[]):undefined,evidence:[evidence]};
     } catch(error) {
       this.runtime.set(id,{availability:"ERROR",lastError:now(),operation});
       this.audit?.append({type:"provider-error",provider:id,operation,error:String(error.message||error)});
@@ -77,26 +78,26 @@ export class ProviderHub {
     if(def.kind==="anthropic") {
       const payload={model:cfg.model,max_tokens:options.maxTokens||1024,system,messages};
       if(tools) payload.tools=tools.map(t=>({name:t.name,description:t.description||"",input_schema:t.input_schema||t.parameters||{type:"object",properties:{}}}));
-      return {payload,extract:j=>j?.content?.map?.(x=>x?.text||"").join("")};
+      return {payload,extract:j=>({text:j?.content?.map?.(x=>x?.text||"").join("")||"",toolCalls:(j?.content||[]).filter(x=>x?.type==="tool_use").map(x=>({id:x.id,name:x.name,arguments:x.input||{}}))})};
     }
     if(def.kind==="gemini") {
       const joined=messages.map(x=>({role:x.role==="assistant"?"model":"user",parts:[{text:textOf(x.content)}]}));
       const payload={systemInstruction:{parts:[{text:system}]},contents:joined};
       if(tools) payload.tools=[{functionDeclarations:tools.map(t=>({name:t.name,description:t.description||"",parameters:t.input_schema||t.parameters||{type:"OBJECT",properties:{}}}))}];
       if(schema) payload.generationConfig={...(payload.generationConfig||{}),responseMimeType:"application/json",responseJsonSchema:schema};
-      return {payload,extract:j=>j?.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")};
+      return {payload,extract:j=>{const parts=j?.candidates?.[0]?.content?.parts||[];return {text:parts.map(x=>x.text||"").join(""),toolCalls:parts.filter(x=>x.functionCall).map(x=>({id:null,name:x.functionCall.name,arguments:x.functionCall.args||{}}))};}};
     }
     if(def.kind==="cohere") {
       const payload={model:cfg.model,messages:[{role:"system",content:system},...messages]};
       if(tools) payload.tools=tools;
       if(schema) payload.response_format={type:"json_object",schema};
-      return {payload,extract:j=>j?.message?.content?.map?.(x=>x?.text||"").join("")||j?.text};
+      return {payload,extract:j=>({text:j?.message?.content?.map?.(x=>x?.text||"").join("")||j?.text||"",toolCalls:j?.message?.tool_calls||j?.tool_calls||[]})};
     }
     if(def.kind==="generic-json") return {payload:{inputs:textOf(message),parameters:{max_new_tokens:options.maxTokens||512}},extract:j=>Array.isArray(j)?j[0]?.generated_text:j?.generated_text||j?.text};
     const payload={model:cfg.model,messages:[{role:"system",content:system},...messages],temperature:options.temperature,max_tokens:options.maxTokens};
     if(tools) payload.tools=tools.map(t=>t.type? t : {type:"function",function:{name:t.name,description:t.description||"",parameters:t.input_schema||t.parameters||{type:"object",properties:{}}}});
     if(schema) payload.response_format={type:"json_schema",json_schema:{name:options.schemaName||"uai_response",strict:true,schema}};
-    return {payload,extract:j=>j?.choices?.[0]?.message?.content};
+    return {payload,extract:j=>{const m=j?.choices?.[0]?.message||{};return {text:m.content||"",toolCalls:m.tool_calls||[]};}};
   }
   chat(id,message,system="You are a concise research assistant.",options={}) {
     const {payload,extract}=this._chatShape(id,message,system,options);
@@ -125,6 +126,20 @@ export class ProviderHub {
     }
     const content=[{type:"text",text:String(message)},...normalized.map(im=>({type:"image_url",image_url:{url:im.data?`data:${im.mediaType||"image/png"};base64,${im.data}`:im.url}}))];
     return this._request(id,"chat",{model:cfg.model,messages:[{role:"user",content}],max_tokens:options.maxTokens||1024},j=>j?.choices?.[0]?.message?.content);
+  }
+  media(id,message,media=[],options={}) {
+    const {def,cfg}=this.get(id), items=imageList(media);
+    if(!items.length) return Promise.resolve({state:"BLOCKED",provider:id,message:"Multimodal input requires at least one media item."});
+    const kinds=new Set(items.map(x=>String(x.mediaType||parseDataUrl(x.url)?.mediaType||"application/octet-stream").split("/")[0]));
+    for(const kind of kinds) if(!this.supports(id,kind==="application"?"pdf":kind)) return Promise.resolve({state:"UNAVAILABLE",provider:id,message:`Provider is not registered for ${kind} input.`});
+    if(def.kind!=="gemini") return Promise.resolve({state:"UNAVAILABLE",provider:id,message:"General audio/video/PDF input is currently implemented only for the Gemini adapter; use vision() for image-capable providers."});
+    const parts=[{text:String(message)}];
+    for(const item of items){
+      const d=item.data?{mediaType:item.mediaType||"application/octet-stream",data:item.data}:parseDataUrl(item.url);
+      if(d) parts.push({inlineData:{mimeType:d.mediaType,data:d.data}});
+      else parts.push({fileData:{mimeType:item.mediaType||"application/octet-stream",fileUri:item.url}});
+    }
+    return this._request(id,"chat",{contents:[{role:"user",parts}]},j=>({text:j?.candidates?.[0]?.content?.parts?.map(x=>x.text||"").join("")||"",toolCalls:(j?.candidates?.[0]?.content?.parts||[]).filter(x=>x.functionCall).map(x=>({id:null,name:x.functionCall.name,arguments:x.functionCall.args||{}}))}));
   }
   image(id,prompt,options={}) {
     if(!this.supports(id,"image")) return Promise.resolve({state:"UNAVAILABLE",provider:id,message:"Provider is not registered for image generation."});
