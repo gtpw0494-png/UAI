@@ -71,7 +71,8 @@ export class OneChatRouter{
       state:x.state||"UNKNOWN",
       responseMode:x.responseMode||null,
       attachments,
-      evidenceId:x.evidenceEnvelope?.id||null
+      evidenceId:x.evidenceEnvelope?.id||null,
+      evidenceSummary:{claims:Number(x.evidenceEnvelope?.claims?.length||0),supported:Number((x.evidenceEnvelope?.claims||[]).filter(c=>c.status==="SUPPORTED").length),tools:Number(x.evidenceEnvelope?.toolCalls?.length||0),model:x.evidenceEnvelope?.model?.id||x.evidenceEnvelope?.model?.provider||null}
     });
   }
   const n=Math.max(1,Math.min(200,Number(limit)||50));
@@ -133,6 +134,42 @@ export class OneChatRouter{
   const control=this._conversationControls().get(id)||{};
   if(control.ownerId&&ownerId&&control.ownerId!==ownerId)return {state:"DENIED",message:"Conversation is owned by another identity."};
   return {state:"SUCCESS",format:"uai.onechat.export.v1",exportedAt:new Date().toISOString(),chatId:id,title:control.title||null,archived:control.archived===true,turns:history.turns};
+ }
+ turn(turnId,{ownerId=null}={}){
+  const id=String(turnId||"").trim();if(!id)return {state:"BLOCKED",message:"turnId is required."};
+  const x=this.store?.get?.(id);if(!x||x.kind!=="chat-turn")return {state:"UNAVAILABLE",message:"Chat turn not found."};
+  if(x.ownerId&&ownerId&&x.ownerId!==ownerId)return {state:"DENIED",message:"Chat turn is owned by another identity."};
+  const attachments=(x.attachments||[]).map(a=>({id:a.id||null,modality:a.modality||"structured",label:a.label||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash||null,bytes:Number(a.bytes||0)})).filter(a=>a.id);
+  return {state:"SUCCESS",turn:{id:x.id,chatId:x.chatId,createdAt:x.createdAt||null,user:String(x.user||""),answer:String(x.answer||""),state:x.state||"UNKNOWN",responseMode:x.responseMode||null,attachments,evidenceEnvelope:x.evidenceEnvelope||null}};
+ }
+ exportTurn(turnId,{ownerId=null}={}){
+  const t=this.turn(turnId,{ownerId});if(t.state!=="SUCCESS")return t;
+  return {state:"SUCCESS",format:"uai.onechat.turn-export.v1",exportedAt:new Date().toISOString(),turn:t.turn};
+ }
+ branchFromTurn(turnId,{ownerId=null,includeTurn=true,newChatId=null}={}){
+  const target=this.turn(turnId,{ownerId});if(target.state!=="SUCCESS")return target;
+  const sourceChatId=target.turn.chatId,branchId=String(newChatId||`chat-${crypto.randomUUID()}`),rows=this.store?.list?.()||[];
+  let copied=0;
+  for(const row of rows){
+    let x=null;try{x=this.store.get(row.id);}catch{}
+    if(!x||x.kind!=="chat-turn"||x.chatId!==sourceChatId)continue;
+    if(x.ownerId&&ownerId&&x.ownerId!==ownerId)continue;
+    if(x.id===turnId&&!includeTurn)break;
+    this.store.add({...x,id:undefined,chatId:branchId,ownerId:ownerId||x.ownerId||null,branchedFrom:{chatId:sourceChatId,turnId:x.id}});
+    copied++;
+    if(x.id===turnId)break;
+  }
+  this.store.add({kind:"conversation-control",title:"OneChat conversation control",chatId:branchId,ownerId:ownerId||null,title:`Branch of ${sourceChatId.slice(0,24)}`,branchedFrom:{chatId:sourceChatId,turnId}});
+  this.audit?.append({type:"onechat.conversation.branched",sourceChatId,sourceTurnId:turnId,newChatId:branchId,ownerId:ownerId||null,copiedTurns:copied,includeTurn:includeTurn===true});
+  return {state:"SUCCESS",sourceChatId,sourceTurnId:turnId,chatId:branchId,copiedTurns:copied,includeTurn:includeTurn===true};
+ }
+ _ensureAutoTitle(chatId,message,ownerId=null){
+  const controls=this._conversationControls(),existing=controls.get(chatId);
+  if(existing?.title)return existing.title;
+  const text=String(message||"").replace(/\s+/g," ").trim();if(!text)return null;
+  const title=text.length>72?text.slice(0,69).trimEnd()+"…":text;
+  this.store.add({kind:"conversation-control",title:"OneChat conversation control",chatId,ownerId:ownerId||null,title,autoTitle:true});
+  return title;
  }
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
@@ -383,6 +420,7 @@ export class OneChatRouter{
   });
   this.lastEvidence.set(chatId,evidenceEnvelope);
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,ownerId:input.ownerId||null,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
+  this._ensureAutoTitle(chatId,message,input.ownerId||null);
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
   return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,attachments:prepared.artifacts||[],allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
