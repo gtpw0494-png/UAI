@@ -363,6 +363,11 @@
       "bytes": 5004
     },
     {
+      "path": "model/train_speech.py",
+      "sha256": "af5beeab9b695d8d48a6b81805c8417fd4520759a63ebf041f7185c4addad320",
+      "bytes": 4523
+    },
+    {
       "path": "model/train_vision.py",
       "sha256": "fdc3db4750d02177816cf583a5ceff9fabd7d7c0a32cabc5dcddb8e2ac1e5b50",
       "bytes": 5455
