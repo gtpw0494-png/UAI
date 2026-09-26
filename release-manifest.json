@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "40759a47be71a41457e56ae32e3434e12f87d569f6516d2cec9f97e6883008d7",
-      "bytes": 7154
+      "sha256": "ce721b11c67199b56b33b467e4094dc9ffe078adf0a9fe5af43941dbddfc033a",
+      "bytes": 7279
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "51ff2f5c6703584947519de2a0c40dc35cab1d760285905a95244e036fcc5c56",
-      "bytes": 14116
+      "sha256": "2175a5625010ae2dcf959b64160a151367f5e21ecb11558b70d12fb8efd82d74",
+      "bytes": 14822
     },
     {
       "path": "RELEASES.md",
-      "sha256": "f285253299e7f9630821e7f66a44aaf54d087b988f51982efa9820f1322063cc",
-      "bytes": 21617
+      "sha256": "ad48f27469ee78ee98e5330068e1fbb3f2671c26f31810ce0f7867c1d2ed919a",
+      "bytes": 22424
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "ad46c5fbf79b295288a5abdbfe0d4db463b680f681410e660eeab8397d8eb8a4",
-      "bytes": 41746
+      "sha256": "e3166ceb52c1c09a508d4e8c6cf99cb9b8646f1f638c553239cf54cbd82d5b8b",
+      "bytes": 42399
     },
     {
       "path": "model/adaptation.py",
@@ -639,8 +639,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "e06ba335d9608f4ca75c6f6299681bcc60201e37199d5fd3f1f17f150fea0a7b",
-      "bytes": 7088
+      "sha256": "45469cee6def1361906564d1c2f7b84738777181ae71273a1c7b34e6362375ae",
+      "bytes": 7882
     },
     {
       "path": "src/capability-truth.js",
