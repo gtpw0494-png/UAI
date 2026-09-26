@@ -10,6 +10,9 @@ process.env.PUTER_MODEL="openai/gpt-6-astra";
 process.env.COHERE_API_KEY="test-cohere";
 process.env.COHERE_BASE_URL="https://api.cohere.test/v2";
 process.env.COHERE_MODEL="command-a-plus";
+process.env.GEMINI_API_KEY="test-gemini";
+process.env.GEMINI_BASE_URL="https://api.gemini.test/v1beta";
+process.env.GEMINI_MODEL="gemini-3.8-flash";
 
 const calls=[];
 const reply=(json,status=200)=>({ok:status>=200&&status<300,status,text:async()=>JSON.stringify(json)});
@@ -18,6 +21,8 @@ globalThis.fetch=async(url,options={})=>{
   if(String(url).endsWith("/embeddings"))return reply({data:[{embedding:[0.1,0.2,0.3]}]});
   if(String(url).endsWith("/rerank"))return reply({results:[{index:1,relevance_score:0.9}]});
   if(String(url).endsWith("/embed"))return reply({embeddings:{float:[[0.4,0.5]]}});
+  if(String(url).includes(":generateContent"))return reply({candidates:[{content:{parts:[{text:"Gemini media evidence"}]}}]});
+  if(body.tools)return reply({choices:[{message:{content:null,tool_calls:[{id:"call-1",type:"function",function:{name:"lookup",arguments:'{"q":"uai"}'}}]}}]});
   return reply({choices:[{message:{content:'{"ok":true}'}}]});
 };
 
@@ -49,6 +54,19 @@ try{
   assert.equal(structured.value.ok,true);
   const structuredCall=calls.at(-1);
   assert.equal(structuredCall.body.response_format.type,"json_schema");
+
+
+  const tools=await hub.chat("puter","lookup UAI","tools", {tools:[{name:"lookup",description:"Lookup evidence",parameters:{type:"object",properties:{q:{type:"string"}},required:["q"]}}]});
+  assert.equal(tools.state,"SUCCESS");
+  assert.equal(tools.toolCalls[0].function.name,"lookup");
+  assert.equal(tools.text,"");
+
+  const media=await hub.media("gemini","transcribe and summarize",[{mediaType:"audio/wav",data:"AAAA"}]);
+  assert.equal(media.state,"SUCCESS");
+  assert.equal(media.text,"Gemini media evidence");
+  const mediaCall=calls.at(-1);
+  assert.equal(mediaCall.body.contents[0].parts[1].inlineData.mimeType,"audio/wav");
+  assert.equal(mediaCall.body.contents[0].parts[1].inlineData.data,"AAAA");
 
   const embeddings=await hub.embeddings("puter",["alpha","beta"]);
   assert.equal(embeddings.state,"SUCCESS");
