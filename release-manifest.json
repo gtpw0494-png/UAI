@@ -1104,8 +1104,8 @@
     },
     {
       "path": "src/providers.js",
-      "sha256": "5d9efb1e4a07b6cdf737d12f3e54de9c62a4dcd04212b2915350935e935b3fc4",
-      "bytes": 17414
+      "sha256": "796db1490d34f56fad47a7330929420139d5695f9edc78455b8e9b22a20d0a2c",
+      "bytes": 17646
     },
     {
       "path": "src/release-integrity.js",
@@ -1404,8 +1404,8 @@
     },
     {
       "path": "verification/frontier-provider-routing-v056.test.mjs",
-      "sha256": "5bb8302bdefb7aaea93cd48a1739e07ffa9be110067cd1998a70d1bd7a9a6433",
-      "bytes": 3274
+      "sha256": "0e86e3e0310b9ece9d287d9fa5eaa235fa7116c6b75f460afe0fbaae8e8c1e07",
+      "bytes": 4422
     },
     {
       "path": "verification/knowledge-autonomy-v055.test.mjs",
