@@ -313,6 +313,11 @@
       "bytes": 2996
     },
     {
+      "path": "model/speech.py",
+      "sha256": "a4186ca97fff3e207c4cd0ee6b36ef2c1b1417620b06f658de4acb73f766e7d3",
+      "bytes": 3012
+    },
+    {
       "path": "model/test_advanced.py",
       "sha256": "fa17781b773e38b698859de8c008f815532b95d5ada5c18ac51876c24f4d4bff",
       "bytes": 697
