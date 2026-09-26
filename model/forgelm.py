@@ -126,6 +126,19 @@ class ForgeLM(nn.Module):
                 flogits=self.future_head(hidden[:,:-shift,:]);ftarget=targets[:,shift:];future=F.cross_entropy(flogits.reshape(-1,flogits.shape[-1]),ftarget.reshape(-1),ignore_index=-100);loss=loss+self.config.future_loss_coef*future;parts["futureToken"]=float(future.detach());parts["futureWeight"]=self.config.future_loss_coef;parts["futureHorizon"]=int(self.config.future_horizon)
             parts["total"]=float(loss.detach());self.last_loss_components=parts
         return (logits,loss,new_caches) if use_cache else (logits,loss)
+    def hidden_states(self,ids):
+        x=self.emb(ids)
+        for b in self.blocks:
+            x,_=b(x,cache=None,start_pos=0,use_cache=False)
+        return self.norm(x)
+    @torch.no_grad()
+    def embed(self,ids,normalize=True):
+        self.eval()
+        ids=ids.to(next(self.parameters()).device)
+        if ids.shape[1]==0: raise ValueError("embedding input must contain at least one token")
+        hidden=self.hidden_states(ids[:,-self.config.max_seq_len:])
+        pooled=hidden.mean(dim=1)
+        return F.normalize(pooled,p=2,dim=-1) if normalize else pooled
     def _sample(self,logit,temperature=.8,top_k=40,top_p=1.0):
         if temperature is None or float(temperature)<=0:return torch.argmax(logit,dim=-1,keepdim=True)
         logit=logit/max(float(temperature),1e-5)
