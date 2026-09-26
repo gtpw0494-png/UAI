@@ -15,6 +15,30 @@ export class OneChatRouter{
   const followup=history.length>0&&/^(?:and|also|but|so|then|what about|how about|why|how|when|where|who|which|can you|could you|would you|continue|go on|tell me more|explain that|expand|more)\b/i.test(text);
   return {research,followup,historyTurns:history.length};
  }
+ async _prepareAttachments(input={}){
+  const rows=Array.isArray(input.attachments)?input.attachments:[];
+  if(!rows.length)return {state:"SUCCESS",media:{},document:"",evidence:[],artifacts:[]};
+  if(!this.multimodalPipeline)return {state:"UNAVAILABLE",media:{},document:"",evidence:[],artifacts:[],message:"Multimodal artifact pipeline is not configured."};
+  const media={},docs=[],evidence=[],artifacts=[];
+  for(const item of rows.slice(0,16)){
+    const file=String(item?.path||"").trim();if(!file)continue;
+    const reg=this.multimodalPipeline.register({path:file,sourceId:item?.sourceId||null,ownerId:input.ownerId||null,metadata:{chatId:input.chatId||null,label:item?.label||null}});
+    if(reg.state!=="SUCCESS")return {...reg,media,document:docs.join("\n\n"),evidence,artifacts};
+    const a=reg.artifact;artifacts.push({id:a.id,modality:a.modality,path:a.path,contentHash:a.contentHash,bytes:a.bytes});
+    evidence.push({source_id:a.sourceId||a.id,uri:"file:"+a.path,provenance:{mediaId:a.id,modality:a.modality,contentHash:a.contentHash}});
+    if(["image","audio","video"].includes(a.modality)){
+      if(!media[a.modality])media[a.modality]=a.path;
+      continue;
+    }
+    const ex=this.multimodalPipeline.extract(a.id);
+    if(ex.state==="SUCCESS"){
+      for(const d of ex.artifact?.derived||[]){
+        if(d.text)docs.push(`[${a.modality}:${a.id}${d.locator?.page?":page "+d.locator.page:""}]\n${d.text}`);
+      }
+    }else if(ex.state!=="UNAVAILABLE")return {...ex,media,document:docs.join("\n\n"),evidence,artifacts};
+  }
+  return {state:"SUCCESS",media,document:docs.join("\n\n"),evidence,artifacts};
+ }
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
   try{
@@ -222,6 +246,9 @@ export class OneChatRouter{
     return {state:"SUCCESS",chatId,message:`Previous answer evidence: ${prior.claims?.length||0} claim(s); statuses ${JSON.stringify(summary)}; ${sources.length} cited source chunk(s); model ${prior.model?.id||prior.model?.provider||"none"}.`,responseMode:"evidence-explanation",modelUsed:Boolean(prior.model),evidenceEnvelope:prior,allocations:[],contributions:[],truth:"This explanation exposes structured evidence and execution metadata, not private chain-of-thought."};
   }
   const routing=input.routing||{allowCloud:input.allowCloud===true,provider:input.provider||null,model:input.model||null,task:input.task||null,modality:input.modality||null,maxTokens:input.maxTokens||null,temperature:input.temperature};
+  const prepared=await this._prepareAttachments({...input,chatId});
+  if(prepared.state!=="SUCCESS")return {state:prepared.state,chatId,message:prepared.message||"Attachment preparation failed.",responseMode:"multimodal-attachment-error",allocations:[],contributions:[],attachments:prepared.artifacts||[]};
+  const hasAttachments=(prepared.artifacts||[]).length>0;
   let allocations=this.allocations(message),contributions=[],researchContext=null;
   if(intent.research&&this.webResearch){
     researchContext=await this.webResearch.research(message,{maxSources:Number(input.maxResearchSources||6)});
@@ -230,9 +257,12 @@ export class OneChatRouter{
   }else if(intent.followup&&!allocations.some(x=>x.agent==="conversation")){
     allocations=[...allocations,{agent:"conversation",reason:"maintain conversational continuity for the follow-up"}];
   }
+  if(hasAttachments&&!allocations.some(x=>x.agent==="conversation"))allocations=[...allocations,{agent:"conversation",reason:"synthesize local multimodal attachment evidence with conversational history"}];
   for(const a of allocations){
     const executed=a.agent==="conversation"&&this.conversation
-      ?await this.conversation.chat({chatId,message,researchContext,routing})
+      ?(hasAttachments
+        ?await this.conversation.chatMultimodal({chatId,message,attachments:prepared.media,document:prepared.document,researchContext,maxTokens:routing.maxTokens||256})
+        :await this.conversation.chat({chatId,message,researchContext,routing}))
       :await this.execute(a.agent,message,chatId,{ownerId:input.ownerId||null});
     contributions.push({agent:a.agent,reason:a.reason,result:executed});
   }
@@ -244,7 +274,7 @@ export class OneChatRouter{
   const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
   const researchSupport=(researchContext?.sources||[]).map(x=>({source_id:`web:${x.publisher||x.label}`,document_id:null,document_revision:null,chunk_id:x.label,uri:x.url,quote:null,score:x.relevance??null,provenance:{title:x.title,publisher:x.publisher,retrievedAt:x.retrievedAt,researchRunId:researchContext.runId}}));
-  const support=[...(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}})),...researchSupport];
+  const attachmentSupport=(prepared.evidence||[]).map(x=>({source_id:x.source_id||null,document_id:null,document_revision:null,chunk_id:null,uri:x.uri||null,quote:null,score:null,provenance:x.provenance||{}}));\n  const support=[...(composed.evidence?.sources||[]).map(x=>({source_id:x.sourceId||x.source_id||null,document_id:x.documentId||x.document_id||null,document_revision:x.revision??x.document_revision??null,chunk_id:x.chunkId||x.chunk_id||null,uri:x.uri||null,quote:x.quote||null,score:x.score??null,provenance:x.provenance||{}})),...researchSupport,...attachmentSupport];
   const conversationResult=contributions.find(x=>x.agent==="conversation")?.result||null;
   const claimStatus=support.length?"SUPPORTED":(composed.mode==="native-conversation"||composed.mode==="governed-composer"?"INFERENCE":(finalState==="SUCCESS"?"INFERENCE":"UNSUPPORTED"));
   const evidenceEnvelope=new EvidenceEnvelope({
@@ -253,11 +283,11 @@ export class OneChatRouter{
     promptVersion:"onechat-v0.51",
     claims:[{claim:answer,support,status:claimStatus,confidence:null}],
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
-    metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null}
+    metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null,attachments:(prepared.artifacts||[]).map(x=>({id:x.id,modality:x.modality,contentHash:x.contentHash}))}
   });
   this.lastEvidence.set(chatId,evidenceEnvelope);
-  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,verified:finalState==="SUCCESS"});
+  const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
-  return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
+  return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,attachments:prepared.artifacts||[],allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
 }
