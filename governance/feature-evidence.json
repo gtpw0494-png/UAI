@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.59.0",
+  "generated_for": "0.60.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1124,6 +1124,28 @@
         "model/test_vision_runtime.py"
       ],
       "evidence_note": "ForgeVision candidates are hash-bound, locally evaluated against image-caption evidence, owner-approved before atomic promotion, rollback-capable, and only reported CONNECTED when promoted ForgeVision+ForgeLM checkpoints pass native runtime health. Inference is path-bounded and uses no external AI."
+    },
+    {
+      "id": "forgeaudio-native-runtime-v060",
+      "introduced": "0.60.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/audio.py",
+        "model/train_audio.py",
+        "model/eval/audio_compare.py",
+        "model/audio_runtime.py",
+        "src/forgeaudio-candidate-promotion.js",
+        "src/forgelm-bridge.js",
+        "src/capabilities.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "model/test_audio.py",
+        "verification/forgeaudio-candidate-promotion.test.mjs"
+      ],
+      "evidence_note": "ForgeAudio is a local spectral audio encoder/projector aligned to ForgeLM embeddings, with hash-bound evaluation, explicit owner-approved promotion, rollback, runtime health and path-bounded native audio-language inference. No external AI or speech API is used. PCM WAV is the dependency-free supported input format."
     }
   ]
 }
