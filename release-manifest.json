@@ -248,6 +248,11 @@
       "bytes": 3800
     },
     {
+      "path": "model/eval/video_compare.py",
+      "sha256": "b140a7159004d2072e70dca08555aa2a6893ddd605ba81b03f9d30c57a6673ce",
+      "bytes": 3578
+    },
+    {
       "path": "model/eval/vision_compare.py",
       "sha256": "c860e2371e403353f48b55bec8cb735c71ec4ca50d7f2441c305e61615fbce31",
       "bytes": 4520
@@ -401,6 +406,11 @@
       "path": "model/video.py",
       "sha256": "443abbabc3878a03962508c33675794da6180a4637c03ae8bd7a44cdc7921826",
       "bytes": 4125
+    },
+    {
+      "path": "model/video_runtime.py",
+      "sha256": "6ac1fa354a0e2b09bf3eae100b5138a1d8bc92c7c6bfa77f69ab3d7b370a7c93",
+      "bytes": 4554
     },
     {
       "path": "model/vision.py",
