@@ -394,7 +394,11 @@ export class OneChatRouter{
   return result("UNAVAILABLE",`No executable collaboration route for agent ${agent}.`);
  }
  async handle(input={}){
+  const emit=e=>input.onEvent?.(e),signal=input.signal||null;
+  const cancelled=()=>signal?.aborted===true;
   const message=String(input.message||"").trim();if(!message)return {state:"BLOCKED",message:"Chat message is empty.",allocations:[],contributions:[]};
+  if(cancelled())return {state:"CANCELLED",message:"Turn cancelled before execution.",allocations:[],contributions:[]};
+  emit({type:"phase",phase:"intent",message:"Understanding the request."});
   const chatId=input.chatId||`chat-${crypto.randomUUID()}`,intent=this._intent(message,chatId);
   if(/^explain\s+answer[.! ]*$/i.test(message)){
     const prior=this._previousEvidence(chatId);
@@ -404,12 +408,17 @@ export class OneChatRouter{
     return {state:"SUCCESS",chatId,message:`Previous answer evidence: ${prior.claims?.length||0} claim(s); statuses ${JSON.stringify(summary)}; ${sources.length} cited source chunk(s); model ${prior.model?.id||prior.model?.provider||"none"}.`,responseMode:"evidence-explanation",modelUsed:Boolean(prior.model),evidenceEnvelope:prior,allocations:[],contributions:[],truth:"This explanation exposes structured evidence and execution metadata, not private chain-of-thought."};
   }
   const routing=input.routing||{allowCloud:input.allowCloud===true,provider:input.provider||null,model:input.model||null,task:input.task||null,modality:input.modality||null,maxTokens:input.maxTokens||null,temperature:input.temperature};
+  emit({type:"phase",phase:"attachments",message:"Preparing governed attachments."});
   const prepared=await this._prepareAttachments({...input,chatId});
   if(prepared.state!=="SUCCESS")return {state:prepared.state,chatId,message:prepared.message||"Attachment preparation failed.",responseMode:"multimodal-attachment-error",allocations:[],contributions:[],attachments:prepared.artifacts||[]};
+  if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled after attachment preparation.",allocations:[],contributions:[],attachments:prepared.artifacts||[]};
   const hasAttachments=(prepared.artifacts||[]).length>0;
   let allocations=this.allocations(message),contributions=[],researchContext=null;
+  emit({type:"allocations",allocations,message:"Collaborators allocated."});
   if(intent.research&&this.webResearch){
+    emit({type:"tool",agent:"web-research",state:"RUNNING",message:"Researching governed web evidence."});
     researchContext=await this.webResearch.research(message,{maxSources:Number(input.maxResearchSources||6)});
+    emit({type:"tool",agent:"web-research",state:researchContext?.state||"SUCCESS",message:"Web research phase completed."});
     contributions.push({agent:"web-research",reason:"live governed multi-source research",result:{...researchContext,context:undefined}});
     allocations=[...allocations.filter(x=>x.agent!=="web-research"&&x.agent!=="conversation"),{agent:"conversation",reason:"synthesize the researched evidence into one natural answer"}];
   }else if(intent.followup&&!allocations.some(x=>x.agent==="conversation")){
@@ -417,13 +426,18 @@ export class OneChatRouter{
   }
   if(hasAttachments&&!allocations.some(x=>x.agent==="conversation"))allocations=[...allocations,{agent:"conversation",reason:"synthesize local multimodal attachment evidence with conversational history"}];
   for(const a of allocations){
+    if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled during collaboration.",allocations,contributions,attachments:prepared.artifacts||[]};
+    emit({type:"tool",agent:a.agent,state:"RUNNING",reason:a.reason,message:`${a.agent} started.`});
     const executed=a.agent==="conversation"&&this.conversation
       ?(hasAttachments
-        ?await this.conversation.chatMultimodal({chatId,message,attachments:prepared.media,document:prepared.document,researchContext,maxTokens:routing.maxTokens||256})
-        :await this.conversation.chat({chatId,message,researchContext,routing}))
+        ?await this.conversation.chatMultimodal({chatId,message,attachments:prepared.media,document:prepared.document,researchContext,maxTokens:routing.maxTokens||256,signal,onEvent:emit})
+        :await this.conversation.chat({chatId,message,researchContext,routing,signal,onEvent:emit}))
       :await this.execute(a.agent,message,chatId,{ownerId:input.ownerId||null});
     contributions.push({agent:a.agent,reason:a.reason,result:executed});
+    emit({type:"tool",agent:a.agent,state:executed?.state||"UNKNOWN",reason:a.reason,message:`${a.agent} ${String(executed?.state||"UNKNOWN").toLowerCase()}.`});
   }
+  if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled before verification.",allocations,contributions,attachments:prepared.artifacts||[]};
+  emit({type:"phase",phase:"verify",message:"Verifying result states and evidence."});
   const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
   const ranked=contributions.filter(x=>x.agent!=="verifier").map(x=>x.result).sort((a,b)=>(stateRank.get(b.state)||0)-(stateRank.get(a.state)||0));const best=ranked[0]||verification;
@@ -444,10 +458,12 @@ export class OneChatRouter{
     toolCalls:contributions.filter(x=>x.agent!=="verifier"&&x.agent!=="conversation").map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN",reason:x.reason})),
     metadata:{chatId,responseMode:composed.mode,finalState,researchRunId:researchContext?.runId||null,attachments:(prepared.artifacts||[]).map(x=>({id:x.id,modality:x.modality,contentHash:x.contentHash}))}
   });
+  if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled before persistence; result was not saved.",allocations,contributions,attachments:prepared.artifacts||[]};
   this.lastEvidence.set(chatId,evidenceEnvelope);
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,ownerId:input.ownerId||null,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
   this._ensureAutoTitle(chatId,message,input.ownerId||null);
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
+  emit({type:"persisted",state:finalState,knowledgeId:record.id,responseId,evidenceId:evidenceEnvelope.id,message:"Turn persisted with evidence."});
   return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,attachments:prepared.artifacts||[],allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
 }
