@@ -46,7 +46,11 @@ function renderLiveProgress(container,event){
   const body=container.querySelector("div")||container;
   let log=body.querySelector(".live-progress");
   if(!log){log=document.createElement("div");log.className="live-progress";body.appendChild(log);}
-  if(event.type==="allocations"){
+  if(event.type==="token"){
+    let answer=body.querySelector(".live-answer");
+    if(!answer){answer=document.createElement("p");answer.className="live-answer";body.insertBefore(answer,log);}
+    answer.textContent=String(event.text||"");
+  }else if(event.type==="allocations"){
     const names=(event.allocations||[]).map(x=>x.agent).join(" + ");
     log.insertAdjacentHTML("beforeend",`<div><b>Collaborators</b><span>${esc(names||"none")}</span></div>`);
   }else if(event.type==="tool"){
