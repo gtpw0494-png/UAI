@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "f064429b7db0a17dfd9bb0cf63519cd543f0473acd20fd740f9a96c1e7a5cd02",
-      "bytes": 6913
+      "sha256": "4671e6f901da70fd95b08800a12f37875eee85c3b23eb4cc9ad972cc1fc58559",
+      "bytes": 7021
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -164,8 +164,8 @@
     },
     {
       "path": "model/capabilities.py",
-      "sha256": "e0f0db9a24f18d000a744d5283f58f92b06d954bf590be8f4fe6a476552a6a0c",
-      "bytes": 5351
+      "sha256": "ed00ef3eb4072bf54260bd978bf9eff98058e567f4267dd5c0d938b78f032647",
+      "bytes": 6866
     },
     {
       "path": "model/cli.py",
@@ -284,8 +284,8 @@
     },
     {
       "path": "model/self_sufficient.py",
-      "sha256": "fa713c311727631fa57c4de7d33a2b0f5e68d7da3e39061a6cebdfa866ffc28d",
-      "bytes": 2203
+      "sha256": "cc845bc97434a9d9cba32ef4d40e6792acab369e62f4633d71f35d5de7900bf7",
+      "bytes": 2538
     },
     {
       "path": "model/test_advanced.py",
@@ -294,8 +294,8 @@
     },
     {
       "path": "model/test_forgelm.py",
-      "sha256": "e3122c298950d676e760795e382ac72dce2415de85e878b03e4d9558500e6010",
-      "bytes": 755
+      "sha256": "3ea5b71d35ec092cb6d4dbd1b36c043ca72b01316c0a481482301ac331e8fb0c",
+      "bytes": 1168
     },
     {
       "path": "model/tokenizer.py",
@@ -699,8 +699,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "ef6cfb0a22b6a1425a47ed5438224b2e2b181aecc1729155e98efbe968ea2490",
-      "bytes": 1812
+      "sha256": "286aae08b2e2c2d63f66450f4196e643d5a732807f0504c8f2235ecdaf1d6871",
+      "bytes": 2039
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -1029,8 +1029,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "3a84ae1c8cfccb5675066cb1ab04365521f338cb448558eb26a475ddfcb9d7c3",
-      "bytes": 8098
+      "sha256": "33286d1f127eb67983bff86123747f66394407a15f1b0e260ac9ce2bc280901e",
+      "bytes": 8346
     },
     {
       "path": "src/multimodal/pipeline.js",
