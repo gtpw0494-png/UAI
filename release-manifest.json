@@ -849,8 +849,8 @@
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
-      "sha256": "6c0f1385be94c5e30b98d834ee8b9e3efa495493a59b0d8f0f68594d5185c590",
-      "bytes": 5145
+      "sha256": "ad0ff8e36cc0b84f033c395a1c517438de1d871058eb3996b7db2634acd770c4",
+      "bytes": 5689
     },
     {
       "path": "src/forgespeech-candidate-promotion.js",
