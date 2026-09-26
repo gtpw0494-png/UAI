@@ -2,7 +2,7 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const cookie=name=>document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="))?.slice(name.length+1)||"";
 let authState={authenticated:false};
-const CHAT_KEY="uai_onechat_id";
+const CHAT_KEY="uai_onechat_id",ACTIVE_TURN_KEY="uai_onechat_active_turn";
 let chatId=sessionStorage.getItem(CHAT_KEY)||("chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)));
 sessionStorage.setItem(CHAT_KEY,chatId);
 const MAX_ATTACHMENTS=16,UPLOAD_CHUNK_BYTES=1_500_000;
@@ -61,7 +61,7 @@ function renderLiveProgress(container,event){
   log.scrollTop=log.scrollHeight;
 }
 function finishLiveTurn(session,wait){
-  activeTurnSession=null;activeEventSeq=0;
+  activeTurnSession=null;activeEventSeq=0;sessionStorage.removeItem(ACTIVE_TURN_KEY);
   if(activeEventSource){activeEventSource.close();activeEventSource=null;}
   $("#stopBtn").hidden=true;$("#sendBtn").hidden=false;$("#sendBtn").disabled=false;$("#attachBtn").disabled=false;
   const x=session?.result||null;
@@ -94,8 +94,27 @@ function connectTurnEvents(sessionId,wait){
 async function startLiveTurn(payload,wait){
   const started=await post("/api/onechat/start",payload),session=started.session;
   if(!session?.id)throw new Error("Turn session did not return an ID.");
-  activeTurnSession=session.id;activeEventSeq=0;$("#sendBtn").hidden=true;$("#stopBtn").hidden=false;
+  activeTurnSession=session.id;activeEventSeq=0;sessionStorage.setItem(ACTIVE_TURN_KEY,session.id);$("#sendBtn").hidden=true;$("#stopBtn").hidden=false;
   connectTurnEvents(session.id,wait);
+}
+async function recoverActiveTurn(){
+  const id=sessionStorage.getItem(ACTIVE_TURN_KEY);if(!id||!authState.authenticated)return;
+  try{
+    const snap=await api("/api/onechat/session?id="+encodeURIComponent(id)+"&since=0"),session=snap.session;
+    if(!session){sessionStorage.removeItem(ACTIVE_TURN_KEY);return;}
+    if(["QUEUED","RUNNING","CANCEL_REQUESTED"].includes(session.state)){
+      activeTurnSession=id;activeEventSeq=0;$("#sendBtn").hidden=true;$("#stopBtn").hidden=false;
+      bubble("working","Recovered live turn","<p>Reconnected to a durable OneChat generation session.</p>");const wait=$("#stream .working:last-child");
+      for(const e of snap.events||[]){if(e.seq)activeEventSeq=Math.max(activeEventSeq,e.seq);renderLiveProgress(wait,e);}
+      connectTurnEvents(id,wait);return;
+    }
+    if(session.state==="INTERRUPTED"){
+      sessionStorage.removeItem(ACTIVE_TURN_KEY);
+      bubble("system","Interrupted generation",`<p>The previous live turn was interrupted by a server/process restart and was not marked completed.</p><button type="button" class="resume-session" data-session-id="${esc(id)}">Resume interrupted turn</button>`,"INTERRUPTED");
+      return;
+    }
+    sessionStorage.removeItem(ACTIVE_TURN_KEY);
+  }catch{sessionStorage.removeItem(ACTIVE_TURN_KEY);}
 }
 async function downloadJson(name,data){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");
@@ -205,7 +224,7 @@ async function refreshAuth(){
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
     $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
     $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
-    await refreshOperations();if(s.authenticated){await loadConversationHistory();await refreshConversations();}
+    await refreshOperations();if(s.authenticated){await loadConversationHistory();await refreshConversations();await recoverActiveTurn();}
   }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
@@ -253,6 +272,18 @@ $("#conversationList").addEventListener("click",async e=>{
   }catch(err){bubble("error","Conversation",`<p>${esc(err.message)}</p>`);}
 });
 $("#stream").addEventListener("click",async e=>{
+  const resume=e.target.closest(".resume-session");
+  if(resume){
+    try{
+      const out=await post("/api/onechat/resume",{id:resume.dataset.sessionId});
+      const session=out.session;if(!session?.id)throw new Error("Resume did not return a new session.");
+      activeTurnSession=session.id;activeEventSeq=0;sessionStorage.setItem(ACTIVE_TURN_KEY,session.id);
+      $("#sendBtn").hidden=true;$("#stopBtn").hidden=false;
+      bubble("working","Resumed turn","<p>Restarted the interrupted turn as a new governed session.</p>");const wait=$("#stream .working:last-child");
+      connectTurnEvents(session.id,wait);resume.disabled=true;
+    }catch(err){bubble("error","Resume generation",`<p>${esc(err.message)}</p>`);}
+    return;
+  }
   const btn=e.target.closest("button[data-turn-action]");if(!btn)return;
   const controls=btn.closest(".turn-controls"),turnId=controls?.dataset.turnId;if(!turnId)return;
   const action=btn.dataset.turnAction;
