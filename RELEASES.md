@@ -1,5 +1,13 @@
 # Release history
 
+## v0.72.0 — First-Install ForgeLM Bootstrap Recovery
+- Fixed the fresh-install deadlock where ForgeLM candidate evaluation required an already-promoted live checkpoint.
+- Added a dedicated first-checkpoint evaluation covering loadability, finite loss metadata, training-trend sanity and local generation.
+- Added explicit hash-bound first-checkpoint promotion; later upgrades continue to use live-baseline regression comparison.
+- Added `npm run model:bootstrap -- --approve --steps 80` as the local Termux bootstrap path.
+- Added regression coverage for first-checkpoint evaluation and promotion.
+- Web capability questions are no longer treated as live search queries merely to report whether web research is configured.
+
 ## v0.71.0 — Durable OneChat Session Recovery
 - Added atomic local state snapshots and append-only JSONL event journals for live OneChat turn sessions.
 - Added startup reconciliation so terminal sessions remain terminal, queued sessions safely resume, and previously running/cancel-requested sessions become INTERRUPTED.
