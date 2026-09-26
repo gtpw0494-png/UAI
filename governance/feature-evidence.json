@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.57.0",
+  "generated_for": "0.58.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1091,6 +1091,20 @@
         "model/test_long_context.py"
       ],
       "evidence_note": "ForgeLM now has native RoPE context scaling plus offline dense context memory using its own hidden-state embeddings. Sources larger than the active transformer window are chunked, ranked and assembled locally with evidence. This does not claim that the base transformer attends to the entire source simultaneously or that frontier long-context quality has been reached."
+    },
+    {
+      "id": "forgevision-native-foundation-v058",
+      "introduced": "0.58.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/vision.py",
+        "model/train_vision.py",
+        "src/capabilities.js"
+      ],
+      "tests": [
+        "model/test_vision.py"
+      ],
+      "evidence_note": "Native local visual patch encoder, transformer blocks and ForgeLM-space projector are trainable without external AI. Alignment training uses the promoted ForgeLM text embedding space. Semantic image understanding remains unavailable until a trained/evaluated ForgeVision checkpoint is explicitly promoted."
     }
   ]
 }
