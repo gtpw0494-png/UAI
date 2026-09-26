@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.55.0",
+  "generated_for": "0.56.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1039,6 +1039,40 @@
         "verification/knowledge-production-http-v055.test.mjs"
       ],
       "evidence_note": "Training paths now create candidate checkpoints rather than silently replacing the live ForgeLM checkpoint. Held-out knowledge and stable regression loss gates precede exact owner-bound promotion; rollback artifacts are integrity-checked. Exact-state authoritative CI remains pending."
+    },
+    {
+      "id": "frontier-provider-routing-v056",
+      "introduced": "0.56.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/providers.js",
+        "src/model-catalog.js",
+        "src/models/router.js",
+        "src/conversation-engine.js",
+        "src/onechat.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/model-catalog.test.mjs",
+        "verification/frontier-provider-routing-v056.test.mjs"
+      ],
+      "evidence_note": "Provider-native chat, vision, image, structured-output, embedding and rerank adapters plus explicit local/cloud model routing are implemented. Catalog registration and configured credentials remain distinct from runtime CONNECTED evidence; proprietary model internals are not claimed."
+    },
+    {
+      "id": "forgelm-embedding-rerank-v056",
+      "introduced": "0.56.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/forgelm.py",
+        "model/capabilities.py",
+        "model/self_sufficient.py",
+        "src/forgelm-bridge.js",
+        "src/models/router.js"
+      ],
+      "tests": [
+        "model/test_forgelm.py"
+      ],
+      "evidence_note": "Promoted ForgeLM checkpoints can produce normalized mean-pooled hidden-state embeddings and deterministic cosine reranking locally. Retrieval quality remains dependent on the trained checkpoint and is not claimed to equal frontier embedding models without benchmark evidence."
     }
   ]
 }
