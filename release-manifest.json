@@ -839,8 +839,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "c9df63825f0372ed8b5cbdc68942264eea2bceba2fc378fdc376ce673a7b4da2",
-      "bytes": 4527
+      "sha256": "76682da576206fd7ec44531e47b28b2f9fd2a3a95aa6a44bd415aa1f58fe8ef6",
+      "bytes": 4541
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -1649,8 +1649,8 @@
     },
     {
       "path": "verification/onechat-live-sessions.test.mjs",
-      "sha256": "ce32672a3edc2f6c70ef6b1132a13241342d2d4e3d2744c2f63dd1cb07dd1132",
-      "bytes": 2065
+      "sha256": "585212d30c88a166027de9a4c10c5d5da12669e8f409a76efee36884af8b8c07",
+      "bytes": 2262
     },
     {
       "path": "verification/onechat-model-lifecycle.test.mjs",
