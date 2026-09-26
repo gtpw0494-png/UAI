@@ -21,10 +21,18 @@ export class OneChatRouter{
   if(!this.multimodalPipeline)return {state:"UNAVAILABLE",media:{},document:"",evidence:[],artifacts:[],message:"Multimodal artifact pipeline is not configured."};
   const media={},docs=[],evidence=[],artifacts=[];
   for(const item of rows.slice(0,16)){
-    const file=String(item?.path||"").trim();if(!file)continue;
-    const reg=this.multimodalPipeline.register({path:file,sourceId:item?.sourceId||null,ownerId:input.ownerId||null,metadata:{chatId:input.chatId||null,label:item?.label||null}});
-    if(reg.state!=="SUCCESS")return {...reg,media,document:docs.join("\n\n"),evidence,artifacts};
-    const a=reg.artifact;artifacts.push({id:a.id,modality:a.modality,path:a.path,label:String(item?.label||"").trim()||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash,bytes:a.bytes});
+    const mediaId=String(item?.mediaId||"").trim(),file=String(item?.path||"").trim();
+    let a=null;
+    if(mediaId){
+      const d=this.multimodalPipeline.contentDescriptor?.(mediaId,{ownerId:input.ownerId||null});
+      if(!d||d.state!=="SUCCESS")return {...(d||{state:"UNAVAILABLE",message:"Media artifact is unavailable."}),media,document:docs.join("\n\n"),evidence,artifacts};
+      a=this.multimodalPipeline.get(mediaId);
+    }else if(file){
+      const reg=this.multimodalPipeline.register({path:file,sourceId:item?.sourceId||null,ownerId:input.ownerId||null,metadata:{chatId:input.chatId||null,label:item?.label||null}});
+      if(reg.state!=="SUCCESS")return {...reg,media,document:docs.join("\n\n"),evidence,artifacts};
+      a=reg.artifact;
+    }else return {state:"BLOCKED",message:"Each attachment requires mediaId or path.",media,document:docs.join("\n\n"),evidence,artifacts};
+    artifacts.push({id:a.id,modality:a.modality,path:a.path,label:String(item?.label||a.metadata?.originalName||"").trim()||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash,bytes:a.bytes});
     evidence.push({source_id:a.sourceId||a.id,uri:"file:"+a.path,provenance:{mediaId:a.id,modality:a.modality,contentHash:a.contentHash}});
     if(["image","audio","video"].includes(a.modality)){
       if(!media[a.modality])media[a.modality]=a.path;
