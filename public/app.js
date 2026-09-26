@@ -47,7 +47,9 @@ async function loadConversationHistory({force=false}={}){
   try{
     const h=await api("/api/onechat/history?chatId="+encodeURIComponent(chatId)+"&limit=80");
     const turns=h.turns||[];
-    if(!turns.length){resetStream("New local OneChat conversation.");}\n    if(turns.length){      $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
+    if(!turns.length){resetStream("New local OneChat conversation.");}
+    if(turns.length){
+      $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
       for(const t of turns){
         bubble("user","You",`<p>${esc(t.user||"")}</p>${attachmentCards(t.attachments||[])}`,t.createdAt||"");
         bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
