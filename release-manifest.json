@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "ebb3ef1b8f0c70b5ed73b7448ec07980446151c3181fdcbd6ee1a98f187e7bdc",
-      "bytes": 11965
+      "sha256": "ab2a0c92c53acfd1accae60cfcd7159bb94a06b1f438fe696d2d69feacee5daa",
+      "bytes": 13156
     },
     {
       "path": "RELEASES.md",
-      "sha256": "0ffc74992e4fe7f64ad297b3e3a41551f837c6fff792c5e41904f13020cf6242",
-      "bytes": 19420
+      "sha256": "df2282dcd5b48fc86e06fa7bc98da977be6db401965a7222d011d358ef378ece",
+      "bytes": 20673
     },
     {
       "path": "TERMUX-RUN.md",
