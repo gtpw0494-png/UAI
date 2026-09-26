@@ -318,6 +318,11 @@
       "bytes": 972
     },
     {
+      "path": "model/train_vision.py",
+      "sha256": "fdc3db4750d02177816cf583a5ceff9fabd7d7c0a32cabc5dcddb8e2ac1e5b50",
+      "bytes": 5455
+    },
+    {
       "path": "model/trainer.py",
       "sha256": "061b51711410d7fce4f1708fc276589a6925177a00d3d8823a4447ccb4090bba",
       "bytes": 5701
