@@ -323,6 +323,11 @@
       "bytes": 5701
     },
     {
+      "path": "model/vision.py",
+      "sha256": "83da2af9a478362e86e29fceb3b9a681a7c1870dc3ab56959ee6d914ab97bf0a",
+      "bytes": 5499
+    },
+    {
       "path": "package.json",
       "sha256": "15e9e13b40d41fbcd0ac595c6ceb13a1a64477a1ec45781a10b81dd8a89b5e2a",
       "bytes": 7081
