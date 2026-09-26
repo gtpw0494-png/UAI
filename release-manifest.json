@@ -1643,6 +1643,11 @@
       "bytes": 2226
     },
     {
+      "path": "verification/onechat-durable-session-recovery.test.mjs",
+      "sha256": "381977714b7ae5db65ec41d380d010c035e9f2cfaca5c1358a40b9902f1f6317",
+      "bytes": 3195
+    },
+    {
       "path": "verification/onechat-history-attachments.test.mjs",
       "sha256": "c21056e0ba2db386aa04098f66e15b4ac79057e966bb479244811e776a0fb176",
       "bytes": 2083
