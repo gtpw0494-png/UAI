@@ -1354,8 +1354,8 @@
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
-      "sha256": "7954cb54ae28096b94508445bc792ee0eff6ba1457fa5acf5aa3c88afec293de",
-      "bytes": 2583
+      "sha256": "cdd4d0eff14e95166296e94c9df9a0ebf808a3d058c5169f1ff02b7137c1c177",
+      "bytes": 3228
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
@@ -1409,8 +1409,8 @@
     },
     {
       "path": "verification/knowledge-governance.test.mjs",
-      "sha256": "5dd022d91f58ad5d8d97e759bc229be9d7847d6075bf893c57fb9dfd8f6e0825",
-      "bytes": 2037
+      "sha256": "03ec5778afd6dd86ca68d98eaf3c17c524afde12f7907973b968f9f92ef1ccd2",
+      "bytes": 2331
     },
     {
       "path": "verification/knowledge-learning-pipeline.test.mjs",
@@ -1419,8 +1419,8 @@
     },
     {
       "path": "verification/knowledge-production-http-v055.test.mjs",
-      "sha256": "ef063d9ab9f1b875b0f67ac24b66f70da3c12b2729b2a86900211e367e99b2f8",
-      "bytes": 4431
+      "sha256": "989e1fddd9c6ff1736204f892ca364f0d3ad2dc200e4f77b32bf1b8c2c6fda8e",
+      "bytes": 4659
     },
     {
       "path": "verification/knowledge-research-scheduler.test.mjs",
