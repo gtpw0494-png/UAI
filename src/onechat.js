@@ -211,7 +211,7 @@ export class OneChatRouter{
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
   if(/^(?:evaluate|promote|rollback)\s+model\s+run\s+model-run-[\w-]+/i.test(t.trim()))return [{agent:"forgelm",reason:"explicit governed model-candidate lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
-  if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
+  if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t)||/\b(?:ingest|fetch|crawl)\b[\s\S]*(?:https?:\/\/|www\.|\b[a-z0-9.-]+\.[a-z]{2,}\b)/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
   if(/\bmemory\b|remember|why remembered|forget source|disable training|disable memory|export memory/i.test(t))a.push({agent:"memory",reason:"explicit user-owned memory intent"});
   if(/provenance graph|lineage|trace provenance|source graph|purge provenance/i.test(t))a.push({agent:"provenance",reason:"provenance graph intent"});
   if(/document|citation|evidence search|retrieval source/i.test(t))a.push({agent:"documents",reason:"provenance-aware document retrieval intent"});
@@ -222,16 +222,26 @@ export class OneChatRouter{
   if(/forgelm|local model|model status|neural|train model|language model|checkpoint|tokenizer/i.test(t))a.push({agent:"forgelm",reason:"local neural-model intent"});
   if(/learning|training data|dataset|verified trace|prepare corpus/i.test(t))a.push({agent:"learning",reason:"learning-fabric intent"});
   if(/agent|orchestrate|collaborat|workflow|task\b|resume task|cancel task|action envelope/i.test(t))a.push({agent:"explorative",reason:"agent/orchestration/task-lifecycle intent"});
-  if(/account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
+  if(/account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite|what (?:else )?can you do|what can you do|help me use|available features/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
   if(!a.length)a.push({agent:"conversation",reason:"general conversational response"});
   return a.filter((x,i)=>a.findIndex(y=>y.agent===x.agent)===i);
  }
  async execute(agent,message,chatId=null,context={}){
   if(agent==="conversation")return this.conversation?this.conversation.chat({chatId,message}):result("UNAVAILABLE","Conversational model engine is not configured.");
   if(agent==="web-research"){
+    if(/^(?:can|could|do) you (?:search|browse|access|use) (?:the )?(?:web|internet)\??$/i.test(String(message).trim())){
+      if(!this.webResearch)return result("UNAVAILABLE","Web research is not configured in this build.");
+      const probe=await this.webResearch.search("open source software",{limit:1});
+      if(probe.state==="SUCCESS")return result("SUCCESS",`Yes. Live web search is reachable through ${(probe.providers||[]).join(", ")||"the configured search path"}. Web content is treated as untrusted evidence and does not gain authority over UAI.`,{providers:probe.providers||[],structuredProvider:probe.structuredProvider||"UNAVAILABLE"});
+      const detail=(probe.errors||[]).map(x=>x.engine+": "+x.message).slice(0,3).join("; ");
+      return result("UNAVAILABLE",`Web research is configured, but live search is not reachable from this device right now${detail?": "+detail:"."}`,{errors:probe.errors||[],structuredProvider:probe.structuredProvider||"UNAVAILABLE"});
+    }
     if(/web corpus status|web sources|source classes|common crawl|fineweb|wikimedia|wikipedia|stack exchange/i.test(message)){const s=this.webCorpus?.status();return s?{...s,message:`Web corpus registry contains ${s.sourceClasses} governed source classes and ${s.records} locally ingested record(s).`}:result("UNAVAILABLE","Web corpus service is not configured.");}
-    const m=String(message).match(/(?:ingest|fetch|research)\s+url\s+(https?:\/\/\S+)(?:\s+license\s+([A-Za-z0-9_.+-]+))?/i);
-    if(m)return this.webCorpus?await this.webCorpus.ingestUrl({url:m[1],license:m[2]||"UNKNOWN",licenseSource:m[2]?"USER_DECLARED":"UNVERIFIED",promoteTraining:/training[- ]approved/i.test(message)}):result("UNAVAILABLE","Web corpus service is not configured.");
+    const m=String(message).match(/(?:ingest|fetch|research|crawl)(?:\s+url)?\s+((?:https?:\/\/|www\.)\S+|[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?:\/\S*)?)(?:\s+license\s+([A-Za-z0-9_.+-]+))?/i);
+    if(m){
+      const target=/^https?:\/\//i.test(m[1])?m[1]:"https://"+m[1];
+      return this.webCorpus?await this.webCorpus.ingestUrl({url:target,license:m[2]||"UNKNOWN",licenseSource:m[2]?"USER_DECLARED":"UNVERIFIED",promoteTraining:/training[- ]approved/i.test(message)}):result("UNAVAILABLE","Web corpus service is not configured.");
+    }
     return result("SUCCESS","Web Research Agent is ready. Ask for web corpus status or `ingest url https://...`; fetched content keeps URL, retrieval time, robots result, license state and training eligibility.");
   }
   if(agent==="documents"){
@@ -364,6 +374,12 @@ export class OneChatRouter{
     return this.development.propose({request:message});
   }
   if(agent==="systems"){
+    if(/what (?:else )?can you do|what can you do|help me use|available features/i.test(message)&&this.capabilityStatus){
+      const caps=await this.capabilityStatus(),connected=caps.filter(x=>x.availability==="CONNECTED"),configured=caps.filter(x=>x.availability==="CONFIGURED"),unavailable=caps.filter(x=>!["CONNECTED","CONFIGURED"].includes(x.availability));
+      const groups=[["chat",/onechat|forgelm/i],["knowledge",/knowledge|document|memory|retrieval|lexicon/i],["web",/web|research/i],["multimodal",/vision|audio|speech|video|multimodal|media/i],["development",/develop|plugin|github|task|action/i],["governance",/policy|approval|audit|provenance|security|capabilit/i]]
+        .map(([name,re])=>({name,count:connected.filter(x=>re.test(x.id)).length})).filter(x=>x.count);
+      return result("SUCCESS",`I currently have ${connected.length}/${caps.length} capabilities CONNECTED${configured.length?", "+configured.length+" CONFIGURED":""}. Active areas: ${groups.map(x=>x.name+" ("+x.count+")").join(", ")||"local orchestration"}. I can chat, retrieve governed local knowledge, work with attachments/multimodal runtimes when their checkpoints are available, research the web when network search is reachable, manage tasks/actions, inspect provenance/evidence, and perform approval-gated development. I will report unavailable functions instead of pretending they ran.`,{connected:connected.length,total:caps.length,configured:configured.length,unavailable:unavailable.map(x=>({id:x.id,availability:x.availability,reason:x.reason}))});
+    }
     if(/(?:show|list)\s+approvals?/i.test(message)&&this.approvalStore){const approvals=this.approvalStore.list({limit:50});return result("SUCCESS",`${approvals.length} approval record(s).`,{approvals});}
     const approvalDecision=String(message).match(/\b(approve|deny)\s+(approval-[\w-]+)/i);if(approvalDecision&&this.approvalStore)return this.approvalStore.decide(approvalDecision[2],approvalDecision[1].toUpperCase()==="APPROVE"?"APPROVE":"DENY");
     if(/(?:simulate policy|policy simulation|dry run)/i.test(message)&&this.policySimulator){const risk=(message.match(/\b(low|medium|high|critical)\b/i)||[])[1]||"low";return this.policySimulator.simulate({actor:context.ownerId||"user:onechat",objective:message,steps:[{operation:"onechat.proposed-workflow",description:message,risk,physical:/physical|fabricat/i.test(message),mutatesSource:/source|code|mutat|develop/i.test(message),external:/external|api|web|send|upload/i.test(message),requiresCredential:/credential|account|billing|secret/i.test(message),dataClassification:/secret/i.test(message)?"secret":/private|personal/i.test(message)?"private":"local"}]});}
