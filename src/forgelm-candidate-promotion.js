@@ -26,7 +26,13 @@ export class ForgeLMCandidatePromotion{
   async evaluate({candidate,dataset,maxRelativeRegression=0.02}={}){
     const cand=path.resolve(candidate||"");const data=path.resolve(dataset||"");
     if(!fs.existsSync(cand))return{state:"UNAVAILABLE",eligible:false,message:"Candidate checkpoint missing."};
-    if(!fs.existsSync(this.live))return{state:"UNAVAILABLE",eligible:false,message:"Live ForgeLM checkpoint missing."};
+    if(!fs.existsSync(this.live)){
+      const args=["model/eval/bootstrap_candidate.py","--candidate",cand];
+      const raw=await this.runner(this.python,args,{cwd:this.root});
+      const comparison=lastJson(raw.stdout)||{state:raw.state,message:raw.stderr||"Bootstrap candidate evaluation produced no JSON."};
+      const candidateSha=sha256File(cand);
+      return{state:comparison.state,eligible:comparison.state==="SUCCESS"&&comparison.passed===true,bootstrap:true,candidate:cand,candidate_sha256:candidateSha,baseline:null,baseline_sha256:null,comparison,command:[this.python,...args]};
+    }
     const args=["model/eval/checkpoint_compare.py","--baseline",this.live,"--candidate",cand,"--dataset",data,"--max-relative-regression",String(maxRelativeRegression)];
     const raw=await this.runner(this.python,args,{cwd:this.root});
     const comparison=lastJson(raw.stdout)||{state:raw.state,message:raw.stderr||"Checkpoint comparison produced no JSON."};
@@ -34,7 +40,7 @@ export class ForgeLMCandidatePromotion{
     return{state:comparison.state,eligible:comparison.state==="SUCCESS"&&comparison.passed===true,candidate:cand,candidate_sha256:candidateSha,baseline:this.live,baseline_sha256:baselineSha,comparison,command:[this.python,...args]};
   }
   snapshotBaseline(label="pre-promotion"){
-    if(!fs.existsSync(this.live))return{state:"UNAVAILABLE",message:"Live checkpoint missing."};
+    if(!fs.existsSync(this.live))return{state:"SUCCESS",snapshot:null,bootstrap:true};
     const id="model-rollback-"+crypto.randomUUID();const backup=path.join(this.dir,id+".pt");atomicCopy(this.live,backup);
     const record={id,label,backup,sha256:sha256File(backup),created_at:new Date().toISOString()};fs.writeFileSync(path.join(this.dir,id+".json"),JSON.stringify(record,null,2)+"\n","utf8");
     return{state:"SUCCESS",snapshot:record};
@@ -45,8 +51,8 @@ export class ForgeLMCandidatePromotion{
     if(sha256File(candidate)!==evaluation.candidate_sha256)return{state:"BLOCKED",promoted:false,message:"Candidate hash changed after evaluation."};
     const snapshot=this.snapshotBaseline("pre-forgelm-promotion");if(snapshot.state!=="SUCCESS")return snapshot;
     atomicCopy(candidate,this.live);const liveSha=sha256File(this.live);
-    const out={state:"SUCCESS",promoted:true,approval_id:approvalId,live_checkpoint:this.live,live_sha256:liveSha,previous:snapshot.snapshot,candidate_sha256:evaluation.candidate_sha256,promoted_at:new Date().toISOString()};
-    this.audit?.append?.({type:"forgelm.candidate.promoted",approvalId,candidateSha256:evaluation.candidate_sha256,liveSha256:liveSha,rollbackId:snapshot.snapshot.id});
+    const out={state:"SUCCESS",promoted:true,approval_id:approvalId,live_checkpoint:this.live,live_sha256:liveSha,previous:snapshot.snapshot||null,bootstrap:snapshot.bootstrap===true,candidate_sha256:evaluation.candidate_sha256,promoted_at:new Date().toISOString()};
+    this.audit?.append?.({type:"forgelm.candidate.promoted",approvalId,candidateSha256:evaluation.candidate_sha256,liveSha256:liveSha,rollbackId:snapshot.snapshot?.id||null,bootstrap:out.bootstrap});
     return out;
   }
   rollback(id,{reason="model regression"}={}){
