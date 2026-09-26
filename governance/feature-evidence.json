@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.70.0",
+  "generated_for": "0.71.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1347,6 +1347,24 @@
         "verification/onechat-attachment-ui.test.mjs"
       ],
       "evidence_note": "ForgeLM.generate emits callbacks from the actual local sampling loop. The Python text and multimodal runtimes serialize cumulative decoded text as newline-delimited token events, the Node bridge parses and forwards those events through the local model router and OneChat session journal, and the browser progressively renders them over replayable SSE. Stop uses the same AbortSignal to terminate the local ForgeLM subprocess. Token streaming is only claimed for ForgeLM paths that emit these generation-time events."
+    },
+    {
+      "id": "onechat-durable-session-recovery-v071",
+      "introduced": "0.71.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/onechat-turn-sessions.js",
+        "server.js",
+        "public/app.js",
+        "src/governance/request-schemas.js",
+        "src/capabilities.js"
+      ],
+      "tests": [
+        "verification/onechat-durable-session-recovery.test.mjs",
+        "verification/onechat-live-sessions.test.mjs",
+        "verification/onechat-attachment-ui.test.mjs"
+      ],
+      "evidence_note": "Live OneChat sessions persist an atomic state snapshot plus append-only JSONL event journal under state/onechat-turn-sessions. On restart, terminal sessions remain terminal, QUEUED sessions may safely continue, and RUNNING/CANCEL_REQUESTED sessions become INTERRUPTED and are never reported as completed. The owner may explicitly resume an interrupted turn as a new linked session. Browser sessionStorage reconnects to surviving live sessions and exposes explicit interrupted-session resume."
     }
   ]
 }
