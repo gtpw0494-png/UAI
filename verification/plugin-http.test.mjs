@@ -44,7 +44,7 @@ manifest.signature={
 };
 
 let stdout="",stderr="";
-const child=spawn(process.execPath,["server.js"],{
+const child=spawn(process.execPath,[path.resolve("server.js")],{
   cwd:path.resolve(path.dirname(new URL(import.meta.url).pathname),".."),
   env:{
     ...process.env,
