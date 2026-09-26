@@ -14,7 +14,7 @@ assert.ok(!/<textarea[^>]+id="chatIn"[^>]+required/i.test(html));
 
 assert.ok(app.includes('UPLOAD_CHUNK_BYTES=1_500_000'));
 assert.ok(app.includes('post("/api/media/upload"'));
-assert.ok(app.includes('post("/api/onechat"'));
+assert.ok(app.includes('post("/api/onechat"'));\nassert.ok(app.includes('/api/onechat/history'));\nassert.ok(app.includes('/api/media/content?id='));\nassert.ok(app.includes('mediaId:item.mediaId'));
 assert.ok(app.includes('attachments:uploaded'));
 assert.ok(app.includes('pendingAttachments.length>=MAX_ATTACHMENTS'));
 assert.ok(app.includes('item.uploadedPath'));
