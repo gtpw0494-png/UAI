@@ -11,6 +11,8 @@ lm=ForgeLM(ForgeConfig(d_model=32,n_layers=1,n_heads=4,n_kv_heads=2,d_ff=64,max_
 audio=ForgeAudioEncoder(ForgeAudioConfig(sample_rate=16000,n_fft=64,hop_length=16,win_length=64,freq_bins=33,audio_dim=24,audio_layers=1,audio_heads=4,output_dim=32,max_frames=128))
 adapter=ForgeAudioAdapter(audio,lm.config.d_model)
 waveform=torch.rand(2,1600)*2-1
+short=torch.rand(1,20)*2-1
+assert audio(short).shape[-1]==32
 tokens=adapter(waveform)
 assert tokens.shape[0]==2 and tokens.shape[-1]==32
 emb=audio.embed(waveform)
