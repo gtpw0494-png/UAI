@@ -34,5 +34,7 @@ export class ForgeLMBridge{
   visionDescribe(image,prompt="Describe the image using only what the visual evidence supports.",max=96){return run("vision_runtime.py",["describe","--image",String(image),"--prompt",String(prompt),"--max-tokens",String(max)],120000)}
   audioStatus(){return run("audio_runtime.py",["status"],30000)}
   audioDescribe(audio,prompt="Describe or transcribe the audio using only the acoustic evidence.",max=96){return run("audio_runtime.py",["describe","--audio",String(audio),"--prompt",String(prompt),"--max-tokens",String(max)],120000)}
+  speechStatus(){return run("speech_runtime.py",["status"],30000)}
+  speechSynthesize(text,output){return run("speech_runtime.py",["synthesize","--text",String(text),"--output",String(output)],120000)}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
