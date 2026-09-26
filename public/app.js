@@ -6,10 +6,39 @@ const CHAT_KEY="uai_onechat_id";
 let chatId=sessionStorage.getItem(CHAT_KEY)||("chat-"+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)));
 sessionStorage.setItem(CHAT_KEY,chatId);
 const MAX_ATTACHMENTS=16,UPLOAD_CHUNK_BYTES=1_500_000;
-let pendingAttachments=[];
+let pendingAttachments=[];\nlet historyLoadedFor=null;
 
 const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
 function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
+function attachmentContentUrl(id){return "/api/media/content?id="+encodeURIComponent(String(id||""));}
+function attachmentCards(items=[]){
+  if(!items.length)return "";
+  return `<div class="history-attachments">${items.map(a=>{
+    const label=esc(a.label||a.sourceId||a.id||"attachment"),meta=`${esc(a.modality||"file")} · ${esc(humanBytes(a.bytes||0))}`,src=attachmentContentUrl(a.id);
+    let preview="";
+    if(a.modality==="image")preview=`<img loading="lazy" src="${src}" alt="${label}">`;
+    else if(a.modality==="audio")preview=`<audio controls preload="metadata" src="${src}"></audio>`;
+    else if(a.modality==="video")preview=`<video controls preload="metadata" src="${src}"></video>`;
+    else preview=`<a class="attachment-open" href="${src}" target="_blank" rel="noopener">Open</a>`;
+    return `<article class="history-attachment"><div class="history-preview">${preview}</div><div><b>${label}</b><small>${meta}</small></div></article>`;
+  }).join("")}</div>`;
+}
+async function loadConversationHistory({force=false}={}){
+  if(!authState.authenticated)return;
+  if(!force&&historyLoadedFor===chatId)return;
+  try{
+    const h=await api("/api/onechat/history?chatId="+encodeURIComponent(chatId)+"&limit=80");
+    const turns=h.turns||[];
+    if(turns.length){
+      $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
+      for(const t of turns){
+        bubble("user","You",`<p>${esc(t.user||"")}</p>${attachmentCards(t.attachments||[])}`,t.createdAt||"");
+        bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
+      }
+    }
+    historyLoadedFor=chatId;
+  }catch(e){bubble("error","History",`<p>Conversation history unavailable: ${esc(e.message)}</p>`);}
+}
 function renderAttachmentTray(){
   const tray=$("#attachmentTray");if(!tray)return;
   tray.hidden=!pendingAttachments.length;
@@ -31,10 +60,10 @@ async function uploadAttachment(item){
     const data=bytesToBase64(await part.arrayBuffer());
     const out=await post("/api/media/upload",{uploadId,index,total,name:file.name,mime:file.type||"application/octet-stream",sourceId:"onechat-upload:"+file.name,data});
     item.progress=Math.round(((index+1)/total)*100);item.state=out.state==="PARTIAL"?"uploading":"registered";
-    if(out.upload?.path){item.uploadedPath=out.upload.path;item.artifact=out.artifact||null;item.sha256=out.upload.sha256||null;}
+    if(out.upload?.mediaId){item.mediaId=out.upload.mediaId;item.artifact=out.artifact||null;item.sha256=out.upload.sha256||null;}
     renderAttachmentTray();
   }
-  if(!item.uploadedPath)throw new Error("Upload completed without a governed media path.");
+  if(!item.mediaId)throw new Error("Upload completed without a governed media ID.");
   item.state="ready";item.progress=100;renderAttachmentTray();return item;
 }
 
@@ -85,8 +114,7 @@ async function refreshAuth(){
     $("#authForm").hidden=s.authenticated;$("#logoutBtn").hidden=!s.authenticated;
     $("#authHelp").innerHTML=s.authenticated ? `Signed in as <code>${esc(s.identity?.email||"owner")}</code>. State-changing API calls are locally authorized and audited.` : s.enrollmentRequired ? "Create the one local Owner account. Enrollment closes after successful creation." : "Sign in with the Owner email and password.";
     $("#authSubmit").textContent=s.enrollmentRequired?"Create Owner":"Sign in";
-    await refreshOperations();
-  }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
+    await refreshOperations();if(s.authenticated)await loadConversationHistory();\n  }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
   const s=await api("/api/status"),connected=s.capabilities.filter(x=>x.availability==="CONNECTED").length;
@@ -128,10 +156,10 @@ $("#composer").addEventListener("submit",async e=>{
   bubble("working","System","<p>Securing attachments, allocating collaborators and verifying result states…</p>");const wait=$("#stream .working:last-child");
   try{
     const uploaded=[];
-    for(const item of pendingAttachments){await uploadAttachment(item);uploaded.push({path:item.uploadedPath,label:item.file.name,sourceId:item.artifact?.sourceId||("onechat-upload:"+item.file.name)});}
+    for(const item of pendingAttachments){await uploadAttachment(item);uploaded.push({mediaId:item.mediaId,label:item.file.name,sourceId:item.artifact?.sourceId||("onechat-upload:"+item.file.name)});}
     const x=await post("/api/onechat",{message:shownText,chatId,attachments:uploaded});
     if(x.chatId&&x.chatId!==chatId){chatId=x.chatId;sessionStorage.setItem(CHAT_KEY,chatId);}
-    input.value="";pendingAttachments=[];renderAttachmentTray();wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
+    input.value="";pendingAttachments=[];renderAttachmentTray();historyLoadedFor=chatId;wait.remove();const alloc=(x.allocations||[]).map(a=>a.agent).join(" + ");
     const ev=(x.contributions||[]).map(c=>`<details><summary>${esc(c.agent)} · ${esc(c.result?.state||"UNKNOWN")}</summary><pre>${esc(JSON.stringify(c.result,null,2))}</pre></details>`).join("");
     const evidenceObject=x.evidenceEnvelope||x.evidence;const evidence=evidenceObject?`<details><summary>Answer evidence</summary><pre>${esc(JSON.stringify(evidenceObject,null,2))}</pre></details>`:"";
     bubble("assistant","IntraultUniversalion",`<p>${esc(x.message)}</p>${evidence}${ev}`,`${x.state} · ${esc(x.responseMode||"response")} · ${alloc}`);refresh();
