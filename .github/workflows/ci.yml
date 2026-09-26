@@ -102,6 +102,9 @@ jobs:
       - name: Verify ForgeVision governed lifecycle
         run: npm run test:vision-lifecycle
 
+      - name: Verify ForgeAudio governed lifecycle
+        run: npm run test:audio-lifecycle
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
@@ -210,3 +213,7 @@ jobs:
       - name: Run ForgeVision v0.59 multimodal runtime test
         working-directory: model
         run: python3 test_vision_runtime.py
+
+      - name: Run ForgeAudio v0.60 native audio test
+        working-directory: model
+        run: python3 test_audio.py
