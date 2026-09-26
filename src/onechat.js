@@ -24,7 +24,7 @@ export class OneChatRouter{
     const file=String(item?.path||"").trim();if(!file)continue;
     const reg=this.multimodalPipeline.register({path:file,sourceId:item?.sourceId||null,ownerId:input.ownerId||null,metadata:{chatId:input.chatId||null,label:item?.label||null}});
     if(reg.state!=="SUCCESS")return {...reg,media,document:docs.join("\n\n"),evidence,artifacts};
-    const a=reg.artifact;artifacts.push({id:a.id,modality:a.modality,path:a.path,contentHash:a.contentHash,bytes:a.bytes});
+    const a=reg.artifact;artifacts.push({id:a.id,modality:a.modality,path:a.path,label:String(item?.label||"").trim()||null,sourceId:a.sourceId||null,mediaType:a.mediaType||null,contentHash:a.contentHash,bytes:a.bytes});
     evidence.push({source_id:a.sourceId||a.id,uri:"file:"+a.path,provenance:{mediaId:a.id,modality:a.modality,contentHash:a.contentHash}});
     if(["image","audio","video"].includes(a.modality)){
       if(!media[a.modality])media[a.modality]=a.path;
@@ -38,6 +38,35 @@ export class OneChatRouter{
     }else if(ex.state!=="UNAVAILABLE")return {...ex,media,document:docs.join("\n\n"),evidence,artifacts};
   }
   return {state:"SUCCESS",media,document:docs.join("\n\n"),evidence,artifacts};
+ }
+ history(chatId,{limit=50}={}){
+  const id=String(chatId||"").trim();if(!id)return {state:"BLOCKED",message:"chatId is required.",turns:[]};
+  const rows=this.store?.list?.()||[],turns=[];
+  for(let i=Math.max(0,rows.length-1000);i<rows.length;i++){
+    let x=null;try{x=this.store.get(rows[i].id);}catch{}
+    if(!x||x.kind!=="chat-turn"||x.chatId!==id)continue;
+    const attachments=(x.attachments||[]).map(a=>({
+      id:a.id||null,
+      modality:a.modality||"structured",
+      label:a.label||null,
+      sourceId:a.sourceId||null,
+      mediaType:a.mediaType||null,
+      contentHash:a.contentHash||null,
+      bytes:Number(a.bytes||0)
+    })).filter(a=>a.id);
+    turns.push({
+      id:x.id,
+      createdAt:x.createdAt||x.at||null,
+      user:String(x.user||""),
+      answer:String(x.answer||""),
+      state:x.state||"UNKNOWN",
+      responseMode:x.responseMode||null,
+      attachments,
+      evidenceId:x.evidenceEnvelope?.id||null
+    });
+  }
+  const n=Math.max(1,Math.min(200,Number(limit)||50));
+  return {state:"SUCCESS",chatId:id,turns:turns.slice(-n),count:Math.min(turns.length,n)};
  }
  _previousEvidence(chatId){
   if(this.lastEvidence.has(chatId))return this.lastEvidence.get(chatId);
