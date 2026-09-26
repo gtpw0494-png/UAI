@@ -4,13 +4,13 @@ import {fileURLToPath} from "node:url";
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-function run(script,args,timeout=120000){
+function run(script,args,timeout=120000,{signal=null,onEvent=null}={}){
   return new Promise(resolve=>{
     const p=spawn(process.env.PYTHON||"python3",[path.join(root,"model",script),...args],{cwd:path.join(root,"model")});
     let out="",err="",settled=false;
     const finish=payload=>{if(settled)return;settled=true;clearTimeout(timer);resolve(payload)};
-    p.stdout.on("data",x=>out+=x);
-    p.stderr.on("data",x=>err+=x);
+    p.stdout.on("data",x=>{out+=x;onEvent?.({type:"stdout",chunk:String(x)});});
+    p.stderr.on("data",x=>{err+=x;onEvent?.({type:"stderr",chunk:String(x)});});
     p.on("error",e=>finish({state:"UNAVAILABLE",message:String(e.message||e),script}));
     p.on("close",code=>{
       if(settled)return;
@@ -18,14 +18,14 @@ function run(script,args,timeout=120000){
       for(const line of String(out).trim().split(/\r?\n/).reverse()){try{parsed=JSON.parse(line);break}catch{}}
       finish(parsed&&typeof parsed==="object"?{...parsed,exitCode:code,script}:{state:code===0?"SUCCESS":"FAILURE",message:err||out||`exit ${code}`,exitCode:code,script});
     });
-    const timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
+    const abort=()=>{try{p.kill("SIGTERM")}catch{};finish({state:"CANCELLED",message:`${script} cancelled`,script})};\n    if(signal){if(signal.aborted)return abort();signal.addEventListener("abort",abort,{once:true});}\n    const timer=setTimeout(()=>{p.kill("SIGTERM");finish({state:"TIMEOUT",message:`${script} timed out`,script})},timeout);
   });
 }
 
 export class ForgeLMBridge{
   status(){return run("self_sufficient.py",["status"],15000)}
   train(steps=80,{preset="termux-tiny",gradAccum=1}={}){return run("cli.py",["train","--steps",String(steps),"--preset",String(preset),"--grad-accum",String(gradAccum)],300000)}
-  chat(prompt,max=64){return run("self_sufficient.py",["chat","--prompt",String(prompt),"--max-tokens",String(max)])}
+  chat(prompt,max=64,opts={}){return run("self_sufficient.py",["chat","--prompt",String(prompt),"--max-tokens",String(max)],120000,opts)}
   capability(task,prompt="",context="",max=128){return run("self_sufficient.py",[String(task),"--prompt",String(prompt),"--context",String(context),"--max-tokens",String(max)])}
   embeddings(input){return this.capability("embeddings",JSON.stringify(Array.isArray(input)?input:[String(input)]),"",1)}
   rerank(query,documents=[]){return this.capability("rerank",String(query),JSON.stringify(documents),1)}
@@ -39,6 +39,6 @@ export class ForgeLMBridge{
   videoStatus(){return run("video_runtime.py",["status"],30000)}
   videoDescribe(video,prompt="Describe the video using only the temporal and visual evidence.",max=96){return run("video_runtime.py",["describe","--video",String(video),"--prompt",String(prompt),"--max-tokens",String(max)],180000)}
   multimodalStatus(){return run("multimodal_runtime.py",["status"],30000)}
-  multimodalChat({prompt="",context="",document="",image=null,audio=null,video=null,max=128}={}){const args=["chat","--prompt",String(prompt),"--context",String(context),"--document",String(document),"--max-tokens",String(max)];if(image)args.push("--image",String(image));if(audio)args.push("--audio",String(audio));if(video)args.push("--video",String(video));return run("multimodal_runtime.py",args,240000)}
+  multimodalChat({prompt="",context="",document="",image=null,audio=null,video=null,max=128,signal=null,onEvent=null}={}){const args=["chat","--prompt",String(prompt),"--context",String(context),"--document",String(document),"--max-tokens",String(max)];if(image)args.push("--image",String(image));if(audio)args.push("--audio",String(audio));if(video)args.push("--video",String(video));return run("multimodal_runtime.py",args,240000,{signal,onEvent})}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
