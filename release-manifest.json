@@ -373,6 +373,11 @@
       "bytes": 1199
     },
     {
+      "path": "model/test_streaming.py",
+      "sha256": "d2398348d71819e85bbd6558dbe06e3e3ae655b4f503d55c46f1bb364e3c6203",
+      "bytes": 963
+    },
+    {
       "path": "model/test_video.py",
       "sha256": "2b9eafebf24271438413010f215c789cfa881bfb1d685b627b6c3ff7eae5eb96",
       "bytes": 1301
@@ -449,8 +454,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "aa2aa8ed0cbcc5e60fca4116246ea67353f7be2765c3ced4fc95760470d53706",
-      "bytes": 25442
+      "sha256": "b64a162cd5b1ee45b8ec2d3dc6fd661fec15c974c70f3b8fda0467a7f72f389c",
+      "bytes": 25688
     },
     {
       "path": "public/index.html",
@@ -789,8 +794,8 @@
     },
     {
       "path": "src/conversation-engine.js",
-      "sha256": "b2a38987a2b99cffc4de7729dac878a82c500035aca01ba7fe6a5b5a8833cfbd",
-      "bytes": 10191
+      "sha256": "a5b1ea7616f1ad4b4f90d40301e4462e8f5ae15b7de1e67b61b479410d7ef49c",
+      "bytes": 10206
     },
     {
       "path": "src/dependency-status.js",
@@ -1179,8 +1184,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "75db86591b0e6d6179c86c0f7a8cebcb3b733b9929f9be4da49734c8191b301e",
-      "bytes": 9036
+      "sha256": "e75e6827943859787c8b0571d3e0069320237bc12479d958d7c689286261e49c",
+      "bytes": 9078
     },
     {
       "path": "src/multimodal/pipeline.js",
