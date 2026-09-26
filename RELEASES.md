@@ -1,5 +1,13 @@
 # Release history
 
+## v0.65.0 — Single-Chat Attachment UI
+- Added attachment selection, preview/status chips, removal and progress directly to the existing OneChat composer.
+- Added governed chunked browser uploads that stay below the API request-size ceiling and support media up to 400 MB.
+- Added bounded-memory SHA-256 hashing and atomic promotion into state/media-input before provenance registration.
+- Added attachment-only OneChat turns and automatic attachment submission through /api/onechat.
+- Kept the UI to one chat surface; no parallel multimodal chat page was introduced.
+- Added a static UI contract regression test plus the existing multimodal attachment execution test.
+
 ## v0.64.0 — OneChat Native Multimodal Attachments
 - Added first-class OneChat attachments for local image, audio, video, text/table/structured and PDF evidence.
 - Added history-aware multimodal conversation routing so attachment turns and later text follow-ups share the same chat continuity.
