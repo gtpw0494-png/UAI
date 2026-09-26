@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.61.0",
+  "generated_for": "0.62.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1168,6 +1168,28 @@
         "verification/forgespeech-candidate-promotion.test.mjs"
       ],
       "evidence_note": "ForgeSpeech is a local ForgeLM-conditioned waveform generator trained from local text/WAV pairs with waveform and spectral losses. Candidate evaluation, hash binding, explicit owner-approved promotion, rollback, runtime health, and path-bounded WAV synthesis are implemented. No external TTS model or cloud speech API is used; output quality depends on locally trained data and checkpoint quality."
+    },
+    {
+      "id": "forgevideo-native-runtime-v062",
+      "introduced": "0.62.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/video.py",
+        "model/train_video.py",
+        "model/eval/video_compare.py",
+        "model/video_runtime.py",
+        "src/forgevideo-candidate-promotion.js",
+        "src/forgelm-bridge.js",
+        "src/capabilities.js",
+        "src/governance/authorization.js",
+        "src/governance/request-schemas.js",
+        "server.js"
+      ],
+      "tests": [
+        "model/test_video.py",
+        "verification/forgevideo-candidate-promotion.test.mjs"
+      ],
+      "evidence_note": "ForgeVideo reuses the native ForgeVision frame encoder, adds local temporal transformer modeling, projects video tokens into ForgeLM space, and supports local ffmpeg frame extraction, video-text alignment training, evaluation, hash-bound owner-approved promotion, rollback, runtime health, and path-bounded native video-language inference. No external AI/video model is used."
     }
   ]
 }
