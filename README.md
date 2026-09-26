@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.67.0
+# IntraultUniversalion v0.68.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.68 OneChat turn controls
+
+Each persisted OneChat turn now exposes append-only controls for Edit, Retry, Regenerate and Branch. These actions preserve the original timeline by creating a new local conversation branch rather than mutating historical turns. Copy and single-turn JSON export are available, while Evidence opens only the sanitized structured evidence envelope: claims, support references, tool states and model metadata—not private chain-of-thought.
+
+First-turn text now seeds a concise local conversation title automatically. Attachment support references use governed media IDs rather than filesystem paths.
 
 ## v0.67 OneChat conversation management
 
