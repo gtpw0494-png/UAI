@@ -64,6 +64,7 @@ import { KnowledgeTrainingJob } from "./src/knowledge-training-job.js";
 import { KnowledgeJobStore } from "./src/knowledge-job-store.js";
 import { ForgeLMCandidatePromotion } from "./src/forgelm-candidate-promotion.js";
 import { ForgeVisionCandidatePromotion } from "./src/forgevision-candidate-promotion.js";
+import { ForgeAudioCandidatePromotion } from "./src/forgeaudio-candidate-promotion.js";
 import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js";
 import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
 import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
@@ -114,6 +115,7 @@ const learning = new LearningFabric({store,audit,root:__dirname});
 const selfdev = new SelfDevelopmentEngine({root:__dirname,stateRoot:stateDir,store,workspace,audit});
 const forgeLMCandidatePromotion = new ForgeLMCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
 const forgeVisionCandidatePromotion = new ForgeVisionCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
+const forgeAudioCandidatePromotion = new ForgeAudioCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
 const modelLab = new ModelLab({learning,audit,stateRoot:stateDir,candidatePromotion:forgeLMCandidatePromotion});
 const documentStore = new DocumentStore();
 const webCorpus = new WebCorpus({root:__dirname,store,audit,documentStore});
@@ -159,7 +161,7 @@ const platformCatalog = platformCapabilityCatalog();
 const featureEvidence = JSON.parse(fs.readFileSync(path.join(__dirname,"governance","feature-evidence.json"),"utf8"));
 const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research","source_registry.json"),"utf8")).sources;
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
-const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
+const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
 const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
 const PORT = Number(process.env.PORT || 8787);
@@ -538,6 +540,11 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/vision/promote"){const b=await readBody(req);const evaluation=b.evaluation||{};const out=forgeVisionCandidatePromotion.promote({candidate:String(b.candidate||evaluation.candidate||""),evaluation,approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/vision/rollback"){const b=await readBody(req);const out=forgeVisionCandidatePromotion.rollback(String(b.rollbackId||""),{reason:String(b.reason||"owner-requested vision rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/vision/describe"){const b=await readBody(req);const roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"vision-inputs")],target=path.resolve(String(b.image||""));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:"Vision input path is outside approved local roots."});const out=await forgelm.visionDescribe(target,String(b.prompt||"Describe the image using only what the visual evidence supports."),Number(b.maxTokens||96));return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="GET"&&url.pathname==="/api/audio/status")return send(res,200,{state:"SUCCESS",lifecycle:forgeAudioCandidatePromotion.status(),runtime:await forgelm.audioStatus()});
+  if(req.method==="POST"&&url.pathname==="/api/audio/evaluate"){const b=await readBody(req);const out=await forgeAudioCandidatePromotion.evaluate({candidate:String(b.candidate||""),dataset:String(b.dataset||""),minCosine:Number(b.minCosine??0.05),maxRelativeRegression:Number(b.maxRelativeRegression??0.02)});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/audio/promote"){const b=await readBody(req);const evaluation=b.evaluation||{};const out=forgeAudioCandidatePromotion.promote({candidate:String(b.candidate||evaluation.candidate||""),evaluation,approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/audio/rollback"){const b=await readBody(req);const out=forgeAudioCandidatePromotion.rollback(String(b.rollbackId||""),{reason:String(b.reason||"owner-requested audio rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/audio/describe"){const b=await readBody(req);const roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"audio-inputs")],target=path.resolve(String(b.audio||""));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:"Audio input path is outside approved local roots."});const out=await forgelm.audioDescribe(target,String(b.prompt||"Describe or transcribe the audio using only the acoustic evidence."),Number(b.maxTokens||96));return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);const local=await localOrchestrator.chat(b.message||b.prompt||"", b.context || "");return send(res,200,local);}
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
