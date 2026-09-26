@@ -1,5 +1,14 @@
 # Release history
 
+## v0.68.0 — OneChat Turn Controls
+- Added per-turn Edit, Retry, Regenerate, Branch, Copy, Export and Evidence controls inside the existing OneChat stream.
+- Edit/retry/regenerate are append-only: they create a branch before the selected turn and re-run the user message rather than rewriting prior history.
+- Added single-turn JSON export and owner-bound turn lookup.
+- Added sanitized structured evidence inspection without private chain-of-thought or server filesystem paths.
+- Added automatic local conversation titles from the first user turn.
+- Attachment evidence now uses registered media IDs instead of file: paths.
+- Added regression coverage for branching, auto-title, owner isolation and path-safe turn exports.
+
 ## v0.67.0 — OneChat Conversation Management
 - Added owner-bound local conversation listing, search, switching and new-chat creation inside the same OneChat surface.
 - Added append-only rename/archive controls and sanitized JSON export.
