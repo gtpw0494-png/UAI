@@ -512,6 +512,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/provider/chat"){const b=await readBody(req);const result=await providerHub.chat(b.provider,b.message,b.system,b.options||{});if(result.state==="SUCCESS"&&b.store){await store.put(b.store,{...result,provider:b.provider});}return send(res,200,result);}
   if(req.method==="POST"&&url.pathname==="/api/provider/vision"){const b=await readBody(req);return send(res,200,await providerHub.vision(b.provider,b.message,b.images||[],b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/provider/image"){const b=await readBody(req);return send(res,200,await providerHub.image(b.provider,b.prompt||b.message||"",b.options||{}));}
+  if(req.method==="POST"&&url.pathname==="/api/provider/media"){const b=await readBody(req);return send(res,200,await providerHub.media(b.provider,b.message||b.prompt||"",b.media||b.files||[],b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/provider/structured"){const b=await readBody(req);return send(res,200,await providerHub.structured(b.provider,b.message,b.schema,b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/provider/embeddings"){const b=await readBody(req);return send(res,200,await providerHub.embeddings(b.provider,b.input??b.message??"",b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/provider/rerank"){const b=await readBody(req);return send(res,200,await providerHub.rerank(b.provider,b.query||"",b.documents||[],b.options||{}));}
