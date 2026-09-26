@@ -285,13 +285,13 @@ export class OneChatRouter{
       const run=String(message).match(/run\s+task\s*:?\s*([\s\S]+)/i);if(run)return this.tasks.run({request:run[1].trim()});
       const plan=String(message).match(/plan\s+task\s*:?\s*([\s\S]+)/i);if(plan){const p=this.tasks.plan(plan[1].trim());return result(p.state,`Task plan contains ${p.steps.length} step(s).`,{plan:p});}
     }
-    return this.explorative.chat(message);
+    return this.explorative?.chat?this.explorative.chat(message):result("UNAVAILABLE","Explorative agent is not configured.");
   }
   if(agent==="knowledge"){
     const sem=String(message).match(/semantic\s+(?:search|retrieve)\s+(.+)/i);if(sem&&this.storageDb?.semanticSearch)return this.storageDb.semanticSearch(sem[1].trim(),"all",8);
     const cmp=ids(message,/compare\s+definition\s+([^:]+):\s*([\s\S]+)/i);if(cmp)return this.knowledge.compareDefinition(cmp[0].trim(),cmp[1].trim());
     if(/^(research|study)\s*:/i.test(message))return this.research.examine({title:"OneChat research note",source:"user:onechat",text:message.replace(/^[^:]+:/,"").trim()});
-    return this.explorative.chat(message);
+    return this.explorative?.chat?this.explorative.chat(message):result("UNAVAILABLE","Knowledge/explorative agent is not configured.");
   }
   if(agent==="development"){
     const stage=ids(message,/stage\s+proposal\s+([\w-]+)/i);if(stage)return this.selfdev.stage(stage[0]);
