@@ -315,6 +315,11 @@ const server=http.createServer(async(req,res)=>{try{
     const out=await verifiedKnowledgeStore.recoverFromCloud({verifier:autonomousKnowledge,limit:Number(b.limit||1000)});
     return send(res,out.state==="SUCCESS"?200:409,out);
   }
+  if(req.method==="POST"&&url.pathname==="/api/knowledge/cloud/sync"){
+    const b=await readBody(req);
+    const out=await verifiedKnowledgeStore.syncCloud({limit:Number(b.limit||500)});
+    return send(res,out.state==="SUCCESS"?200:409,out);
+  }
   if(req.method==="GET"&&url.pathname==="/api/knowledge/jobs"){
     return send(res,200,{state:"SUCCESS",jobs:knowledgeJobStore.list(Number(url.searchParams.get("limit")||50))});
   }
