@@ -71,6 +71,8 @@ class ForgeAudioEncoder(nn.Module):
         if waveform.ndim==3 and waveform.shape[1]==1: waveform=waveform[:,0,:]
         if waveform.ndim!=2: raise ValueError("waveform must have shape [T], [B,T], or [B,1,T]")
         waveform=waveform.to(dtype=torch.float32)
+        if waveform.shape[-1] < self.config.n_fft:
+            waveform=F.pad(waveform,(0,self.config.n_fft-waveform.shape[-1]))
         peak=waveform.abs().amax(dim=-1,keepdim=True).clamp_min(1.0)
         waveform=waveform/peak
         window=torch.hann_window(self.config.win_length,device=waveform.device,dtype=waveform.dtype)
