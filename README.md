@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.70.0
+# IntraultUniversalion v0.71.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.71 durable OneChat session recovery
+
+Live OneChat generations now persist an atomic session snapshot plus append-only local event journal. After a Termux or server restart, UAI reconciles the stored state instead of leaving stale turns marked RUNNING. A session that had not begun execution yet may safely continue from QUEUED. A session that was already RUNNING or awaiting cancellation is marked INTERRUPTED and is never reported as completed.
+
+Interrupted work is not automatically replayed because doing so could repeat a side effect. The authenticated owner can explicitly resume it, which creates a new linked live session from the saved request. Browser session storage also remembers the active session ID and reconnects to surviving sessions after a page reload.
 
 ## v0.70 true ForgeLM token streaming
 
