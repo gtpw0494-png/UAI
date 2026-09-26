@@ -319,8 +319,8 @@
     },
     {
       "path": "model/multimodal_runtime.py",
-      "sha256": "f581751974b640333c114deaa3829e5201bcc76236035bc24e92dbc684741fd4",
-      "bytes": 8127
+      "sha256": "d701feea7233586ab744fb8f1de9b320bab283e9b6c256f378f293306bd559f3",
+      "bytes": 8503
     },
     {
       "path": "model/orchestration.py",
