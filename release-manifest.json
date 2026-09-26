@@ -834,8 +834,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "5f3e05c50ae12c0ef29cd612e64fc3fe7ed23fad271ac1c6435b419614d98a0e",
-      "bytes": 3741
+      "sha256": "9fe94426e1793f14536f0d638b820a4609e26c3d3cc9ef99bf737ec7f11471d7",
+      "bytes": 4146
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
