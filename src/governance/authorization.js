@@ -22,6 +22,7 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/models"))capability="models.read";
   else if(p.startsWith("/api/plugins-v1/"))capability=p.endsWith("/execute")?"plugins.execute":"plugins.manage";
   else if(p.startsWith("/api/model/"))capability=stateChanging?"models.execute":"models.read";
+  else if(p.startsWith("/api/vision/"))capability=stateChanging?"models.vision.execute":"models.vision.read";
   else if(p.startsWith("/api/tasks/"))capability=stateChanging?"tasks.execute":"tasks.read";
   else if(p.startsWith("/api/approvals"))capability="governance.approvals";
   else if(p.startsWith("/api/autonomy"))capability="governance.autonomy";
@@ -40,7 +41,7 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/knowledge"))capability=stateChanging?"knowledge.write":"knowledge.read";
   else if(p.startsWith("/api/accounts")||p.startsWith("/api/subscriptions")||p.startsWith("/api/billing"))capability="accounts.manage";
 
-  if(/\/purge$|\/forget-source$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/model\/(?:promote|rollback)$|\/knowledge\/learning\/train$|\/knowledge\/model\/(?:promote|rollback)$|\/knowledge\/research\/schedule$|\/knowledge\/cloud\/(?:recover|sync)$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|^\/api\/promotion\/|\/governance\/emergency\/release$|\/governance\/trusted-devices\/(?:enroll|revoke)$/.test(p))risk="high";
+  if(/\/purge$|\/forget-source$|\/source\/rollback$|\/model\/train$|\/model\/tokenizer\/train$|\/model\/(?:promote|rollback)$|\/vision\/(?:promote|rollback)$|\/knowledge\/learning\/train$|\/knowledge\/model\/(?:promote|rollback)$|\/knowledge\/research\/schedule$|\/knowledge\/cloud\/(?:recover|sync)$|\/selfdev\/promote$|\/develop\/apply$|\/fabrication\/job$|\/autonomy\/grant$|^\/api\/promotion\/|\/governance\/emergency\/release$|\/governance\/trusted-devices\/(?:enroll|revoke)$/.test(p))risk="high";
   if(/\/fabrication\/job$/.test(p))risk="critical";
   if(["/api/develop/apply","/api/selfdev/promote","/api/source/rollback"].includes(p))mutatesSource=true;
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/knowledge/research")||p.startsWith("/api/knowledge/cloud/")||p.endsWith("/execute"))external=true;
