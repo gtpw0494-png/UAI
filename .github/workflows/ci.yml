@@ -99,6 +99,9 @@ jobs:
       - name: Verify v0.56 frontier provider routing and catalog
         run: npm run test:frontier-models
 
+      - name: Verify ForgeVision governed lifecycle
+        run: npm run test:vision-lifecycle
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
@@ -203,3 +206,7 @@ jobs:
       - name: Run ForgeVision v0.58 native vision test
         working-directory: model
         run: python3 test_vision.py
+
+      - name: Run ForgeVision v0.59 multimodal runtime test
+        working-directory: model
+        run: python3 test_vision_runtime.py
