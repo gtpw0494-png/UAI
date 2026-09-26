@@ -1,5 +1,14 @@
 # Release history
 
+## v0.66.0 — Persistent Attachment-Aware OneChat History
+- Added sanitized OneChat history retrieval with persisted attachment metadata and no filesystem-path disclosure.
+- Added governed media reopening by registered media ID with owner, approved-root and file-existence checks.
+- Switched browser OneChat attachment payloads from server paths to media IDs.
+- Added restored attachment cards with image thumbnails, inline audio/video controls and governed open links for other document types.
+- Added browser JavaScript syntax validation to authoritative CI.
+- Added regression coverage proving history omits paths and mismatched owners cannot resolve media content.
+- Repaired the stale v0.49 UI payload assertion to validate semantics instead of a literal source substring.
+
 ## v0.65.0 — Single-Chat Attachment UI
 - Added attachment selection, preview/status chips, removal and progress directly to the existing OneChat composer.
 - Added governed chunked browser uploads that stay below the API request-size ceiling and support media up to 400 MB.
