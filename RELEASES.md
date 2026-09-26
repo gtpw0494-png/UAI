@@ -1,5 +1,13 @@
 # Release history
 
+## v0.61.0 — Native ForgeSpeech Runtime
+- Added ForgeSpeech, a ForgeLM-conditioned local waveform generator with transposed-convolution temporal decoding.
+- Added local text/WAV training using waveform reconstruction plus log-spectral reconstruction loss.
+- Added local held-out speech evaluation, hash-bound owner-approved promotion, rollback snapshots and runtime health.
+- Added dependency-free PCM WAV synthesis output through Python's standard library.
+- Added governed speech synthesis routes restricted to the UAI speech-output directory.
+- Added CPU and lifecycle tests. No external TTS model or cloud speech API is required.
+
 ## v0.60.0 — Native ForgeAudio Runtime
 - Added ForgeAudio, a trainable local log-spectral audio encoder with transformer blocks and a ForgeLM-space projector.
 - Added dependency-free PCM WAV decoding and local audio-text alignment training against ForgeLM's own text embeddings.
