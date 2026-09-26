@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.71.0",
+  "generated_for": "0.72.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1365,6 +1365,20 @@
         "verification/onechat-attachment-ui.test.mjs"
       ],
       "evidence_note": "Live OneChat sessions persist an atomic state snapshot plus append-only JSONL event journal under state/onechat-turn-sessions. On restart, terminal sessions remain terminal, QUEUED sessions may safely continue, and RUNNING/CANCEL_REQUESTED sessions become INTERRUPTED and are never reported as completed. The owner may explicitly resume an interrupted turn as a new linked session. Browser sessionStorage reconnects to surviving live sessions and exposes explicit interrupted-session resume."
+    },
+    {
+      "id": "forgelm-first-checkpoint-bootstrap-v072",
+      "introduced": "0.72.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/eval/bootstrap_candidate.py",
+        "src/forgelm-candidate-promotion.js",
+        "scripts/bootstrap-forgelm.mjs"
+      ],
+      "tests": [
+        "verification/forgelm-bootstrap-promotion.test.mjs"
+      ],
+      "evidence_note": "Fresh installs can train, evaluate and explicitly promote the first ForgeLM checkpoint without a pre-existing live baseline. Bootstrap evaluation verifies loadability, finite loss metadata, acceptable training trend and local generation. Promotion remains hash-bound and explicitly approved; later upgrades keep baseline regression comparison."
     }
   ]
 }
