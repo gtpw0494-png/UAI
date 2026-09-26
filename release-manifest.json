@@ -569,8 +569,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "7b768973b4a0b931bb896539fea9a37e6679e1791389ca8e05054081727260c5",
-      "bytes": 56060
+      "sha256": "1837d358829b538e8e771c0c2855980021dab6cb26bf59e67fcd5daa899fe9f1",
+      "bytes": 56270
     },
     {
       "path": "src/action-envelope.js",
@@ -1029,8 +1029,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "7a2615a22a011898ca0bfb2ac94283475bcf8273140e239eac31f3274ae75d45",
-      "bytes": 8284
+      "sha256": "74d55778e16709993002dfb4e1eeae7b25c5de6acaeb6667ddb974eade465bd5",
+      "bytes": 8882
     },
     {
       "path": "src/multimodal/pipeline.js",
