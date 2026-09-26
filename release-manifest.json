@@ -338,6 +338,11 @@
       "bytes": 972
     },
     {
+      "path": "model/train_audio.py",
+      "sha256": "4204bd26fe113023a92d988746c72d3ccc5069d0635e44f0b84c6b9bb7e1b2d5",
+      "bytes": 5004
+    },
+    {
       "path": "model/train_vision.py",
       "sha256": "fdc3db4750d02177816cf583a5ceff9fabd7d7c0a32cabc5dcddb8e2ac1e5b50",
       "bytes": 5455
