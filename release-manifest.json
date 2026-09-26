@@ -699,8 +699,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "7d78142c9aaaf819d156d7a7653743ff87110db54f4387d9cf4677d4a8e5f1b8",
-      "bytes": 66048
+      "sha256": "805c0e5a0e08437347c17d92bfa70a1313cedf8e401a1cb68ba8e7f6c345fa0a",
+      "bytes": 67120
     },
     {
       "path": "src/action-envelope.js",
@@ -744,8 +744,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "ddfa6ac7e2cfe665b21c61a15fb34122759bb96658ebdc9ff493270911a81997",
-      "bytes": 11273
+      "sha256": "8e7e1b6602aa30fc1040343d3abe69ec6978f434e945e750eeece9d53a66a48d",
+      "bytes": 11718
     },
     {
       "path": "src/capability-truth.js",
@@ -834,8 +834,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "91b375a13a68d828ec266ef677f53d17c4089a61dff88611c1718c9a0b9e98bd",
-      "bytes": 3257
+      "sha256": "5f3e05c50ae12c0ef29cd612e64fc3fe7ed23fad271ac1c6435b419614d98a0e",
+      "bytes": 3741
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -864,8 +864,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "77810bf1376a9aade17e96f45ad4bf63ca770a0996b4e0d9182bd1daace518dd",
-      "bytes": 9322
+      "sha256": "8a671d88bc3d000f1425b7a8dc7b8ce4d5b10baabc13a7fa6c25a0c44afca964",
+      "bytes": 9444
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -914,8 +914,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "ee5f3735a045c72ef05233059a2201940ad0b4da38246776275909c90df1f770",
-      "bytes": 21429
+      "sha256": "0f5ad51368f5453f253c569231f97ff4ea44a4c2254d6b2c707bad0aeeb55065",
+      "bytes": 21828
     },
     {
       "path": "src/governance/trusted-device.js",
