@@ -51,7 +51,7 @@ const port=await new Promise((resolve,reject)=>{
   const s=net.createServer();s.once("error",reject);
   s.listen(0,"127.0.0.1",()=>{const p=s.address().port;s.close(()=>resolve(p));});
 });
-const child=spawn(process.execPath,["server.js"],{
+const child=spawn(process.execPath,[path.resolve("server.js")],{
   cwd:path.resolve(path.dirname(new URL(import.meta.url).pathname),".."),
   env:{...process.env,PORT:String(port),IUV_STATE_DIR:state,IUV_DB_PATH:db,IUV_OBJECT_ROOT:objects,UAI_OWNER_EMAIL:email,UAI_OWNER_PASSWORD:password},
   stdio:["ignore","pipe","pipe"]
