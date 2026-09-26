@@ -1,3 +1,4 @@
+import {validateSchema} from "./schema-validator.js";
 const trimSlash = s => String(s || "").replace(/\/+$/, "");
 const env = name => process.env[name] || "";
 const now = () => new Date().toISOString();
@@ -15,8 +16,8 @@ const requiredFields = schema => Array.isArray(schema?.required) ? schema.requir
 const PROVIDERS = [
   { id:"openai", label:"OpenAI", kind:"openai-compatible", keyEnv:"OPENAI_API_KEY", baseEnv:"OPENAI_BASE_URL", defaultBase:"https://api.openai.com/v1", modelEnv:"OPENAI_MODEL", defaultModel:"gpt-6-astra", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings"] },
   { id:"anthropic", label:"Anthropic/Claude", kind:"anthropic", keyEnv:"ANTHROPIC_API_KEY", baseEnv:"ANTHROPIC_BASE_URL", defaultBase:"https://api.anthropic.com/v1", modelEnv:"ANTHROPIC_MODEL", defaultModel:"claude-sonnet-5", capabilities:["chat","code","reasoning","vision","tools","structured-output"] },
-  { id:"gemini", label:"Google Gemini", kind:"gemini", keyEnv:"GEMINI_API_KEY", baseEnv:"GEMINI_BASE_URL", defaultBase:"https://generativelanguage.googleapis.com/v1beta", modelEnv:"GEMINI_MODEL", defaultModel:"gemini-3.7-flash", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings"] },
-  { id:"xai", label:"xAI/Grok", kind:"openai-compatible", keyEnv:"XAI_API_KEY", baseEnv:"XAI_BASE_URL", defaultBase:"https://api.x.ai/v1", modelEnv:"XAI_MODEL", defaultModel:"grok-4.6", capabilities:["chat","code","reasoning","vision","image","tools","structured-output"] },
+  { id:"gemini", label:"Google Gemini", kind:"gemini", keyEnv:"GEMINI_API_KEY", baseEnv:"GEMINI_BASE_URL", defaultBase:"https://generativelanguage.googleapis.com/v1beta", modelEnv:"GEMINI_MODEL", defaultModel:"gemini-3.8-flash", capabilities:["chat","code","reasoning","vision","image","tools","structured-output","embeddings"] },
+  { id:"xai", label:"xAI/Grok", kind:"openai-compatible", keyEnv:"XAI_API_KEY", baseEnv:"XAI_BASE_URL", defaultBase:"https://api.x.ai/v1", modelEnv:"XAI_MODEL", defaultModel:"grok-4.7", capabilities:["chat","code","reasoning","vision","image","tools","structured-output"] },
   { id:"deepseek", label:"DeepSeek", kind:"openai-compatible", keyEnv:"DEEPSEEK_API_KEY", baseEnv:"DEEPSEEK_BASE_URL", defaultBase:"https://api.deepseek.com", modelEnv:"DEEPSEEK_MODEL", defaultModel:"deepseek-v4.1-flash", capabilities:["chat","code","reasoning","tools","structured-output"] },
   { id:"cohere", label:"Cohere", kind:"cohere", keyEnv:"COHERE_API_KEY", baseEnv:"COHERE_BASE_URL", defaultBase:"https://api.cohere.com/v2", modelEnv:"COHERE_MODEL", defaultModel:"command-a-plus", capabilities:["chat","code","reasoning","vision","tools","structured-output","embeddings","rerank"] },
   { id:"minimax", label:"MiniMax", kind:"openai-compatible", keyEnv:"MINIMAX_API_KEY", baseEnv:"MINIMAX_BASE_URL", defaultBase:"https://api.minimax.io/v1", modelEnv:"MINIMAX_MODEL", defaultModel:"MiniMax-M3", capabilities:["chat","code","reasoning","vision","tools","structured-output"] },
@@ -141,7 +142,9 @@ export class ProviderHub {
     let value; try { value=JSON.parse(r.text); } catch { return {...r,state:"FAILURE",message:"Provider returned invalid JSON.",rawText:r.text}; }
     const missing=requiredFields(schema).filter(k=>!(k in (value&&typeof value==="object"?value:{})));
     if(missing.length) return {...r,state:"FAILURE",message:`Structured output is missing required fields: ${missing.join(", ")}`,value};
-    return {...r,value};
+    const validation=validateSchema(schema,value);
+    if(validation.state!=="SUCCESS") return {...r,state:"FAILURE",message:"Provider JSON did not satisfy the requested schema.",value,validation};
+    return {...r,value,validation};
   }
   embeddings(id,input,options={}) {
     if(!this.supports(id,"embeddings")) return Promise.resolve({state:"UNAVAILABLE",provider:id,message:"Provider is not registered for embeddings."});
