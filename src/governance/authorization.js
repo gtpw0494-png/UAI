@@ -26,6 +26,7 @@ export function routeSecurity(method,path){
   else if(p.startsWith("/api/audio/"))capability=stateChanging?"models.audio.execute":"models.audio.read";
   else if(p.startsWith("/api/speech/"))capability=stateChanging?"models.speech.execute":"models.speech.read";
   else if(p.startsWith("/api/video/"))capability=stateChanging?"models.video.execute":"models.video.read";
+  else if(p.startsWith("/api/multimodal/"))capability=stateChanging?"models.multimodal.execute":"models.multimodal.read";
   else if(p.startsWith("/api/tasks/"))capability=stateChanging?"tasks.execute":"tasks.read";
   else if(p.startsWith("/api/approvals"))capability="governance.approvals";
   else if(p.startsWith("/api/autonomy"))capability="governance.autonomy";
