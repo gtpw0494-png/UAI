@@ -25,12 +25,20 @@ def generate(model,tok,prompt,max_tokens=128,temperature=.2):
  return tok.decode(out[0].tolist()[len(ids[0]):]).strip()
 
 def main():
- p=argparse.ArgumentParser(); p.add_argument('task',choices=['status','chat','code','reasoning','planning','json','tool','vision','image']); p.add_argument('--prompt',default=''); p.add_argument('--context',default=''); p.add_argument('--max-tokens',type=int,default=128)
+ p=argparse.ArgumentParser(); p.add_argument('task',choices=['status','chat','code','reasoning','planning','json','tool','embeddings','rerank','vision','image']); p.add_argument('--prompt',default=''); p.add_argument('--context',default=''); p.add_argument('--max-tokens',type=int,default=128)
  a=p.parse_args()
  if a.task=='status':
-  print(json.dumps({"state":"SUCCESS","engine":"ForgeLM","selfSufficient":True,"checkpointExists":CKPT.exists(),"networkRequired":False,"tasks":["chat","code","reasoning","planning","json","tool","vision","image"],"partial":["vision","image"]})); return
+  print(json.dumps({"state":"SUCCESS","engine":"ForgeLM","selfSufficient":True,"checkpointExists":CKPT.exists(),"networkRequired":False,"tasks":["chat","code","reasoning","planning","json","tool","embeddings","rerank","vision","image"],"partial":["vision","image"]})); return
  model,tok,caps=load()
  if a.task=='planning': print(json.dumps(caps.plan(a.prompt))); return
+ if a.task=='embeddings':
+  try: values=json.loads(a.prompt)
+  except Exception: values=a.prompt
+  print(json.dumps(caps.embed_texts(values))); return
+ if a.task=='rerank':
+  try: docs=json.loads(a.context)
+  except Exception: docs=[]
+  print(json.dumps(caps.rerank(a.prompt,docs))); return
  if a.task in ('vision','image') and not a.prompt: print(json.dumps(caps.status())); return
  text=generate(model,tok,caps.prompt(a.task,a.prompt,a.context),a.max_tokens)
  result={"state":"SUCCESS","engine":"ForgeLM","task":a.task,"text":text,"externalModels":False}
