@@ -153,6 +153,11 @@
       "bytes": 2230
     },
     {
+      "path": "model/audio.py",
+      "sha256": "ca2e4c74a0f67e5a313466ee66141518e66d619d7c03c9715cd9c2921dce2149",
+      "bytes": 5176
+    },
+    {
       "path": "model/benchmark_inference.py",
       "sha256": "0edc961ad107d0ba960cefbe98f10c6a770aca4f2b2f1a431b6281286fe799e3",
       "bytes": 805
