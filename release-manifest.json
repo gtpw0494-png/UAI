@@ -609,8 +609,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "8127d73a85e0f9f66c61d2d0d6bc87968de65a4da1f9c150293fbd9ef63bb9ce",
-      "bytes": 59162
+      "sha256": "1030fbe1a539e1c477def498392bf97ed00877b6a3baa73a734c9ef5bd1b0375",
+      "bytes": 59205
     },
     {
       "path": "src/action-envelope.js",
@@ -654,8 +654,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "45469cee6def1361906564d1c2f7b84738777181ae71273a1c7b34e6362375ae",
-      "bytes": 7882
+      "sha256": "84a27aecf7b5210034a88a0d584cd584a32cf9a694f7e7afca889e31eaa1a383",
+      "bytes": 8150
     },
     {
       "path": "src/capability-truth.js",
