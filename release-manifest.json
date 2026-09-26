@@ -1253,6 +1253,11 @@
       "bytes": 3193
     },
     {
+      "path": "src/process-compat.js",
+      "sha256": "1d543305c53d20d25b75a907bf20c2338b4e34565d674f1854b2c04284e6503c",
+      "bytes": 382
+    },
+    {
       "path": "src/provenance/citation.js",
       "sha256": "30316184d93e5883341a56a4719b7a70fba951ddb633c3c2d8afcce36390222d",
       "bytes": 741
