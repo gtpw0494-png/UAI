@@ -19,7 +19,7 @@ try{
   const stateRoot=tmp("uai-v054-"),audit=new AuditLog(stateRoot);
   const db=new PlatformStateStore(stateRoot),dbStatus=db.status();
   assert.equal(dbStatus.state,"SUCCESS");
-  for(const table of ["memory_items","memory_settings","provenance_nodes","provenance_edges","model_artifacts","evaluation_runs","policy_simulations"])assert.ok(Object.values(dbStatus.tables).includes(table));
+  for(const table of ["memory_items","memory_settings","provenance_nodes","provenance_edges","model_artifacts","evaluation_runs","policy_simulations","verified_knowledge"])assert.ok(Object.values(dbStatus.tables).includes(table));
 
   process.env.IUV_MEMORY_KEY=crypto.randomBytes(32).toString("base64");
   const memory=new MemoryStore({stateRoot,audit});
