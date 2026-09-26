@@ -9,6 +9,16 @@ export class HybridKnowledgeStore {
     this.audit?.append?.({type:"knowledge.persist",local_written:local.written,cloud_state:cloud.state,cloud_written:cloud.written||0});
     return{state:local.state,local,cloud,durability:cloud.state==="SUCCESS"?"LOCAL_AND_CLOUD":"LOCAL_ONLY"};
   }
+  async syncCloud({limit=500}={}){
+    if(!this.cloud||typeof this.cloud.putMany!=="function")return{state:"UNAVAILABLE",attempted:0,written:0,message:"Cloud knowledge adapter is unavailable."};
+    const facts=this.local.filterTrainingEligible(Math.max(1,Math.min(10000,Number(limit)||500)));
+    if(!facts.length)return{state:"SUCCESS",attempted:0,written:0,message:"No locally verified knowledge requires reconciliation."};
+    const cloud=await this.cloud.putMany(facts);
+    const out={state:cloud.state,attempted:facts.length,written:cloud.written||0,cloud};
+    this.audit?.append?.({type:"knowledge.cloud.sync",state:out.state,attempted:out.attempted,written:out.written});
+    return out;
+  }
+
   async recoverFromCloud({verifier,limit=1000}={}){
     if(!this.cloud||typeof this.cloud.list!=="function")return{state:"UNAVAILABLE",recovered:0,message:"Cloud knowledge adapter is unavailable."};
     if(!verifier||typeof verifier.verifyFacts!=="function")return{state:"BLOCKED",recovered:0,message:"A local verifier is required before cloud recovery."};
