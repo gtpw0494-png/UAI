@@ -1,5 +1,13 @@
 # Release history
 
+## v0.58.0 — Native ForgeVision Foundation
+- Added a trainable local visual patch encoder with transformer blocks and a projector into ForgeLM hidden-state space.
+- Added a local image-caption alignment trainer that learns against ForgeLM's own text embeddings; no external AI teacher/model is required.
+- Added normalized native image embeddings, save/load checkpoint format and multimodal adapter primitives.
+- Added explicit capability truth: architecture and local training are implemented, while semantic image inference remains UNAVAILABLE until a trained/evaluated ForgeVision checkpoint is explicitly promoted.
+- Added authoritative CPU tests for shape, projection, gradient flow, save/load and normalized embeddings.
+- Repaired the v0.57 RoPE source syntax defect uncovered by authoritative CI.
+
 ## v0.57.0 — Independent ForgeLM Native Context
 - Removed external provider models from the core model router by default. External model routing is now an explicit compatibility/research opt-in through `IUV_ENABLE_EXTERNAL_MODEL_ROUTING=true`.
 - Added ForgeLM-native long-context memory that chunks sources locally, embeds them with the promoted ForgeLM checkpoint, cosine-ranks relevant chunks and assembles bounded evidence context without any external model.
