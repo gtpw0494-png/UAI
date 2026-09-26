@@ -1643,6 +1643,11 @@
       "bytes": 2083
     },
     {
+      "path": "verification/onechat-live-sessions.test.mjs",
+      "sha256": "ce32672a3edc2f6c70ef6b1132a13241342d2d4e3d2744c2f63dd1cb07dd1132",
+      "bytes": 2065
+    },
+    {
       "path": "verification/onechat-model-lifecycle.test.mjs",
       "sha256": "f31354df0a56387c8550fcc10dd379249d03c3487e12f9f89c203cd9c6a8237c",
       "bytes": 2053
