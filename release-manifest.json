@@ -358,6 +358,11 @@
       "bytes": 1199
     },
     {
+      "path": "model/test_video.py",
+      "sha256": "2b9eafebf24271438413010f215c789cfa881bfb1d685b627b6c3ff7eae5eb96",
+      "bytes": 1301
+    },
+    {
       "path": "model/test_vision.py",
       "sha256": "ab91122fb83e6f1a9def1cf2382f915177af24808359790257f36ca7a4df940e",
       "bytes": 1351
@@ -679,8 +684,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "c8a756383518e4c02203cbc28b4716e4982a6d3845bb92fafd0556985f15abc7",
-      "bytes": 63966
+      "sha256": "7d78142c9aaaf819d156d7a7653743ff87110db54f4387d9cf4677d4a8e5f1b8",
+      "bytes": 66048
     },
     {
       "path": "src/action-envelope.js",
@@ -724,8 +729,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "41da487f797392cb1592259450672dc24a2f54020e8c8f7f5058d380f16ba00b",
-      "bytes": 10201
+      "sha256": "ddfa6ac7e2cfe665b21c61a15fb34122759bb96658ebdc9ff493270911a81997",
+      "bytes": 11273
     },
     {
       "path": "src/capability-truth.js",
@@ -814,8 +819,8 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "87da6018030effa6c63d8e85f6a1df5cbd7fdbf8adefcdc54c839fc16c71ffd5",
-      "bytes": 2960
+      "sha256": "91b375a13a68d828ec266ef677f53d17c4089a61dff88611c1718c9a0b9e98bd",
+      "bytes": 3257
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
@@ -826,6 +831,11 @@
       "path": "src/forgespeech-candidate-promotion.js",
       "sha256": "81b7c2763b0ff96e3d35b1896c06d3443ba17a4607ba6c4944e2226ad3ee8ecd",
       "bytes": 6308
+    },
+    {
+      "path": "src/forgevideo-candidate-promotion.js",
+      "sha256": "a24bf654786c8fefc17f0875a14d7e8885a3677948d9f6d2a97550ffa7940429",
+      "bytes": 6291
     },
     {
       "path": "src/forgevision-candidate-promotion.js",
@@ -839,8 +849,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "5e516bd3c67a2b0aeded140851a19ed48413a54b3aa0b6b42fe4d324da06b778",
-      "bytes": 9184
+      "sha256": "77810bf1376a9aade17e96f45ad4bf63ca770a0996b4e0d9182bd1daace518dd",
+      "bytes": 9322
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -889,8 +899,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "fe5ed15dbe2a326b199be12566bb141ed27936a95b724b8e5877ae709c8dbc1c",
-      "bytes": 20316
+      "sha256": "ee5f3735a045c72ef05233059a2201940ad0b4da38246776275909c90df1f770",
+      "bytes": 21429
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -1536,6 +1546,11 @@
       "path": "verification/forgespeech-candidate-promotion.test.mjs",
       "sha256": "0475b1e71c15a6160eb1aef958ac5af6b060f339ca133d85887f9c73bd98545f",
       "bytes": 1807
+    },
+    {
+      "path": "verification/forgevideo-candidate-promotion.test.mjs",
+      "sha256": "0cb1b3705d07989176cd248cbefb51a34fe796062ccf9fd800ada3930cbeec4c",
+      "bytes": 1806
     },
     {
       "path": "verification/forgevision-candidate-promotion.test.mjs",
