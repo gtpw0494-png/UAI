@@ -120,6 +120,9 @@ jobs:
       - name: Verify browser JavaScript syntax
         run: npm run test:browser-syntax
 
+      - name: Verify v0.73 Termux and OneChat recovery
+        run: npm run test:termux-onechat-recovery
+
       - name: Verify OneChat attachment UI contract
         run: npm run test:onechat-attachment-ui
 
