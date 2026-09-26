@@ -1184,8 +1184,8 @@
     },
     {
       "path": "src/multimodal/pipeline.js",
-      "sha256": "f7f35734aabaebfc13bfa8304eb82ae7848bc518d0567e91066673214dedcf65",
-      "bytes": 7494
+      "sha256": "894d7753d4d50e2dbc75b13b949aaee61d42ddefeefc7b4fce44e2845c5973da",
+      "bytes": 8337
     },
     {
       "path": "src/observability.js",
