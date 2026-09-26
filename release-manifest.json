@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.59.0",
+  "version": "0.60.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "cca08008afd1a0484c3c36616f8b900b59aaf4403710787b50e055067deeaade",
-      "bytes": 7513
+      "sha256": "af081f2edf9cd0618b95d79da83b945a1addbe3c3c38afdd90e3ba80368b101d",
+      "bytes": 7729
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "a57cd1609a8fd0e4f074e52498b58f571060cb8906a6bccaa645178da414d80c",
-      "bytes": 15571
+      "sha256": "d103114664595408aa1474fc8cddc43eaee3f9f2d2a9cf0b74586e0fe741aa14",
+      "bytes": 16168
     },
     {
       "path": "RELEASES.md",
-      "sha256": "a64e6bba17b45b47b41429b0ef0fb98be7a141d47e2e88eb38c122f3ac83e02e",
-      "bytes": 23222
+      "sha256": "d3219857a90ff0ddf24385391435c08478f6abe437edec557a8542e1859d91c4",
+      "bytes": 23913
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "1f1b8246920b32e2a9197ae4f6aa6c6380a33bb6644c7591518f56a52908cf5f",
-      "bytes": 43294
+      "sha256": "534ee71765617d4a2b21a738d0646b37ff18f06bea0f3179cd0a8fdeb9b86c55",
+      "bytes": 44279
     },
     {
       "path": "model/adaptation.py",
@@ -379,8 +379,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "56241e85d6dcf3e2366faf94a22da91970e2e0bfb1a91bf0b38e1f7f3830a982",
-      "bytes": 7302
+      "sha256": "12f1285d51383d45f50525e3a84759ded6c4ba7a355e00b0717d7b4dec6550ea",
+      "bytes": 7437
     },
     {
       "path": "public/app.js",
