@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.63.0",
+  "version": "0.64.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "6fa313eeb9392dac73badf53ba00af48851a20d14396d960c1cf135ee49ce635",
-      "bytes": 8292
+      "sha256": "d17feb80e18dafadd4d30fba3972a42973d50f0b643c0cf7a8877c75d0e0962c",
+      "bytes": 8391
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "1a809d95e2f12f367b2907d8a554f97477478d02f153440e8fb287dc887f4f36",
-      "bytes": 18286
+      "sha256": "e59d0b4e30fc2b447b01230a44ef83d4a7c7b4c2aaa8148936466a195452430f",
+      "bytes": 18729
     },
     {
       "path": "RELEASES.md",
-      "sha256": "62e965fde933a06d45a1004986998fba44977164b4bc0470419a07a6ea043ee0",
-      "bytes": 26016
+      "sha256": "e0a93e43afe769c3060d311c8f337451a79bcc8adb4a4bbe7350970f06495aba",
+      "bytes": 26754
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "909603fdad6fb8d1fe031c60d12c90904e4ec6bb6a2a7537cf526a7c3f705c23",
-      "bytes": 47335
+      "sha256": "b9ca222768771fbf2a44bf402b23009bc04fa97ed887e1fd402dc64d9d597527",
+      "bytes": 48286
     },
     {
       "path": "model/adaptation.py",
@@ -444,8 +444,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "3b5838b3b386beef00fdc64b39cb08f03a87e313c5ed135fd18ef12be54c9b35",
-      "bytes": 7778
+      "sha256": "e0896091c52ec5952aa0e0a83af7022756c46d4216572c2a4b61778df3af60ad",
+      "bytes": 7881
     },
     {
       "path": "public/app.js",
@@ -1184,8 +1184,8 @@
     },
     {
       "path": "src/multimodal/pipeline.js",
-      "sha256": "cb4521a4e120972161292fa0130477f1fa80481bc9f8cf0766ab58ee2ee425c7",
-      "bytes": 7592
+      "sha256": "f7f35734aabaebfc13bfa8304eb82ae7848bc518d0567e91066673214dedcf65",
+      "bytes": 7494
     },
     {
       "path": "src/observability.js",
