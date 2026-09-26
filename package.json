@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.59.0",
+  "version": "0.60.0",
   "private": true,
-  "description": "Independent local-first AI operating environment with governed ForgeLM and ForgeVision training, evaluation, promotion, rollback and native multimodal inference.",
+  "description": "Independent local-first AI with governed ForgeLM, ForgeVision and ForgeAudio training, evaluation, promotion, rollback and native multimodal inference.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -95,7 +95,9 @@
     "test:native-vision": "python3 model/test_vision.py",
     "vision:train": "python3 model/train_vision.py",
     "test:vision-lifecycle": "node verification/forgevision-candidate-promotion.test.mjs",
-    "test:vision-runtime": "python3 model/test_vision_runtime.py"
+    "test:vision-runtime": "python3 model/test_vision_runtime.py",
+    "test:native-audio": "python3 model/test_audio.py",
+    "test:audio-lifecycle": "node verification/forgeaudio-candidate-promotion.test.mjs"
   },
   "engines": {
     "node": ">=20"
