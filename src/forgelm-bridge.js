@@ -29,5 +29,6 @@ export class ForgeLMBridge{
   capability(task,prompt="",context="",max=128){return run("self_sufficient.py",[String(task),"--prompt",String(prompt),"--context",String(context),"--max-tokens",String(max)])}
   embeddings(input){return this.capability("embeddings",JSON.stringify(Array.isArray(input)?input:[String(input)]),"",1)}
   rerank(query,documents=[]){return this.capability("rerank",String(query),JSON.stringify(documents),1)}
+  longContext(query,sourceText,max=192){return this.capability("long-context",String(query),String(sourceText),max)}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
