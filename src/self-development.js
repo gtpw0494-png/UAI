@@ -1,4 +1,4 @@
-import fs from "node:fs";import path from "node:path";import os from "node:os";import crypto from "node:crypto";import {spawnSync} from "node:child_process";
+import fs from "node:fs";import path from "node:path";import os from "node:os";import crypto from "node:crypto";import {spawnSync} from "node:child_process";import {termuxSafeEnv} from "./process-compat.js";
 function copyFilter(src){const b=path.basename(src);return !["node_modules","vendor-reference","snapshots","sandboxes"].includes(b);}
 export class SelfDevelopmentEngine{
   constructor({root,stateRoot,store,workspace,audit}){Object.assign(this,{root:path.resolve(root),stateRoot,store,workspace,audit});this.sandboxRoot=path.join(os.tmpdir(),"intraultuniversalion-selfdev");fs.mkdirSync(this.sandboxRoot,{recursive:true});this.index=path.join(stateRoot,"selfdev.json");if(!fs.existsSync(this.index))fs.writeFileSync(this.index,"[]");}
@@ -12,9 +12,9 @@ export class SelfDevelopmentEngine{
     const target=path.resolve(dir,p.targetPath);if(target!==dir&&!target.startsWith(dir+path.sep))return {state:"BLOCKED",message:"Target escapes sandbox."};
     fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,String(p.proposedContent));
     const checks=[];
-    if(p.targetPath.endsWith(".js")){const r=spawnSync(process.execPath,["--check",target],{encoding:"utf8",timeout:20000});checks.push({name:"node-syntax",state:r.status===0?"SUCCESS":"FAILURE",output:(r.stderr||r.stdout||"").slice(0,3000)});}
+    if(p.targetPath.endsWith(".js")){const r=spawnSync(process.execPath,["--check",target],{encoding:"utf8",timeout:20000,env:termuxSafeEnv()});checks.push({name:"node-syntax",state:r.status===0?"SUCCESS":"FAILURE",output:(r.stderr||r.stdout||"").slice(0,3000)});}
     if(p.targetPath.endsWith(".py")){const r=spawnSync(process.env.PYTHON||"python3",["-m","py_compile",target],{encoding:"utf8",timeout:20000});checks.push({name:"python-syntax",state:r.status===0?"SUCCESS":"FAILURE",output:(r.stderr||r.stdout||"").slice(0,3000)});}
-    const npmCommand=process.platform==="win32"?"npm.cmd":"npm";const npm=spawnSync(npmCommand,["test"],{cwd:dir,encoding:"utf8",timeout:120000,env:{...process.env,IU_SELFDEV_SANDBOX:"1"}});const npmOutput=((npm.stdout||"")+"\n"+(npm.stderr||"")+(npm.error?"\n"+npm.error.message:"")).slice(-5000);checks.push({name:"repository-tests",state:npm.status===0?"SUCCESS":"FAILURE",output:npmOutput});
+    const npmCommand=process.platform==="win32"?"npm.cmd":"npm";const npm=spawnSync(npmCommand,["test"],{cwd:dir,encoding:"utf8",timeout:120000,env:termuxSafeEnv({IU_SELFDEV_SANDBOX:"1"})});const npmOutput=((npm.stdout||"")+"\n"+(npm.stderr||"")+(npm.error?"\n"+npm.error.message:"")).slice(-5000);checks.push({name:"repository-tests",state:npm.status===0?"SUCCESS":"FAILURE",output:npmOutput});
     const state=checks.every(x=>x.state==="SUCCESS")?"SUCCESS":"FAILURE";
     const rec={id,proposalId,targetPath:p.targetPath,expectedHash:p.expectedHash||null,approvalId:p.approvalId,state,checks,createdAt:new Date().toISOString(),promoted:false};this.save(rec);this.audit?.append({type:"selfdev.stage",stageId:id,proposalId,state,checks:checks.map(x=>({name:x.name,state:x.state}))});
     return {state,message:state==="SUCCESS"?"Candidate change passed isolated validation.":"Candidate change failed isolated validation; promotion is blocked.",stageId:id,checks};
