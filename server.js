@@ -568,6 +568,18 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/video/describe"){const b=await readBody(req);const roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"video-inputs"),path.resolve(stateDir,"media-input")],target=path.resolve(String(b.video||""));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:"Video input path is outside approved local roots."});const out=await forgelm.videoDescribe(target,String(b.prompt||"Describe the video using only the temporal and visual evidence."),Number(b.maxTokens||96));return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="GET"&&url.pathname==="/api/media/status")return send(res,200,multimodalPipeline.status());
   if(req.method==="GET"&&url.pathname==="/api/media/list")return send(res,200,{state:"SUCCESS",artifacts:multimodalPipeline.list(Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||100))))});
+  if(req.method==="GET"&&url.pathname==="/api/media/content"){
+    const id=String(url.searchParams.get("id")||""),d=multimodalPipeline.contentDescriptor(id,{ownerId:req.uaiSecurity.auth.identityId});
+    if(d.state!=="SUCCESS")return send(res,d.state==="DENIED"?403:404,d);
+    res.writeHead(200,{
+      "content-type":d.mediaType||"application/octet-stream",
+      "content-length":String(d.bytes),
+      "content-disposition":`inline; filename="${String(d.label||"media").replace(/["\\\r\n]/g,"_")}"`,
+      "cache-control":"private, no-store",
+      "x-content-type-options":"nosniff"
+    });
+    return fs.createReadStream(d.file).pipe(res);
+  }
   if(req.method==="POST"&&url.pathname==="/api/media/upload"){
     const b=await readBody(req),uploadId=String(b.uploadId||"");
     if(!/^[A-Za-z0-9_-]{8,128}$/.test(uploadId))return send(res,400,{state:"BLOCKED",message:"Invalid uploadId."});
@@ -595,6 +607,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/multimodal/status")return send(res,200,await forgelm.multimodalStatus());
   if(req.method==="POST"&&url.pathname==="/api/multimodal/chat"){const b=await readBody(req),roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"vision-inputs"),path.resolve(stateDir,"audio-inputs"),path.resolve(stateDir,"video-inputs"),path.resolve(stateDir,"media-input")];const checked={};for(const key of ["image","audio","video"]){if(!b[key])continue;const target=path.resolve(String(b[key]));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:`${key} input path is outside approved local roots.`});checked[key]=target;}const out=await forgelm.multimodalChat({prompt:String(b.prompt||""),context:String(b.context||""),document:String(b.document||""),image:checked.image||null,audio:checked.audio||null,video:checked.video||null,max:Number(b.maxTokens||128)});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);const local=await localOrchestrator.chat(b.message||b.prompt||"", b.context || "");return send(res,200,local);}
+  if(req.method==="GET"&&url.pathname==="/api/onechat/history")return send(res,200,onechat.history(String(url.searchParams.get("chatId")||""),{limit:Number(url.searchParams.get("limit")||50)}));
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="GET"){const rel=url.pathname==="/"?"index.html":url.pathname.slice(1);const fp=path.join(__dirname,"public",rel);if(fp.startsWith(path.join(__dirname,"public"))&&fs.existsSync(fp))return send(res,200,fs.readFileSync(fp),fp.endsWith(".html")?"text/html":"application/octet-stream");}
