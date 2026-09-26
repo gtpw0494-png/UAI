@@ -1,5 +1,13 @@
 # Release history
 
+## v0.62.0 — Native ForgeVideo Runtime
+- Added ForgeVideo, reusing ForgeVision for local frame semantics and adding temporal transformer modeling across frame sequences.
+- Added local ffmpeg-based frame extraction, video-text alignment training against ForgeLM embeddings, and held-out candidate evaluation.
+- Added hash-bound owner-approved promotion, rollback snapshots, and runtime health checks.
+- Added native video tokens + text prompt prefill through ForgeLM for local video understanding.
+- Added governed path-bounded video inference and explicit request/authorization controls.
+- Added CPU and lifecycle tests. No external AI/video model is required.
+
 ## v0.61.0 — Native ForgeSpeech Runtime
 - Added ForgeSpeech, a ForgeLM-conditioned local waveform generator with transposed-convolution temporal decoding.
 - Added local text/WAV training using waveform reconstruction plus log-spectral reconstruction loss.
