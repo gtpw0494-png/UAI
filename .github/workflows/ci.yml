@@ -93,6 +93,9 @@ jobs:
       - name: Verify v0.54 governed intelligence HTTP integration
         run: npm run test:platform-intelligence-http
 
+      - name: Verify v0.55 governed knowledge autonomy and candidate lifecycle
+        run: npm run test:knowledge-production
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
