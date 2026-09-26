@@ -348,6 +348,11 @@
       "bytes": 1823
     },
     {
+      "path": "model/test_speech.py",
+      "sha256": "20653567586593ddb06b2a07c6bbeb42c98d8ffdbfa2207536318a5d70294335",
+      "bytes": 1199
+    },
+    {
       "path": "model/test_vision.py",
       "sha256": "ab91122fb83e6f1a9def1cf2382f915177af24808359790257f36ca7a4df940e",
       "bytes": 1351
@@ -654,8 +659,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "ca9cae074d8e9ff69d5f2082890db6ec9a5b4b0d35b9586ae235ce8286e28f09",
-      "bytes": 61922
+      "sha256": "c8a756383518e4c02203cbc28b4716e4982a6d3845bb92fafd0556985f15abc7",
+      "bytes": 63966
     },
     {
       "path": "src/action-envelope.js",
@@ -699,8 +704,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "1cd19e1b24cfade055ea3ba8999bd52f369c13629301530003568f9c6f55a02d",
-      "bytes": 9195
+      "sha256": "41da487f797392cb1592259450672dc24a2f54020e8c8f7f5058d380f16ba00b",
+      "bytes": 10201
     },
     {
       "path": "src/capability-truth.js",
@@ -789,13 +794,18 @@
     },
     {
       "path": "src/forgelm-bridge.js",
-      "sha256": "a9dcad27287e7d138f15d40059a0a29212db29d754899482209dc3f2aba956eb",
-      "bytes": 2758
+      "sha256": "87da6018030effa6c63d8e85f6a1df5cbd7fdbf8adefcdc54c839fc16c71ffd5",
+      "bytes": 2960
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
       "sha256": "6c0f1385be94c5e30b98d834ee8b9e3efa495493a59b0d8f0f68594d5185c590",
       "bytes": 5145
+    },
+    {
+      "path": "src/forgespeech-candidate-promotion.js",
+      "sha256": "81b7c2763b0ff96e3d35b1896c06d3443ba17a4607ba6c4944e2226ad3ee8ecd",
+      "bytes": 6308
     },
     {
       "path": "src/forgevision-candidate-promotion.js",
@@ -1501,6 +1511,11 @@
       "path": "verification/forgelm-self-sufficient.test.mjs",
       "sha256": "a0ee33eeadc9a7ae7e176f0c71ccffc65c219a1056d12ef37017e7a06d034486",
       "bytes": 408
+    },
+    {
+      "path": "verification/forgespeech-candidate-promotion.test.mjs",
+      "sha256": "0475b1e71c15a6160eb1aef958ac5af6b060f339ca133d85887f9c73bd98545f",
+      "bytes": 1807
     },
     {
       "path": "verification/forgevision-candidate-promotion.test.mjs",
