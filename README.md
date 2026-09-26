@@ -1,6 +1,14 @@
-# IntraultUniversalion v0.68.0
+# IntraultUniversalion v0.69.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.69 live OneChat turn sessions
+
+OneChat can now execute a turn through an owner-bound session with replayable server-sent events. Intent, governed attachment preparation, collaborator allocation, tool states, model phases, verification and persistence appear in the active message while work is occurring. The browser can reconnect using its last observed event sequence.
+
+Stop generation requests cancellation through the session's AbortController. Local ForgeLM subprocesses are terminated; other collaborators are checked at safe phase boundaries and any result that arrives after cancellation is discarded instead of being persisted as a completed answer.
+
+This release truthfully provides execution-event streaming. Token-level model streaming remains a separate capability and is only reported when a connected runtime actually emits token chunks.
 
 ## v0.68 OneChat turn controls
 
