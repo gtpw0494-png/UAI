@@ -30,5 +30,7 @@ export class ForgeLMBridge{
   embeddings(input){return this.capability("embeddings",JSON.stringify(Array.isArray(input)?input:[String(input)]),"",1)}
   rerank(query,documents=[]){return this.capability("rerank",String(query),JSON.stringify(documents),1)}
   longContext(query,sourceText,max=192){return this.capability("long-context",String(query),String(sourceText),max)}
+  visionStatus(){return run("vision_runtime.py",["status"],30000)}
+  visionDescribe(image,prompt="Describe the image using only what the visual evidence supports.",max=96){return run("vision_runtime.py",["describe","--image",String(image),"--prompt",String(prompt),"--max-tokens",String(max)],120000)}
   selfSufficientStatus(){return run("self_sufficient.py",["status"],15000)}
 }
