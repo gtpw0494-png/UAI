@@ -212,3 +212,16 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED + VERIFIED — evidence-backed evaluation records, verified-only leaderboards, benchmark runner and promotion evidence score.
 - PARTIAL — provenance purge propagation currently covers graph state and linked UAI memory records; legacy documents, embeddings, datasets and model artifacts still require explicit store-specific deletion integration.
 - STILL PARTIAL / UNAVAILABLE AS COMPLETE — dense neural embeddings/reranking, multimodal OCR/audio/video pipelines, full source-code symbol/dependency graph, production kernel sandbox isolation, encrypted multi-device sync, federated personalization, distillation at scale, formal governance verification, complete marketplace/catalog and independent hardware bootstrap ownership proof.
+
+## v0.55.0 additions
+- IMPLEMENTED, CI PENDING — verified knowledge now uses the existing SQLite/WAL platform-state plane with legacy JSON migration.
+- IMPLEMENTED, CI PENDING — approved-domain research worker and persistent bounded scheduler; external content remains untrusted data.
+- IMPLEMENTED, CI PENDING — independent-source corroboration plus separate training-rights policy; caller trust cannot grant eligibility.
+- IMPLEMENTED, CI PENDING — optional cloud durability with local-first fallback and local reverification on recovery.
+- IMPLEMENTED, CI PENDING — ForgeLM CLI, Model Lab, OneChat and knowledge learning are candidate-first rather than auto-promoting.
+- IMPLEMENTED, CI PENDING — held-out knowledge/general-regression evaluation, checkpoint hashes, owner-bound promotion and rollback.
+- BOUNDARY — research schedules run only while localhost UAI is running.
+- BOUNDARY — research/retrieval approval does not imply training eligibility.
+- PARTIAL — claim corroboration currently uses normalized exact-claim matching rather than full semantic entailment.
+- STILL PARTIAL — dense neural retrieval, multimodal pipelines, kernel-grade sandboxing, encrypted multi-device sync, federated learning, large-scale distillation/training, automatic ensembles and frontier-model parity.
+
