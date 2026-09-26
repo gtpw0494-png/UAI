@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.65.0",
+  "version": "0.66.0",
   "private": true,
-  "description": "Independent local-first AI with a single OneChat multimodal UI, governed chunked media uploads, provenance, continuity and native ForgeMultimodal fusion.",
+  "description": "Independent local-first AI with persistent attachment-aware OneChat history, media-ID privacy, governed content reopening and unified native multimodal reasoning.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -104,7 +104,9 @@
     "test:video-lifecycle": "node verification/forgevideo-candidate-promotion.test.mjs",
     "test:native-multimodal": "python3 model/test_multimodal.py",
     "test:onechat-attachments": "node verification/onechat-multimodal-attachments.test.mjs",
-    "test:onechat-attachment-ui": "node verification/onechat-attachment-ui.test.mjs"
+    "test:onechat-attachment-ui": "node verification/onechat-attachment-ui.test.mjs",
+    "test:onechat-history-attachments": "node verification/onechat-history-attachments.test.mjs",
+    "test:browser-syntax": "node --check public/app.js"
   },
   "engines": {
     "node": ">=20"
