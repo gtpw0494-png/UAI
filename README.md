@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.60.0
+# IntraultUniversalion v0.61.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.61 native ForgeSpeech
+
+ForgeSpeech adds an independent local text-to-waveform generation path. ForgeLM creates the text conditioning vector, ForgeSpeech decodes it into PCM waveform samples, and the runtime writes a local WAV file without calling a cloud or external TTS model.
+
+Training uses local text/WAV pairs with waveform and spectral reconstruction losses. Promotion remains candidate-first, evaluation-gated, hash-bound, explicitly owner-approved, and rollback-capable. A source file or candidate checkpoint alone is never reported as a connected speech generator.
 
 ## v0.60 native ForgeAudio
 
