@@ -1104,8 +1104,8 @@
     },
     {
       "path": "src/providers.js",
-      "sha256": "9ea2c2636f459def98397343d1e85d0c7b5ef7eac21ed809ef41b18531978ed0",
-      "bytes": 8027
+      "sha256": "87d9ed72df98bbecb0864d6b12e56553954ac2263a3eb5d568ae37af7d66380d",
+      "bytes": 14974
     },
     {
       "path": "src/release-integrity.js",
