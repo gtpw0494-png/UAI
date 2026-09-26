@@ -449,8 +449,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "22f3cd0d3af42daaa5d1798d17e678f7d0886d88263b685f52c7d099f96a82d5",
-      "bytes": 15693
+      "sha256": "d4a01ee92e6e166a137add70efd759efe92ea07c1607f54c16c0dc1bc0a6c0bd",
+      "bytes": 19630
     },
     {
       "path": "public/index.html",
