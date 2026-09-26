@@ -753,6 +753,11 @@
       "bytes": 3109
     },
     {
+      "path": "src/forgeaudio-candidate-promotion.js",
+      "sha256": "332d2ff7687d5d79fa4eaeee66ce89186a94e8b2ee2bc538a10a71a8732b8011",
+      "bytes": 6291
+    },
+    {
       "path": "src/forgelm-bridge.js",
       "sha256": "ab30749d710d67eb832c503d42e8829f06e9f4b078f76223aef4eb621120abb6",
       "bytes": 2458
