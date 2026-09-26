@@ -864,8 +864,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "8a671d88bc3d000f1425b7a8dc7b8ce4d5b10baabc13a7fa6c25a0c44afca964",
-      "bytes": 9444
+      "sha256": "b47ae1943fb29c11098da66725f35c7e3726d36590203b2221f91b587b8f676a",
+      "bytes": 9535
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -914,8 +914,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "80ad9e9d4b9efd80a92227953624d4d974cc478c4caa43422a5854f16187b723",
-      "bytes": 22314
+      "sha256": "b0e225898bcd88f090cd98a71c9717d65e40c626faf7d69bfa1da562819efded",
+      "bytes": 22680
     },
     {
       "path": "src/governance/trusted-device.js",
