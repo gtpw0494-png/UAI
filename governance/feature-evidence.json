@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.68.0",
+  "generated_for": "0.69.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1303,6 +1303,27 @@
         "verification/onechat-attachment-ui.test.mjs"
       ],
       "evidence_note": "OneChat now provides append-only Edit, Retry, Regenerate and Branch controls by creating new conversation branches rather than mutating prior history. Per-turn copy/export and sanitized evidence inspection are available. First turns generate local conversation titles, attachment evidence uses media IDs instead of file paths, and turn exports/evidence are owner-bound and path-sanitized."
+    },
+    {
+      "id": "onechat-live-turn-sessions-v069",
+      "introduced": "0.69.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/onechat-turn-sessions.js",
+        "src/onechat.js",
+        "src/conversation-engine.js",
+        "src/forgelm-bridge.js",
+        "server.js",
+        "public/index.html",
+        "public/app.js",
+        "public/styles.css",
+        "src/governance/request-schemas.js"
+      ],
+      "tests": [
+        "verification/onechat-live-sessions.test.mjs",
+        "verification/onechat-attachment-ui.test.mjs"
+      ],
+      "evidence_note": "OneChat can start owner-bound asynchronous turn sessions, stream structured phase/tool/model/persistence events over replayable SSE, reconnect from a last-seen event sequence, request cancellation, and discard late results after cancellation. Local ForgeLM subprocess calls receive AbortSignal and are terminated on Stop. Other collaborators are cancellation-checked at phase boundaries. This feature claims event streaming; token streaming is only available when a runtime emits token chunks and is not inferred from progress events."
     }
   ]
 }
