@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.67.0",
+  "version": "0.68.0",
   "private": true,
-  "description": "Independent local-first AI with governed OneChat conversation management, persistent multimodal history and native multimodal reasoning.",
+  "description": "Independent local-first AI with append-only OneChat turn controls, branching, retry/regenerate, per-turn export and structured evidence inspection.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -107,7 +107,8 @@
     "test:onechat-attachment-ui": "node verification/onechat-attachment-ui.test.mjs",
     "test:onechat-history-attachments": "node verification/onechat-history-attachments.test.mjs",
     "test:browser-syntax": "node --check public/app.js",
-    "test:onechat-conversations": "node verification/onechat-conversation-management.test.mjs"
+    "test:onechat-conversations": "node verification/onechat-conversation-management.test.mjs",
+    "test:onechat-turn-controls": "node verification/onechat-turn-controls.test.mjs"
   },
   "engines": {
     "node": ">=20"
