@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.65.0",
+  "version": "0.66.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "37aa3c4379a81d434627a0fac36a5d59e688cfdf2d2cb46348442a65fa1a5e70",
-      "bytes": 8492
+      "sha256": "8290f457b0d84b6810910199f1a3bdb85bb49e8eec95fc343fe04ae7c539910e",
+      "bytes": 8695
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "d556e9882109dd06ddf39b21d534144d2f9d0906e26e49fd06508717f70959c5",
-      "bytes": 19169
+      "sha256": "26338bfcfbb3021aa4204a6322a4316e858742b8bccb6fd08c87725481c8dcbf",
+      "bytes": 19888
     },
     {
       "path": "RELEASES.md",
-      "sha256": "4f0169ec87bff00203665d00dbe1260080799d4cc3a2bd0306b108dbf116ae8c",
-      "bytes": 27426
+      "sha256": "eebd1cd4b387fa50bed52616dd36366c4157d0797ff82f273bd21aa88a3d6849",
+      "bytes": 28206
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "c629e808f7df883060e739e2b5eefd16d9b8ba19c9b5e8d74e5b9286829e918c",
-      "bytes": 49327
+      "sha256": "2fa1dcffe1d13413c92cdd3d196904ed5f8dab63c5131f2763b1a5f2a80dedca",
+      "bytes": 50277
     },
     {
       "path": "model/adaptation.py",
@@ -444,8 +444,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "d33e22695c9ed145eead7f9e2bd121954caad2ff4c3ce7b8328ebc5731ab91a4",
-      "bytes": 7978
+      "sha256": "3f52af975e3da8e24712208bda0b9d8398437f424765d885c40e6e270e72ad48",
+      "bytes": 8142
     },
     {
       "path": "public/app.js",
@@ -1624,8 +1624,8 @@
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
-      "sha256": "26cfd7455ba7e5e7fe7f052a927453a35a2db515bb6e487323ef9923f7d3c8c9",
-      "bytes": 1088
+      "sha256": "b986417a69f6d494b8a24d2525a32e95abfd2a859254bfcd9025876bb2ca75f6",
+      "bytes": 1240
     },
     {
       "path": "verification/onechat-history-attachments.test.mjs",
