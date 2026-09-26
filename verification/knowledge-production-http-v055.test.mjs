@@ -60,6 +60,10 @@ try{
   assert.equal(scheduleBlocked.r.status,409);
   assert.ok(["ASK","ESCALATE"].includes(scheduleBlocked.x.state));
 
+  const cloudSyncBlocked=await req("/api/knowledge/cloud/sync",{method:"POST",headers:write,body:{limit:100}});
+  assert.equal(cloudSyncBlocked.r.status,409);
+  assert.ok(["ASK","ESCALATE"].includes(cloudSyncBlocked.x.state));
+
   const promoteBlocked=await req("/api/model/promote",{method:"POST",headers:write,body:{runId:"model-run-missing",approvalId:"approval-missing"}});
   assert.equal(promoteBlocked.r.status,403);
   assert.ok(["DENIED","BLOCKED","FAILURE"].includes(promoteBlocked.x.state));
