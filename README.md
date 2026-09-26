@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.71.0
+# IntraultUniversalion v0.72.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.72 first-install ForgeLM bootstrap
+
+A fresh UAI installation no longer needs an existing promoted ForgeLM checkpoint before it can promote its first local model. The bootstrap path trains a candidate, runs a separate first-checkpoint evaluation, binds promotion to the evaluated candidate hash, and requires explicit approval before writing `model/checkpoints/forgelm-seed.pt`.
+
+Run `npm run model:bootstrap -- --approve --steps 80` from the repository root on Termux. This makes the local runtime available; the tiny bootstrap checkpoint is a functional starting model, not a claim of frontier conversational quality.
 
 ## v0.71 durable OneChat session recovery
 
