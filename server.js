@@ -45,7 +45,7 @@ import { LocalIdentity, sessionCookies, clearSessionCookies } from "./src/govern
 import { RequestAuthorizer } from "./src/governance/authorization.js";
 import { GovernanceKernel } from "./src/governance/kernel.js";
 import { ConversationEngine } from "./src/conversation-engine.js";
-import { ModelRouter, buildLocalModelCandidates } from "./src/models/router.js";
+import { ModelRouter, buildLocalModelCandidates, buildProviderModelCandidates } from "./src/models/router.js";
 import { WebResearchEngine } from "./src/web-research-engine.js";
 import { ShadowCoordinator } from "./src/shadow/shadow-coordinator.js";
 import { LightCoordinator } from "./src/light/light-coordinator.js";
@@ -106,7 +106,7 @@ const control = new ControlCenter(stateDir, audit);
 const forgelm = new ForgeLMBridge();
 const localCapabilityRouter = new LocalCapabilityRouter();
 const localOrchestrator = new ForgeLocalOrchestrator({ router: localCapabilityRouter });
-const modelRouter = new ModelRouter({candidates:buildLocalModelCandidates({llamaRuntime,forgelm}),audit});
+const modelRouter = new ModelRouter({candidates:[...buildLocalModelCandidates({llamaRuntime,forgelm}),...buildProviderModelCandidates(providerHub)],audit});
 const conversation = new ConversationEngine({llamaRuntime,forgelm,modelRouter,store,audit});
 const learning = new LearningFabric({store,audit,root:__dirname});
 const selfdev = new SelfDevelopmentEngine({root:__dirname,stateRoot:stateDir,store,workspace,audit});
@@ -505,7 +505,13 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/develop")return send(res,200,development.propose(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/develop/apply"){const b=await readBody(req);return send(res,200,development.apply(b.proposalId,b.approvalId));}
   if(req.method==="POST"&&url.pathname==="/api/source/rollback"){const b=await readBody(req);return send(res,200,workspace.rollback(b.snapshotId,b.approval===true));}
-  if(req.method==="POST"&&url.pathname==="/api/provider/chat"){const b=await readBody(req);const result=await providerHub.chat(b.provider,b.message,b.system);if(result.state==="SUCCESS"&&b.store){await store.put(b.store,{...result,provider:b.provider});}return send(res,200,result);}
+  if(req.method==="GET"&&url.pathname==="/api/provider/status")return send(res,200,{state:"SUCCESS",providers:providerHub.list()});
+  if(req.method==="POST"&&url.pathname==="/api/provider/chat"){const b=await readBody(req);const result=await providerHub.chat(b.provider,b.message,b.system,b.options||{});if(result.state==="SUCCESS"&&b.store){await store.put(b.store,{...result,provider:b.provider});}return send(res,200,result);}
+  if(req.method==="POST"&&url.pathname==="/api/provider/vision"){const b=await readBody(req);return send(res,200,await providerHub.vision(b.provider,b.message,b.images||[],b.options||{}));}
+  if(req.method==="POST"&&url.pathname==="/api/provider/image"){const b=await readBody(req);return send(res,200,await providerHub.image(b.provider,b.prompt||b.message||"",b.options||{}));}
+  if(req.method==="POST"&&url.pathname==="/api/provider/structured"){const b=await readBody(req);return send(res,200,await providerHub.structured(b.provider,b.message,b.schema,b.options||{}));}
+  if(req.method==="POST"&&url.pathname==="/api/provider/embeddings"){const b=await readBody(req);return send(res,200,await providerHub.embeddings(b.provider,b.input??b.message??"",b.options||{}));}
+  if(req.method==="POST"&&url.pathname==="/api/provider/rerank"){const b=await readBody(req);return send(res,200,await providerHub.rerank(b.provider,b.query||"",b.documents||[],b.options||{}));}
   if(req.method==="POST"&&url.pathname==="/api/selfdev/stage"){const b=await readBody(req);return send(res,200,selfdev.stage(b.proposalId));}
   if(req.method==="POST"&&url.pathname==="/api/selfdev/promote"){const b=await readBody(req);return send(res,200,selfdev.promote(b.stageId,b.approvalId));}
   if(req.method==="GET"&&url.pathname==="/api/selfdev")return send(res,200,selfdev.list());
