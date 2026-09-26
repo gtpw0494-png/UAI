@@ -1,5 +1,13 @@
 # Release history
 
+## v0.57.0 — Independent ForgeLM Native Context
+- Removed external provider models from the core model router by default. External model routing is now an explicit compatibility/research opt-in through `IUV_ENABLE_EXTERNAL_MODEL_ROUTING=true`.
+- Added ForgeLM-native long-context memory that chunks sources locally, embeds them with the promoted ForgeLM checkpoint, cosine-ranks relevant chunks and assembles bounded evidence context without any external model.
+- Added RoPE position scaling to the ForgeLM transformer and new Termux/desktop long-context research presets.
+- Added self-sufficient `long-context` inference through the local ForgeLM service, JavaScript bridge and model router.
+- Added CPU tests that distinguish source-scale retrieval memory from the transformer's active attention window.
+- Vision/image/audio/video generation remain separate native-model work; v0.57 does not claim those capabilities are locally complete.
+
 ## v0.56.0 — Frontier Model Fabric and Native ForgeLM Retrieval
 - Corrected the cloud provider fabric so configured models can be routed before their first successful call while CONNECTED still requires runtime evidence.
 - Added explicit local-vs-cloud OneChat routing; local/offline remains the default and cloud use requires an explicit request or configuration.
