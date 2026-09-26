@@ -61,11 +61,13 @@ export class ModelRouter{
       catch(e){result={state:"ERROR",message:String(e.message||e)};}
       const text=clean(result?.text||result?.message);
       const acceptsNonText=["image","embeddings","rerank"].includes(route.requirements.modality)||["image","embeddings","rerank"].includes(route.requirements.task);
-      const usable=result?.state==="SUCCESS"&&(acceptsNonText||text)&&(!acceptResult||acceptResult(text,result)!==false);
+      const toolProposal=Array.isArray(result?.toolCalls)&&result.toolCalls.length>0;
+      const usable=result?.state==="SUCCESS"&&(acceptsNonText||text||toolProposal)&&(!acceptResult||toolProposal||acceptResult(text,result)!==false);
       const attempt={id:item.candidate.id,provider:item.candidate.provider,model:item.candidate.model||null,state:usable?"SUCCESS":(result?.state==="SUCCESS"?"REJECTED_OUTPUT":result?.state||"UNKNOWN"),latencyMs:Date.now()-started};
       attempts.push(attempt);
       if(usable){
-        const out={...result,state:"SUCCESS",text,route:{requirements:route.requirements,selected:{id:item.candidate.id,provider:item.candidate.provider,model:item.candidate.model||null,score:item.score},alternatives:route.alternatives,attempts}};
+        const routedText=text||(toolProposal?`Model proposed ${result.toolCalls.length} tool call(s); execution remains subject to UAI governance and authorization.`:"");
+        const out={...result,state:"SUCCESS",text:routedText,route:{requirements:route.requirements,selected:{id:item.candidate.id,provider:item.candidate.provider,model:item.candidate.model||null,score:item.score},alternatives:route.alternatives,attempts}};
         this.audit?.append({type:"model.route.generate",selected:item.candidate.id,provider:item.candidate.provider,model:item.candidate.model||null,attempts,requirements:route.requirements});
         return out;
       }
@@ -101,15 +103,16 @@ export function buildProviderModelCandidates(providerHub){
   return providerHub.list().map(cfg=>({
     id:`provider-${cfg.id}`,provider:cfg.id,model:cfg.model,local:false,offline:false,privacy:"external-provider",
     tasks:["chat",...(cfg.capabilities.includes("code")?["code"]:[]),...(cfg.capabilities.includes("reasoning")?["reasoning","planning"]:[]),"summarization","classification",...(cfg.capabilities.includes("structured-output")?["structured-output"]:[]),...(cfg.capabilities.includes("embeddings")?["embeddings"]:[]),...(cfg.capabilities.includes("rerank")?["rerank"]:[])],
-    modalities:["text",...(cfg.capabilities.includes("vision")?["vision"]:[]),...(cfg.capabilities.includes("image")?["image"]:[])],
+    modalities:["text",...(cfg.capabilities.includes("vision")?["vision"]:[]),...(cfg.capabilities.includes("image")?["image"]:[]),...(cfg.capabilities.includes("audio")?["audio"]:[]),...(cfg.capabilities.includes("video")?["video"]:[]),...(cfg.capabilities.includes("pdf")?["pdf"]:[])],
     contextTokens:null,
     health:()=>providerHub.health(cfg.id),
-    generate:async({prompt,system="",maxTokens=1024,temperature=0.7,images=[],documents=[],schema=null,tools=null,requirements={}})=>{
+    generate:async({prompt,system="",maxTokens=1024,temperature=0.7,images=[],media=[],documents=[],schema=null,tools=null,requirements={}})=>{
       const task=requirements.task||"chat",modality=requirements.modality||"text";
       if(task==="embeddings")return providerHub.embeddings(cfg.id,prompt,{model:cfg.model});
       if(task==="rerank")return providerHub.rerank(cfg.id,prompt,Array.isArray(documents)?documents:[],{model:cfg.model});
       if(modality==="image"||task==="image")return providerHub.image(cfg.id,prompt,{});
       if(modality==="vision")return providerHub.vision(cfg.id,prompt,images,{system,maxTokens});
+      if(["audio","video","pdf"].includes(modality))return providerHub.media(cfg.id,prompt,media.length?media:images,{system,maxTokens});
       if(task==="structured-output"&&schema)return providerHub.structured(cfg.id,prompt,schema,{system,maxTokens,temperature,tools});
       return providerHub.chat(cfg.id,prompt,system,{maxTokens,temperature,tools,responseSchema:schema||undefined});
     }
