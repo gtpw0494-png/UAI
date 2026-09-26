@@ -1438,6 +1438,11 @@
       "bytes": 408
     },
     {
+      "path": "verification/forgevision-candidate-promotion.test.mjs",
+      "sha256": "d62911012cfb94db93066cb3d611955686bf4a3842801b086f2be65b2180e001",
+      "bytes": 2524
+    },
+    {
       "path": "verification/frontier-provider-routing-v056.test.mjs",
       "sha256": "0e86e3e0310b9ece9d287d9fa5eaa235fa7116c6b75f460afe0fbaae8e8c1e07",
       "bytes": 4422
