@@ -9,7 +9,7 @@ import {spawn} from "node:child_process";
 const stateRoot=fs.mkdtempSync(path.join(os.tmpdir(),"uai-v054-http-"));
 const repoRoot=path.resolve(path.dirname(new URL(import.meta.url).pathname),"..");
 const port=await new Promise((resolve,reject)=>{const s=net.createServer();s.once("error",reject);s.listen(0,"127.0.0.1",()=>{const p=s.address().port;s.close(()=>resolve(p));});});
-const child=spawn(process.execPath,["server.js"],{cwd:repoRoot,env:{...process.env,PORT:String(port),IUV_STATE_DIR:stateRoot,IUV_DB_PATH:path.join(stateRoot,"data.sqlite3"),IUV_OBJECT_ROOT:path.join(stateRoot,"objects"),IUV_MEMORY_KEY:crypto.randomBytes(32).toString("base64")},stdio:["ignore","pipe","pipe"]});
+const child=spawn(process.execPath,[path.resolve("server.js")],{cwd:repoRoot,env:{...process.env,PORT:String(port),IUV_STATE_DIR:stateRoot,IUV_DB_PATH:path.join(stateRoot,"data.sqlite3"),IUV_OBJECT_ROOT:path.join(stateRoot,"objects"),IUV_MEMORY_KEY:crypto.randomBytes(32).toString("base64")},stdio:["ignore","pipe","pipe"]});
 let stdout="",stderr="";child.stdout.on("data",d=>stdout+=d);child.stderr.on("data",d=>stderr+=d);
 const base=`http://127.0.0.1:${port}`;
 async function req(url,{method="GET",headers={},body}={}){
