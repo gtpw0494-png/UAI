@@ -1029,8 +1029,8 @@
     },
     {
       "path": "src/models/router.js",
-      "sha256": "8539b88556c79371e0bb32b04e4c0a66d4ac6310f31cfc3019353df5d4573536",
-      "bytes": 5812
+      "sha256": "ddcb5cbb5b2f6ec4b4214ee61d9d1bba9fab69160df40b1294ba98340521fe30",
+      "bytes": 7948
     },
     {
       "path": "src/multimodal/pipeline.js",
