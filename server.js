@@ -63,6 +63,7 @@ import { KnowledgeTraining } from "./src/knowledge-training.js";
 import { KnowledgeTrainingJob } from "./src/knowledge-training-job.js";
 import { KnowledgeJobStore } from "./src/knowledge-job-store.js";
 import { ForgeLMCandidatePromotion } from "./src/forgelm-candidate-promotion.js";
+import { ForgeVisionCandidatePromotion } from "./src/forgevision-candidate-promotion.js";
 import { KnowledgeLearningPipeline } from "./src/knowledge-learning-pipeline.js";
 import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
 import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
@@ -112,6 +113,7 @@ const conversation = new ConversationEngine({llamaRuntime,forgelm,modelRouter,st
 const learning = new LearningFabric({store,audit,root:__dirname});
 const selfdev = new SelfDevelopmentEngine({root:__dirname,stateRoot:stateDir,store,workspace,audit});
 const forgeLMCandidatePromotion = new ForgeLMCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
+const forgeVisionCandidatePromotion = new ForgeVisionCandidatePromotion({root:__dirname,stateRoot:stateDir,audit});
 const modelLab = new ModelLab({learning,audit,stateRoot:stateDir,candidatePromotion:forgeLMCandidatePromotion});
 const documentStore = new DocumentStore();
 const webCorpus = new WebCorpus({root:__dirname,store,audit,documentStore});
@@ -531,6 +533,10 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/model/evaluate"){const b=await readBody(req);const out=await modelLab.evaluateCandidate(String(b.runId||""),{maxRelativeRegression:Number(b.maxRelativeRegression??0.02)});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/promote"){const b=await readBody(req);const out=modelLab.promoteCandidate(String(b.runId||""),{approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/rollback"){const b=await readBody(req);const out=modelLab.rollback(String(b.runId||""),{reason:String(b.reason||"owner-requested rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="GET"&&url.pathname==="/api/vision/status")return send(res,200,forgeVisionCandidatePromotion.status());
+  if(req.method==="POST"&&url.pathname==="/api/vision/evaluate"){const b=await readBody(req);const out=await forgeVisionCandidatePromotion.evaluate({candidate:String(b.candidate||""),dataset:String(b.dataset||""),minCosine:Number(b.minCosine??0.05),maxRelativeRegression:Number(b.maxRelativeRegression??0.02)});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/vision/promote"){const b=await readBody(req);const evaluation=b.evaluation||{};const out=forgeVisionCandidatePromotion.promote({candidate:String(b.candidate||evaluation.candidate||""),evaluation,approved:true,approvalId:String(b.approvalId||req.headers["x-uai-approval-id"]||"")});return send(res,out.state==="SUCCESS"?200:409,out);}
+  if(req.method==="POST"&&url.pathname==="/api/vision/rollback"){const b=await readBody(req);const out=forgeVisionCandidatePromotion.rollback(String(b.rollbackId||""),{reason:String(b.reason||"owner-requested vision rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/model/chat"){const b=await readBody(req);const local=await localOrchestrator.chat(b.message||b.prompt||"", b.context || "");return send(res,200,local);}
   if(req.method==="POST"&&url.pathname==="/api/onechat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
   if(req.method==="POST"&&url.pathname==="/api/chat"){const b=await readBody(req);return send(res,200,await onechat.handle({...b,ownerId:req.uaiSecurity.auth.identityId}));}
