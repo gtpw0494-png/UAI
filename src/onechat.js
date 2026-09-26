@@ -47,12 +47,13 @@ export class OneChatRouter{
   }
   return {state:"SUCCESS",media,document:docs.join("\n\n"),evidence,artifacts};
  }
- history(chatId,{limit=50}={}){
+ history(chatId,{limit=50,ownerId=null}={}){
   const id=String(chatId||"").trim();if(!id)return {state:"BLOCKED",message:"chatId is required.",turns:[]};
   const rows=this.store?.list?.()||[],turns=[];
   for(let i=Math.max(0,rows.length-1000);i<rows.length;i++){
     let x=null;try{x=this.store.get(rows[i].id);}catch{}
     if(!x||x.kind!=="chat-turn"||x.chatId!==id)continue;
+    if(x.ownerId&&ownerId&&x.ownerId!==ownerId)continue;
     const attachments=(x.attachments||[]).map(a=>({
       id:a.id||null,
       modality:a.modality||"structured",
@@ -127,7 +128,7 @@ export class OneChatRouter{
   return {state:"SUCCESS",chatId:id,recordsDeleted:targets.length,mediaDeleted:false,message:"Conversation records deleted. Registered media artifacts were retained."};
  }
  exportConversation(chatId,{ownerId=null}={}){
-  const id=String(chatId||"").trim(),history=this.history(id,{limit:200});
+  const id=String(chatId||"").trim(),history=this.history(id,{limit:200,ownerId});
   if(history.state!=="SUCCESS")return history;
   const control=this._conversationControls().get(id)||{};
   if(control.ownerId&&ownerId&&control.ownerId!==ownerId)return {state:"DENIED",message:"Conversation is owned by another identity."};
