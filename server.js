@@ -567,7 +567,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/video/rollback"){const b=await readBody(req);const out=forgeVideoCandidatePromotion.rollback(String(b.rollbackId||""),{reason:String(b.reason||"owner-requested video rollback")});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/video/describe"){const b=await readBody(req);const roots=[path.resolve(__dirname,"model","data"),path.resolve(stateDir,"video-inputs"),path.resolve(stateDir,"media-input")],target=path.resolve(String(b.video||""));if(!roots.some(root=>target===root||target.startsWith(root+path.sep)))return send(res,403,{state:"DENIED",message:"Video input path is outside approved local roots."});const out=await forgelm.videoDescribe(target,String(b.prompt||"Describe the video using only the temporal and visual evidence."),Number(b.maxTokens||96));return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="GET"&&url.pathname==="/api/media/status")return send(res,200,multimodalPipeline.status());
-  if(req.method==="GET"&&url.pathname==="/api/media/list")return send(res,200,{state:"SUCCESS",artifacts:multimodalPipeline.list(Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||100))))});
+  if(req.method==="GET"&&url.pathname==="/api/media/list"){const artifacts=multimodalPipeline.list(Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||100)))).map(a=>({id:a.id,sourceId:a.sourceId||null,ownerId:a.ownerId||null,modality:a.modality,mediaType:a.mediaType||null,contentHash:a.contentHash||null,bytes:Number(a.bytes||0),metadata:a.metadata||{},state:a.state||"UNKNOWN",createdAt:a.createdAt||null,updatedAt:a.updatedAt||null}));return send(res,200,{state:"SUCCESS",artifacts});}
   if(req.method==="GET"&&url.pathname==="/api/media/content"){
     const id=String(url.searchParams.get("id")||""),d=multimodalPipeline.contentDescriptor(id,{ownerId:req.uaiSecurity.auth.identityId});
     if(d.state!=="SUCCESS")return send(res,d.state==="DENIED"?403:404,d);
@@ -600,7 +600,7 @@ const server=http.createServer(async(req,res)=>{try{
     const digest=sha256FileSync(part),finalName=digest.slice(0,16)+"-"+name,finalPath=path.join(mediaRoot,finalName);
     fs.renameSync(part,finalPath);try{fs.unlinkSync(metaPath)}catch{}
     const registered=multimodalPipeline.register({path:finalPath,sourceId:meta.sourceId||("upload:"+name),ownerId:req.uaiSecurity.auth.identityId,metadata:{originalName:name,mime:meta.mime,uploadId,sha256:digest}});
-    return send(res,registered.state==="SUCCESS"?200:409,{...registered,upload:{uploadId,name,path:finalPath,sha256:digest,bytes:meta.bytes}});
+    if(registered.state!=="SUCCESS")return send(res,409,registered);const a=registered.artifact;return send(res,200,{state:"SUCCESS",artifact:{id:a.id,sourceId:a.sourceId||null,modality:a.modality,mediaType:a.mediaType||null,contentHash:a.contentHash||null,bytes:Number(a.bytes||0),metadata:a.metadata||{}},upload:{uploadId,name,mediaId:a.id,sha256:digest,bytes:meta.bytes}});
   }
   if(req.method==="POST"&&url.pathname==="/api/media/register"){const b=await readBody(req);const out=multimodalPipeline.register({path:String(b.path||""),sourceId:b.sourceId||null,ownerId:req.uaiSecurity.auth.identityId,metadata:b.metadata||{}});return send(res,out.state==="SUCCESS"?200:409,out);}
   if(req.method==="POST"&&url.pathname==="/api/media/extract"){const b=await readBody(req);const out=multimodalPipeline.extract(String(b.id||""));return send(res,out.state==="SUCCESS"?200:409,out);}
