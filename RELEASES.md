@@ -1,5 +1,15 @@
 # Release history
 
+## v0.56.0 — Frontier Model Fabric and Native ForgeLM Retrieval
+- Corrected the cloud provider fabric so configured models can be routed before their first successful call while CONNECTED still requires runtime evidence.
+- Added explicit local-vs-cloud OneChat routing; local/offline remains the default and cloud use requires an explicit request or configuration.
+- Corrected Puter backend integration to the documented OpenAI-compatible endpoint and PUTER_AUTH_TOKEN contract.
+- Added provider-native vision payloads, image generation, JSON-schema structured output, tool contracts, embeddings and Cohere reranking.
+- Aligned the model catalog with GPT-6 Astra, GPT-5.3 Codex, GPT-5 Nano, GPT Image 2.5, Claude 5/4.8, Gemini 3.x, Grok 4.x, Cohere, Inference specialty, MiniMax and open-ecosystem aliases without treating catalog presence as availability.
+- Added native normalized ForgeLM hidden-state embeddings and local cosine reranking using the promoted checkpoint.
+- Added dedicated v0.56 frontier-provider regression tests and authoritative CI gating.
+- Local ForgeLM vision/image/audio/video generation and frontier-scale long-context quality remain incomplete until trained modality components, data, compute and benchmark evidence exist.
+
 ## v0.55.0 — Governed Knowledge Autonomy and Candidate-First ForgeLM
 - Added bounded approved-domain research scheduling with persistent process-bound state.
 - Added independent-source corroboration and separate training-rights gates.
