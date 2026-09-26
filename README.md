@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.65.0
+# IntraultUniversalion v0.66.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.66 persistent attachment-aware history
+
+OneChat now restores prior local turns with sanitized attachment cards. Browser-visible records carry registered media IDs, labels, hashes, modality and size—not server filesystem paths. Reopening an attachment goes through an authenticated media-ID endpoint that revalidates ownership, the approved local storage boundary and file existence before streaming the registered artifact.
+
+Images can render as restored thumbnails, audio/video can reopen through native browser controls, and other registered document types use governed open links. Conversation continuity and attachment provenance therefore survive reloads while raw local storage paths remain server-side.
 
 ## v0.65 single-chat attachment UI
 
