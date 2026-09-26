@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.69.0",
+  "version": "0.70.0",
   "private": true,
-  "description": "Independent local-first AI with cancellable, resumable live OneChat turn sessions, streamed execution events and governed multimodal reasoning.",
+  "description": "Independent local-first AI with true ForgeLM generation-time token streaming, cancellable live OneChat sessions and native multimodal reasoning.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -109,7 +109,8 @@
     "test:browser-syntax": "node --check public/app.js",
     "test:onechat-conversations": "node verification/onechat-conversation-management.test.mjs",
     "test:onechat-turn-controls": "node verification/onechat-turn-controls.test.mjs",
-    "test:onechat-live-sessions": "node verification/onechat-live-sessions.test.mjs"
+    "test:onechat-live-sessions": "node verification/onechat-live-sessions.test.mjs",
+    "test:native-streaming": "python3 model/test_streaming.py"
   },
   "engines": {
     "node": ">=20"
