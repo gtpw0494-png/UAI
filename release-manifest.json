@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.70.0",
+  "version": "0.71.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "40b27fd9a07d861a476e281e0a796684beb49943f118abbf5bcb962319dbd6c1",
-      "bytes": 9107
+      "sha256": "0ecbdfaad89bf1697ed65a134f774777daadb219b51162c6ed60fb21dbcef217",
+      "bytes": 9213
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "0e38399d0224034ef46fc0dfd39054c74fc008a8b7a4e7fd4365594131758d9c",
-      "bytes": 22599
+      "sha256": "ebd7450ef8e88b6b0dca404cb75e474f90a0d751adc9e1137884931fda0f4c0b",
+      "bytes": 23378
     },
     {
       "path": "RELEASES.md",
-      "sha256": "7fde6ba56175fe2410a125d8a2da07deccf7f48c2381953b9a538b0dace3336c",
-      "bytes": 31395
+      "sha256": "5a3fd36b039698b81a670b77bbe37f834308ad5369b210d2527174ca8144f64b",
+      "bytes": 32264
     },
     {
       "path": "TERMUX-RUN.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "8c228ff923007d13e6caa9cb3753d75785901680050798e65acfba275189eb4b",
-      "bytes": 54403
+      "sha256": "46c4f2752d830f6e9c5716df0f5bf9420bb2f707c3a73fd8603e5b00d73d474d",
+      "bytes": 55460
     },
     {
       "path": "model/adaptation.py",
@@ -449,8 +449,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "64753f7bee21415d1a03645f6c7bda5dda9b1307dc9d955642c8f35481051f28",
-      "bytes": 8456
+      "sha256": "be74093f42dcb526c81ea88d3c4d29e02df9675b4c37d95c4f9fed037f61bcb8",
+      "bytes": 8548
     },
     {
       "path": "public/app.js",
@@ -464,8 +464,8 @@
     },
     {
       "path": "public/styles.css",
-      "sha256": "c89462bc300c281e91479d4b9dcdbf9debfa52201c74d440a02c0c7a042e8a52",
-      "bytes": 8266
+      "sha256": "6bc434919a1e63b3c952807d07c913047ac13e9a934fee53eb15aeaef75692ed",
+      "bytes": 8339
     },
     {
       "path": "requirements/README.md",
@@ -749,8 +749,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "35aae0a63b6621abeabb702d0dd5aa0974734f208bf45ee32a5e9fcca122cc2f",
-      "bytes": 12175
+      "sha256": "aa55a04046b291b626a5ab1ce9f6527bf3e6d3c0e12eb2a0e6bed99227de0462",
+      "bytes": 12611
     },
     {
       "path": "src/capability-truth.js",
@@ -1634,8 +1634,8 @@
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
-      "sha256": "0ba68b6b99df73deabd5624957aed77bb1999cb3d572b3575df4601dc63e562c",
-      "bytes": 1608
+      "sha256": "cc49f86cba709ed17e600729d6bb3e261d4162e15ac9d3a8a662f2faea059b6c",
+      "bytes": 1746
     },
     {
       "path": "verification/onechat-conversation-management.test.mjs",
