@@ -629,8 +629,8 @@
     },
     {
       "path": "scripts/check-browser-syntax.mjs",
-      "sha256": "b72bf6796af540f83eee8e27b4a49306f1cc264782e1766b80d675e6f3c279c3",
-      "bytes": 615
+      "sha256": "2bfca7de7c3e991df8b1721ee5e4482f07b8eb8edf272d273bd468da36d18c3d",
+      "bytes": 613
     },
     {
       "path": "scripts/configure-owner.mjs",
@@ -1259,8 +1259,8 @@
     },
     {
       "path": "src/process-compat.js",
-      "sha256": "1d543305c53d20d25b75a907bf20c2338b4e34565d674f1854b2c04284e6503c",
-      "bytes": 382
+      "sha256": "9cfe17d018f473144363d9eb44e80f21d44359c4109ae845913d5b8ea49e5935",
+      "bytes": 1100
     },
     {
       "path": "src/provenance/citation.js",
@@ -1329,8 +1329,8 @@
     },
     {
       "path": "src/self-development.js",
-      "sha256": "48d7ca42b9773585eec4ed515c49c3fb6d3d240697dfbde0621a71741b92efe8",
-      "bytes": 4358
+      "sha256": "d738a2da2fe6688fe6bfb149ce161d5c538a6b15beedc8efcbc89fb6ec7bc424",
+      "bytes": 4411
     },
     {
       "path": "src/shadow/architecture-agent.js",
@@ -1739,8 +1739,8 @@
     },
     {
       "path": "verification/termux-onechat-recovery-v073.test.mjs",
-      "sha256": "bfedd96f689e24b84278d71f33a35bf8690c8083ab024b8cc7c929785a896db3",
-      "bytes": 2266
+      "sha256": "7999c7d79018be6e4448837a5ff39ebd2e8986cfeb529571437d65f96e902d28",
+      "bytes": 2716
     },
     {
       "path": "verification/test_data_learning.py",
