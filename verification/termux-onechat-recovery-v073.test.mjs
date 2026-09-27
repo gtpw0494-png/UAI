@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
-import {termuxSafeEnv,absoluteNodeScript} from "../src/process-compat.js";
+import {termuxSafeEnv,nodeChildEnv,absoluteNodeScript,nodeScriptInvocation} from "../src/process-compat.js";
 import {OneChatRouter} from "../src/onechat.js";
 
 const env=termuxSafeEnv({LD_PRELOAD:"/data/data/com.termux/files/usr/lib/libtermux-exec.so",TERMUX_VERSION:"test"});
 assert.equal(env.LD_PRELOAD,undefined);
+const nodeEnv=nodeChildEnv({LD_PRELOAD:"/data/data/com.termux/files/usr/lib/libtermux-exec.so",TERMUX_VERSION:"test"});
+assert.match(nodeEnv.LD_PRELOAD,/libtermux-exec/);
 assert.ok(absoluteNodeScript("/tmp/uai","server.js").startsWith("/"));
+const invocation=nodeScriptInvocation("/tmp/uai","test.js",["--sample"]);
+assert.equal(invocation.command,process.execPath);
+assert.equal(invocation.args[0],absoluteNodeScript("/tmp/uai","test.js"));
+assert.equal(invocation.args[1],"--sample");
 
 const store={rows:[],add(x){const r={id:"r-"+(this.rows.length+1),createdAt:new Date().toISOString(),...x};this.rows.push(r);return r;},list(){return this.rows.map(x=>({id:x.id}));},get(id){return this.rows.find(x=>x.id===id)||null;}};
 const caps=[
