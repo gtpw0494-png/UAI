@@ -114,7 +114,8 @@
     "test:onechat-durable-recovery": "node verification/onechat-durable-session-recovery.test.mjs",
     "model:bootstrap": "node scripts/bootstrap-forgelm.mjs",
     "test:forgelm-bootstrap": "node verification/forgelm-bootstrap-promotion.test.mjs",
-    "test:termux-onechat-recovery": "node verification/termux-onechat-recovery-v073.test.mjs"
+    "test:termux-onechat-recovery": "node verification/termux-onechat-recovery-v073.test.mjs",
+    "start:codespaces": "bash scripts/start-codespace.sh"
   },
   "engines": {
     "node": ">=20"
