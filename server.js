@@ -173,6 +173,7 @@ const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,ap
 const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
 const onechatTurnSessions = new OneChatTurnSessions({onechat,audit,stateRoot:stateDir});
 const PORT = Number(process.env.PORT || 8787);
+const HOST = String(process.env.HOST || "127.0.0.1").trim() || "127.0.0.1";
 
 const MAX_RESPONSE_BYTES=Math.max(65536,Math.min(16_000_000,Number(process.env.IUV_MAX_RESPONSE_BYTES||4_000_000)));
 function send(res,status,data,type="application/json"){
@@ -644,4 +645,4 @@ const server=http.createServer(async(req,res)=>{try{
   send(res,404,{state:"FAILURE",message:"Not found.",requestId:res.getHeader("x-request-id")||null});
 }catch(e){const requestId=res.getHeader("x-request-id")||`req-${crypto.randomUUID()}`;const status=Number(e?.statusCode)||500;const publicMessage=status===400?String(e?.message||"Invalid request."):"Internal server error";audit.append({type:"api.error",requestId,code:status,message:String(e?.message||e)});send(res,status,{state:"FAILURE",message:publicMessage,requestId,correlationId:res.getHeader("x-correlation-id")||requestId});}}
 );
-server.listen(PORT,"127.0.0.1",()=>console.log(`IntraultUniversalion v${APP_VERSION} running at http://127.0.0.1:${PORT}`));
+server.listen(PORT,HOST,()=>console.log(`IntraultUniversalion v${APP_VERSION} running at http://${HOST}:${PORT}`));
