@@ -454,8 +454,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "b9676a09ec5affaef4cc17b0211419d908d44213e5c75c4b0e179447a23052c1",
-      "bytes": 8837
+      "sha256": "6c34cc90e996385216d96302c128fa86f2ab645d7d90412c35e9f192709bcfd5",
+      "bytes": 8896
     },
     {
       "path": "public/app.js",
@@ -693,6 +693,11 @@
       "bytes": 815
     },
     {
+      "path": "scripts/start-codespace.sh",
+      "sha256": "ccbc134085e280caf74715d943f59c12ad18312a1eae2e46f385642dde217452",
+      "bytes": 725
+    },
+    {
       "path": "scripts/validate-feature-evidence.mjs",
       "sha256": "969b5f16df6485681a925c14904021153e3fb32e1801a64230537b5b55e2a61d",
       "bytes": 1924
@@ -719,8 +724,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "732213b2c134f6912a1a254d67c0536dca1baf7287c025509c863f53df93d6ac",
-      "bytes": 77486
+      "sha256": "6425120eb9515ab6f2a5ea75cee4241c26fde8d4849b9aa63ab42eb10248fec0",
+      "bytes": 77553
     },
     {
       "path": "src/action-envelope.js",
