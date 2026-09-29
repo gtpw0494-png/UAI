@@ -237,3 +237,11 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED — Chronicle records default to training-ineligible; no silent memory-to-training path.
 - IMPLEMENTED — dedicated v0.74 regression test is part of the main `npm test` suite.
 
+
+## v0.75.0 UAI + WitForge consolidation
+- IMPLEMENTED — authoritative combined repository is gtpw0494-png/UAI main.
+- IMPLEMENTED — automated WitForge source consolidation into legacy/witforge-source.
+- IMPLEMENTED — CommonJS/ESM isolation prevents imported legacy modules from breaking UAI runtime.
+- IMPLEMENTED — WitForge compatibility registry and governed status/manifest API.
+- PRESERVED — WitForge specification, action fabric, device adapters, mental-health, Snake Lab, Arena/engagement and ForgeLM lineage.
+- GOVERNED — imported source is not automatically treated as connected/executable; native migration requires tests and evidence.
