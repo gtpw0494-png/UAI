@@ -1,5 +1,14 @@
 # Release history
 
+## v0.76.0 — Native WitForge Activation
+- Repaired the feature-evidence release-version gate that prevented v0.75 core CI from running beyond its first validation step.
+- Added native ESM adapters for the merged WitForge Mental Health/Wellbeing and Snake Lab/Overwatch systems.
+- Wired both services through authenticated HTTP routes, OneChat collaborator routing and capability truth.
+- Wellbeing remains explicit-consent only, non-diagnostic, non-prescribing, training-ineligible and retrieval-ineligible.
+- Snake Overwatch retains authority NONE, no source-patch authority, no security mutation and no capability-grant authority.
+- Added dedicated adapter regression coverage to the cumulative test suite.
+
+
 ## v0.75.0 — UAI + WitForge Consolidation
 - Established UAI `main` as the authoritative executable root for the combined project.
 - Added an automated repository-to-repository consolidation workflow for WitForge.
