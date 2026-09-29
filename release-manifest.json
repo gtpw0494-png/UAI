@@ -24,8 +24,8 @@
     },
     {
       "path": ".github/workflows/merge-witforge.yml",
-      "sha256": "4300e218b431a9d6bbe936b74a91ac4bad8b87ced0860fe18061294c3ead90b1",
-      "bytes": 2703
+      "sha256": "36cd240974d489e9d80f1c61313789616d09d615ffbddbf28c800e61397e5d03",
+      "bytes": 2768
     },
     {
       "path": ".gitignore",
