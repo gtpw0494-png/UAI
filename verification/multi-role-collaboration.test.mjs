@@ -4,6 +4,10 @@ import {MultiRoleCollaboration} from "../src/collaboration/multi-role.js";
 const records=[];
 const c=new MultiRoleCollaboration({chronicle:{record:x=>{records.push(x);return {state:"SUCCESS"};}}});
 assert.equal(c.status().executionAuthority,"NONE");
+assert.equal(c.status().promotedSpecialists.length,7);
+assert.equal(c.specialist("bug-repair").specialist.mode,"LIGHT");
+assert.equal(c.specialist("architecture-analyst").specialist.mode,"SHADOW");
+assert.ok(c.specialist("security-patch").specialist.restrictions.includes("no-self-approval"));
 for(const id of ["coder","programmer","software-engineer","debugger","test-engineer","devops-engineer","database-engineer","ui-ux-engineer","ml-engineer","performance-engineer"]) assert.ok(c.status().roles.some(r=>r.id===id),`missing specialist ${id}`);
 const ok=c.deliberate({topic:"continue UAI build",chatId:"test",contributions:[
  {role:"architect",message:"Keep the build additive."},
