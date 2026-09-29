@@ -804,8 +804,8 @@
     },
     {
       "path": "src/collaboration/multi-role.js",
-      "sha256": "d54af1affbc59b53006e834ba47424a59f1b566b86d13cac98866b078c9f5dc6",
-      "bytes": 3875
+      "sha256": "cda738c3833b34e82875dfbc258d3cfa81fcfeaea24ece3ee3ac889f04442f1a",
+      "bytes": 5244
     },
     {
       "path": "src/content-security.js",
@@ -1704,8 +1704,8 @@
     },
     {
       "path": "verification/multi-role-collaboration.test.mjs",
-      "sha256": "635b2bab4692e1ff584ee3d36f89476d32adceef8975d9fbae720463b26dd1c2",
-      "bytes": 1435
+      "sha256": "f47fb66c7b14c3055344d27844f9d0ba93edcbd32042d23585a934bf7e6d5100",
+      "bytes": 1678
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
