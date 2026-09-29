@@ -1,6 +1,12 @@
-# IntraultUniversalion / WitForge Unified v0.75.0
+# IntraultUniversalion / WitForge Unified v0.76.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.76 Native WitForge activation
+
+The first preserved WitForge systems are now active through UAI-native ESM adapters. Mental Health/Wellbeing is available only after explicit opt-in consent and remains non-diagnostic, non-prescribing, training-ineligible and retrieval-ineligible. Snake Lab/Overwatch can run deterministic evaluation and bounded Q-learning while retaining authority NONE and no source/security mutation rights.
+
+Both services are exposed through governed HTTP routes, OneChat routing and live capability truth. The merged CommonJS source remains isolated under `legacy/witforge-source/`; UAI does not mark the rest of that tree executable merely because it is present.
 
 ## v0.75 UAI + WitForge consolidation
 
