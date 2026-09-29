@@ -22,6 +22,17 @@ export const DEFAULT_ROLES=Object.freeze([
   {id:"verifier",label:"Verifier",authority:"EVIDENCE_ONLY"}
 ]);
 
+export const LEGACY_PROMOTED_SPECIALISTS=Object.freeze([
+  {id:"bug-repair",label:"Bug Repair",mode:"LIGHT",risk:"medium",capabilities:["bug.reproduce","code.patch","code.test"]},
+  {id:"regression",label:"Regression",mode:"LIGHT",risk:"medium",capabilities:["code.test","regression.analyze"]},
+  {id:"security-patch",label:"Security Patch",mode:"LIGHT",risk:"high",capabilities:["code.security_scan","code.patch"]},
+  {id:"refactoring",label:"Refactoring",mode:"LIGHT",risk:"medium",capabilities:["code.refactor","code.test"]},
+  {id:"performance",label:"Performance Optimization",mode:"LIGHT",risk:"medium",capabilities:["performance.profile","code.patch"]},
+  {id:"architecture-analyst",label:"Architecture Analyst",mode:"SHADOW",risk:"low",capabilities:["architecture.inspect","dependency.analyze","failure.analyze"]},
+  {id:"model-benchmark",label:"Model Benchmark",mode:"SHADOW",risk:"medium",capabilities:["model.benchmark","model.compare","metrics.read"]}
+]);
+export const PROMOTED_RESTRICTIONS=Object.freeze(["no-direct-protected-main-commit","no-governance-rule-rewrite","no-test-disabling","no-audit-deletion","no-permission-expansion","no-self-approval"]);
+
 const clean=v=>String(v??"").trim();
 
 export class MultiRoleCollaboration {
@@ -29,8 +40,10 @@ export class MultiRoleCollaboration {
     this.roles=new Map(roles.map(r=>[r.id,Object.freeze({...r})]));
     this.chronicle=chronicle;
     this.audit=audit;
+    this.specialists=new Map(LEGACY_PROMOTED_SPECIALISTS.map(x=>[x.id,Object.freeze({...x,restrictions:PROMOTED_RESTRICTIONS})]));
   }
-  status(){return {state:"SUCCESS",version:"0.76.0",mode:"SIMULATED_MULTI_ROLE",roles:[...this.roles.values()],executionAuthority:"NONE",approvalAuthority:"NONE"};}
+  status(){return {state:"SUCCESS",version:"0.76.0",mode:"SIMULATED_MULTI_ROLE",roles:[...this.roles.values()],promotedSpecialists:[...this.specialists.values()],executionAuthority:"NONE",approvalAuthority:"NONE"};}
+  specialist(id){const x=this.specialists.get(clean(id).toLowerCase());return x?{state:"SUCCESS",specialist:{...x}}:{state:"UNAVAILABLE",message:"Specialist is not natively promoted."};}
   handoff(decision,{target="development",requestedAction="PLAN"}={}){
     if(!decision?.id||!decision?.topic)return {state:"BLOCKED",message:"A collaboration decision is required."};
     if(decision.state==="BLOCKED")return {state:"BLOCKED",message:"Blocked collaboration decisions cannot be handed off.",collaborationId:decision.id};
