@@ -23,12 +23,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restore 4H3 Android source
+      - name: Restore and verify 4H3 Android source
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/4h3"
-          base64 -d 4h3/apk-source/4h3-native-android-v3.3.zip.b64 > "$RUNNER_TEMP/4h3-source.zip"
+          cat 4h3/apk-source/chunks/part-*.b64 > "$RUNNER_TEMP/4h3-source.b64"
+          base64 -d "$RUNNER_TEMP/4h3-source.b64" > "$RUNNER_TEMP/4h3-source.zip"
+          echo "51b78a1c424d6a2e6816615f191f73f247acf4df88f6a969fcd244ab67028ee9  $RUNNER_TEMP/4h3-source.zip" | sha256sum -c -
           unzip -q "$RUNNER_TEMP/4h3-source.zip" -d "$RUNNER_TEMP/4h3"
           test -f "$RUNNER_TEMP/4h3/native-android/settings.gradle"
           test -f "$RUNNER_TEMP/4h3/native-android/app/src/main/AndroidManifest.xml"
