@@ -784,8 +784,8 @@
     },
     {
       "path": "src/capability-genome.js",
-      "sha256": "829832e2e18798650f07ef33a2f3d974b33b59a02eba021d8b2df5490c8498a0",
-      "bytes": 2172
+      "sha256": "4e16c7fcfeecfacddab80f1845227c110b5d66f6661fa55144debe897b609f4b",
+      "bytes": 2224
     },
     {
       "path": "src/capability-truth.js",
@@ -889,8 +889,8 @@
     },
     {
       "path": "src/forgedream.js",
-      "sha256": "5a987ffcd95d8135ee7cf3bee29ce365c35a07790a2f66ec317cbb6f40c4d525",
-      "bytes": 1976
+      "sha256": "c8aabf38161f22852588b9209de603a8033e1437bdb6745a67f1d281a8d2f433",
+      "bytes": 2032
     },
     {
       "path": "src/forgelm-bridge.js",
@@ -1269,8 +1269,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "f5195f4488e9aed4506f3279deb6a5c13e9852f3a60c841d351194dc76207472",
-      "bytes": 8265
+      "sha256": "edbe04c7b8c806f5c56709cda3842fb2b5115425af1fbf6da7e8c3fa6557828e",
+      "bytes": 8376
     },
     {
       "path": "src/plugin-executor.js",
@@ -1549,8 +1549,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "bedd4d72be759ff50748f5971bd98a8da6b49c229c866ce9c9060530240139c5",
-      "bytes": 8107
+      "sha256": "323bf1aada183e2d8ec1fe4625d39ecdad84c6fb06c6baf918fd4ece11e3f900",
+      "bytes": 8227
     },
     {
       "path": "storage/retrieval_eval.py",
