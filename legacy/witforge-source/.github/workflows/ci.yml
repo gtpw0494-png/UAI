@@ -1,0 +1,79 @@
+name: WitForge CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install
+        run: npm install --ignore-scripts
+
+      - name: ForgeLM/UAI v2 foundation
+        run: npm run test:forgelm
+
+      - name: Full test suite
+        run: npm test
+
+      - name: Build validation
+        run: npm run build
+
+      - name: Lint validation
+        run: npm run lint
+
+
+  forgelm-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install CPU PyTorch
+        run: python -m pip install --disable-pip-version-check --index-url https://download.pytorch.org/whl/cpu "torch>=2.2"
+
+      - name: Native ForgeLM train/save/load/generate smoke test
+        run: python -m model.forgelm.smoke_test
+
+      - name: ForgeLM sharded checkpoint compatibility
+        run: python -m model.forgelm.checkpoint_shard_smoke_test
+
+      - name: ForgeLM inference export and device profile
+        run: python -m model.forgelm.mobile_smoke_test
+
+      - name: ForgeLM measured runtime autotuning
+        run: python -m model.forgelm.autotune_smoke_test
+
+      - name: ForgeLM regression and injection evaluation
+        run: python -m model.forgelm.regression_smoke_test
+
+      - name: ForgeLM governed dataset and BPE pipeline
+        run: python -m model.forgelm.pipeline_smoke_test
+
+      - name: ForgeNative localhost inference server
+        run: python -m model.forgelm.server_smoke_test
+
+      - name: ForgeLM advanced SFT DPO governance and promotion
+        run: python -m model.forgelm.advanced_smoke_test

@@ -1,0 +1,17 @@
+{
+  "format": "uai-witforge-consolidation-v1",
+  "sourceRepository": "gtpw0494-png/Witforge",
+  "sourceBranch": "main",
+  "sourceCommit": "9301010e1a0e20b32de736cdd4c2f084c881f30a",
+  "destinationRepository": "gtpw0494-png/UAI",
+  "destinationBranch": "main",
+  "destinationParent": "d24973ce8ed9e75ec55b03c9636c39bd71b91696",
+  "destinationPrefix": "legacy/witforge-source",
+  "mergedAt": "2026-09-29T12:11:26.435991+00:00",
+  "policy": "additive-non-destructive",
+  "runtimeBoundary": "UAI ESM remains authoritative; imported WitForge package keeps its CommonJS boundary.",
+  "excluded": [
+    "legacy .git metadata",
+    "WitForge integration/uai-source duplicate snapshot"
+  ]
+}
