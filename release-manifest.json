@@ -1478,6 +1478,11 @@
       "bytes": 1063
     },
     {
+      "path": "src/witforge/snake-lab-adapter.js",
+      "sha256": "4f6f45281eb5d3619d71e10c4db175d428ddad5e1f2ba2f10554541d74495cf2",
+      "bytes": 962
+    },
+    {
       "path": "src/witforge-compat.js",
       "sha256": "c21bf93d0831a955383398618be80c4635e22f7f70205cdec5a8331337299b77",
       "bytes": 1530
@@ -1786,6 +1791,11 @@
       "path": "verification/verified-knowledge-sqlite.test.mjs",
       "sha256": "ef2398c206642d26b161ebf8379c153899833e80e5375aac929aad37a73f1c76",
       "bytes": 2258
+    },
+    {
+      "path": "verification/witforge-native-v076.test.mjs",
+      "sha256": "897688d3d3b505f200a3219a91d79a95f44234945228794d54207334236d024f",
+      "bytes": 1347
     }
   ],
   "policy": "Manifest covers shipped source/model-support files. Runtime state, fetched vendor references and mutable knowledge are excluded."
