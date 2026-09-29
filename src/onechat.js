@@ -480,6 +480,7 @@ export class OneChatRouter{
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,ownerId:input.ownerId||null,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
   this._ensureAutoTitle(chatId,message,input.ownerId||null);
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
+  this.chronicle?.recordChatTurn?.(record);
   emit({type:"persisted",state:finalState,knowledgeId:record.id,responseId,evidenceId:evidenceEnvelope.id,message:"Turn persisted with evidence."});
   return {state:finalState,chatId,responseId,message:answer,responseMode:composed.mode,modelUsed:composed.modelUsed===true,modelQuality:composed.quality||null,evidence:composed.evidence||null,evidenceEnvelope,attachments:prepared.artifacts||[],allocations,contributions,knowledgeId:record.id,truth:"Only operations actually executed are reported as such. Structured evidence is returned without exposing private chain-of-thought."};
  }
