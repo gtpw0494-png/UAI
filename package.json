@@ -1,8 +1,8 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.73.0",
+  "version": "0.74.0",
   "private": true,
-  "description": "Independent local-first AI with Termux-safe Node child execution, first-install ForgeLM bootstrap, durable OneChat recovery and improved natural web/capability responses.",
+  "description": "Independent local-first AI with governed Chronicle memory/recall, evidence-linked OneChat persistence, durable recovery and ForgeLM integration.",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -115,7 +115,8 @@
     "model:bootstrap": "node scripts/bootstrap-forgelm.mjs",
     "test:forgelm-bootstrap": "node verification/forgelm-bootstrap-promotion.test.mjs",
     "test:termux-onechat-recovery": "node verification/termux-onechat-recovery-v073.test.mjs",
-    "start:codespaces": "bash scripts/start-codespace.sh"
+    "start:codespaces": "bash scripts/start-codespace.sh",
+    "test:chronicle": "node verification/chronicle-integration-v074.test.mjs"
   },
   "engines": {
     "node": ">=20"
