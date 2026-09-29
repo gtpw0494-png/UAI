@@ -119,7 +119,8 @@
     "test:chronicle": "node verification/chronicle-integration-v074.test.mjs",
     "witforge:status": "node -e \"import('./src/witforge-compat.js').then(({WitForgeCompatibility})=>console.log(JSON.stringify(new WitForgeCompatibility({root:process.cwd()}).status(),null,2)))\"",
     "test:witforge-native": "node verification/witforge-native-v076.test.mjs",
-    "test:multi-role": "node verification/multi-role-collaboration.test.mjs"
+    "test:multi-role": "node verification/multi-role-collaboration.test.mjs",
+    "test:v077": "node verification/proof-genome-dream-v077.test.mjs"
   },
   "engines": {
     "node": ">=20"
