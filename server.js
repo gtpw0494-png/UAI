@@ -75,6 +75,8 @@ import { KnowledgeScheduler } from "./src/knowledge-scheduler.js";
 import { MultimodalPipeline } from "./src/multimodal/pipeline.js";
 import { ChronicleCenter } from "./src/chronicle/chronicle-center.js";
 import { WitForgeCompatibility } from "./src/witforge-compat.js";
+import { NativeMentalHealthAdapter } from "./src/witforge/mental-health-adapter.js";
+import { NativeSnakeLabAdapter } from "./src/witforge/snake-lab-adapter.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -135,6 +137,8 @@ const memoryStore = new MemoryStore({stateRoot:stateDir,audit});
 const provenanceGraph = new ProvenanceGraph({stateRoot:stateDir,audit,memoryStore});
 const chronicle = new ChronicleCenter({stateRoot:stateDir,audit,memoryStore,provenanceGraph,learning});
 const witforgeCompatibility = new WitForgeCompatibility({root:__dirname,audit});
+const mentalHealth = new NativeMentalHealthAdapter({root:__dirname,audit});
+const snakeLab = new NativeSnakeLabAdapter({root:__dirname,audit});
 const multimodalPipeline = new MultimodalPipeline({stateRoot:stateDir,audit,provenanceGraph,allowedRoots:[path.join(stateDir,"media-input"),path.join(__dirname,"model","data"),path.join(__dirname,"data")]});
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
@@ -174,7 +178,7 @@ const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research"
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle,mentalHealth,snakeLab});
 const onechatTurnSessions = new OneChatTurnSessions({onechat,audit,stateRoot:stateDir});
 const PORT = Number(process.env.PORT || 8787);
 const HOST = String(process.env.HOST || "127.0.0.1").trim() || "127.0.0.1";
@@ -501,6 +505,16 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
   if(req.method==="GET"&&url.pathname==="/api/subscriptions")return send(res,200,control.subscriptions.list());
   if(req.method==="GET"&&url.pathname==="/api/witforge/status")return send(res,200,witforgeCompatibility.status());
+  if(req.method==="GET"&&url.pathname==="/api/mental-health/status")return send(res,200,mentalHealth.status());
+  if(req.method==="POST"&&url.pathname==="/api/mental-health/consent"){const b=await readBody(req);return send(res,200,mentalHealth.setConsent(b.enabled===true));}
+  if(req.method==="POST"&&url.pathname==="/api/mental-health/screen")return send(res,200,mentalHealth.screen(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/mental-health/support")return send(res,200,mentalHealth.support(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/mental-health/delete"){const b=await readBody(req);return send(res,200,mentalHealth.deleteAll(b.confirm||""));}
+  if(req.method==="GET"&&url.pathname==="/api/snake/status")return send(res,200,snakeLab.status());
+  if(req.method==="POST"&&url.pathname==="/api/snake/run")return send(res,200,snakeLab.run(await readBody(req)));
+  if(req.method==="POST"&&url.pathname==="/api/snake/improve")return send(res,200,snakeLab.improve(await readBody(req)));
+  if(req.method==="GET"&&url.pathname==="/api/snake/inventory")return send(res,200,snakeLab.inventory());
+  if(req.method==="POST"&&url.pathname==="/api/snake/reset"){const b=await readBody(req);return send(res,200,snakeLab.reset(b.confirm||""));}
   if(req.method==="GET"&&url.pathname==="/api/witforge/manifest")return send(res,200,witforgeCompatibility.manifest());
   if(req.method==="GET"&&url.pathname==="/api/chronicle/status")return send(res,200,chronicle.status());
   if(req.method==="GET"&&url.pathname==="/api/chronicle/recall")return send(res,200,chronicle.recall(url.searchParams.get("q")||"",{ownerId:req.uaiSecurity.auth.identityId,limit:Number(url.searchParams.get("limit")||20),asOf:url.searchParams.get("asOf")||null}));
