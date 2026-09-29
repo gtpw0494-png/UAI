@@ -804,8 +804,8 @@
     },
     {
       "path": "src/collaboration/multi-role.js",
-      "sha256": "37703afe276d26fdaf6f89dc91cd32f821ed665417aab18ed6a5ed7321dd8c53",
-      "bytes": 2754
+      "sha256": "4eefcf3b98d5d43be1a4f24a59b40b9af2915e7d5393d49660f7b279a4cad2db",
+      "bytes": 3064
     },
     {
       "path": "src/content-security.js",
