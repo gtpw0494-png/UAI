@@ -19,6 +19,9 @@ TABLES={
   "code-edge":"code_edges",
   "media-artifact":"media_artifacts",
   "verified-knowledge":"verified_knowledge",
+  "decision-proof":"decision_proofs",
+  "capability-genome":"capability_genomes",
+  "forgedream-run":"forgedream_runs",
 }
 def now(): return datetime.now(timezone.utc).isoformat()
 def connect():
