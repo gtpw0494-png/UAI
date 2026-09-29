@@ -39,18 +39,18 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "a3130e6fc4fa9ff763d878bbaff25efabfc13ec0f9a733bcbb54dbb125ff4439",
-      "bytes": 25211
+      "sha256": "ae155a46b67c1505d8ee30d2128b10ce3f47f6e7ec26403852a508e15a11168f",
+      "bytes": 25817
     },
     {
       "path": "README.md",
-      "sha256": "47a027e1cd35f2d7563b45d0fd90a74390ed72f4ffe25b8f8cda6b26cb22e621",
-      "bytes": 26038
+      "sha256": "f2e17919d8b222f41ce7a58cc853c657ae4f849ef64d02ad46fe1b77212a51e5",
+      "bytes": 26729
     },
     {
       "path": "RELEASES.md",
-      "sha256": "7b4820690fe5889e2b53b9446682541bb1fc183726b0bb26fbf238e1fd9c1ff2",
-      "bytes": 35418
+      "sha256": "930d71f0684ce32cc3e850be2e465b7d1055a61408b57509280100e5947240f8",
+      "bytes": 36131
     },
     {
       "path": "TERMUX-RUN.md",
@@ -154,8 +154,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "41f010f9bd110d594596ae186a63ba5353e48211df52559447e7f92be488910f",
-      "bytes": 57535
+      "sha256": "ca8bfe7f08b33e169c8aa0bd9c0c5362ea3f7bf460e514c3b92c4b7f0e217b14",
+      "bytes": 59459
     },
     {
       "path": "model/adaptation.py",
