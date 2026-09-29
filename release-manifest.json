@@ -1473,6 +1473,11 @@
       "bytes": 6525
     },
     {
+      "path": "src/witforge/mental-health-adapter.js",
+      "sha256": "b0f17d1c7cd6763e6c40c221efa583920e5541c7565673d48e13d5997240181f",
+      "bytes": 1063
+    },
+    {
       "path": "src/witforge-compat.js",
       "sha256": "c21bf93d0831a955383398618be80c4635e22f7f70205cdec5a8331337299b77",
       "bytes": 1530
