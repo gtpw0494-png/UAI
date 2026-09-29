@@ -1,0 +1,5066 @@
+{
+  "schema": "uai.association-storage.v1",
+  "authority": {
+    "repository": "gtpw0494-png/UAI",
+    "branch": "main",
+    "source": "governance/feature-evidence.json"
+  },
+  "workflow": [
+    "ANALYSE",
+    "LINK",
+    "REFERENCE",
+    "ASSOCIATE_FUNCTION",
+    "ASSOCIATE_PROMPT_RESPONSE",
+    "COLLABORATE",
+    "DEFINE",
+    "CROSS_ANALYSE",
+    "CATEGORISE",
+    "ALPHABETIZE",
+    "NUMERIZE",
+    "STORE"
+  ],
+  "counts": {
+    "features": 92,
+    "categories": 7
+  },
+  "categoryIndex": {
+    "CONVERSATION": [
+      "F001",
+      "F046",
+      "F049",
+      "F052",
+      "F054",
+      "F079",
+      "F080",
+      "F081",
+      "F082",
+      "F083",
+      "F084",
+      "F086",
+      "F088"
+    ],
+    "ORCHESTRATION_AGENTS": [
+      "F002",
+      "F010",
+      "F012",
+      "F016",
+      "F028",
+      "F061",
+      "F090",
+      "F091",
+      "F092"
+    ],
+    "AI_MODEL": [
+      "F003",
+      "F021",
+      "F031",
+      "F035",
+      "F036",
+      "F043",
+      "F050",
+      "F065",
+      "F069",
+      "F071",
+      "F072",
+      "F073",
+      "F074",
+      "F075",
+      "F076",
+      "F077",
+      "F078",
+      "F085",
+      "F087"
+    ],
+    "PLATFORM": [
+      "F004",
+      "F005",
+      "F006",
+      "F011",
+      "F018",
+      "F023",
+      "F025",
+      "F026",
+      "F030",
+      "F032",
+      "F033",
+      "F034",
+      "F037",
+      "F045",
+      "F048",
+      "F051",
+      "F053",
+      "F055",
+      "F056",
+      "F057",
+      "F058",
+      "F060",
+      "F062",
+      "F070"
+    ],
+    "KNOWLEDGE_DATA": [
+      "F007",
+      "F008",
+      "F009",
+      "F024",
+      "F042",
+      "F063",
+      "F066",
+      "F067",
+      "F068",
+      "F089"
+    ],
+    "CAPABILITY_INTEGRATION": [
+      "F013",
+      "F019",
+      "F020",
+      "F022",
+      "F039",
+      "F040",
+      "F041",
+      "F047"
+    ],
+    "GOVERNANCE_SECURITY": [
+      "F014",
+      "F015",
+      "F017",
+      "F027",
+      "F029",
+      "F038",
+      "F044",
+      "F059",
+      "F064"
+    ]
+  },
+  "alphabeticalIndex": [
+    {
+      "name": "action-envelopes",
+      "key": "F011"
+    },
+    {
+      "name": "adaptation-availability-planning",
+      "key": "F025"
+    },
+    {
+      "name": "bounded-shadow-rd",
+      "key": "F057"
+    },
+    {
+      "name": "browser-chat-session-continuity",
+      "key": "F051"
+    },
+    {
+      "name": "bulk-corpus-importers",
+      "key": "F007"
+    },
+    {
+      "name": "context-engineered-conversation",
+      "key": "F054"
+    },
+    {
+      "name": "continual-replay-regression-gates",
+      "key": "F026"
+    },
+    {
+      "name": "credential-backed-owner-session-auth",
+      "key": "F045"
+    },
+    {
+      "name": "data-retention-deletion-purge",
+      "key": "F023"
+    },
+    {
+      "name": "durable-conversation-rehydration",
+      "key": "F052"
+    },
+    {
+      "name": "durable-task-ledger",
+      "key": "F010"
+    },
+    {
+      "name": "evidence-native-onechat-envelope",
+      "key": "F049"
+    },
+    {
+      "name": "exact-operation-approval-binding",
+      "key": "F015"
+    },
+    {
+      "name": "explicit-capability-truth-contract",
+      "key": "F047"
+    },
+    {
+      "name": "federated-private-training",
+      "key": "F036"
+    },
+    {
+      "name": "forgeaudio-native-runtime-v060",
+      "key": "F075"
+    },
+    {
+      "name": "forgelm-candidate-first-promotion-v055",
+      "key": "F069"
+    },
+    {
+      "name": "forgelm-embedding-rerank-v056",
+      "key": "F071"
+    },
+    {
+      "name": "forgelm-first-checkpoint-bootstrap-v072",
+      "key": "F087"
+    },
+    {
+      "name": "forgelm-local-neural-core",
+      "key": "F003"
+    },
+    {
+      "name": "forgelm-native-long-context-v057",
+      "key": "F072"
+    },
+    {
+      "name": "forgelm-token-streaming-v070",
+      "key": "F085"
+    },
+    {
+      "name": "forgemultimodal-fusion-v063",
+      "key": "F078"
+    },
+    {
+      "name": "forgespeech-native-runtime-v061",
+      "key": "F076"
+    },
+    {
+      "name": "forgevideo-native-runtime-v062",
+      "key": "F077"
+    },
+    {
+      "name": "forgevision-governed-runtime-v059",
+      "key": "F074"
+    },
+    {
+      "name": "forgevision-native-foundation-v058",
+      "key": "F073"
+    },
+    {
+      "name": "frontier-provider-routing-v056",
+      "key": "F070"
+    },
+    {
+      "name": "governed-knowledge-autonomy-v055",
+      "key": "F067"
+    },
+    {
+      "name": "governed-live-web-research",
+      "key": "F055"
+    },
+    {
+      "name": "governed-multi-role-collaboration",
+      "key": "F092"
+    },
+    {
+      "name": "governed-source-self-development",
+      "key": "F002"
+    },
+    {
+      "name": "governed-web-ingestion",
+      "key": "F006"
+    },
+    {
+      "name": "health-aware-local-model-router",
+      "key": "F050"
+    },
+    {
+      "name": "hybrid-cloud-knowledge-durability-v055",
+      "key": "F068"
+    },
+    {
+      "name": "hybrid-retrieval-evaluation",
+      "key": "F024"
+    },
+    {
+      "name": "internet-wide-source-coverage",
+      "key": "F056"
+    },
+    {
+      "name": "isolated-light-source-maintenance",
+      "key": "F058"
+    },
+    {
+      "name": "language-database-storage",
+      "key": "F008"
+    },
+    {
+      "name": "lexical-style-semantic-retrieval",
+      "key": "F009"
+    },
+    {
+      "name": "live-billing",
+      "key": "F032"
+    },
+    {
+      "name": "llamacpp-runtime-adapter",
+      "key": "F022"
+    },
+    {
+      "name": "local-self-governance-kernel",
+      "key": "F044"
+    },
+    {
+      "name": "long-running-background-orchestration",
+      "key": "F028"
+    },
+    {
+      "name": "lora-qlora-dpo-execution",
+      "key": "F030"
+    },
+    {
+      "name": "model-artifact-evaluation-v054",
+      "key": "F065"
+    },
+    {
+      "name": "model-runtime-registry",
+      "key": "F021"
+    },
+    {
+      "name": "multimodal-document-lineage",
+      "key": "F043"
+    },
+    {
+      "name": "multimodal-learning",
+      "key": "F035"
+    },
+    {
+      "name": "native-local-conversation-engine",
+      "key": "F046"
+    },
+    {
+      "name": "native-wellbeing-snake-v076",
+      "key": "F091"
+    },
+    {
+      "name": "onechat-attachment-ui-v065",
+      "key": "F080"
+    },
+    {
+      "name": "onechat-conversation-management-v067",
+      "key": "F082"
+    },
+    {
+      "name": "onechat-durable-session-recovery-v071",
+      "key": "F086"
+    },
+    {
+      "name": "onechat-live-turn-sessions-v069",
+      "key": "F084"
+    },
+    {
+      "name": "onechat-multimodal-attachments-v064",
+      "key": "F079"
+    },
+    {
+      "name": "onechat-persistent-attachment-history-v066",
+      "key": "F081"
+    },
+    {
+      "name": "onechat-primary-surface",
+      "key": "F001"
+    },
+    {
+      "name": "onechat-turn-controls-v068",
+      "key": "F083"
+    },
+    {
+      "name": "operation-scoped-plugin-gateway",
+      "key": "F040"
+    },
+    {
+      "name": "os-level-plugin-hard-isolation",
+      "key": "F041"
+    },
+    {
+      "name": "owner-email-password-bootstrap-rotation",
+      "key": "F053"
+    },
+    {
+      "name": "oxford-definitive-comparison",
+      "key": "F033"
+    },
+    {
+      "name": "physical-fabrication",
+      "key": "F034"
+    },
+    {
+      "name": "platform-roadmap-truth-catalog",
+      "key": "F060"
+    },
+    {
+      "name": "plugin-idempotency-replay-protection",
+      "key": "F039"
+    },
+    {
+      "name": "plugin-sandbox-executor",
+      "key": "F020"
+    },
+    {
+      "name": "policy-decision-engine",
+      "key": "F014"
+    },
+    {
+      "name": "production-scale-llm-training",
+      "key": "F031"
+    },
+    {
+      "name": "protected-local-governance-kernel-v2",
+      "key": "F059"
+    },
+    {
+      "name": "provenance-document-data-plane",
+      "key": "F042"
+    },
+    {
+      "name": "provenance-policy-plane-v054",
+      "key": "F064"
+    },
+    {
+      "name": "public-repository-privacy-boundary",
+      "key": "F027"
+    },
+    {
+      "name": "response-quality-gate",
+      "key": "F005"
+    },
+    {
+      "name": "runtime-availability-evidence",
+      "key": "F013"
+    },
+    {
+      "name": "scoped-autonomy-leases",
+      "key": "F016"
+    },
+    {
+      "name": "signed-plugin-registry-boundary",
+      "key": "F019"
+    },
+    {
+      "name": "structured-web-research-v053",
+      "key": "F062"
+    },
+    {
+      "name": "tamper-evident-audit-chain",
+      "key": "F038"
+    },
+    {
+      "name": "task-resume-cancel-recovery",
+      "key": "F012"
+    },
+    {
+      "name": "termux-onechat-recovery-v073",
+      "key": "F088"
+    },
+    {
+      "name": "transactional-control-registries",
+      "key": "F037"
+    },
+    {
+      "name": "transactional-governance-store",
+      "key": "F017"
+    },
+    {
+      "name": "trusted-first-run-ownership-proof",
+      "key": "F048"
+    },
+    {
+      "name": "typed-agent-control-plane-v053",
+      "key": "F061"
+    },
+    {
+      "name": "universal-chronicle-v074",
+      "key": "F089"
+    },
+    {
+      "name": "universal-external-adapter-approval-binding",
+      "key": "F029"
+    },
+    {
+      "name": "user-owned-memory-v054",
+      "key": "F063"
+    },
+    {
+      "name": "verified-knowledge-sqlite-v055",
+      "key": "F066"
+    },
+    {
+      "name": "verified-learning-data-pipeline",
+      "key": "F004"
+    },
+    {
+      "name": "versioned-transfer-integrity-contracts",
+      "key": "F018"
+    },
+    {
+      "name": "witforge-consolidation-v075",
+      "key": "F090"
+    }
+  ],
+  "numericIndex": [
+    {
+      "number": 1,
+      "key": "F001",
+      "name": "onechat-primary-surface"
+    },
+    {
+      "number": 2,
+      "key": "F002",
+      "name": "governed-source-self-development"
+    },
+    {
+      "number": 3,
+      "key": "F003",
+      "name": "forgelm-local-neural-core"
+    },
+    {
+      "number": 4,
+      "key": "F004",
+      "name": "verified-learning-data-pipeline"
+    },
+    {
+      "number": 5,
+      "key": "F005",
+      "name": "response-quality-gate"
+    },
+    {
+      "number": 6,
+      "key": "F006",
+      "name": "governed-web-ingestion"
+    },
+    {
+      "number": 7,
+      "key": "F007",
+      "name": "bulk-corpus-importers"
+    },
+    {
+      "number": 8,
+      "key": "F008",
+      "name": "language-database-storage"
+    },
+    {
+      "number": 9,
+      "key": "F009",
+      "name": "lexical-style-semantic-retrieval"
+    },
+    {
+      "number": 10,
+      "key": "F010",
+      "name": "durable-task-ledger"
+    },
+    {
+      "number": 11,
+      "key": "F011",
+      "name": "action-envelopes"
+    },
+    {
+      "number": 12,
+      "key": "F012",
+      "name": "task-resume-cancel-recovery"
+    },
+    {
+      "number": 13,
+      "key": "F013",
+      "name": "runtime-availability-evidence"
+    },
+    {
+      "number": 14,
+      "key": "F014",
+      "name": "policy-decision-engine"
+    },
+    {
+      "number": 15,
+      "key": "F015",
+      "name": "exact-operation-approval-binding"
+    },
+    {
+      "number": 16,
+      "key": "F016",
+      "name": "scoped-autonomy-leases"
+    },
+    {
+      "number": 17,
+      "key": "F017",
+      "name": "transactional-governance-store"
+    },
+    {
+      "number": 18,
+      "key": "F018",
+      "name": "versioned-transfer-integrity-contracts"
+    },
+    {
+      "number": 19,
+      "key": "F019",
+      "name": "signed-plugin-registry-boundary"
+    },
+    {
+      "number": 20,
+      "key": "F020",
+      "name": "plugin-sandbox-executor"
+    },
+    {
+      "number": 21,
+      "key": "F021",
+      "name": "model-runtime-registry"
+    },
+    {
+      "number": 22,
+      "key": "F022",
+      "name": "llamacpp-runtime-adapter"
+    },
+    {
+      "number": 23,
+      "key": "F023",
+      "name": "data-retention-deletion-purge"
+    },
+    {
+      "number": 24,
+      "key": "F024",
+      "name": "hybrid-retrieval-evaluation"
+    },
+    {
+      "number": 25,
+      "key": "F025",
+      "name": "adaptation-availability-planning"
+    },
+    {
+      "number": 26,
+      "key": "F026",
+      "name": "continual-replay-regression-gates"
+    },
+    {
+      "number": 27,
+      "key": "F027",
+      "name": "public-repository-privacy-boundary"
+    },
+    {
+      "number": 28,
+      "key": "F028",
+      "name": "long-running-background-orchestration"
+    },
+    {
+      "number": 29,
+      "key": "F029",
+      "name": "universal-external-adapter-approval-binding"
+    },
+    {
+      "number": 30,
+      "key": "F030",
+      "name": "lora-qlora-dpo-execution"
+    },
+    {
+      "number": 31,
+      "key": "F031",
+      "name": "production-scale-llm-training"
+    },
+    {
+      "number": 32,
+      "key": "F032",
+      "name": "live-billing"
+    },
+    {
+      "number": 33,
+      "key": "F033",
+      "name": "oxford-definitive-comparison"
+    },
+    {
+      "number": 34,
+      "key": "F034",
+      "name": "physical-fabrication"
+    },
+    {
+      "number": 35,
+      "key": "F035",
+      "name": "multimodal-learning"
+    },
+    {
+      "number": 36,
+      "key": "F036",
+      "name": "federated-private-training"
+    },
+    {
+      "number": 37,
+      "key": "F037",
+      "name": "transactional-control-registries"
+    },
+    {
+      "number": 38,
+      "key": "F038",
+      "name": "tamper-evident-audit-chain"
+    },
+    {
+      "number": 39,
+      "key": "F039",
+      "name": "plugin-idempotency-replay-protection"
+    },
+    {
+      "number": 40,
+      "key": "F040",
+      "name": "operation-scoped-plugin-gateway"
+    },
+    {
+      "number": 41,
+      "key": "F041",
+      "name": "os-level-plugin-hard-isolation"
+    },
+    {
+      "number": 42,
+      "key": "F042",
+      "name": "provenance-document-data-plane"
+    },
+    {
+      "number": 43,
+      "key": "F043",
+      "name": "multimodal-document-lineage"
+    },
+    {
+      "number": 44,
+      "key": "F044",
+      "name": "local-self-governance-kernel"
+    },
+    {
+      "number": 45,
+      "key": "F045",
+      "name": "credential-backed-owner-session-auth"
+    },
+    {
+      "number": 46,
+      "key": "F046",
+      "name": "native-local-conversation-engine"
+    },
+    {
+      "number": 47,
+      "key": "F047",
+      "name": "explicit-capability-truth-contract"
+    },
+    {
+      "number": 48,
+      "key": "F048",
+      "name": "trusted-first-run-ownership-proof"
+    },
+    {
+      "number": 49,
+      "key": "F049",
+      "name": "evidence-native-onechat-envelope"
+    },
+    {
+      "number": 50,
+      "key": "F050",
+      "name": "health-aware-local-model-router"
+    },
+    {
+      "number": 51,
+      "key": "F051",
+      "name": "browser-chat-session-continuity"
+    },
+    {
+      "number": 52,
+      "key": "F052",
+      "name": "durable-conversation-rehydration"
+    },
+    {
+      "number": 53,
+      "key": "F053",
+      "name": "owner-email-password-bootstrap-rotation"
+    },
+    {
+      "number": 54,
+      "key": "F054",
+      "name": "context-engineered-conversation"
+    },
+    {
+      "number": 55,
+      "key": "F055",
+      "name": "governed-live-web-research"
+    },
+    {
+      "number": 56,
+      "key": "F056",
+      "name": "internet-wide-source-coverage"
+    },
+    {
+      "number": 57,
+      "key": "F057",
+      "name": "bounded-shadow-rd"
+    },
+    {
+      "number": 58,
+      "key": "F058",
+      "name": "isolated-light-source-maintenance"
+    },
+    {
+      "number": 59,
+      "key": "F059",
+      "name": "protected-local-governance-kernel-v2"
+    },
+    {
+      "number": 60,
+      "key": "F060",
+      "name": "platform-roadmap-truth-catalog"
+    },
+    {
+      "number": 61,
+      "key": "F061",
+      "name": "typed-agent-control-plane-v053"
+    },
+    {
+      "number": 62,
+      "key": "F062",
+      "name": "structured-web-research-v053"
+    },
+    {
+      "number": 63,
+      "key": "F063",
+      "name": "user-owned-memory-v054"
+    },
+    {
+      "number": 64,
+      "key": "F064",
+      "name": "provenance-policy-plane-v054"
+    },
+    {
+      "number": 65,
+      "key": "F065",
+      "name": "model-artifact-evaluation-v054"
+    },
+    {
+      "number": 66,
+      "key": "F066",
+      "name": "verified-knowledge-sqlite-v055"
+    },
+    {
+      "number": 67,
+      "key": "F067",
+      "name": "governed-knowledge-autonomy-v055"
+    },
+    {
+      "number": 68,
+      "key": "F068",
+      "name": "hybrid-cloud-knowledge-durability-v055"
+    },
+    {
+      "number": 69,
+      "key": "F069",
+      "name": "forgelm-candidate-first-promotion-v055"
+    },
+    {
+      "number": 70,
+      "key": "F070",
+      "name": "frontier-provider-routing-v056"
+    },
+    {
+      "number": 71,
+      "key": "F071",
+      "name": "forgelm-embedding-rerank-v056"
+    },
+    {
+      "number": 72,
+      "key": "F072",
+      "name": "forgelm-native-long-context-v057"
+    },
+    {
+      "number": 73,
+      "key": "F073",
+      "name": "forgevision-native-foundation-v058"
+    },
+    {
+      "number": 74,
+      "key": "F074",
+      "name": "forgevision-governed-runtime-v059"
+    },
+    {
+      "number": 75,
+      "key": "F075",
+      "name": "forgeaudio-native-runtime-v060"
+    },
+    {
+      "number": 76,
+      "key": "F076",
+      "name": "forgespeech-native-runtime-v061"
+    },
+    {
+      "number": 77,
+      "key": "F077",
+      "name": "forgevideo-native-runtime-v062"
+    },
+    {
+      "number": 78,
+      "key": "F078",
+      "name": "forgemultimodal-fusion-v063"
+    },
+    {
+      "number": 79,
+      "key": "F079",
+      "name": "onechat-multimodal-attachments-v064"
+    },
+    {
+      "number": 80,
+      "key": "F080",
+      "name": "onechat-attachment-ui-v065"
+    },
+    {
+      "number": 81,
+      "key": "F081",
+      "name": "onechat-persistent-attachment-history-v066"
+    },
+    {
+      "number": 82,
+      "key": "F082",
+      "name": "onechat-conversation-management-v067"
+    },
+    {
+      "number": 83,
+      "key": "F083",
+      "name": "onechat-turn-controls-v068"
+    },
+    {
+      "number": 84,
+      "key": "F084",
+      "name": "onechat-live-turn-sessions-v069"
+    },
+    {
+      "number": 85,
+      "key": "F085",
+      "name": "forgelm-token-streaming-v070"
+    },
+    {
+      "number": 86,
+      "key": "F086",
+      "name": "onechat-durable-session-recovery-v071"
+    },
+    {
+      "number": 87,
+      "key": "F087",
+      "name": "forgelm-first-checkpoint-bootstrap-v072"
+    },
+    {
+      "number": 88,
+      "key": "F088",
+      "name": "termux-onechat-recovery-v073"
+    },
+    {
+      "number": 89,
+      "key": "F089",
+      "name": "universal-chronicle-v074"
+    },
+    {
+      "number": 90,
+      "key": "F090",
+      "name": "witforge-consolidation-v075"
+    },
+    {
+      "number": 91,
+      "key": "F091",
+      "name": "native-wellbeing-snake-v076"
+    },
+    {
+      "number": 92,
+      "key": "F092",
+      "name": "governed-multi-role-collaboration"
+    }
+  ],
+  "entries": [
+    {
+      "number": 1,
+      "key": "F001",
+      "name": "onechat-primary-surface",
+      "definition": "Cumulative OneChat tests plus authoritative localhost /api/status and /api/onechat smoke test.",
+      "status": "VERIFIED",
+      "introduced": "0.7.0",
+      "references": {
+        "implementation": [
+          "src/onechat.js",
+          "server.js",
+          "public/index.html"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat.js",
+          "server.js",
+          "public/index.html"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 2,
+      "key": "F002",
+      "name": "governed-source-self-development",
+      "definition": "Sandbox validation, proposal/approval flow and rollback regression tests pass.",
+      "status": "VERIFIED",
+      "introduced": "0.11.0",
+      "references": {
+        "implementation": [
+          "src/self-development.js",
+          "src/workspace.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/self-development.js",
+          "src/workspace.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 3,
+      "key": "F003",
+      "name": "forgelm-local-neural-core",
+      "definition": "Authoritative CPU-PyTorch CI trains, saves, loads and backpropagates advanced objectives.",
+      "status": "VERIFIED",
+      "introduced": "0.12.0",
+      "references": {
+        "implementation": [
+          "model/forgelm.py",
+          "model/trainer.py",
+          "model/tokenizer_core.py"
+        ],
+        "tests": [
+          "model/test_forgelm.py",
+          "model/test_advanced.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/forgelm.py",
+          "model/trainer.py",
+          "model/tokenizer_core.py"
+        ],
+        "verification": [
+          "model/test_forgelm.py",
+          "model/test_advanced.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 4,
+      "key": "F004",
+      "name": "verified-learning-data-pipeline",
+      "definition": "Verified traces, dedupe/splits and explicit web training eligibility/approval are executable tests.",
+      "status": "VERIFIED",
+      "introduced": "0.13.0",
+      "references": {
+        "implementation": [
+          "model/data_pipeline.py",
+          "src/learning-fabric.js"
+        ],
+        "tests": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/data_pipeline.py",
+          "src/learning-fabric.js"
+        ],
+        "verification": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 5,
+      "key": "F005",
+      "name": "response-quality-gate",
+      "definition": "Seed-model output quality and coherent fallback tests pass.",
+      "status": "VERIFIED",
+      "introduced": "0.21.0",
+      "references": {
+        "implementation": [
+          "src/response-composer.js",
+          "src/onechat.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/response-composer.js",
+          "src/onechat.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 6,
+      "key": "F006",
+      "name": "governed-web-ingestion",
+      "definition": "SSRF/private-target boundaries, external-instruction authority, quarantine/security signals, dedupe and explicit training promotion are covered; live public-site reachability remains environment-dependent.",
+      "status": "VERIFIED",
+      "introduced": "0.22.0",
+      "references": {
+        "implementation": [
+          "src/web-corpus.js",
+          "src/content-security.js"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js",
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/web-corpus.js",
+          "src/content-security.js"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js",
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 7,
+      "key": "F007",
+      "name": "bulk-corpus-importers",
+      "definition": "Synthetic importer tests cover supported local corpus formats; remote FineWeb streaming remains dependency/network conditional.",
+      "status": "VERIFIED",
+      "introduced": "0.23.0",
+      "references": {
+        "implementation": [
+          "research/import_web_corpus.py",
+          "research/stream_fineweb.py"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "research/import_web_corpus.py",
+          "research/stream_fineweb.py"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 8,
+      "key": "F008",
+      "name": "language-database-storage",
+      "definition": "SQLite/WAL storage, definitions/dialogue, lifecycle filtering and fixtures pass.",
+      "status": "VERIFIED",
+      "introduced": "0.26.0",
+      "references": {
+        "implementation": [
+          "storage/db.py",
+          "src/storage-db.js",
+          "research/import_wordnet.py",
+          "research/import_oasst1.py"
+        ],
+        "tests": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/db.py",
+          "src/storage-db.js",
+          "research/import_wordnet.py",
+          "research/import_oasst1.py"
+        ],
+        "verification": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 9,
+      "key": "F009",
+      "name": "lexical-style-semantic-retrieval",
+      "definition": "Lexical relations, style profiling, hybrid sparse+FTS retrieval and retrieval metrics are executable.",
+      "status": "VERIFIED",
+      "introduced": "0.30.0",
+      "references": {
+        "implementation": [
+          "storage/db.py",
+          "storage/semantic.py"
+        ],
+        "tests": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/db.py",
+          "storage/semantic.py"
+        ],
+        "verification": [
+          "test.js",
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 10,
+      "key": "F010",
+      "name": "durable-task-ledger",
+      "definition": "Persistence, legal transitions, restart-safe checkpoints and optimistic conflict handling pass.",
+      "status": "VERIFIED",
+      "introduced": "0.31.0",
+      "references": {
+        "implementation": [
+          "src/task-store.js",
+          "src/governance-db.js"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/task-store.js",
+          "src/governance-db.js"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 11,
+      "key": "F011",
+      "name": "action-envelopes",
+      "definition": "Execution, verification, recovery and audit-linked envelope lifecycle is regression tested.",
+      "status": "VERIFIED",
+      "introduced": "0.32.0",
+      "references": {
+        "implementation": [
+          "src/action-envelope.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/action-envelope.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 12,
+      "key": "F012",
+      "name": "task-resume-cancel-recovery",
+      "definition": "Failed-step resume and cancellation behavior pass.",
+      "status": "VERIFIED",
+      "introduced": "0.33.0",
+      "references": {
+        "implementation": [
+          "src/agent-system.js",
+          "src/task-store.js",
+          "server.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/agent-system.js",
+          "src/task-store.js",
+          "server.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 13,
+      "key": "F013",
+      "name": "runtime-availability-evidence",
+      "definition": "Runtime-connected/configured/unavailable evidence classes are tested independently from declarations.",
+      "status": "VERIFIED",
+      "introduced": "0.34.0",
+      "references": {
+        "implementation": [
+          "src/availability-ledger.js",
+          "src/capabilities.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/availability-ledger.js",
+          "src/capabilities.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 14,
+      "key": "F014",
+      "name": "policy-decision-engine",
+      "definition": "ALLOW/ASK/ESCALATE behavior and downstream execution checks pass.",
+      "status": "VERIFIED",
+      "introduced": "0.35.0",
+      "references": {
+        "implementation": [
+          "src/policy-engine.js"
+        ],
+        "tests": [
+          "test.js",
+          "verification/runtime-boundaries.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/policy-engine.js"
+        ],
+        "verification": [
+          "test.js",
+          "verification/runtime-boundaries.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 15,
+      "key": "F015",
+      "name": "exact-operation-approval-binding",
+      "definition": "Approved invocation validates; mutated arguments/replay binding is rejected.",
+      "status": "VERIFIED",
+      "introduced": "0.35.0",
+      "references": {
+        "implementation": [
+          "src/approval-store.js",
+          "src/governance-db.js"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/approval-store.js",
+          "src/governance-db.js"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 16,
+      "key": "F016",
+      "name": "scoped-autonomy-leases",
+      "definition": "Scope, risk ceiling, action budget and revocation paths pass.",
+      "status": "VERIFIED",
+      "introduced": "0.36.0",
+      "references": {
+        "implementation": [
+          "src/autonomy-store.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/autonomy-store.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 17,
+      "key": "F017",
+      "name": "transactional-governance-store",
+      "definition": "SQLite WAL, optimistic versioning and legal task-transition enforcement pass.",
+      "status": "VERIFIED",
+      "introduced": "0.37.0",
+      "references": {
+        "implementation": [
+          "src/governance-db.js",
+          "storage/governance.py"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance-db.js",
+          "storage/governance.py"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 18,
+      "key": "F018",
+      "name": "versioned-transfer-integrity-contracts",
+      "definition": "Untampered envelopes verify and altered payloads are denied.",
+      "status": "VERIFIED",
+      "introduced": "0.38.0",
+      "references": {
+        "implementation": [
+          "src/contracts.js",
+          "schemas/event-envelope.schema.json"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/contracts.js",
+          "schemas/event-envelope.schema.json"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 19,
+      "key": "F019",
+      "name": "signed-plugin-registry-boundary",
+      "definition": "Manifest validation and Ed25519 signature verification are executable.",
+      "status": "VERIFIED",
+      "introduced": "0.39.0",
+      "references": {
+        "implementation": [
+          "src/plugin-registry.js",
+          "schemas/plugin-manifest.schema.json"
+        ],
+        "tests": [
+          "security-test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/plugin-registry.js",
+          "schemas/plugin-manifest.schema.json"
+        ],
+        "verification": [
+          "security-test.js"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 20,
+      "key": "F020",
+      "name": "plugin-sandbox-executor",
+      "definition": "Execution is unavailable without sandbox configuration; signed low-risk fixture executes successfully through configured external sandbox boundary.",
+      "status": "VERIFIED",
+      "introduced": "0.39.0",
+      "references": {
+        "implementation": [
+          "src/plugin-executor.js"
+        ],
+        "tests": [
+          "verification/runtime-boundaries.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/plugin-executor.js"
+        ],
+        "verification": [
+          "verification/runtime-boundaries.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 21,
+      "key": "F021",
+      "name": "model-runtime-registry",
+      "definition": "Registry/runtime presence is separated from connectivity truth.",
+      "status": "VERIFIED",
+      "introduced": "0.40.0",
+      "references": {
+        "implementation": [
+          "src/model-registry.js",
+          "research/model_registry.json"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/model-registry.js",
+          "research/model_registry.json"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 22,
+      "key": "F022",
+      "name": "llamacpp-runtime-adapter",
+      "definition": "Local OpenAI-compatible fixture proves status/chat; remote endpoints are blocked by default. Real llama.cpp availability remains runtime-dependent.",
+      "status": "VERIFIED",
+      "introduced": "0.40.0",
+      "references": {
+        "implementation": [
+          "src/model-runtime-adapter.js"
+        ],
+        "tests": [
+          "verification/runtime-boundaries.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/model-runtime-adapter.js"
+        ],
+        "verification": [
+          "verification/runtime-boundaries.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 23,
+      "key": "F023",
+      "name": "data-retention-deletion-purge",
+      "definition": "Fixture data is visible, hidden by soft deletion, and removed by transactional hard purge.",
+      "status": "VERIFIED",
+      "introduced": "0.41.0",
+      "references": {
+        "implementation": [
+          "storage/lifecycle.py",
+          "storage/db.py"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/lifecycle.py",
+          "storage/db.py"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 24,
+      "key": "F024",
+      "name": "hybrid-retrieval-evaluation",
+      "definition": "Real SQLite fixture verifies ranked retrieval plus recall@k and MRR calculation.",
+      "status": "VERIFIED",
+      "introduced": "0.41.0",
+      "references": {
+        "implementation": [
+          "storage/semantic.py",
+          "storage/retrieval_eval.py"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/semantic.py",
+          "storage/retrieval_eval.py"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 25,
+      "key": "F025",
+      "name": "adaptation-availability-planning",
+      "definition": "Unknown/unavailable/runtime-conditional methods preserve truthful planning states; this does not claim LoRA/QLoRA/DPO training executed.",
+      "status": "VERIFIED",
+      "introduced": "0.42.0",
+      "references": {
+        "implementation": [
+          "model/adaptation.py",
+          "research/learning_methods.json"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/adaptation.py",
+          "research/learning_methods.json"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 26,
+      "key": "F026",
+      "name": "continual-replay-regression-gates",
+      "definition": "Deterministic replay snapshots and pass/fail metric regression thresholds are executable.",
+      "status": "VERIFIED",
+      "introduced": "0.42.0",
+      "references": {
+        "implementation": [
+          "model/continual.py"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/continual.py"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 27,
+      "key": "F027",
+      "name": "public-repository-privacy-boundary",
+      "definition": "Authoritative CI scans tracked paths and release manifest reproducibility.",
+      "status": "VERIFIED",
+      "introduced": "0.30.0",
+      "references": {
+        "implementation": [
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "scripts/build-release-manifest.py"
+        ],
+        "tests": [
+          ".github/workflows/ci.yml"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "scripts/build-release-manifest.py"
+        ],
+        "verification": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 28,
+      "key": "F028",
+      "name": "long-running-background-orchestration",
+      "definition": "Durable continuation exists, but execution stops when the localhost process is stopped; no background daemon is claimed.",
+      "status": "PARTIAL",
+      "introduced": "0.31.0",
+      "references": {
+        "implementation": [
+          "src/task-store.js",
+          "src/agent-system.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/task-store.js",
+          "src/agent-system.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 29,
+      "key": "F029",
+      "name": "universal-external-adapter-approval-binding",
+      "definition": "Exact binding is implemented for governed paths tested here; universal coverage across every future adapter is not claimed.",
+      "status": "PARTIAL",
+      "introduced": "0.35.0",
+      "references": {
+        "implementation": [
+          "src/approval-store.js",
+          "src/runtime-services.js",
+          "src/plugin-executor.js"
+        ],
+        "tests": [
+          "test.js",
+          "security-test.js",
+          "verification/runtime-boundaries.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/approval-store.js",
+          "src/runtime-services.js",
+          "src/plugin-executor.js"
+        ],
+        "verification": [
+          "test.js",
+          "security-test.js",
+          "verification/runtime-boundaries.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 30,
+      "key": "F030",
+      "name": "lora-qlora-dpo-execution",
+      "definition": "Dependency/status planning exists. Actual adapter training requires compatible external base models, dependencies, compute and a governed training implementation/run.",
+      "status": "PARTIAL",
+      "introduced": "0.42.0",
+      "references": {
+        "implementation": [
+          "model/adaptation.py",
+          "research/learning_methods.json"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/adaptation.py",
+          "research/learning_methods.json"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 31,
+      "key": "F031",
+      "name": "production-scale-llm-training",
+      "definition": "Small local training is verified; production-scale distributed training is not claimed.",
+      "status": "PARTIAL",
+      "introduced": "0.12.0",
+      "references": {
+        "implementation": [
+          "model/forgelm.py",
+          "model/trainer.py"
+        ],
+        "tests": [
+          "model/test_forgelm.py",
+          "model/test_advanced.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/forgelm.py",
+          "model/trainer.py"
+        ],
+        "verification": [
+          "model/test_forgelm.py",
+          "model/test_advanced.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 32,
+      "key": "F032",
+      "name": "live-billing",
+      "definition": "Adapter foundation exists; live behavior requires legitimate external credentials/service availability.",
+      "status": "PARTIAL",
+      "introduced": "0.25.0",
+      "references": {
+        "implementation": [
+          "src/runtime-services.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/runtime-services.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 33,
+      "key": "F033",
+      "name": "oxford-definitive-comparison",
+      "definition": "Requires legitimately licensed Oxford data/API credentials; no substitute is presented as Oxford.",
+      "status": "UNAVAILABLE",
+      "introduced": "0.25.0",
+      "references": {
+        "implementation": [
+          "src/runtime-services.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/runtime-services.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 34,
+      "key": "F034",
+      "name": "physical-fabrication",
+      "definition": "Requires real verified fabrication hardware/controller and explicit approval; source presence is not hardware availability.",
+      "status": "UNAVAILABLE",
+      "introduced": "0.25.0",
+      "references": {
+        "implementation": [
+          "src/runtime-services.js"
+        ],
+        "tests": [
+          "test.js"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/runtime-services.js"
+        ],
+        "verification": [
+          "test.js"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 35,
+      "key": "F035",
+      "name": "multimodal-learning",
+      "definition": "No modality pipeline/provenance/evaluation implementation exists yet.",
+      "status": "UNAVAILABLE",
+      "introduced": "0.42.0",
+      "references": {
+        "implementation": [
+          "research/learning_methods.json"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "research/learning_methods.json"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 36,
+      "key": "F036",
+      "name": "federated-private-training",
+      "definition": "Secure aggregation/privacy accounting and federated evaluation are not implemented.",
+      "status": "UNAVAILABLE",
+      "introduced": "0.42.0",
+      "references": {
+        "implementation": [
+          "research/learning_methods.json"
+        ],
+        "tests": [
+          "verification/test_data_learning.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "research/learning_methods.json"
+        ],
+        "verification": [
+          "verification/test_data_learning.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 37,
+      "key": "F037",
+      "name": "transactional-control-registries",
+      "definition": "Legacy JSON migration and transactional registry behavior verified by authoritative repository CI and dedicated behavioral tests.",
+      "status": "VERIFIED",
+      "introduced": "0.43.0",
+      "references": {
+        "implementation": [
+          "src/agent-system.js",
+          "src/control-center.js",
+          "src/availability-ledger.js",
+          "src/governance-db.js"
+        ],
+        "tests": [
+          "verification/control-plane-modernization.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/agent-system.js",
+          "src/control-center.js",
+          "src/availability-ledger.js",
+          "src/governance-db.js"
+        ],
+        "verification": [
+          "verification/control-plane-modernization.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 38,
+      "key": "F038",
+      "name": "tamper-evident-audit-chain",
+      "definition": "SHA-256 chain with legacy-prefix anchoring and tamper detection verified by authoritative repository CI and dedicated behavioral tests.",
+      "status": "VERIFIED",
+      "introduced": "0.43.0",
+      "references": {
+        "implementation": [
+          "src/audit.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/control-plane-modernization.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/audit.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/control-plane-modernization.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 39,
+      "key": "F039",
+      "name": "plugin-idempotency-replay-protection",
+      "definition": "Transactional exactly-once/replay behavior verified by authoritative repository CI and dedicated behavioral tests.",
+      "status": "VERIFIED",
+      "introduced": "0.43.0",
+      "references": {
+        "implementation": [
+          "src/idempotency-store.js",
+          "src/plugin-executor.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/control-plane-modernization.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/idempotency-store.js",
+          "src/plugin-executor.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/control-plane-modernization.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 40,
+      "key": "F040",
+      "name": "operation-scoped-plugin-gateway",
+      "definition": "Dedicated gateway and HTTP integration suites pass on the v0.44 implementation: schema validation, network-destination allowlists, runtime capability evidence, exact approval binding, autonomy budgeting, scoped secret injection/redaction, transactional replay protection, output verification/limits, timeout, cancellation and HTTP Idempotency-Key forwarding. Final main promotion still requires authoritative CI on the exact promotion commit.",
+      "status": "VERIFIED",
+      "introduced": "0.44.0",
+      "references": {
+        "implementation": [
+          "src/plugin-gateway.js",
+          "src/sandbox-runner.js",
+          "src/plugin-secret-broker.js",
+          "src/schema-validator.js",
+          "src/plugin-registry.js",
+          "server.js",
+          "schemas/plugin-manifest.schema.json"
+        ],
+        "tests": [
+          "verification/plugin-gateway.test.mjs",
+          "verification/plugin-http.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/plugin-gateway.js",
+          "src/sandbox-runner.js",
+          "src/plugin-secret-broker.js",
+          "src/schema-validator.js",
+          "src/plugin-registry.js",
+          "server.js",
+          "schemas/plugin-manifest.schema.json"
+        ],
+        "verification": [
+          "verification/plugin-gateway.test.mjs",
+          "verification/plugin-http.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 41,
+      "key": "F041",
+      "name": "os-level-plugin-hard-isolation",
+      "definition": "Host process enforces timeout, cancellation, output size, minimal environment and declared policy metadata. Filesystem/network/CPU/memory hard isolation still depends on the explicitly configured external sandbox runtime and is not claimed as kernel-enforced by Node itself.",
+      "status": "PARTIAL",
+      "introduced": "0.44.0",
+      "references": {
+        "implementation": [
+          "src/sandbox-runner.js",
+          "src/plugin-gateway.js"
+        ],
+        "tests": [
+          "verification/plugin-gateway.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/sandbox-runner.js",
+          "src/plugin-gateway.js"
+        ],
+        "verification": [
+          "verification/plugin-gateway.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 42,
+      "key": "F042",
+      "name": "provenance-document-data-plane",
+      "definition": "Dedicated SQLite/object-store and live HTTP/OneChat suites pass on v0.45: canonical URI handling, immutable content-addressed objects, revisions, deterministic chunks, quarantine exclusion, retrieval/training separation, source/document/chunk citations, soft deletion, hard purge, reindexing and API composition. PR #4 was merged to main and authoritative main-branch CI passed on merge commit c4d790c3b277297bffee867e4fc55df173acaebb.",
+      "status": "VERIFIED",
+      "introduced": "0.45.0",
+      "references": {
+        "implementation": [
+          "storage/documents.py",
+          "src/document-store.js",
+          "schemas/document.schema.json",
+          "src/web-corpus.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/document-data-plane.test.py",
+          "verification/document-http.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/documents.py",
+          "src/document-store.js",
+          "schemas/document.schema.json",
+          "src/web-corpus.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/document-data-plane.test.py",
+          "verification/document-http.test.mjs"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 43,
+      "key": "F043",
+      "name": "multimodal-document-lineage",
+      "definition": "The document contract is ready for modality metadata, but OCR/page/bounding-box, audio timestamps, video frame lineage and visual embeddings are not yet implemented.",
+      "status": "PARTIAL",
+      "introduced": "0.45.0",
+      "references": {
+        "implementation": [
+          "schemas/document.schema.json",
+          "storage/documents.py"
+        ],
+        "tests": [
+          "verification/document-data-plane.test.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "schemas/document.schema.json",
+          "storage/documents.py"
+        ],
+        "verification": [
+          "verification/document-data-plane.test.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 44,
+      "key": "F044",
+      "name": "local-self-governance-kernel",
+      "definition": "Verified by the current live API security suite: local governance composition, request/correlation identity, per-route authorization metadata, policy evaluation, exact approval binding and audited actor identity all execute successfully.",
+      "status": "VERIFIED",
+      "introduced": "0.46.0",
+      "references": {
+        "implementation": [
+          "src/governance/kernel.js",
+          "src/governance/authorization.js",
+          "src/policy-engine.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/api-security-v046.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance/kernel.js",
+          "src/governance/authorization.js",
+          "src/policy-engine.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/api-security-v046.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 45,
+      "key": "F045",
+      "name": "credential-backed-owner-session-auth",
+      "definition": "Verified by direct identity and live HTTP suites: first-run email/password enrollment, scrypt verification, server-side session records, HttpOnly session cookies, CSRF enforcement, logout/revocation, and authenticated plugin/document/OneChat flows all execute successfully.",
+      "status": "VERIFIED",
+      "introduced": "0.47.0",
+      "references": {
+        "implementation": [
+          "src/governance/identity.js",
+          "src/governance/request-schemas.js",
+          "src/governance/authorization.js",
+          "server.js",
+          "public/app.js",
+          "public/index.html"
+        ],
+        "tests": [
+          "verification/api-security-v046.test.mjs",
+          "verification/plugin-http.test.mjs",
+          "verification/document-http.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance/identity.js",
+          "src/governance/request-schemas.js",
+          "src/governance/authorization.js",
+          "server.js",
+          "public/app.js",
+          "public/index.html"
+        ],
+        "verification": [
+          "verification/api-security-v046.test.mjs",
+          "verification/plugin-http.test.mjs",
+          "verification/document-http.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 46,
+      "key": "F046",
+      "name": "native-local-conversation-engine",
+      "definition": "Verified by the v0.48 conversation suite: bounded per-chat continuity, connected llama.cpp preference, ForgeLM fallback, truthful no-runtime UNAVAILABLE behavior and OneChat native-conversation integration all pass.",
+      "status": "VERIFIED",
+      "introduced": "0.48.0",
+      "references": {
+        "implementation": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/conversation-capability-v048.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/conversation-capability-v048.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 47,
+      "key": "F047",
+      "name": "explicit-capability-truth-contract",
+      "definition": "Verified by the v0.48 capability suite across CONNECTED, CONFIGURED, REGISTERED_SOURCE, DEGRADED, UNAVAILABLE, BLOCKED and EXPIRED states plus ranking behavior.",
+      "status": "VERIFIED",
+      "introduced": "0.48.0",
+      "references": {
+        "implementation": [
+          "src/capability-truth.js"
+        ],
+        "tests": [
+          "verification/conversation-capability-v048.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/capability-truth.js"
+        ],
+        "verification": [
+          "verification/conversation-capability-v048.test.mjs"
+        ]
+      },
+      "category": "CAPABILITY_INTEGRATION"
+    },
+    {
+      "number": 48,
+      "key": "F048",
+      "name": "trusted-first-run-ownership-proof",
+      "definition": "First-run enrollment closes after the first owner is created and is localhost-oriented, but no independent bootstrap-file/device-key ownership proof is currently required before first enrollment. This remains a hardening gap rather than being overstated.",
+      "status": "PARTIAL",
+      "introduced": "0.47.0",
+      "references": {
+        "implementation": [
+          "src/governance/identity.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/api-security-v046.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance/identity.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/api-security-v046.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 49,
+      "key": "F049",
+      "name": "evidence-native-onechat-envelope",
+      "definition": "Verified by unit and live system tests: OneChat emits SHA-256 integrity evidence envelopes with claim support states, cited source/chunk excerpts, model route/tool summaries; tampering is detected and explain-answer returns prior structured evidence without private chain-of-thought.",
+      "status": "VERIFIED",
+      "introduced": "0.49.0",
+      "references": {
+        "implementation": [
+          "src/evidence-envelope.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "public/app.js"
+        ],
+        "tests": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/evidence-envelope.js",
+          "src/onechat.js",
+          "src/response-composer.js",
+          "public/app.js"
+        ],
+        "verification": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 50,
+      "key": "F050",
+      "name": "health-aware-local-model-router",
+      "definition": "Verified by unit and live system tests: health probing, local/privacy/offline/task/modality constraints, deterministic ranking, rejected-output fallback, llama.cpp selection and authenticated HTTP route simulation all pass.",
+      "status": "VERIFIED",
+      "introduced": "0.49.0",
+      "references": {
+        "implementation": [
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/governance/authorization.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/governance/authorization.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 51,
+      "key": "F051",
+      "name": "browser-chat-session-continuity",
+      "definition": "Verified at source contract plus live shared-chat HTTP behavior: browser sends a stable per-tab chatId and repeated turns with the same chatId produce bounded native conversation continuity and explain-answer linkage.",
+      "status": "VERIFIED",
+      "introduced": "0.49.0",
+      "references": {
+        "implementation": [
+          "public/app.js",
+          "src/conversation-engine.js",
+          "src/onechat.js"
+        ],
+        "tests": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "public/app.js",
+          "src/conversation-engine.js",
+          "src/onechat.js"
+        ],
+        "verification": [
+          "verification/model-router-evidence-v049.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 52,
+      "key": "F052",
+      "name": "durable-conversation-rehydration",
+      "definition": "Verified by v0.51 restart-continuity tests: a fresh ConversationEngine rebuilds only the matching chatId's recent persisted user/assistant turns, enforces the existing token/turn bounds, and makes rehydrated history available to follow-up intent detection and model prompts.",
+      "status": "VERIFIED",
+      "introduced": "0.49.0",
+      "references": {
+        "implementation": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/store.js"
+        ],
+        "tests": [
+          "verification/model-router-evidence-v049.test.mjs",
+          "verification/conversation-memory-v051.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/store.js"
+        ],
+        "verification": [
+          "verification/model-router-evidence-v049.test.mjs",
+          "verification/conversation-memory-v051.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 53,
+      "key": "F053",
+      "name": "owner-email-password-bootstrap-rotation",
+      "definition": "Verified by v0.49 owner-auth CI: environment bootstrap creates the password-session owner without plaintext credential persistence in the identity record, explicit local credential rotation revokes active sessions, protected HTTP routes reject bearer-only owner requests, and email/password login succeeds through the normal session + CSRF path.",
+      "status": "VERIFIED",
+      "introduced": "0.49.0",
+      "references": {
+        "implementation": [
+          "src/governance/identity.js",
+          "server.js",
+          "scripts/configure-owner.mjs",
+          "scripts/run-owner-local.sh",
+          "public/app.js"
+        ],
+        "tests": [
+          "verification/owner-bootstrap-v049.test.mjs",
+          "verification/api-security-v046.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance/identity.js",
+          "server.js",
+          "scripts/configure-owner.mjs",
+          "scripts/run-owner-local.sh",
+          "public/app.js"
+        ],
+        "verification": [
+          "verification/owner-bootstrap-v049.test.mjs",
+          "verification/api-security-v046.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 54,
+      "key": "F054",
+      "name": "context-engineered-conversation",
+      "definition": "Verified by v0.50 tests for bounded same-chat follow-up continuity, context-aware synthesis, and structured local runtime routing. This establishes implementation behavior, not parity with any proprietary model.",
+      "status": "VERIFIED",
+      "introduced": "0.50.0",
+      "references": {
+        "implementation": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/model-runtime-adapter.js",
+          "src/models/router.js"
+        ],
+        "tests": [
+          "verification/conversation-research-v050.test.mjs",
+          "verification/conversation-capability-v048.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/model-runtime-adapter.js",
+          "src/models/router.js"
+        ],
+        "verification": [
+          "verification/conversation-research-v050.test.mjs",
+          "verification/conversation-capability-v048.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 55,
+      "key": "F055",
+      "name": "governed-live-web-research",
+      "definition": "Verified with deterministic live-HTTP fixtures: research performs search discovery, fetches multiple sources, quarantines external instructions as untrusted evidence, labels sources, and passes the evidence into conversational synthesis.",
+      "status": "VERIFIED",
+      "introduced": "0.50.0",
+      "references": {
+        "implementation": [
+          "src/web-research-engine.js",
+          "src/onechat.js",
+          "src/content-security.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/conversation-research-v050.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/web-research-engine.js",
+          "src/onechat.js",
+          "src/content-security.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/conversation-research-v050.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 56,
+      "key": "F056",
+      "name": "internet-wide-source-coverage",
+      "definition": "The research engine can discover and fetch multiple public web sources, but no implementation can guarantee literally all web sources; access remains subject to indexing, robots, authentication, paywalls, network availability, content type and policy.",
+      "status": "PARTIAL",
+      "introduced": "0.50.0",
+      "references": {
+        "implementation": [
+          "src/web-research-engine.js",
+          "src/web-corpus.js"
+        ],
+        "tests": [
+          "verification/conversation-research-v050.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/web-research-engine.js",
+          "src/web-corpus.js"
+        ],
+        "verification": [
+          "verification/conversation-research-v050.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 57,
+      "key": "F057",
+      "name": "bounded-shadow-rd",
+      "definition": "Bounded virtual research agents, persistent run/candidate records, resource budgets, quarantine and separate promotion gate are implemented. Candidates remain ineligible for production/training by default.",
+      "status": "VERIFIED",
+      "introduced": "0.52.0",
+      "references": {
+        "implementation": [
+          "src/agent-budget.js",
+          "src/shadow/shadow-agent-registry.js",
+          "src/shadow/shadow-run-store.js",
+          "src/shadow/candidate-store.js",
+          "src/shadow/shadow-coordinator.js",
+          "src/shadow/disagreement-detector.js",
+          "src/shadow/promotion-gate.js"
+        ],
+        "tests": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/agent-budget.js",
+          "src/shadow/shadow-agent-registry.js",
+          "src/shadow/shadow-run-store.js",
+          "src/shadow/candidate-store.js",
+          "src/shadow/shadow-coordinator.js",
+          "src/shadow/disagreement-detector.js",
+          "src/shadow/promotion-gate.js"
+        ],
+        "verification": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 58,
+      "key": "F058",
+      "name": "isolated-light-source-maintenance",
+      "definition": "Source-maintenance agents use detached worktrees, bounded workers and required test/security/shadow-review evidence. No direct protected-main merge authority is granted.",
+      "status": "VERIFIED",
+      "introduced": "0.52.0",
+      "references": {
+        "implementation": [
+          "src/light/light-agent-registry.js",
+          "src/light/worktree-manager.js",
+          "src/light/patch-evaluator.js",
+          "src/light/light-coordinator.js"
+        ],
+        "tests": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/light/light-agent-registry.js",
+          "src/light/worktree-manager.js",
+          "src/light/patch-evaluator.js",
+          "src/light/light-coordinator.js"
+        ],
+        "verification": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 59,
+      "key": "F059",
+      "name": "protected-local-governance-kernel-v2",
+      "definition": "Protected governance rule catalog, emergency stop, local policy store, capability boundary, audit verification and trusted-device registry are present. Independent hardware/bootstrap ownership proof remains unavailable.",
+      "status": "VERIFIED",
+      "introduced": "0.52.0",
+      "references": {
+        "implementation": [
+          "src/governance/kernel.js",
+          "src/governance/promotion-rules.js",
+          "src/governance/emergency-stop.js",
+          "src/governance/policy-store.js",
+          "src/governance/capability-boundary.js",
+          "src/governance/trusted-device.js",
+          "src/governance/audit-integrity.js"
+        ],
+        "tests": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/governance/kernel.js",
+          "src/governance/promotion-rules.js",
+          "src/governance/emergency-stop.js",
+          "src/governance/policy-store.js",
+          "src/governance/capability-boundary.js",
+          "src/governance/trusted-device.js",
+          "src/governance/audit-integrity.js"
+        ],
+        "verification": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 60,
+      "key": "F060",
+      "name": "platform-roadmap-truth-catalog",
+      "definition": "Model, runtime, learning, retrieval, plugin, connector, tool and benchmark categories are exposed without treating declarations as connected capabilities; incomplete items remain explicitly non-complete.",
+      "status": "VERIFIED",
+      "introduced": "0.52.0",
+      "references": {
+        "implementation": [
+          "src/platform-capability-catalog.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/platform-capability-catalog.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/shadow-light-v052.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 61,
+      "key": "F061",
+      "name": "typed-agent-control-plane-v053",
+      "definition": "Verified by authoritative exact-state CI on commit 552cd72d54f3d1f7ef23c9812caa236d7a187e7d: cumulative/security regressions, dedicated v0.53 storage/scheduler tests, live authenticated HTTP dispatch/dashboard tests, release-manifest reproducibility, localhost smoke, ForgeLM train-save-load and advanced neural objective jobs all passed. Dedicated shadow_runs, shadow_candidates, light_patches, light_worktrees and agent_jobs SQLite tables use bounded persistent leases, expiry/recovery and legacy migration; promotion authority remains separate.",
+      "status": "VERIFIED",
+      "introduced": "0.53.0",
+      "references": {
+        "implementation": [
+          "storage/control_plane.py",
+          "src/control-plane-store.js",
+          "src/control-plane-scheduler.js",
+          "src/shadow/shadow-run-store.js",
+          "src/shadow/candidate-store.js",
+          "src/shadow/shadow-coordinator.js",
+          "src/light/worktree-manager.js",
+          "src/light/light-coordinator.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js",
+          "scripts/control-plane-cli.js",
+          "public/app.js",
+          "public/index.html",
+          "TERMUX-RUN.md"
+        ],
+        "tests": [
+          "verification/agent-control-v053.test.mjs",
+          "verification/agent-control-http-v053.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/control_plane.py",
+          "src/control-plane-store.js",
+          "src/control-plane-scheduler.js",
+          "src/shadow/shadow-run-store.js",
+          "src/shadow/candidate-store.js",
+          "src/shadow/shadow-coordinator.js",
+          "src/light/worktree-manager.js",
+          "src/light/light-coordinator.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js",
+          "scripts/control-plane-cli.js",
+          "public/app.js",
+          "public/index.html",
+          "TERMUX-RUN.md"
+        ],
+        "verification": [
+          "verification/agent-control-v053.test.mjs",
+          "verification/agent-control-http-v053.test.mjs"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 62,
+      "key": "F062",
+      "name": "structured-web-research-v053",
+      "definition": "Multi-query public-web research and an optional Brave Search API path are implemented. Brave remains runtime/configuration dependent, HTML search fallbacks remain best-effort, and UAI does not claim exhaustive internet-wide coverage.",
+      "status": "PARTIAL",
+      "introduced": "0.53.0",
+      "references": {
+        "implementation": [
+          "src/web-research-engine.js",
+          "src/onechat.js"
+        ],
+        "tests": [
+          "verification/conversation-research-v050.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/web-research-engine.js",
+          "src/onechat.js"
+        ],
+        "verification": [
+          "verification/conversation-research-v050.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 63,
+      "key": "F063",
+      "name": "user-owned-memory-v054",
+      "definition": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: explicit-consent memory, AES-256-GCM mode, training-disabled default, search/why/export/delete semantics, authenticated OneChat/HTTP flows and emergency-stop blocking passed. UAI still does not silently remember every conversation or silently train from memory.",
+      "status": "VERIFIED",
+      "introduced": "0.54.0",
+      "references": {
+        "implementation": [
+          "storage/platform_state.py",
+          "src/platform-state-store.js",
+          "src/memory/consent.js",
+          "src/memory/retention.js",
+          "src/memory/memory-store.js",
+          "src/memory/deletion.js",
+          "src/memory/retrieval.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "storage/platform_state.py",
+          "src/platform-state-store.js",
+          "src/memory/consent.js",
+          "src/memory/retention.js",
+          "src/memory/memory-store.js",
+          "src/memory/deletion.js",
+          "src/memory/retrieval.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 64,
+      "key": "F064",
+      "name": "provenance-policy-plane-v054",
+      "definition": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: provenance node/edge tracing, dry-run purge planning, linked-memory purge propagation, richer policy decision metadata/proofs and non-executing policy workflow simulation passed. Full deletion propagation into every legacy document/index/dataset/model store remains PARTIAL and is not claimed.",
+      "status": "VERIFIED",
+      "introduced": "0.54.0",
+      "references": {
+        "implementation": [
+          "src/provenance/graph.js",
+          "src/provenance/lineage.js",
+          "src/provenance/purge.js",
+          "src/provenance/citation.js",
+          "src/governance/policy-simulator.js",
+          "src/policy-engine.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/provenance/graph.js",
+          "src/provenance/lineage.js",
+          "src/provenance/purge.js",
+          "src/provenance/citation.js",
+          "src/governance/policy-simulator.js",
+          "src/policy-engine.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ]
+      },
+      "category": "GOVERNANCE_SECURITY"
+    },
+    {
+      "number": 65,
+      "key": "F065",
+      "name": "model-artifact-evaluation-v054",
+      "definition": "Verified by authoritative exact-state CI on commit 09548723e9eb6b7cf7ac976a7aac16d11373f735: artifact path confinement, SHA-256 verification, runtime-availability separation, persistent evaluation records, verified-only leaderboards, benchmark runner and promotion-evidence scoring passed, alongside ForgeLM train-save-load and advanced neural-objective CI. Artifact registration still does not imply runtime connectivity or production eligibility.",
+      "status": "VERIFIED",
+      "introduced": "0.54.0",
+      "references": {
+        "implementation": [
+          "src/models/artifact-verifier.js",
+          "src/evaluation/evaluation-store.js",
+          "src/evaluation/benchmark-runner.js",
+          "src/evaluation/promotion-score.js",
+          "scripts/platform-intelligence-cli.js",
+          "public/app.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/models/artifact-verifier.js",
+          "src/evaluation/evaluation-store.js",
+          "src/evaluation/benchmark-runner.js",
+          "src/evaluation/promotion-score.js",
+          "scripts/platform-intelligence-cli.js",
+          "public/app.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/platform-intelligence-v054.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 66,
+      "key": "F066",
+      "name": "verified-knowledge-sqlite-v055",
+      "definition": "Verified knowledge now persists in the existing SQLite/WAL platform-state database with legacy JSON migration, deduplication, rights gating and integrity snapshots. Exact-state authoritative CI has not yet been observed for this promotion commit.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.55.0",
+      "references": {
+        "implementation": [
+          "src/verified-knowledge-store.js",
+          "src/platform-state-store.js",
+          "storage/platform_state.py"
+        ],
+        "tests": [
+          "verification/knowledge-autonomy-v055.test.mjs",
+          "verification/verified-knowledge-sqlite.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/verified-knowledge-store.js",
+          "src/platform-state-store.js",
+          "storage/platform_state.py"
+        ],
+        "verification": [
+          "verification/knowledge-autonomy-v055.test.mjs",
+          "verification/verified-knowledge-sqlite.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 67,
+      "key": "F067",
+      "name": "governed-knowledge-autonomy-v055",
+      "definition": "Research is bounded to approved source domains, external content remains untrusted, registry trust cannot be caller-spoofed, independent corroboration is required, and research approval is separated from training-rights approval. Scheduled research is process-bound and does not claim execution while localhost is stopped.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.55.0",
+      "references": {
+        "implementation": [
+          "src/knowledge-verifier.js",
+          "src/knowledge-research-worker.js",
+          "src/knowledge-scheduler.js",
+          "src/knowledge-autonomy.js",
+          "model/knowledge_verifier.py",
+          "model/knowledge_pipeline.py",
+          "model/knowledge_sources.json"
+        ],
+        "tests": [
+          "verification/knowledge-autonomy-v055.test.mjs",
+          "verification/knowledge-research-scheduler.test.mjs",
+          "verification/knowledge-governance.test.mjs",
+          "model/eval/knowledge_benchmark.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/knowledge-verifier.js",
+          "src/knowledge-research-worker.js",
+          "src/knowledge-scheduler.js",
+          "src/knowledge-autonomy.js",
+          "model/knowledge_verifier.py",
+          "model/knowledge_pipeline.py",
+          "model/knowledge_sources.json"
+        ],
+        "verification": [
+          "verification/knowledge-autonomy-v055.test.mjs",
+          "verification/knowledge-research-scheduler.test.mjs",
+          "verification/knowledge-governance.test.mjs",
+          "model/eval/knowledge_benchmark.py"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 68,
+      "key": "F068",
+      "name": "hybrid-cloud-knowledge-durability-v055",
+      "definition": "Optional Postgres/PostgREST-compatible cloud persistence is secondary to local storage. Cloud records are reverified locally before recovery; configured credentials do not imply connectivity. Free-tier capacity is not guaranteed.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.55.0",
+      "references": {
+        "implementation": [
+          "src/cloud-knowledge-store.js",
+          "src/hybrid-knowledge-store.js",
+          "storage/cloud/uai_verified_knowledge.sql",
+          "docs/CLOUD-KNOWLEDGE-STORAGE.md"
+        ],
+        "tests": [
+          "verification/cloud-knowledge-store.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/cloud-knowledge-store.js",
+          "src/hybrid-knowledge-store.js",
+          "storage/cloud/uai_verified_knowledge.sql",
+          "docs/CLOUD-KNOWLEDGE-STORAGE.md"
+        ],
+        "verification": [
+          "verification/cloud-knowledge-store.test.mjs"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 69,
+      "key": "F069",
+      "name": "forgelm-candidate-first-promotion-v055",
+      "definition": "Training paths now create candidate checkpoints rather than silently replacing the live ForgeLM checkpoint. Held-out knowledge and stable regression loss gates precede exact owner-bound promotion; rollback artifacts are integrity-checked. Exact-state authoritative CI remains pending.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.55.0",
+      "references": {
+        "implementation": [
+          "model/cli.py",
+          "model/eval/checkpoint_compare.py",
+          "model/eval/regression_corpus.jsonl",
+          "src/knowledge-training-job.js",
+          "src/forgelm-candidate-promotion.js",
+          "src/knowledge-learning-pipeline.js",
+          "src/model-lab.js",
+          "src/onechat.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/knowledge-training-job.test.mjs",
+          "verification/forgelm-candidate-promotion.test.mjs",
+          "verification/knowledge-learning-pipeline.test.mjs",
+          "verification/model-lab-promotion.test.mjs",
+          "verification/onechat-model-lifecycle.test.mjs",
+          "verification/forgelm-cli-policy.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/cli.py",
+          "model/eval/checkpoint_compare.py",
+          "model/eval/regression_corpus.jsonl",
+          "src/knowledge-training-job.js",
+          "src/forgelm-candidate-promotion.js",
+          "src/knowledge-learning-pipeline.js",
+          "src/model-lab.js",
+          "src/onechat.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/knowledge-training-job.test.mjs",
+          "verification/forgelm-candidate-promotion.test.mjs",
+          "verification/knowledge-learning-pipeline.test.mjs",
+          "verification/model-lab-promotion.test.mjs",
+          "verification/onechat-model-lifecycle.test.mjs",
+          "verification/forgelm-cli-policy.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 70,
+      "key": "F070",
+      "name": "frontier-provider-routing-v056",
+      "definition": "Provider-native chat, vision, image, structured-output, embedding and rerank adapters plus explicit local/cloud model routing are implemented. Catalog registration and configured credentials remain distinct from runtime CONNECTED evidence; proprietary model internals are not claimed.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.56.0",
+      "references": {
+        "implementation": [
+          "src/providers.js",
+          "src/model-catalog.js",
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/model-catalog.test.mjs",
+          "verification/frontier-provider-routing-v056.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/providers.js",
+          "src/model-catalog.js",
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/model-catalog.test.mjs",
+          "verification/frontier-provider-routing-v056.test.mjs"
+        ]
+      },
+      "category": "PLATFORM"
+    },
+    {
+      "number": 71,
+      "key": "F071",
+      "name": "forgelm-embedding-rerank-v056",
+      "definition": "Promoted ForgeLM checkpoints can produce normalized mean-pooled hidden-state embeddings and deterministic cosine reranking locally. Retrieval quality remains dependent on the trained checkpoint and is not claimed to equal frontier embedding models without benchmark evidence.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.56.0",
+      "references": {
+        "implementation": [
+          "model/forgelm.py",
+          "model/capabilities.py",
+          "model/self_sufficient.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js"
+        ],
+        "tests": [
+          "model/test_forgelm.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/forgelm.py",
+          "model/capabilities.py",
+          "model/self_sufficient.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js"
+        ],
+        "verification": [
+          "model/test_forgelm.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 72,
+      "key": "F072",
+      "name": "forgelm-native-long-context-v057",
+      "definition": "ForgeLM now has native RoPE context scaling plus offline dense context memory using its own hidden-state embeddings. Sources larger than the active transformer window are chunked, ranked and assembled locally with evidence. This does not claim that the base transformer attends to the entire source simultaneously or that frontier long-context quality has been reached.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.57.0",
+      "references": {
+        "implementation": [
+          "model/forgelm.py",
+          "model/long_context.py",
+          "model/capabilities.py",
+          "model/self_sufficient.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js",
+          "model/config_presets.json"
+        ],
+        "tests": [
+          "model/test_long_context.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/forgelm.py",
+          "model/long_context.py",
+          "model/capabilities.py",
+          "model/self_sufficient.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js",
+          "model/config_presets.json"
+        ],
+        "verification": [
+          "model/test_long_context.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 73,
+      "key": "F073",
+      "name": "forgevision-native-foundation-v058",
+      "definition": "Native local visual patch encoder, transformer blocks and ForgeLM-space projector are trainable without external AI. Alignment training uses the promoted ForgeLM text embedding space. Semantic image understanding remains unavailable until a trained/evaluated ForgeVision checkpoint is explicitly promoted.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.58.0",
+      "references": {
+        "implementation": [
+          "model/vision.py",
+          "model/train_vision.py",
+          "src/capabilities.js"
+        ],
+        "tests": [
+          "model/test_vision.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/vision.py",
+          "model/train_vision.py",
+          "src/capabilities.js"
+        ],
+        "verification": [
+          "model/test_vision.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 74,
+      "key": "F074",
+      "name": "forgevision-governed-runtime-v059",
+      "definition": "ForgeVision candidates are hash-bound, locally evaluated against image-caption evidence, owner-approved before atomic promotion, rollback-capable, and only reported CONNECTED when promoted ForgeVision+ForgeLM checkpoints pass native runtime health. Inference is path-bounded and uses no external AI.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.59.0",
+      "references": {
+        "implementation": [
+          "model/eval/vision_compare.py",
+          "src/forgevision-candidate-promotion.js",
+          "model/vision_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/forgevision-candidate-promotion.test.mjs",
+          "model/test_vision_runtime.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/eval/vision_compare.py",
+          "src/forgevision-candidate-promotion.js",
+          "model/vision_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/forgevision-candidate-promotion.test.mjs",
+          "model/test_vision_runtime.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 75,
+      "key": "F075",
+      "name": "forgeaudio-native-runtime-v060",
+      "definition": "ForgeAudio is a local spectral audio encoder/projector aligned to ForgeLM embeddings, with hash-bound evaluation, explicit owner-approved promotion, rollback, runtime health and path-bounded native audio-language inference. No external AI or speech API is used. PCM WAV is the dependency-free supported input format.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.60.0",
+      "references": {
+        "implementation": [
+          "model/audio.py",
+          "model/train_audio.py",
+          "model/eval/audio_compare.py",
+          "model/audio_runtime.py",
+          "src/forgeaudio-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "model/test_audio.py",
+          "verification/forgeaudio-candidate-promotion.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/audio.py",
+          "model/train_audio.py",
+          "model/eval/audio_compare.py",
+          "model/audio_runtime.py",
+          "src/forgeaudio-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "model/test_audio.py",
+          "verification/forgeaudio-candidate-promotion.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 76,
+      "key": "F076",
+      "name": "forgespeech-native-runtime-v061",
+      "definition": "ForgeSpeech is a local ForgeLM-conditioned waveform generator trained from local text/WAV pairs with waveform and spectral losses. Candidate evaluation, hash binding, explicit owner-approved promotion, rollback, runtime health, and path-bounded WAV synthesis are implemented. No external TTS model or cloud speech API is used; output quality depends on locally trained data and checkpoint quality.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.61.0",
+      "references": {
+        "implementation": [
+          "model/speech.py",
+          "model/train_speech.py",
+          "model/eval/speech_compare.py",
+          "model/speech_runtime.py",
+          "src/forgespeech-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "model/test_speech.py",
+          "verification/forgespeech-candidate-promotion.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/speech.py",
+          "model/train_speech.py",
+          "model/eval/speech_compare.py",
+          "model/speech_runtime.py",
+          "src/forgespeech-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "model/test_speech.py",
+          "verification/forgespeech-candidate-promotion.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 77,
+      "key": "F077",
+      "name": "forgevideo-native-runtime-v062",
+      "definition": "ForgeVideo reuses the native ForgeVision frame encoder, adds local temporal transformer modeling, projects video tokens into ForgeLM space, and supports local ffmpeg frame extraction, video-text alignment training, evaluation, hash-bound owner-approved promotion, rollback, runtime health, and path-bounded native video-language inference. No external AI/video model is used.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.62.0",
+      "references": {
+        "implementation": [
+          "model/video.py",
+          "model/train_video.py",
+          "model/eval/video_compare.py",
+          "model/video_runtime.py",
+          "src/forgevideo-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "model/test_video.py",
+          "verification/forgevideo-candidate-promotion.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/video.py",
+          "model/train_video.py",
+          "model/eval/video_compare.py",
+          "model/video_runtime.py",
+          "src/forgevideo-candidate-promotion.js",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "model/test_video.py",
+          "verification/forgevideo-candidate-promotion.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 78,
+      "key": "F078",
+      "name": "forgemultimodal-fusion-v063",
+      "definition": "A parameter-free local FusionAssembler combines healthy promoted image/audio/video encoder tokens with local document/context/text embeddings into one bounded ForgeLM prefill. Individual modality health remains independently truth-gated and there is no external AI fallback. A separate trainable ForgeFusion transformer exists as an experimental architecture but is not used or claimed as trained unless independently checkpointed/evaluated.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.63.0",
+      "references": {
+        "implementation": [
+          "model/multimodal.py",
+          "model/multimodal_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "tests": [
+          "model/test_multimodal.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/multimodal.py",
+          "model/multimodal_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/capabilities.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "server.js"
+        ],
+        "verification": [
+          "model/test_multimodal.py"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 79,
+      "key": "F079",
+      "name": "onechat-multimodal-attachments-v064",
+      "definition": "OneChat can register up to 16 governed local attachments, preserve content hashes/provenance with the chat turn, extract local document/text evidence where parsers are available, and send image/audio/video plus document/context/history into the unified native ForgeMultimodal runtime. Attachment paths remain constrained by approved local roots and no external AI fallback is used.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.64.0",
+      "references": {
+        "implementation": [
+          "src/onechat.js",
+          "src/conversation-engine.js",
+          "src/multimodal/pipeline.js",
+          "src/forgelm-bridge.js",
+          "server.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js"
+        ],
+        "tests": [
+          "verification/onechat-multimodal-attachments.test.mjs",
+          "model/test_multimodal.py"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat.js",
+          "src/conversation-engine.js",
+          "src/multimodal/pipeline.js",
+          "src/forgelm-bridge.js",
+          "server.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js"
+        ],
+        "verification": [
+          "verification/onechat-multimodal-attachments.test.mjs",
+          "model/test_multimodal.py"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 80,
+      "key": "F080",
+      "name": "onechat-attachment-ui-v065",
+      "definition": "The single OneChat composer now supports up to 16 local attachments with preview/status chips, chunked governed uploads, bounded-memory SHA-256 hashing, atomic placement into state/media-input, provenance registration, and automatic submission through the existing OneChat attachment contract. Large files are chunked below the API body limit; no second chat surface or external AI upload service is introduced.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.65.0",
+      "references": {
+        "implementation": [
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css",
+          "server.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "src/multimodal/pipeline.js",
+          "src/onechat.js",
+          "src/conversation-engine.js"
+        ],
+        "tests": [
+          "verification/onechat-attachment-ui.test.mjs",
+          "verification/onechat-multimodal-attachments.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css",
+          "server.js",
+          "src/governance/authorization.js",
+          "src/governance/request-schemas.js",
+          "src/multimodal/pipeline.js",
+          "src/onechat.js",
+          "src/conversation-engine.js"
+        ],
+        "verification": [
+          "verification/onechat-attachment-ui.test.mjs",
+          "verification/onechat-multimodal-attachments.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 81,
+      "key": "F081",
+      "name": "onechat-persistent-attachment-history-v066",
+      "definition": "OneChat can restore persisted turns with sanitized attachment metadata, render governed image/audio/video/document cards, and reopen registered media by media ID through an authenticated content endpoint. Browser uploads and future OneChat turns use media IDs instead of server filesystem paths; history responses omit paths, and media content resolution revalidates owner identity, approved roots and file existence.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.66.0",
+      "references": {
+        "implementation": [
+          "src/onechat.js",
+          "src/multimodal/pipeline.js",
+          "server.js",
+          "public/app.js",
+          "public/styles.css",
+          "src/governance/request-schemas.js"
+        ],
+        "tests": [
+          "verification/onechat-history-attachments.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat.js",
+          "src/multimodal/pipeline.js",
+          "server.js",
+          "public/app.js",
+          "public/styles.css",
+          "src/governance/request-schemas.js"
+        ],
+        "verification": [
+          "verification/onechat-history-attachments.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 82,
+      "key": "F082",
+      "name": "onechat-conversation-management-v067",
+      "definition": "OneChat now provides owner-bound local conversation listing/search, in-place switching, new chat, rename, archive/unarchive, sanitized JSON export and explicit deletion of chat/control records while retaining registered media artifacts. The same OneChat surface remains the only user-facing chat UI.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.67.0",
+      "references": {
+        "implementation": [
+          "src/store.js",
+          "src/onechat.js",
+          "server.js",
+          "src/governance/request-schemas.js",
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css"
+        ],
+        "tests": [
+          "verification/onechat-conversation-management.test.mjs",
+          "verification/onechat-history-attachments.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/store.js",
+          "src/onechat.js",
+          "server.js",
+          "src/governance/request-schemas.js",
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css"
+        ],
+        "verification": [
+          "verification/onechat-conversation-management.test.mjs",
+          "verification/onechat-history-attachments.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 83,
+      "key": "F083",
+      "name": "onechat-turn-controls-v068",
+      "definition": "OneChat now provides append-only Edit, Retry, Regenerate and Branch controls by creating new conversation branches rather than mutating prior history. Per-turn copy/export and sanitized evidence inspection are available. First turns generate local conversation titles, attachment evidence uses media IDs instead of file paths, and turn exports/evidence are owner-bound and path-sanitized.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.68.0",
+      "references": {
+        "implementation": [
+          "src/onechat.js",
+          "server.js",
+          "src/governance/request-schemas.js",
+          "public/app.js",
+          "public/styles.css"
+        ],
+        "tests": [
+          "verification/onechat-turn-controls.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat.js",
+          "server.js",
+          "src/governance/request-schemas.js",
+          "public/app.js",
+          "public/styles.css"
+        ],
+        "verification": [
+          "verification/onechat-turn-controls.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 84,
+      "key": "F084",
+      "name": "onechat-live-turn-sessions-v069",
+      "definition": "OneChat can start owner-bound asynchronous turn sessions, stream structured phase/tool/model/persistence events over replayable SSE, reconnect from a last-seen event sequence, request cancellation, and discard late results after cancellation. Local ForgeLM subprocess calls receive AbortSignal and are terminated on Stop. Other collaborators are cancellation-checked at phase boundaries. This feature claims event streaming; token streaming is only available when a runtime emits token chunks and is not inferred from progress events.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.69.0",
+      "references": {
+        "implementation": [
+          "src/onechat-turn-sessions.js",
+          "src/onechat.js",
+          "src/conversation-engine.js",
+          "src/forgelm-bridge.js",
+          "server.js",
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css",
+          "src/governance/request-schemas.js"
+        ],
+        "tests": [
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat-turn-sessions.js",
+          "src/onechat.js",
+          "src/conversation-engine.js",
+          "src/forgelm-bridge.js",
+          "server.js",
+          "public/index.html",
+          "public/app.js",
+          "public/styles.css",
+          "src/governance/request-schemas.js"
+        ],
+        "verification": [
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 85,
+      "key": "F085",
+      "name": "forgelm-token-streaming-v070",
+      "definition": "ForgeLM.generate emits callbacks from the actual local sampling loop. The Python text and multimodal runtimes serialize cumulative decoded text as newline-delimited token events, the Node bridge parses and forwards those events through the local model router and OneChat session journal, and the browser progressively renders them over replayable SSE. Stop uses the same AbortSignal to terminate the local ForgeLM subprocess. Token streaming is only claimed for ForgeLM paths that emit these generation-time events.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.70.0",
+      "references": {
+        "implementation": [
+          "model/forgelm.py",
+          "model/self_sufficient.py",
+          "model/multimodal_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/onechat-turn-sessions.js",
+          "public/app.js",
+          "src/capabilities.js"
+        ],
+        "tests": [
+          "model/test_streaming.py",
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/forgelm.py",
+          "model/self_sufficient.py",
+          "model/multimodal_runtime.py",
+          "src/forgelm-bridge.js",
+          "src/models/router.js",
+          "src/conversation-engine.js",
+          "src/onechat.js",
+          "src/onechat-turn-sessions.js",
+          "public/app.js",
+          "src/capabilities.js"
+        ],
+        "verification": [
+          "model/test_streaming.py",
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 86,
+      "key": "F086",
+      "name": "onechat-durable-session-recovery-v071",
+      "definition": "Live OneChat sessions persist an atomic state snapshot plus append-only JSONL event journal under state/onechat-turn-sessions. On restart, terminal sessions remain terminal, QUEUED sessions may safely continue, and RUNNING/CANCEL_REQUESTED sessions become INTERRUPTED and are never reported as completed. The owner may explicitly resume an interrupted turn as a new linked session. Browser sessionStorage reconnects to surviving live sessions and exposes explicit interrupted-session resume.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.71.0",
+      "references": {
+        "implementation": [
+          "src/onechat-turn-sessions.js",
+          "server.js",
+          "public/app.js",
+          "src/governance/request-schemas.js",
+          "src/capabilities.js"
+        ],
+        "tests": [
+          "verification/onechat-durable-session-recovery.test.mjs",
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/onechat-turn-sessions.js",
+          "server.js",
+          "public/app.js",
+          "src/governance/request-schemas.js",
+          "src/capabilities.js"
+        ],
+        "verification": [
+          "verification/onechat-durable-session-recovery.test.mjs",
+          "verification/onechat-live-sessions.test.mjs",
+          "verification/onechat-attachment-ui.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 87,
+      "key": "F087",
+      "name": "forgelm-first-checkpoint-bootstrap-v072",
+      "definition": "Fresh installs can train, evaluate and explicitly promote the first ForgeLM checkpoint without a pre-existing live baseline. Bootstrap evaluation verifies loadability, finite loss metadata, acceptable training trend and local generation. Promotion remains hash-bound and explicitly approved; later upgrades keep baseline regression comparison.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.72.0",
+      "references": {
+        "implementation": [
+          "model/eval/bootstrap_candidate.py",
+          "src/forgelm-candidate-promotion.js",
+          "scripts/bootstrap-forgelm.mjs"
+        ],
+        "tests": [
+          "verification/forgelm-bootstrap-promotion.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "model/eval/bootstrap_candidate.py",
+          "src/forgelm-candidate-promotion.js",
+          "scripts/bootstrap-forgelm.mjs"
+        ],
+        "verification": [
+          "verification/forgelm-bootstrap-promotion.test.mjs"
+        ]
+      },
+      "category": "AI_MODEL"
+    },
+    {
+      "number": 88,
+      "key": "F088",
+      "name": "termux-onechat-recovery-v073",
+      "definition": "Termux/Android child Node execution clears libtermux-exec preload for syntax validation and HTTP verification tests use absolute server.js paths. Browser syntax checking uses a Termux-safe wrapper. OneChat now answers natural capability questions from live capability truth, probes web-search reachability instead of claiming connectivity, and recognizes natural bare-domain ingest requests.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.73.0",
+      "references": {
+        "implementation": [
+          "src/process-compat.js",
+          "src/self-development.js",
+          "verification/model-router-evidence-v049.test.mjs",
+          "verification/api-security-v046.test.mjs",
+          "verification/owner-bootstrap-v049.test.mjs",
+          "verification/document-http.test.mjs",
+          "verification/plugin-http.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs",
+          "verification/agent-control-http-v053.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs",
+          "scripts/check-browser-syntax.mjs",
+          "src/onechat.js"
+        ],
+        "tests": [
+          "verification/termux-onechat-recovery-v073.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/process-compat.js",
+          "src/self-development.js",
+          "verification/model-router-evidence-v049.test.mjs",
+          "verification/api-security-v046.test.mjs",
+          "verification/owner-bootstrap-v049.test.mjs",
+          "verification/document-http.test.mjs",
+          "verification/plugin-http.test.mjs",
+          "verification/shadow-light-http-v052.test.mjs",
+          "verification/agent-control-http-v053.test.mjs",
+          "verification/knowledge-production-http-v055.test.mjs",
+          "verification/platform-intelligence-http-v054.test.mjs",
+          "scripts/check-browser-syntax.mjs",
+          "src/onechat.js"
+        ],
+        "verification": [
+          "verification/termux-onechat-recovery-v073.test.mjs"
+        ]
+      },
+      "category": "CONVERSATION"
+    },
+    {
+      "number": 89,
+      "key": "F089",
+      "name": "universal-chronicle-v074",
+      "definition": "Native Chronicle records persisted OneChat turns, SHA-256 lineage, provenance nodes, recall, timelines and daily digests. Chronicle remains separate from consent-managed MemoryStore and is training-ineligible by default.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.74.0",
+      "references": {
+        "implementation": [
+          "src/chronicle/chronicle-center.js",
+          "src/onechat.js",
+          "src/provenance/graph.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/chronicle-integration-v074.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/chronicle/chronicle-center.js",
+          "src/onechat.js",
+          "src/provenance/graph.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/chronicle-integration-v074.test.mjs"
+        ]
+      },
+      "category": "KNOWLEDGE_DATA"
+    },
+    {
+      "number": 90,
+      "key": "F090",
+      "name": "witforge-consolidation-v075",
+      "definition": "WitForge source lineage is consolidated under a CommonJS-scoped compatibility namespace while UAI ESM remains authoritative. Presence is not treated as native executability.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.75.0",
+      "references": {
+        "implementation": [
+          "src/witforge-compat.js",
+          "integration/WITFORGE-MERGE-MANIFEST.json",
+          "legacy/witforge-source/package.json"
+        ],
+        "tests": [
+          "verification/chronicle-integration-v074.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/witforge-compat.js",
+          "integration/WITFORGE-MERGE-MANIFEST.json",
+          "legacy/witforge-source/package.json"
+        ],
+        "verification": [
+          "verification/chronicle-integration-v074.test.mjs"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 91,
+      "key": "F091",
+      "name": "native-wellbeing-snake-v076",
+      "definition": "Native ESM adapters expose the merged WitForge wellbeing and Snake Lab subsystems. Wellbeing remains opt-in, non-diagnostic, non-prescribing and excluded from training/retrieval. Snake Overwatch retains authority NONE and cannot mutate source/security or grant capabilities.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.76.0",
+      "references": {
+        "implementation": [
+          "src/witforge/mental-health-adapter.js",
+          "src/witforge/snake-lab-adapter.js",
+          "src/onechat.js",
+          "src/capabilities.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/witforge-native-v076.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/witforge/mental-health-adapter.js",
+          "src/witforge/snake-lab-adapter.js",
+          "src/onechat.js",
+          "src/capabilities.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/witforge-native-v076.test.mjs"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    },
+    {
+      "number": 92,
+      "key": "F092",
+      "name": "governed-multi-role-collaboration",
+      "definition": "Multi-role collaboration is OneChat-integrated and approval-bound. Seven selected WitForge Light/Shadow concepts are now natively represented as governed specialist profiles: bug repair, regression, security patch, refactoring, performance optimization, architecture analysis and model benchmarking. Promotion preserves no-self-approval, no-governance-rewrite, no-test-disabling, no-audit-deletion, no-permission-expansion and no-direct-protected-main-commit restrictions. Profiles are capability declarations, not autonomous execution authority.",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "introduced": "0.76.0",
+      "references": {
+        "implementation": [
+          "src/collaboration/multi-role.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "tests": [
+          "verification/multi-role-collaboration.test.mjs"
+        ],
+        "source": "governance/feature-evidence.json"
+      },
+      "promptResponse": {
+        "promptIntent": "Route matching requests to this feature only when its evidence state permits.",
+        "responseContract": "Return truthful status and evidence; never infer execution from source presence."
+      },
+      "collaborators": [
+        "architect",
+        "software-engineer",
+        "test-engineer",
+        "security",
+        "verifier"
+      ],
+      "crossAnalysis": {
+        "dependencies": [
+          "src/collaboration/multi-role.js",
+          "src/onechat.js",
+          "server.js"
+        ],
+        "verification": [
+          "verification/multi-role-collaboration.test.mjs"
+        ]
+      },
+      "category": "ORCHESTRATION_AGENTS"
+    }
+  ]
+}
