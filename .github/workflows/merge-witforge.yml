@@ -75,4 +75,6 @@ jobs:
             exit 0
           fi
           git commit -m "Consolidate WitForge source into UAI"
+          git fetch origin main
+          git rebase origin/main
           git push origin HEAD:main
