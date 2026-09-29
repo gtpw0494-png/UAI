@@ -1461,7 +1461,7 @@
       "tests": [
         "verification/multi-role-collaboration.test.mjs"
       ],
-      "evidence_note": "Governed multi-role collaboration includes architecture, coding, programming, software engineering, debugging, testing, DevOps, database, UI/UX, ML, performance, ForgeLM, security, CI, review, integration, Chronicle and verification specialties. OneChat routes collaboration intents into this service. Roles have no execution or approval authority; security objections block, while CI/Verifier/Test Engineer evidence objections prevent SUCCESS. Chronicle records remain training-ineligible by default."
+      "evidence_note": "Multi-role collaboration is OneChat-integrated and approval-bound. Seven selected WitForge Light/Shadow concepts are now natively represented as governed specialist profiles: bug repair, regression, security patch, refactoring, performance optimization, architecture analysis and model benchmarking. Promotion preserves no-self-approval, no-governance-rewrite, no-test-disabling, no-audit-deletion, no-permission-expansion and no-direct-protected-main-commit restrictions. Profiles are capability declarations, not autonomous execution authority."
     }
   ]
 }
