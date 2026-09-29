@@ -883,6 +883,11 @@
       "bytes": 3109
     },
     {
+      "path": "src/evolution-coordinator.js",
+      "sha256": "54f12d5cf1c45ec46f17efd96df41242fbd164ed7bf8b3c056d6c63980cc81dc",
+      "bytes": 2210
+    },
+    {
       "path": "src/forgeaudio-candidate-promotion.js",
       "sha256": "332d2ff7687d5d79fa4eaeee66ce89186a94e8b2ee2bc538a10a71a8732b8011",
       "bytes": 6291
@@ -1569,8 +1574,8 @@
     },
     {
       "path": "test.js",
-      "sha256": "8d68b262d33025dd03acc87a7d52b2355166a3cb3a3bab10f3d40dca2e1d127c",
-      "bytes": 31086
+      "sha256": "da508ea587d4a2b153e99fdb322a19891cf7e6e1604a966b0f6845e68bcdb4a1",
+      "bytes": 31214
     },
     {
       "path": "verification/agent-control-http-v053.test.mjs",
@@ -1789,8 +1794,8 @@
     },
     {
       "path": "verification/proof-genome-dream-v077.test.mjs",
-      "sha256": "ae3881900c0c102d9d24cdef9083bd02ce0be43a43cd44857f42da66bf740017",
-      "bytes": 1858
+      "sha256": "6d617910b5998d7898ca3be334f322b3cb54edb24ec99ae5a4be6365ad2ee221",
+      "bytes": 2880
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
