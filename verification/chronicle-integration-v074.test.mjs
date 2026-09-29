@@ -1,0 +1,24 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import {ChronicleCenter} from "../src/chronicle/chronicle-center.js";
+
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-chronicle-"));
+const auditRows=[];
+const chronicle=new ChronicleCenter({stateRoot:root,audit:{append:x=>auditRows.push(x)}});
+const a=chronicle.record({eventType:"project.milestone",subjectId:"project:uai",payload:{version:"0.74.0",feature:"chronicle"},verified:true,state:"SUCCESS"});
+assert.equal(a.state,"SUCCESS");
+const turn=chronicle.recordChatTurn({id:"turn-1",chatId:"chat-1",user:"remember this",answer:"recorded",state:"SUCCESS",verified:true,attachments:[]});
+assert.equal(turn.state,"SUCCESS");
+assert.equal(chronicle.status().events,2);
+const recall=chronicle.recall("chronicle");
+assert.equal(recall.state,"SUCCESS");
+assert.ok(recall.results.length>=1);
+const digest=chronicle.digest(new Date().toISOString().slice(0,10));
+assert.equal(digest.state,"SUCCESS");
+assert.equal(digest.digest.summary.newEvents,2);
+const t=chronicle.timeline("project:uai");
+assert.equal(t.events.length,1);
+assert.ok(auditRows.some(x=>x.type==="chronicle.recorded"));
+console.log("Chronicle integration v0.74 tests passed");
