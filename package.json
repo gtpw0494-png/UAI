@@ -1,6 +1,6 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.75.0",
+  "version": "0.76.0",
   "private": true,
   "description": "Unified UAI + WitForge local-first governed AI platform with native Chronicle and consolidated WitForge source lineage.",
   "type": "module",
@@ -117,7 +117,8 @@
     "test:termux-onechat-recovery": "node verification/termux-onechat-recovery-v073.test.mjs",
     "start:codespaces": "bash scripts/start-codespace.sh",
     "test:chronicle": "node verification/chronicle-integration-v074.test.mjs",
-    "witforge:status": "node -e \"import('./src/witforge-compat.js').then(({WitForgeCompatibility})=>console.log(JSON.stringify(new WitForgeCompatibility({root:process.cwd()}).status(),null,2)))\""
+    "witforge:status": "node -e \"import('./src/witforge-compat.js').then(({WitForgeCompatibility})=>console.log(JSON.stringify(new WitForgeCompatibility({root:process.cwd()}).status(),null,2)))\"",
+    "test:witforge-native": "node verification/witforge-native-v076.test.mjs"
   },
   "engines": {
     "node": ">=20"
