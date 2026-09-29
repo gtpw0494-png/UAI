@@ -1454,12 +1454,14 @@
       "introduced": "0.76.0",
       "status": "IMPLEMENTED_UNVERIFIED_REPO",
       "implementation": [
-        "src/collaboration/multi-role.js"
+        "src/collaboration/multi-role.js",
+        "src/onechat.js",
+        "server.js"
       ],
       "tests": [
         "verification/multi-role-collaboration.test.mjs"
       ],
-      "evidence_note": "Simulated Architect/Builder/ForgeLM/Security/CI/Reviewer/Integrator/Chronicle/Verifier deliberation is bounded to advisory/evidence roles. The layer has no execution or approval authority, security objections block synthesis, evidence objections prevent success claims, and Chronicle recording is training-ineligible by default."
+      "evidence_note": "Governed multi-role collaboration includes architecture, coding, programming, software engineering, debugging, testing, DevOps, database, UI/UX, ML, performance, ForgeLM, security, CI, review, integration, Chronicle and verification specialties. OneChat routes collaboration intents into this service. Roles have no execution or approval authority; security objections block, while CI/Verifier/Test Engineer evidence objections prevent SUCCESS. Chronicle records remain training-ineligible by default."
     }
   ]
 }
