@@ -211,6 +211,8 @@ export class OneChatRouter{
   if(/^(?:plan|run|resume|cancel)\s+task\b|^task\s+status\b|^(?:list|show)\s+tasks\b/i.test(t.trim()))return [{agent:"explorative",reason:"explicit durable task-lifecycle command"}];
   if(/^(?:evaluate|promote|rollback)\s+model\s+run\s+model-run-[\w-]+/i.test(t.trim()))return [{agent:"forgelm",reason:"explicit governed model-candidate lifecycle command"}];
   if(/research|source registry|source snapshot|reference sources|openai|gpt-oss|grok|deepseek|gemma|hugging face|claude|gemini|bixby|darkai|arena/i.test(t))a.push({agent:"research",reason:"model/source research"});
+  if(/mental health|wellbeing|well-being|counsellor|counselor|psychological evaluator|psychiatry support|phq-9|phq9|gad-7|gad7|emotional self-improvement/i.test(t))a.push({agent:"wellbeing",reason:"explicit wellbeing-support intent"});
+  if(/snake lab|snake overwatch|snake learning|snake policy|snake inventory/i.test(t))a.push({agent:"snake",reason:"bounded Snake Lab intent"});
   if(/web|internet|url|common crawl|fineweb|wikipedia|wikimedia|stack exchange|crawl|website/i.test(t)||/\b(?:ingest|fetch|crawl)\b[\s\S]*(?:https?:\/\/|www\.|\b[a-z0-9.-]+\.[a-z]{2,}\b)/i.test(t))a.push({agent:"web-research",reason:"governed web research/corpus intent"});
   if(/\bmemory\b|remember|why remembered|forget source|disable training|disable memory|export memory/i.test(t))a.push({agent:"memory",reason:"explicit user-owned memory intent"});
   if(/provenance graph|lineage|trace provenance|source graph|purge provenance/i.test(t))a.push({agent:"provenance",reason:"provenance graph intent"});
@@ -243,6 +245,23 @@ export class OneChatRouter{
       return this.webCorpus?await this.webCorpus.ingestUrl({url:target,license:m[2]||"UNKNOWN",licenseSource:m[2]?"USER_DECLARED":"UNVERIFIED",promoteTraining:/training[- ]approved/i.test(message)}):result("UNAVAILABLE","Web corpus service is not configured.");
     }
     return result("SUCCESS","Web Research Agent is ready. Ask for web corpus status or `ingest url https://...`; fetched content keeps URL, retrieval time, robots result, license state and training eligibility.");
+  }
+  if(agent==="wellbeing"){
+    if(!this.mentalHealth)return result("UNAVAILABLE","Mental-health support service is not configured.");
+    if(/status|roles|boundaries/i.test(message))return this.mentalHealth.status();
+    if(/enable|consent|opt in/i.test(message))return this.mentalHealth.setConsent(true);
+    if(/disable|withdraw consent|opt out/i.test(message))return this.mentalHealth.setConsent(false);
+    const del=String(message).match(/DELETE MENTAL HEALTH DATA/i);if(del)return this.mentalHealth.deleteAll("DELETE MENTAL HEALTH DATA");
+    const role=/psychiatr/i.test(message)?"psychiatry-support":/evaluat/i.test(message)?"psychological-evaluator":/emotional|self-improvement|growth/i.test(message)?"emotional-self-improvement":"counsellor";
+    return this.mentalHealth.support({role,message});
+  }
+  if(agent==="snake"){
+    if(!this.snakeLab)return result("UNAVAILABLE","Snake Lab is not configured.");
+    if(/inventory/i.test(message))return this.snakeLab.inventory();
+    if(/improve|train|learn/i.test(message)){const n=Number((message.match(/(\d+)\s*episodes?/i)||[])[1]||200);return this.snakeLab.improve({episodes:n});}
+    if(/reset/i.test(message)&&/RESET SNAKE LEARNING/.test(message))return this.snakeLab.reset("RESET SNAKE LEARNING");
+    if(/run|play|evaluate/i.test(message)){const seed=Number((message.match(/seed\s+(\d+)/i)||[])[1]||1);return this.snakeLab.run({seed});}
+    return this.snakeLab.status();
   }
   if(agent==="documents"){
     if(!this.documentStore)return result("UNAVAILABLE","Provenance document store is not configured.");
