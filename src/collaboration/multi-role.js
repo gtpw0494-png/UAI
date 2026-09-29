@@ -3,6 +3,9 @@ import crypto from "node:crypto";
 export const DEFAULT_ROLES=Object.freeze([
   {id:"architect",label:"Architect",authority:"ADVISORY"},
   {id:"builder",label:"Builder",authority:"ADVISORY"},
+  {id:"coder",label:"Coder",authority:"ADVISORY",specialty:"CODE_IMPLEMENTATION"},
+  {id:"programmer",label:"Programmer",authority:"ADVISORY",specialty:"ALGORITHMS_RUNTIME_LOGIC"},
+  {id:"software-engineer",label:"Software Engineer",authority:"ADVISORY",specialty:"SOFTWARE_ARCHITECTURE_INTEGRATION_QUALITY"},
   {id:"forgelm",label:"ForgeLM",authority:"ADVISORY"},
   {id:"security",label:"Security",authority:"VETO_RECOMMENDATION"},
   {id:"ci",label:"CI",authority:"EVIDENCE_ONLY"},
