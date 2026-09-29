@@ -6,6 +6,13 @@ export const DEFAULT_ROLES=Object.freeze([
   {id:"coder",label:"Coder",authority:"ADVISORY",specialty:"CODE_IMPLEMENTATION"},
   {id:"programmer",label:"Programmer",authority:"ADVISORY",specialty:"ALGORITHMS_RUNTIME_LOGIC"},
   {id:"software-engineer",label:"Software Engineer",authority:"ADVISORY",specialty:"SOFTWARE_ARCHITECTURE_INTEGRATION_QUALITY"},
+  {id:"debugger",label:"Debugger",authority:"ADVISORY",specialty:"FAULT_ISOLATION_ROOT_CAUSE"},
+  {id:"test-engineer",label:"Test Engineer",authority:"EVIDENCE_ONLY",specialty:"TEST_DESIGN_REGRESSION_VALIDATION"},
+  {id:"devops-engineer",label:"DevOps Engineer",authority:"ADVISORY",specialty:"CI_CD_RELEASE_OPERATIONS"},
+  {id:"database-engineer",label:"Database Engineer",authority:"ADVISORY",specialty:"DATA_MODEL_STORAGE_INTEGRITY"},
+  {id:"ui-ux-engineer",label:"UI/UX Engineer",authority:"ADVISORY",specialty:"INTERACTION_ACCESSIBILITY_INTERFACE"},
+  {id:"ml-engineer",label:"ML Engineer",authority:"ADVISORY",specialty:"MODEL_TRAINING_EVALUATION_RUNTIME"},
+  {id:"performance-engineer",label:"Performance Engineer",authority:"ADVISORY",specialty:"PROFILING_LATENCY_RESOURCE_EFFICIENCY"},
   {id:"forgelm",label:"ForgeLM",authority:"ADVISORY"},
   {id:"security",label:"Security",authority:"VETO_RECOMMENDATION"},
   {id:"ci",label:"CI",authority:"EVIDENCE_ONLY"},
@@ -36,7 +43,7 @@ export class MultiRoleCollaboration {
       rows.push({role:role.id,label:role.label,authority:role.authority,message});
     }
     const securityObjections=rows.filter(x=>x.role==="security"&&/\b(block|deny|unsafe|violation|not authorized|unauthori[sz]ed)\b/i.test(x.message));
-    const evidenceObjections=rows.filter(x=>["ci","verifier"].includes(x.role)&&/\b(fail|failed|missing|unknown|unverified|no evidence)\b/i.test(x.message));
+    const evidenceObjections=rows.filter(x=>["ci","verifier","test-engineer"].includes(x.role)&&/\b(fail|failed|missing|unknown|unverified|no evidence)\b/i.test(x.message));
     const state=securityObjections.length?"BLOCKED":evidenceObjections.length?"PARTIAL":"SUCCESS";
     const decision={id:"collab-"+crypto.randomUUID(),topic:subject,state,contributions:rows,executionAuthority:"NONE",approvalAuthority:"NONE",requiresExternalAuthorization:true,createdAt:new Date().toISOString()};
     this.audit?.append?.({type:"collaboration.deliberated",collaborationId:decision.id,chatId:chatId||null,ownerId:ownerId||null,state,roles:[...new Set(rows.map(x=>x.role))]});
