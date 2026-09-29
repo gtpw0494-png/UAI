@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import {NativeMentalHealthAdapter} from "../src/witforge/mental-health-adapter.js";
+import {NativeSnakeLabAdapter} from "../src/witforge/snake-lab-adapter.js";
+
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-v076-"));
+fs.mkdirSync(path.join(root,"legacy","witforge-source"),{recursive:true});
+for(const name of ["mental-health.js","snake-lab.js"])fs.copyFileSync(new URL("../legacy/witforge-source/"+name,import.meta.url),path.join(root,"legacy","witforge-source",name));
+fs.writeFileSync(path.join(root,"legacy","witforge-source","package.json"),'{"type":"commonjs"}\n');
+const mh=new NativeMentalHealthAdapter({root});
+assert.equal(mh.status().state,"SUCCESS");
+assert.equal(mh.screen({phq9:Array(9).fill(0),gad7:Array(7).fill(0)}).state,"BLOCKED");
+assert.equal(mh.setConsent(true).state,"SUCCESS");
+assert.equal(mh.support({role:"counsellor",message:"stress"}).state,"SUCCESS");
+const snake=new NativeSnakeLabAdapter({root});
+assert.equal(snake.status().state,"SUCCESS");
+assert.equal(snake.run({seed:7}).state,"SUCCESS");
+const improved=snake.improve({episodes:5});
+assert.equal(improved.state,"SUCCESS");
+assert.equal(improved.agent.authority,"NONE");
+console.log("WitForge native adapters v0.76 tests passed");
