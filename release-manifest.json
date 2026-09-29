@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.74.0",
+  "version": "0.75.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -23,6 +23,11 @@
       "bytes": 1373
     },
     {
+      "path": ".github/workflows/merge-witforge.yml",
+      "sha256": "4300e218b431a9d6bbe936b74a91ac4bad8b87ced0860fe18061294c3ead90b1",
+      "bytes": 2703
+    },
+    {
       "path": ".gitignore",
       "sha256": "13679fe8f71599e7e566d0a89b7d8d099a0c43628f4c5ba3f813533bdf123efa",
       "bytes": 517
@@ -34,18 +39,18 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "sha256": "0a9885f2511809abb0a7fcfb68cad271e3d664de3bbf5e43434cf849a3dbbef0",
-      "bytes": 24553
+      "sha256": "a3130e6fc4fa9ff763d878bbaff25efabfc13ec0f9a733bcbb54dbb125ff4439",
+      "bytes": 25211
     },
     {
       "path": "README.md",
-      "sha256": "e1d20baef68da27573f7f22d4a93fb0ee5c0489a2d1c552f26453692ce54387c",
-      "bytes": 25292
+      "sha256": "47a027e1cd35f2d7563b45d0fd90a74390ed72f4ffe25b8f8cda6b26cb22e621",
+      "bytes": 26038
     },
     {
       "path": "RELEASES.md",
-      "sha256": "0a4a03386d8d13d5e3ffc227b0fd9d0d29c4b89e23606a86fc26de9810d80412",
-      "bytes": 34646
+      "sha256": "7b4820690fe5889e2b53b9446682541bb1fc183726b0bb26fbf238e1fd9c1ff2",
+      "bytes": 35418
     },
     {
       "path": "TERMUX-RUN.md",
@@ -459,8 +464,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "67a751b0551c5140816c0d47e061bd1b7a517c0191e782dcf6686ac3cd90abf0",
-      "bytes": 8949
+      "sha256": "b5b0cde6c57c0f5186104f1384cf520c68d923282c936fe0a9e53c4f61607b2a",
+      "bytes": 9123
     },
     {
       "path": "public/app.js",
@@ -729,8 +734,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "14ad21b9a9d269d86d8301dd3ff01b5712d60780f852b00ee8b11bcc144606f6",
-      "bytes": 78474
+      "sha256": "357fcedd7a8a023e51d7df86250706cf60959c09b1e9a756743be4b65225ccd5",
+      "bytes": 78857
     },
     {
       "path": "src/action-envelope.js",
@@ -1466,6 +1471,11 @@
       "path": "src/web-research-engine.js",
       "sha256": "917fecedd50cf7efadd17a24db51d7344db9fe0d396e464cc904d252de512b00",
       "bytes": 6525
+    },
+    {
+      "path": "src/witforge-compat.js",
+      "sha256": "c21bf93d0831a955383398618be80c4635e22f7f70205cdec5a8331337299b77",
+      "bytes": 1530
     },
     {
       "path": "src/workspace.js",
