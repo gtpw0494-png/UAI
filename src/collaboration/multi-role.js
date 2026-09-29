@@ -31,6 +31,16 @@ export class MultiRoleCollaboration {
     this.audit=audit;
   }
   status(){return {state:"SUCCESS",version:"0.76.0",mode:"SIMULATED_MULTI_ROLE",roles:[...this.roles.values()],executionAuthority:"NONE",approvalAuthority:"NONE"};}
+  handoff(decision,{target="development",requestedAction="PLAN"}={}){
+    if(!decision?.id||!decision?.topic)return {state:"BLOCKED",message:"A collaboration decision is required."};
+    if(decision.state==="BLOCKED")return {state:"BLOCKED",message:"Blocked collaboration decisions cannot be handed off.",collaborationId:decision.id};
+    const allowed=new Set(["development","self-development","forgelm","task-planning"]);
+    if(!allowed.has(clean(target)))return {state:"BLOCKED",message:"Unsupported collaboration handoff target."};
+    const envelope={id:"handoff-"+crypto.randomUUID(),collaborationId:decision.id,target:clean(target),requestedAction:clean(requestedAction)||"PLAN",topic:decision.topic,state:"WAITING_APPROVAL",executionAuthority:"NONE",approvalAuthority:"EXTERNAL_GOVERNANCE",authorized:false,createdAt:new Date().toISOString()};
+    this.audit?.append?.({type:"collaboration.handoff.created",handoffId:envelope.id,collaborationId:decision.id,target:envelope.target,state:envelope.state});
+    this.chronicle?.record?.({eventType:"collaboration.handoff",subjectId:envelope.id,sourceId:"uai:collaboration",state:envelope.state,verified:false,trainingEligible:false,payload:{collaborationId:decision.id,target:envelope.target,requestedAction:envelope.requestedAction,authorized:false}});
+    return {state:"WAITING_APPROVAL",handoff:envelope};
+  }
   deliberate({topic,contributions=[],ownerId=null,chatId=null}={}){
     const subject=clean(topic);
     if(!subject)return {state:"BLOCKED",message:"topic required."};
