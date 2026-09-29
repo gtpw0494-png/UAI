@@ -223,12 +223,22 @@ export class OneChatRouter{
   if(/build|develop|implement|code|repair|update|upgrade|repository|proposal|stage|promote|rollback/i.test(t))a.push({agent:"development",reason:"governed development intent"});
   if(/forgelm|local model|model status|neural|train model|language model|checkpoint|tokenizer/i.test(t))a.push({agent:"forgelm",reason:"local neural-model intent"});
   if(/learning|training data|dataset|verified trace|prepare corpus/i.test(t))a.push({agent:"learning",reason:"learning-fabric intent"});
+  if(/collaborat|architect|coder|programmer|software engineer|debugger|test engineer|devops|database engineer|ui\/ux|ml engineer|performance engineer/i.test(t))a.push({agent:"collaboration",reason:"governed multi-role collaboration intent"});
   if(/agent|orchestrate|collaborat|workflow|task\b|resume task|cancel task|action envelope/i.test(t))a.push({agent:"explorative",reason:"agent/orchestration/task-lifecycle intent"});
   if(/account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite|what (?:else )?can you do|what can you do|help me use|available features/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
   if(!a.length)a.push({agent:"conversation",reason:"general conversational response"});
   return a.filter((x,i)=>a.findIndex(y=>y.agent===x.agent)===i);
  }
  async execute(agent,message,chatId=null,context={}){
+  if(agent==="collaboration"){
+    if(!this.collaboration)return result("UNAVAILABLE","Multi-role collaboration service is not configured.");
+    if(/status|roles|specialists|team|council/i.test(message))return this.collaboration.status();
+    const all=this.collaboration.status().roles;
+    const selected=all.filter(r=>String(message).toLowerCase().includes(r.label.toLowerCase()));
+    const roles=selected.length?selected:all;
+    const contributions=roles.map(r=>({role:r.id,message:r.label+" review requested for: "+String(message).slice(0,500)}));
+    return this.collaboration.deliberate({topic:message,contributions,ownerId:context.ownerId||null,chatId});
+  }
   if(agent==="conversation")return this.conversation?this.conversation.chat({chatId,message}):result("UNAVAILABLE","Conversational model engine is not configured.");
   if(agent==="web-research"){
     if(/^(?:can|could|do) you (?:search|browse|access|use) (?:the )?(?:web|internet)\??$/i.test(String(message).trim())){
