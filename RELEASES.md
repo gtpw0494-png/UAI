@@ -1,5 +1,15 @@
 # Release history
 
+## v0.75.0 — UAI + WitForge Consolidation
+- Established UAI `main` as the authoritative executable root for the combined project.
+- Added an automated repository-to-repository consolidation workflow for WitForge.
+- Preserved WitForge source under `legacy/witforge-source/` with its CommonJS boundary intact.
+- Added a native ESM compatibility registry and governed status/manifest endpoints.
+- Preserves WitForge-only mental-health, Snake Lab, device-adapter, Arena/engagement, ForgeLM and specification lineage without overwriting newer UAI implementations.
+- Existing UAI OneChat, ForgeLM, Chronicle, policy, approvals, provenance and learning governance remain authoritative.
+- Compatibility source is not labeled executable until individually ported and verified.
+
+
 ## v0.74.0 — Universal Chronicle Integration
 - Promoted the Chronicle from an external prototype into the native UAI runtime.
 - Added `src/chronicle/chronicle-center.js` as the shared append-only memory/log/recall substrate.
