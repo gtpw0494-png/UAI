@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "3e7f61d8e0a3ff17b16b429f2435e677b8a5b7464eac773d47f6d58d5c72f365",
-      "bytes": 9419
+      "sha256": "a003cccf5cea9e01a99f55fd7efe11c051dbb38207abe5399521e987471bb7da",
+      "bytes": 9515
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -154,8 +154,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "ca8bfe7f08b33e169c8aa0bd9c0c5362ea3f7bf460e514c3b92c4b7f0e217b14",
-      "bytes": 59459
+      "sha256": "c19e8ad8ac4eb1ef3a54697e4546d03980d034f410ac617587277142a3e9a21f",
+      "bytes": 60112
     },
     {
       "path": "model/adaptation.py",
@@ -464,8 +464,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "ad2fd5695d85e8c6ce5ed82ae813d993c2b8e11adccff3f0f163742f6ddd0a08",
-      "bytes": 9202
+      "sha256": "b1749020409efb702419d463dc52e80c5a7f48013a2002d09cd30dc238a7eb45",
+      "bytes": 9280
     },
     {
       "path": "public/app.js",
@@ -801,6 +801,11 @@
       "path": "src/code/repository-intelligence.js",
       "sha256": "e884819bfed7c51cee8b5470b947b3098df4da0bbeb35cd78335c8b7f9fbfa89",
       "bytes": 7252
+    },
+    {
+      "path": "src/collaboration/multi-role.js",
+      "sha256": "37703afe276d26fdaf6f89dc91cd32f821ed665417aab18ed6a5ed7321dd8c53",
+      "bytes": 2754
     },
     {
       "path": "src/content-security.js",
@@ -1696,6 +1701,11 @@
       "path": "verification/model-router-evidence-v049.test.mjs",
       "sha256": "689ef250bf20d8f3d0c1c74ad2b512bf9b2091d7fcb4e1deecfc3ba96d04987d",
       "bytes": 10717
+    },
+    {
+      "path": "verification/multi-role-collaboration.test.mjs",
+      "sha256": "f49ade31455d059076f62a6a6c2c7eb60c7a2e3e306d7f1dc0fcaaf86b628c0e",
+      "bytes": 1164
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
