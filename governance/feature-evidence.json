@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.73.0",
+  "generated_for": "0.76.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1403,6 +1403,51 @@
         "verification/termux-onechat-recovery-v073.test.mjs"
       ],
       "evidence_note": "Termux/Android child Node execution clears libtermux-exec preload for syntax validation and HTTP verification tests use absolute server.js paths. Browser syntax checking uses a Termux-safe wrapper. OneChat now answers natural capability questions from live capability truth, probes web-search reachability instead of claiming connectivity, and recognizes natural bare-domain ingest requests."
+    },
+    {
+      "id": "universal-chronicle-v074",
+      "introduced": "0.74.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/chronicle/chronicle-center.js",
+        "src/onechat.js",
+        "src/provenance/graph.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/chronicle-integration-v074.test.mjs"
+      ],
+      "evidence_note": "Native Chronicle records persisted OneChat turns, SHA-256 lineage, provenance nodes, recall, timelines and daily digests. Chronicle remains separate from consent-managed MemoryStore and is training-ineligible by default."
+    },
+    {
+      "id": "witforge-consolidation-v075",
+      "introduced": "0.75.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/witforge-compat.js",
+        "integration/WITFORGE-MERGE-MANIFEST.json",
+        "legacy/witforge-source/package.json"
+      ],
+      "tests": [
+        "verification/chronicle-integration-v074.test.mjs"
+      ],
+      "evidence_note": "WitForge source lineage is consolidated under a CommonJS-scoped compatibility namespace while UAI ESM remains authoritative. Presence is not treated as native executability."
+    },
+    {
+      "id": "native-wellbeing-snake-v076",
+      "introduced": "0.76.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/witforge/mental-health-adapter.js",
+        "src/witforge/snake-lab-adapter.js",
+        "src/onechat.js",
+        "src/capabilities.js",
+        "server.js"
+      ],
+      "tests": [
+        "verification/witforge-native-v076.test.mjs"
+      ],
+      "evidence_note": "Native ESM adapters expose the merged WitForge wellbeing and Snake Lab subsystems. Wellbeing remains opt-in, non-diagnostic, non-prescribing and excluded from training/retrieval. Snake Overwatch retains authority NONE and cannot mutate source/security or grant capabilities."
     }
   ]
 }
