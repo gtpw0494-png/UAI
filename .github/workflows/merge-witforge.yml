@@ -1,0 +1,78 @@
+name: Merge WitForge into UAI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/merge-witforge.yml"
+      - ".witforge-merge-trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout UAI
+        uses: actions/checkout@v4
+        with:
+          path: uai
+          fetch-depth: 0
+
+      - name: Checkout WitForge
+        uses: actions/checkout@v4
+        with:
+          repository: gtpw0494-png/Witforge
+          ref: main
+          path: witforge
+          fetch-depth: 1
+
+      - name: Merge source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE"
+          mkdir -p uai/legacy/witforge-source
+          rsync -a --delete             --exclude '.git/'             --exclude 'integration/uai-source/'             witforge/ uai/legacy/witforge-source/
+
+          WIT_SHA="$(git -C witforge rev-parse HEAD)"
+          UAI_PARENT="$(git -C uai rev-parse HEAD)"
+          python3 - "$WIT_SHA" "$UAI_PARENT" <<'PY'
+          import json, sys, datetime, pathlib
+          wit, parent=sys.argv[1:3]
+          out={
+            "format":"uai-witforge-consolidation-v1",
+            "sourceRepository":"gtpw0494-png/Witforge",
+            "sourceBranch":"main",
+            "sourceCommit":wit,
+            "destinationRepository":"gtpw0494-png/UAI",
+            "destinationBranch":"main",
+            "destinationParent":parent,
+            "destinationPrefix":"legacy/witforge-source",
+            "mergedAt":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "policy":"additive-non-destructive",
+            "runtimeBoundary":"UAI ESM remains authoritative; imported WitForge package keeps its CommonJS boundary.",
+            "excluded":["legacy .git metadata","WitForge integration/uai-source duplicate snapshot"]
+          }
+          p=pathlib.Path("uai/integration/WITFORGE-MERGE-MANIFEST.json")
+          p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_text(json.dumps(out,indent=2)+"\n")
+          PY
+
+      - name: Commit union
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd uai
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add legacy/witforge-source integration/WITFORGE-MERGE-MANIFEST.json
+          if git diff --cached --quiet; then
+            echo "WitForge snapshot already current."
+            exit 0
+          fi
+          git commit -m "Consolidate WitForge source into UAI"
+          git push origin HEAD:main
