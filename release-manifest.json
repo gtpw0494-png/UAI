@@ -154,8 +154,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "17c81bf6c12dd3dbce12f8ae8de304599f02c2c416bb5754176759dc8390a80a",
-      "bytes": 60377
+      "sha256": "9fa40164de14fbbc02f7d8ffcd84497a0bc785c5641675d49b3a98f4f359066c",
+      "bytes": 62183
     },
     {
       "path": "model/adaptation.py",
@@ -464,8 +464,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "b1749020409efb702419d463dc52e80c5a7f48013a2002d09cd30dc238a7eb45",
-      "bytes": 9280
+      "sha256": "7c64a938946237cc9aa0ac8f34b2c24480df429dd69f8eb2b7a104460614805f",
+      "bytes": 9351
     },
     {
       "path": "public/app.js",
@@ -783,6 +783,11 @@
       "bytes": 13242
     },
     {
+      "path": "src/capability-genome.js",
+      "sha256": "829832e2e18798650f07ef33a2f3d974b33b59a02eba021d8b2df5490c8498a0",
+      "bytes": 2172
+    },
+    {
       "path": "src/capability-truth.js",
       "sha256": "c6d41c62ea7757842343476a4476e75b717d11a868bcf927988937633ec796c9",
       "bytes": 1196
@@ -838,6 +843,11 @@
       "bytes": 10206
     },
     {
+      "path": "src/decision-proof-ledger.js",
+      "sha256": "fbd930fc5bc976ff51fe80e44dbaf5b3444db8c4625bc7442fe82f8c060bb33e",
+      "bytes": 2229
+    },
+    {
       "path": "src/dependency-status.js",
       "sha256": "6c1617e0a71b59068bb40f48a55c3e5ddcf1768e9e3d0f37e3663c0d33681205",
       "bytes": 559
@@ -876,6 +886,11 @@
       "path": "src/forgeaudio-candidate-promotion.js",
       "sha256": "332d2ff7687d5d79fa4eaeee66ce89186a94e8b2ee2bc538a10a71a8732b8011",
       "bytes": 6291
+    },
+    {
+      "path": "src/forgedream.js",
+      "sha256": "5a987ffcd95d8135ee7cf3bee29ce365c35a07790a2f66ec317cbb6f40c4d525",
+      "bytes": 1976
     },
     {
       "path": "src/forgelm-bridge.js",
@@ -1771,6 +1786,11 @@
       "path": "verification/plugin-http.test.mjs",
       "sha256": "588ede53d07920bd86d3ab496e75f314bf9d131af990e5f947ed5f2624ba7e3b",
       "bytes": 5138
+    },
+    {
+      "path": "verification/proof-genome-dream-v077.test.mjs",
+      "sha256": "7b6db47a8cf91ddbaf3a465160bfecb174d8fe1ca07244556d75da667f25ea73",
+      "bytes": 1619
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
