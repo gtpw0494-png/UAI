@@ -1789,8 +1789,8 @@
     },
     {
       "path": "verification/proof-genome-dream-v077.test.mjs",
-      "sha256": "7b6db47a8cf91ddbaf3a465160bfecb174d8fe1ca07244556d75da667f25ea73",
-      "bytes": 1619
+      "sha256": "ae3881900c0c102d9d24cdef9083bd02ce0be43a43cd44857f42da66bf740017",
+      "bytes": 1858
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
