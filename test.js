@@ -169,3 +169,4 @@ await import("./verification/knowledge-production-http-v055.test.mjs");
 console.log("v0.55 production knowledge lifecycle tests passed");
 
 await import("./verification/chronicle-integration-v074.test.mjs");
+\nawait import("./verification/witforge-native-v076.test.mjs");\n
