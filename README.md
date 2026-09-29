@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.73.0
+# IntraultUniversalion v0.74.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.74 Universal Chronicle
+
+UAI now has a native Chronicle substrate connecting conversation history, evidence, provenance, recall and daily consolidation. Persisted OneChat turns are appended to an immutable-style event stream with SHA-256 lineage, sanitized attachment metadata and evidence references. Chronicle recall is available through governed HTTP endpoints without bypassing the existing MemoryStore consent model.
+
+Chronicle is deliberately separated from model training. Events are not training material by default, and verified history still requires the existing governed learning pipeline before it can influence ForgeLM weights.
 
 ## v0.73 Termux runtime and OneChat recovery
 
