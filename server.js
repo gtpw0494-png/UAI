@@ -73,6 +73,7 @@ import { KnowledgeAutonomy } from "./src/knowledge-autonomy.js";
 import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
 import { KnowledgeScheduler } from "./src/knowledge-scheduler.js";
 import { MultimodalPipeline } from "./src/multimodal/pipeline.js";
+import { ChronicleCenter } from "./src/chronicle/chronicle-center.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -131,6 +132,7 @@ const langgraph = new LangGraphAdapter();
 const storageDb = new StorageDatabase();
 const memoryStore = new MemoryStore({stateRoot:stateDir,audit});
 const provenanceGraph = new ProvenanceGraph({stateRoot:stateDir,audit,memoryStore});
+const chronicle = new ChronicleCenter({stateRoot:stateDir,audit,memoryStore,provenanceGraph,learning});
 const multimodalPipeline = new MultimodalPipeline({stateRoot:stateDir,audit,provenanceGraph,allowedRoots:[path.join(stateDir,"media-input"),path.join(__dirname,"model","data"),path.join(__dirname,"data")]});
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
@@ -170,7 +172,7 @@ const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research"
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot())});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle});
 const onechatTurnSessions = new OneChatTurnSessions({onechat,audit,stateRoot:stateDir});
 const PORT = Number(process.env.PORT || 8787);
 const HOST = String(process.env.HOST || "127.0.0.1").trim() || "127.0.0.1";
@@ -496,6 +498,10 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/plugins")return send(res,200,control.plugins.list());
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
   if(req.method==="GET"&&url.pathname==="/api/subscriptions")return send(res,200,control.subscriptions.list());
+  if(req.method==="GET"&&url.pathname==="/api/chronicle/status")return send(res,200,chronicle.status());
+  if(req.method==="GET"&&url.pathname==="/api/chronicle/recall")return send(res,200,chronicle.recall(url.searchParams.get("q")||"",{ownerId:req.uaiSecurity.auth.identityId,limit:Number(url.searchParams.get("limit")||20),asOf:url.searchParams.get("asOf")||null}));
+  if(req.method==="GET"&&url.pathname==="/api/chronicle/timeline")return send(res,200,chronicle.timeline(url.searchParams.get("subjectId")||"",{limit:Number(url.searchParams.get("limit")||200)}));
+  if(req.method==="GET"&&url.pathname==="/api/chronicle/digest")return send(res,200,chronicle.digest(url.searchParams.get("day")||new Date().toISOString().slice(0,10)));
   if(req.method==="GET"&&url.pathname==="/api/audit")return send(res,200,audit.list(Number(url.searchParams.get("limit")||100)));
   if(req.method==="GET"&&url.pathname==="/api/audit/verify")return send(res,200,audit.verify());
   if(req.method==="GET"&&url.pathname==="/api/source/inspect")return send(res,200,workspace.inspect(url.searchParams.get("path")||"package.json"));
