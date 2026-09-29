@@ -1,6 +1,12 @@
-# IntraultUniversalion v0.74.0
+# IntraultUniversalion / WitForge Unified v0.75.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+## v0.75 UAI + WitForge consolidation
+
+UAI and WitForge are now one additive project line. UAI remains the executable ESM root and WitForge's non-duplicate source lineage is consolidated under `legacy/witforge-source/` with its CommonJS package boundary preserved. The compatibility registry reports whether major WitForge systems are physically present and prevents archived source from being misreported as native executable capability.
+
+This preserves the WitForge 168-section specification lineage, action/device fabric work, mental-health subsystem, Snake Lab/Overwatch, Arena/engagement systems and its ForgeLM research implementation while the active OneChat/ForgeLM/Chronicle/governance stack remains in the UAI root.
 
 ## v0.74 Universal Chronicle
 
