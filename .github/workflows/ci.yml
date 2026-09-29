@@ -141,7 +141,10 @@ jobs:
       - name: Verify durable OneChat restart recovery
         run: npm run test:onechat-durable-recovery
 
-      - name: Verify governed multi-role collaboration\n        run: npm run test:multi-role\n\n      - name: Verify lifecycle retrieval and learning foundations
+      - name: Verify governed multi-role collaboration
+        run: npm run test:multi-role
+
+      - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
       - name: Compile all Python source
