@@ -237,7 +237,13 @@ export class OneChatRouter{
     const selected=all.filter(r=>String(message).toLowerCase().includes(r.label.toLowerCase()));
     const roles=selected.length?selected:all;
     const contributions=roles.map(r=>({role:r.id,message:r.label+" review requested for: "+String(message).slice(0,500)}));
-    return this.collaboration.deliberate({topic:message,contributions,ownerId:context.ownerId||null,chatId});
+    const deliberation=this.collaboration.deliberate({topic:message,contributions,ownerId:context.ownerId||null,chatId});
+    if(deliberation.state==="BLOCKED")return deliberation;
+    if(/handoff|stage|implement|build|develop|code|repair/i.test(message)){
+      const target=/model|forgelm|ml\b/i.test(message)?"forgelm":/stage|self[- ]?develop/i.test(message)?"self-development":"development";
+      return {...deliberation,handoff:this.collaboration.handoff(deliberation.decision,{target,requestedAction:"PLAN"}).handoff};
+    }
+    return deliberation;
   }
   if(agent==="conversation")return this.conversation?this.conversation.chat({chatId,message}):result("UNAVAILABLE","Conversational model engine is not configured.");
   if(agent==="web-research"){
