@@ -12,6 +12,10 @@ const ok=c.deliberate({topic:"continue UAI build",chatId:"test",contributions:[
 ]});
 assert.equal(ok.state,"SUCCESS");
 assert.equal(ok.decision.approvalAuthority,"NONE");
+const handoff=c.handoff(ok.decision,{target:"self-development",requestedAction:"STAGE"});
+assert.equal(handoff.state,"WAITING_APPROVAL");
+assert.equal(handoff.handoff.authorized,false);
+assert.equal(handoff.handoff.executionAuthority,"NONE");
 assert.equal(records[0].trainingEligible,false);
 const blocked=c.deliberate({topic:"unsafe mutation",contributions:[{role:"security",message:"Block: not authorized."}]});
 assert.equal(blocked.state,"BLOCKED");
