@@ -8,6 +8,8 @@ export function buildCapabilityRegistry(providerHub,extras={}){
   const fabrication=service("fabrication",{availability:"UNAVAILABLE",executable:false,reason:"No verified physical fabrication controller is connected."});
   const base=[
     {id:"local.onechat",availability:"CONNECTED",executable:true},
+    {id:"local.wellbeing.support",availability:"CONNECTED",executable:true,reason:"Native ESM adapter exposes the merged WitForge wellbeing service with explicit opt-in consent and no diagnosis/prescribing authority.",constraints:["explicit consent","training disabled","retrieval disabled","no diagnosis","no prescribing"]},
+    {id:"local.snake.overwatch",availability:"CONNECTED",executable:true,reason:"Native ESM adapter exposes deterministic Snake Lab evaluation and bounded Q-learning.",constraints:["authority NONE","no source patch authority","no security mutation","no capability grants","mental-health data excluded"]},
     {id:"local.onechat.durable_sessions",availability:"CONNECTED",executable:true,reason:"Live OneChat turn snapshots and append-only event journals persist under local state and reconcile on restart.",constraints:["queued sessions may safely resume automatically","running sessions become INTERRUPTED after restart","interrupted work requires explicit owner resume","late results are never promoted after cancellation/interruption"]},
     {id:"local.release.integrity",availability:"CONNECTED",executable:true,reason:"Shipped source/support files are bound to a SHA-256 release manifest."},
     {id:"local.hardware.profile",availability:"CONNECTED",executable:true,reason:"Reports local CPU/RAM/Torch/CUDA facts and conservative preset candidates."},
