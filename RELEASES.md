@@ -1,5 +1,16 @@
 # Release history
 
+## v0.74.0 — Universal Chronicle Integration
+- Promoted the Chronicle from an external prototype into the native UAI runtime.
+- Added `src/chronicle/chronicle-center.js` as the shared append-only memory/log/recall substrate.
+- OneChat now appends persisted turns, sanitized attachment metadata and evidence digests into Chronicle.
+- Chronicle records create provenance nodes and preserve SHA-256 hash-chain lineage.
+- Added governed Chronicle status, recall, timeline and daily-digest HTTP APIs.
+- Chronicle training eligibility defaults to false; verified runtime history is not silently converted into ForgeLM training data.
+- Existing MemoryStore consent/deletion semantics remain authoritative for user memory; Chronicle does not bypass them.
+- Added dedicated v0.74 regression coverage and wired it into the main test suite.
+
+
 ## v0.73.0 — Termux Runtime and OneChat Recovery
 - Added a Termux-safe child-process environment that removes libtermux-exec from Node syntax-validation children when necessary.
 - Changed HTTP verification server launches to absolute server.js paths for Android/Termux compatibility.
