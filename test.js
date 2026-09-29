@@ -167,3 +167,5 @@ await import("./verification/onechat-model-lifecycle.test.mjs");
 await import("./verification/forgelm-cli-policy.test.mjs");
 await import("./verification/knowledge-production-http-v055.test.mjs");
 console.log("v0.55 production knowledge lifecycle tests passed");
+
+await import("./verification/chronicle-integration-v074.test.mjs");
