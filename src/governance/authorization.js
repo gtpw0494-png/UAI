@@ -14,7 +14,9 @@ export function routeSecurity(method,path){
   if(p==="/api/status"||p==="/api/auth/status"||p==="/api/auth/login")return {public:true,stateChanging:p==="/api/auth/login",capability:"identity.login",risk:"low"};
   const stateChanging=!["GET","HEAD","OPTIONS"].includes(m);
   let risk=stateChanging?"medium":"low",capability="api.read",external=false,mutatesSource=false,requiresCredential=false,delegateApproval=false;
-  if(p.startsWith("/api/chronicle/"))capability=stateChanging?"chronicle.write":"chronicle.read";
+  if(p.startsWith("/api/mental-health/"))capability=stateChanging?"wellbeing.write":"wellbeing.read";
+  else if(p.startsWith("/api/snake/"))capability=stateChanging?"snake.execute":"snake.read";
+  else if(p.startsWith("/api/chronicle/"))capability=stateChanging?"chronicle.write":"chronicle.read";
   else if(p.startsWith("/api/memory/"))capability=stateChanging?"memory.write":"memory.read";
   else if(p.startsWith("/api/provenance/"))capability=stateChanging?"provenance.write":"provenance.read";
   else if(p.startsWith("/api/evaluations/"))capability=stateChanging?"evaluation.write":"evaluation.read";
@@ -53,6 +55,7 @@ export function routeSecurity(method,path){
   if(p.startsWith("/api/web/")||p.startsWith("/api/provider/")||p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/knowledge/research")||p.startsWith("/api/knowledge/cloud/")||p.endsWith("/execute"))external=true;
   if(p.startsWith("/api/billing/")||p.startsWith("/api/oxford/")||p.startsWith("/api/fabrication/")||p.startsWith("/api/provider/")||p.startsWith("/api/knowledge/cloud/"))requiresCredential=true;
   if(["/api/plugins-v1/execute","/api/develop/apply","/api/selfdev/promote","/api/fabrication/job"].includes(p))delegateApproval=true;
+  if(p==="/api/mental-health/delete"||p==="/api/snake/reset")risk="high";
   if(["/api/approvals/request","/api/approvals/decide","/api/policy/evaluate","/api/policy/simulate","/api/auth/logout","/api/governance/emergency/engage"].includes(p))risk="low";
   return {public:false,stateChanging,capability,risk,external,mutatesSource,requiresCredential,delegateApproval};
 }
