@@ -245,3 +245,10 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - IMPLEMENTED — WitForge compatibility registry and governed status/manifest API.
 - PRESERVED — WitForge specification, action fabric, device adapters, mental-health, Snake Lab, Arena/engagement and ForgeLM lineage.
 - GOVERNED — imported source is not automatically treated as connected/executable; native migration requires tests and evidence.
+
+## v0.76.0 native WitForge activation
+- IMPLEMENTED_UNVERIFIED_REPO — native Wellbeing adapter backed by merged WitForge service with explicit consent and strict training/retrieval exclusion.
+- IMPLEMENTED_UNVERIFIED_REPO — native Snake Lab adapter with authority NONE and bounded deterministic Q-learning.
+- IMPLEMENTED — OneChat routing for wellbeing and Snake intents.
+- IMPLEMENTED — governed HTTP and capability-truth surfaces for both systems.
+- FIXED — feature-evidence generated_for now matches the active package version, allowing authoritative CI to progress beyond the evidence gate.
