@@ -154,8 +154,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "707d2ac19e9c19fb61c30da4af540b19941ddb59dae56e7e178fc845e5bb9372",
-      "bytes": 60332
+      "sha256": "17c81bf6c12dd3dbce12f8ae8de304599f02c2c416bb5754176759dc8390a80a",
+      "bytes": 60377
     },
     {
       "path": "model/adaptation.py",
@@ -804,8 +804,8 @@
     },
     {
       "path": "src/collaboration/multi-role.js",
-      "sha256": "cda738c3833b34e82875dfbc258d3cfa81fcfeaea24ece3ee3ac889f04442f1a",
-      "bytes": 5244
+      "sha256": "41d2fcf21e0f63853be20347ecd07e8b776770147c8dc55886154f36f42bf890",
+      "bytes": 6783
     },
     {
       "path": "src/content-security.js",
@@ -1704,8 +1704,8 @@
     },
     {
       "path": "verification/multi-role-collaboration.test.mjs",
-      "sha256": "f47fb66c7b14c3055344d27844f9d0ba93edcbd32042d23585a934bf7e6d5100",
-      "bytes": 1678
+      "sha256": "73d9ed06f99116b86c8c261765e3de3d8b405d9d5d45a249198853de6e9e371b",
+      "bytes": 1972
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
