@@ -1448,6 +1448,18 @@
         "verification/witforge-native-v076.test.mjs"
       ],
       "evidence_note": "Native ESM adapters expose the merged WitForge wellbeing and Snake Lab subsystems. Wellbeing remains opt-in, non-diagnostic, non-prescribing and excluded from training/retrieval. Snake Overwatch retains authority NONE and cannot mutate source/security or grant capabilities."
+    },
+    {
+      "id": "governed-multi-role-collaboration",
+      "introduced": "0.76.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/collaboration/multi-role.js"
+      ],
+      "tests": [
+        "verification/multi-role-collaboration.test.mjs"
+      ],
+      "evidence_note": "Simulated Architect/Builder/ForgeLM/Security/CI/Reviewer/Integrator/Chronicle/Verifier deliberation is bounded to advisory/evidence roles. The layer has no execution or approval authority, security objections block synthesis, evidence objections prevent success claims, and Chronicle recording is training-ineligible by default."
     }
   ]
 }

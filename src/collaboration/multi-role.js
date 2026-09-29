@@ -1,0 +1,43 @@
+import crypto from "node:crypto";
+
+export const DEFAULT_ROLES=Object.freeze([
+  {id:"architect",label:"Architect",authority:"ADVISORY"},
+  {id:"builder",label:"Builder",authority:"ADVISORY"},
+  {id:"forgelm",label:"ForgeLM",authority:"ADVISORY"},
+  {id:"security",label:"Security",authority:"VETO_RECOMMENDATION"},
+  {id:"ci",label:"CI",authority:"EVIDENCE_ONLY"},
+  {id:"reviewer",label:"Reviewer",authority:"ADVISORY"},
+  {id:"integrator",label:"Integrator",authority:"ADVISORY"},
+  {id:"chronicle",label:"Chronicle",authority:"RECORD_ONLY"},
+  {id:"verifier",label:"Verifier",authority:"EVIDENCE_ONLY"}
+]);
+
+const clean=v=>String(v??"").trim();
+
+export class MultiRoleCollaboration {
+  constructor({roles=DEFAULT_ROLES,chronicle=null,audit=null}={}){
+    this.roles=new Map(roles.map(r=>[r.id,Object.freeze({...r})]));
+    this.chronicle=chronicle;
+    this.audit=audit;
+  }
+  status(){return {state:"SUCCESS",version:"0.76.0",mode:"SIMULATED_MULTI_ROLE",roles:[...this.roles.values()],executionAuthority:"NONE",approvalAuthority:"NONE"};}
+  deliberate({topic,contributions=[],ownerId=null,chatId=null}={}){
+    const subject=clean(topic);
+    if(!subject)return {state:"BLOCKED",message:"topic required."};
+    const rows=[];
+    for(const c of Array.isArray(contributions)?contributions:[]){
+      const role=this.roles.get(clean(c?.role).toLowerCase());
+      if(!role)return {state:"BLOCKED",message:`Unknown collaboration role: ${clean(c?.role)||"(empty)"}`};
+      const message=clean(c?.message);
+      if(!message)continue;
+      rows.push({role:role.id,label:role.label,authority:role.authority,message});
+    }
+    const securityObjections=rows.filter(x=>x.role==="security"&&/\b(block|deny|unsafe|violation|not authorized|unauthori[sz]ed)\b/i.test(x.message));
+    const evidenceObjections=rows.filter(x=>["ci","verifier"].includes(x.role)&&/\b(fail|failed|missing|unknown|unverified|no evidence)\b/i.test(x.message));
+    const state=securityObjections.length?"BLOCKED":evidenceObjections.length?"PARTIAL":"SUCCESS";
+    const decision={id:"collab-"+crypto.randomUUID(),topic:subject,state,contributions:rows,executionAuthority:"NONE",approvalAuthority:"NONE",requiresExternalAuthorization:true,createdAt:new Date().toISOString()};
+    this.audit?.append?.({type:"collaboration.deliberated",collaborationId:decision.id,chatId:chatId||null,ownerId:ownerId||null,state,roles:[...new Set(rows.map(x=>x.role))]});
+    this.chronicle?.record?.({eventType:"collaboration.deliberation",subjectId:decision.id,sourceId:chatId?"onechat:"+chatId:"uai:collaboration",ownerId,state,verified:false,trainingEligible:false,payload:{topic:subject,roles:decision.contributions.map(x=>x.role),executionAuthority:"NONE"}});
+    return {state,decision};
+  }
+}
