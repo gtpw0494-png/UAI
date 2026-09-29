@@ -74,6 +74,7 @@ import { KnowledgeResearchWorker } from "./src/knowledge-research-worker.js";
 import { KnowledgeScheduler } from "./src/knowledge-scheduler.js";
 import { MultimodalPipeline } from "./src/multimodal/pipeline.js";
 import { ChronicleCenter } from "./src/chronicle/chronicle-center.js";
+import { WitForgeCompatibility } from "./src/witforge-compat.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -133,6 +134,7 @@ const storageDb = new StorageDatabase();
 const memoryStore = new MemoryStore({stateRoot:stateDir,audit});
 const provenanceGraph = new ProvenanceGraph({stateRoot:stateDir,audit,memoryStore});
 const chronicle = new ChronicleCenter({stateRoot:stateDir,audit,memoryStore,provenanceGraph,learning});
+const witforgeCompatibility = new WitForgeCompatibility({root:__dirname,audit});
 const multimodalPipeline = new MultimodalPipeline({stateRoot:stateDir,audit,provenanceGraph,allowedRoots:[path.join(stateDir,"media-input"),path.join(__dirname,"model","data"),path.join(__dirname,"data")]});
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
@@ -498,6 +500,8 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="GET"&&url.pathname==="/api/plugins")return send(res,200,control.plugins.list());
   if(req.method==="GET"&&url.pathname==="/api/accounts")return send(res,200,control.accounts.list());
   if(req.method==="GET"&&url.pathname==="/api/subscriptions")return send(res,200,control.subscriptions.list());
+  if(req.method==="GET"&&url.pathname==="/api/witforge/status")return send(res,200,witforgeCompatibility.status());
+  if(req.method==="GET"&&url.pathname==="/api/witforge/manifest")return send(res,200,witforgeCompatibility.manifest());
   if(req.method==="GET"&&url.pathname==="/api/chronicle/status")return send(res,200,chronicle.status());
   if(req.method==="GET"&&url.pathname==="/api/chronicle/recall")return send(res,200,chronicle.recall(url.searchParams.get("q")||"",{ownerId:req.uaiSecurity.auth.identityId,limit:Number(url.searchParams.get("limit")||20),asOf:url.searchParams.get("asOf")||null}));
   if(req.method==="GET"&&url.pathname==="/api/chronicle/timeline")return send(res,200,chronicle.timeline(url.searchParams.get("subjectId")||"",{limit:Number(url.searchParams.get("limit")||200)}));
