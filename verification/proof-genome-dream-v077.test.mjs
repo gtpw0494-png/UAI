@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import os from "node:os";import fs from "node:fs";import path from "node:path";
+import {DecisionProofLedger} from "../src/decision-proof-ledger.js";
+import {CapabilityGenomeRegistry} from "../src/capability-genome.js";
+import {ForgeDreamLab} from "../src/forgedream.js";
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-v077-"));
+const sim={simulate:()=>({simulation:{overallDecision:"ASK",violations:[],approvalsRequired:[{reason:"high impact"}],saferPlan:[{action:"REQUIRE_EXPLICIT_APPROVAL"}]}})};
+const proof=new DecisionProofLedger({stateRoot:root,policySimulator:sim}).create({intent:"modify code",actor:"owner",capability:"local.code.mutate",risk:"high",policyDecision:"ASK",action:{operation:"code.patch",resource:"repo"},artifact:"patch"});
+assert.equal(proof.state,"SUCCESS");assert.equal(proof.proof.privateReasoningStored,false);assert.equal(proof.proof.policy.counterfactual.overallDecision,"ASK");
+const genomes=new CapabilityGenomeRegistry({stateRoot:root});const cand=genomes.candidate({id:"filesystem.write",availability:"CONNECTED",tests:["write-fixture"]});assert.equal(cand.genome.status,"CANDIDATE");assert.equal(genomes.promote(cand.genome.id,{approved:false,testState:"SUCCESS"}).state,"BLOCKED");
+const dream=new ForgeDreamLab({stateRoot:root});const run=dream.create({world:"RepoWorld",objective:"repair safely"});assert.equal(run.run.realWorldEffects,false);const fin=dream.finish(run.run.id,{verifiedResult:{state:"SUCCESS",verified:true},score:1});assert.equal(fin.run.trainingEligible,true);
+console.log("Proof/Genome/ForgeDream tests passed");
