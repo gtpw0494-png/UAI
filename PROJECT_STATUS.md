@@ -225,3 +225,15 @@ This ledger prevents additive releases from silently dropping earlier requiremen
 - PARTIAL — claim corroboration currently uses normalized exact-claim matching rather than full semantic entailment.
 - STILL PARTIAL — dense neural retrieval, multimodal pipelines, kernel-grade sandboxing, encrypted multi-device sync, federated learning, large-scale distillation/training, automatic ensembles and frontier-model parity.
 
+
+
+## v0.74.0 Universal Chronicle integration
+- IMPLEMENTED — native `ChronicleCenter` under `src/chronicle/`.
+- IMPLEMENTED — append-only Chronicle events with SHA-256 previous-hash lineage.
+- IMPLEMENTED — OneChat turn persistence into Chronicle with evidence digest and sanitized attachment metadata.
+- IMPLEMENTED — Chronicle provenance-node creation through the existing ProvenanceGraph.
+- IMPLEMENTED — governed status, recall, timeline and daily-digest HTTP surfaces.
+- IMPLEMENTED — Chronicle remains separate from MemoryStore consent-managed personal memory.
+- IMPLEMENTED — Chronicle records default to training-ineligible; no silent memory-to-training path.
+- IMPLEMENTED — dedicated v0.74 regression test is part of the main `npm test` suite.
+
