@@ -408,3 +408,15 @@ openPanel(sessionStorage.getItem("uai_workspace")||"chat");
 
 // Unified workspace delegated actions
 addEventListener("click",e=>{const b=e.target.closest("[data-chat-command]");if(!b)return;commandToChat(b.dataset.chatCommand||"");});
+
+
+// Persistent visual theme + motion controls
+const THEME_KEY="uai_visual_theme",MOTION_KEY="uai_visual_motion";
+function applyTheme(name){const allowed=new Set(["forge","neon","ember","aurora","light"]);const theme=allowed.has(name)?name:"forge";document.documentElement.dataset.theme=theme;localStorage.setItem(THEME_KEY,theme);document.querySelectorAll("[data-theme]").forEach(x=>x.classList.toggle("active",x.dataset.theme===theme));}
+function applyMotion(enabled){document.documentElement.dataset.motion=enabled?"on":"off";localStorage.setItem(MOTION_KEY,enabled?"on":"off");const x=$("#motionToggle");if(x)x.checked=enabled;}
+applyTheme(localStorage.getItem(THEME_KEY)||"forge");applyMotion(localStorage.getItem(MOTION_KEY)!=="off");
+$("#themeBtn")?.addEventListener("click",()=>{$("#themeStudio").hidden=false;});
+$("#themeClose")?.addEventListener("click",()=>{$("#themeStudio").hidden=true;});
+$("#themeStudio")?.addEventListener("click",e=>{if(e.target===$("#themeStudio"))$("#themeStudio").hidden=true;const b=e.target.closest("[data-theme]");if(b)applyTheme(b.dataset.theme);});
+$("#motionToggle")?.addEventListener("change",e=>applyMotion(e.target.checked));
+addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#themeStudio")&&!$("#themeStudio").hidden)$("#themeStudio").hidden=true;});
