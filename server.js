@@ -78,6 +78,10 @@ import { MultiRoleCollaboration } from "./src/collaboration/multi-role.js";
 import { WitForgeCompatibility } from "./src/witforge-compat.js";
 import { NativeMentalHealthAdapter } from "./src/witforge/mental-health-adapter.js";
 import { NativeSnakeLabAdapter } from "./src/witforge/snake-lab-adapter.js";
+import { DecisionProofLedger } from "./src/decision-proof-ledger.js";
+import { CapabilityGenomeRegistry } from "./src/capability-genome.js";
+import { ForgeDreamLab } from "./src/forgedream.js";
+import { EvolutionCoordinator } from "./src/evolution-coordinator.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -143,6 +147,10 @@ const mentalHealth = new NativeMentalHealthAdapter({root:__dirname,audit});
 const snakeLab = new NativeSnakeLabAdapter({root:__dirname,audit});
 const multimodalPipeline = new MultimodalPipeline({stateRoot:stateDir,audit,provenanceGraph,allowedRoots:[path.join(stateDir,"media-input"),path.join(__dirname,"model","data"),path.join(__dirname,"data")]});
 const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,audit});
+const decisionProofs = new DecisionProofLedger({stateRoot:stateDir,policySimulator,audit});
+const capabilityGenomes = new CapabilityGenomeRegistry({stateRoot:stateDir,audit});
+const forgeDream = new ForgeDreamLab({stateRoot:stateDir,audit});
+const evolutionCoordinator = new EvolutionCoordinator({genomes:capabilityGenomes,dreams:forgeDream,proofs:decisionProofs,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
 const evaluationStore = new EvaluationStore({stateRoot:stateDir,audit});
 const verifiedKnowledgeLocal = new VerifiedKnowledgeStore({stateRoot:stateDir});
@@ -474,6 +482,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/governance/emergency/release"){const b=await readBody(req);return send(res,200,governanceKernel.emergencyStop.release(req.uaiSecurity,b.reason||"owner release"));}
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/enroll"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.enroll(b,req.uaiSecurity));}
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/revoke"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.revoke(b.id,req.uaiSecurity));}
+  if(req.method==="GET"&&url.pathname==="/api/innovation/status")return send(res,200,{state:"SUCCESS",decisionProofs:decisionProofs.list(Number(url.searchParams.get("limit")||25)),capabilityGenomes:capabilityGenomes.list(Number(url.searchParams.get("limit")||100)),forgeDream:{worlds:forgeDream.worlds(),runs:forgeDream.list(Number(url.searchParams.get("limit")||50))},evolution:{authority:"EXTERNAL_APPROVAL_REQUIRED",selfPromotion:false}});
   if(req.method==="GET"&&url.pathname==="/api/control-plane/status")return send(res,200,{state:"SUCCESS",scheduler:agentScheduler.status(),storage:agentScheduler.db.status()});
   if(req.method==="GET"&&url.pathname==="/api/control-plane/dashboard"){
     const capabilities=await capabilitySnapshot(),taskRows=taskStore.list({limit:10000}),approvalRows=approvalStore.list({limit:10000}),shadowRuns=shadow.runs.list({limit:10000}),lightPatches=light.list({limit:10000}),jobs=agentScheduler.list({limit:10000}),plugins=pluginRegistry.list(),modelStatus=modelRegistry.status(),evidenceRows=featureEvidence.features||[],auditRows=audit.list(10000),ownerId=req.uaiSecurity.auth.identityId,memoryItems=memoryStore.list({ownerId,limit:10000}),provStatus=provenanceGraph.status(),evalStatus=evaluationStore.status(),artifactRows=modelArtifactVerifier.list(10000),policySims=policySimulator.list(10000);
