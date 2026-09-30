@@ -18,4 +18,15 @@ const concluded=loop.conclude({evaluation:evo.evaluation,result:{verifiedResult:
 assert.equal(concluded.state,"PARTIAL");assert.equal(concluded.evaluation.state,"VERIFIED_AWAITING_APPROVAL");assert.equal(concluded.evaluation.promotionAuthorized,false);assert.equal(concluded.decisionProof.privateReasoningStored,false);
 assert.equal(loop.promote({genomeId:evo.candidate.id,approved:false,verificationState:"SUCCESS"}).state,"BLOCKED");
 assert.equal(loop.promote({genomeId:evo.candidate.id,approved:true,verificationState:"SUCCESS"}).state,"SUCCESS");
+
+// UI/server integration contract
+const ui=fs.readFileSync(path.join(process.cwd(),"public","app.js"),"utf8");
+const html=fs.readFileSync(path.join(process.cwd(),"public","index.html"),"utf8");
+const server=fs.readFileSync(path.join(process.cwd(),"server.js"),"utf8");
+for(const panel of ["capabilityPanel","dreamPanel","securityPanel"])assert.ok(html.includes(panel));
+assert.ok(ui.includes("/api/innovation/status"));
+assert.ok(ui.includes("private reasoning"));
+assert.ok(ui.includes("data-chat-command"));
+assert.ok(server.includes("/api/innovation/status"));
+
 console.log("Proof/Genome/ForgeDream evolution tests passed");
