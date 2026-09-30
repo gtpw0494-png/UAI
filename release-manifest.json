@@ -479,8 +479,8 @@
     },
     {
       "path": "public/styles.css",
-      "sha256": "67f045305ffa3192ac10735e474e473b46843af56df3d4aa40b19daf35b64a86",
-      "bytes": 10651
+      "sha256": "a0a7cc9702d53ee35a88f128061e495a0520bc3884a1620e2dab6c7297fc076d",
+      "bytes": 12478
     },
     {
       "path": "requirements/README.md",
@@ -1794,8 +1794,8 @@
     },
     {
       "path": "verification/proof-genome-dream-v077.test.mjs",
-      "sha256": "6d617910b5998d7898ca3be334f322b3cb54edb24ec99ae5a4be6365ad2ee221",
-      "bytes": 2880
+      "sha256": "e663d6bb28127ba4bfb48e76ee9342bb2166d7464dde16d656a8f972f194db25",
+      "bytes": 3446
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
