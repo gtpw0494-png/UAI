@@ -29,4 +29,6 @@ assert.ok(ui.includes("private reasoning"));
 assert.ok(ui.includes("data-chat-command"));
 assert.ok(server.includes("/api/innovation/status"));
 
+const styles=fs.readFileSync(path.join(process.cwd(),"public","styles.css"),"utf8");
+assert.ok(html.includes("themeStudio"));assert.ok(html.includes("data-theme=\"neon\""));assert.ok(ui.includes("uai_visual_theme"));assert.ok(ui.includes("applyMotion"));assert.ok(styles.includes('html[data-theme="aurora"]'));assert.ok(styles.includes("prefers-reduced-motion"));
 console.log("Proof/Genome/ForgeDream evolution tests passed");
