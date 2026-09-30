@@ -12,6 +12,48 @@ let activeTurnSession=null;
 let activeEventSource=null;
 let activeEventSeq=0;
 
+const WORKSPACES=[
+ ["chat","OneChat"],["operations","Actions & Tasks"],["capabilities","Capabilities"],["models","ForgeLM & Models"],["collaboration","Agents & Collaboration"],["knowledge","Knowledge & Chronicle"],["research","Research & Web"],["development","Forge Lab & Development"],["dream","ForgeDream & Snake"],["security","Security & Approvals"],["integrations","Integrations & Devices"],["memory","Memory & Provenance"],["wellbeing","Wellbeing"],["evidence","Evidence & Audit"]
+];
+let latestStatus=null,latestDashboard=null;
+function openPanel(id){
+ document.querySelectorAll("[data-panel-view]").forEach(x=>x.classList.toggle("active",x.dataset.panelView===id));
+ document.querySelectorAll(".nav-item[data-panel]").forEach(x=>x.classList.toggle("active",x.dataset.panel===id));
+ $("#leftNav")?.classList.remove("open");sessionStorage.setItem("uai_workspace",id);
+ if(id!=="chat")refreshWorkspacePanels();
+}
+function truthClass(v){return String(v||"unknown").toLowerCase().replace(/[^a-z0-9_-]/g,"-");}
+function cards(rows=[]){return '<div class="dashboard-grid">'+rows.map(x=>'<article class="metric-card"><b>'+esc(x[0])+'</b><strong>'+esc(x[1])+'</strong><span class="muted">'+esc(x[2]||"")+'</span></article>').join("")+'</div>';}
+function commandToChat(text){openPanel("chat");$("#chatIn").value=text;$("#chatIn").focus();}
+function renderCommandPalette(q=""){
+ const root=$("#commandList");if(!root)return;const query=String(q).toLowerCase();
+ const commands=[...WORKSPACES.map(([id,label])=>({label,kind:"workspace",value:id})),
+ {label:"Show system status",kind:"chat",value:"system status"},{label:"Show capability truth",kind:"chat",value:"capability availability"},
+ {label:"ForgeLM model status",kind:"chat",value:"model status"},{label:"List collaboration roles",kind:"chat",value:"collaboration roles"},
+ {label:"Chronicle status",kind:"chat",value:"chronicle status"},{label:"Snake Overwatch status",kind:"chat",value:"snake lab status"},
+ {label:"Policy simulation",kind:"chat",value:"policy simulation status"},{label:"List agents",kind:"chat",value:"list agents"}].filter(x=>!query||x.label.toLowerCase().includes(query)||x.value.toLowerCase().includes(query));
+ root.innerHTML=commands.map((x,i)=>'<button class="command-option" data-kind="'+x.kind+'" data-value="'+esc(x.value)+'"><span>'+esc(x.label)+'</span><small>'+esc(x.kind)+'</small></button>').join("");
+}
+async function refreshWorkspacePanels(){
+ if(!latestStatus)try{latestStatus=await api("/api/status");}catch{}
+ if(authState.authenticated&&!latestDashboard)try{latestDashboard=await api("/api/control-plane/dashboard");}catch{}
+ const s=latestStatus||{},d=latestDashboard||{},caps=s.capabilities||[];
+ const capCounts={};for(const x of caps)capCounts[x.availability]=(capCounts[x.availability]||0)+1;
+ if($("#capabilityPanel"))$("#capabilityPanel").innerHTML=cards(Object.entries(capCounts).map(([k,v])=>[k,v,"capability truth"]))+'<div class="status-block"><h3>Capability registry</h3><div class="caps">'+caps.map(x=>'<span class="cap '+truthClass(x.availability)+'">'+esc(x.id)+' · '+esc(x.availability)+'</span>').join("")+'</div></div><div class="status-block"><h3>Capability Genome</h3><p class="muted">Candidate genomes require successful verification and explicit approval before ACTIVE promotion. Genome source is present in this build; runtime records appear as they are exercised.</p></div>';
+ if($("#modelPanel"))$("#modelPanel").innerHTML=cards([["ForgeLM",s.forgelm?.state||"UNKNOWN",s.forgelm?.checkpointExists?"checkpoint present":"checkpoint unavailable"],["Models",d.models?.models?.length||0,"registered"],["Evaluations",(d.evaluations?.verified||0)+"/"+(d.evaluations?.runs||0),"verified"],["Artifacts",d.modelArtifacts?.total||0,stateText(d.modelArtifacts?.states||{})]]);
+ if($("#collaborationPanel"))$("#collaborationPanel").innerHTML='<div class="status-block"><h3>Multi-role council</h3><p>Architect · Builder · Coder · Programmer · Software Engineer · Debugger · Test Engineer · DevOps · Database · UI/UX · ML · Performance · ForgeLM · Security · CI · Reviewer · Integrator · Chronicle · Verifier</p><p class="muted">Advisory/evidence roles do not grant execution or approval authority.</p><button onclick="document.querySelector(\'#chatIn\').value=\'collaboration roles\';document.querySelector(\'#chatIn\').focus()">Open in OneChat</button></div>';
+ if($("#knowledgePanel"))$("#knowledgePanel").innerHTML=cards([["Knowledge",s.knowledgeCount||0,"records"],["Documents",s.documentDataPlane?.documents||0,"revisions"],["Provenance",d.provenance?.nodes||0,(d.provenance?.edges||0)+" edges"],["Memory",d.memory?.active||0,d.memory?.encryption||"UNKNOWN"]])+'<div class="status-block"><h3>Chronicle</h3><p class="muted">Chronicle provides history/evidence/recall while memory remains a separate consent boundary.</p></div>';
+ if($("#researchPanel"))$("#researchPanel").innerHTML=cards([["Source refs",s.sourceResearch?.count||0,"registered"],["Web corpus",s.webCorpus?.records||0,"local records"],["Documents",s.documentDataPlane?.documents||0,"retrievable"]])+'<div class="status-block"><p class="muted">External web content is untrusted input and cannot grant authority.</p></div>';
+ if($("#developmentPanel"))$("#developmentPanel").innerHTML=cards([["Light patches",d.light?.patches||0,stateText(d.light?.states||{})],["Shadow runs",d.shadow?.runs||0,stateText(d.shadow?.states||{})],["Worker queue",d.scheduler?.queued||0,(d.scheduler?.running||0)+" running"],["Feature evidence",d.evidence?.total||0,stateText(d.evidence?.statuses||{})]])+'<div class="status-block"><h3>Promotion boundary</h3><p class="muted">Candidate changes remain isolated until tests, evidence and approval gates succeed.</p></div>';
+ if($("#dreamPanel"))$("#dreamPanel").innerHTML='<div class="status-block"><h3>ForgeDream</h3><p>RepoWorld · DeviceWorld · WebWorld · SecurityWorld · BusinessWorld · RecoveryWorld · ChaosWorld · SnakeWorld</p><p class="muted">Synthetic-world source is integrated; no real-world effects are authorized by simulation.</p></div><div class="status-block"><h3>Snake Overwatch</h3><p class="muted">Bounded experimentation only. Authority NONE; no source patch or security mutation authority.</p><button onclick="document.querySelector(\'#chatIn\').value=\'snake lab status\';document.querySelector(\'#chatIn\').focus()">Inspect in OneChat</button></div>';
+ if($("#securityPanel"))$("#securityPanel").innerHTML=cards([["Emergency stop",s.governanceKernel?.emergencyStop?.engaged?"ENGAGED":"READY","governance"],["Approvals",d.approvals?.total||0,stateText(d.approvals?.states||{})],["Policy simulations",d.policySimulations?.total||0,stateText(d.policySimulations?.decisions||{})],["Audit",d.audit?.total||0,d.audit?.integrity?.state||"UNKNOWN"]])+'<div class="status-block"><h3>Proof-of-Thought Ledger</h3><p class="muted">Decision Proofs record authorization evidence and outcomes, never private chain-of-thought.</p></div>';
+ if($("#integrationPanel"))$("#integrationPanel").innerHTML='<div class="status-block"><h3>Capability-backed integrations</h3><div class="caps">'+caps.filter(x=>/provider|plugin|billing|android|device|github|google|web|physical|reference/.test(x.id)).map(x=>'<span class="cap '+truthClass(x.availability)+'">'+esc(x.id)+' · '+esc(x.availability)+'</span>').join("")+'</div><p class="muted">Unpaired or unverified device bridges remain unavailable/configured rather than being shown as functional.</p></div>';
+ if($("#memoryPanel"))$("#memoryPanel").innerHTML=cards([["Active memory",d.memory?.active||0,d.memory?.encryption||"UNKNOWN"],["Provenance nodes",d.provenance?.nodes||0,(d.provenance?.edges||0)+" edges"]])+'<div class="status-block"><p class="muted">Memory is consent-controlled. Chronicle history and provenance do not silently become training data.</p></div>';
+ if($("#wellbeingPanel"))$("#wellbeingPanel").innerHTML='<div class="status-block"><h3>Support roles</h3><p>Psychological Evaluator · Psychiatry Support · Counsellor · Emotional Self-Improvement</p><p class="muted">Explicit consent. No diagnosis or prescribing authority. Training and retrieval boundaries remain enforced.</p></div>';
+ if($("#evidencePanel"))$("#evidencePanel").innerHTML=cards([["Features",d.evidence?.total||0,stateText(d.evidence?.statuses||{})],["Audit records",d.audit?.total||0,d.audit?.integrity?.state||"UNKNOWN"],["Evaluations",d.evaluations?.runs||0,(d.evaluations?.verified||0)+" verified"]])+'<details class="status-block"><summary>Feature evidence registry</summary><pre>'+esc(JSON.stringify(d.evidence?.features||[],null,2))+'</pre></details>';
+}
+
+
 const humanBytes=n=>{n=Number(n||0);if(n<1024)return n+" B";if(n<1024**2)return (n/1024).toFixed(1)+" KB";if(n<1024**3)return (n/1024**2).toFixed(1)+" MB";return (n/1024**3).toFixed(1)+" GB";};
 function fileKey(f){return [f.name,f.size,f.lastModified].join(":");}
 function attachmentContentUrl(id){return "/api/media/content?id="+encodeURIComponent(String(id||""));}
@@ -228,13 +270,14 @@ async function refreshAuth(){
   }catch(e){$("#authHelp").textContent="Identity status unavailable: "+e.message;}
 }
 async function refresh(){
-  const s=await api("/api/status"),connected=s.capabilities.filter(x=>x.availability==="CONNECTED").length;
+  const s=await api("/api/status"),connected=s.capabilities.filter(x=>x.availability==="CONNECTED").length;latestStatus=s;
   $("#buildLabel").textContent=`v${s.version} · OneChat · local-first governed AI`;
   $("#topTruth").textContent=`${s.governanceKernel?.identity?.authenticated?"owner unlocked":"owner locked"} · ${s.forgelm?.checkpointExists?"ForgeLM ready":"ForgeLM unavailable"} · ${connected}/${s.capabilities.length} capabilities`;
   $("#systemContext").innerHTML=`<article><b>Version</b><span>${esc(s.version)}</span></article><article><b>Knowledge</b><span>${s.knowledgeCount}</span></article><article><b>Documents</b><span>${s.documentDataPlane?.documents||0}</span></article><article><b>Definitions</b><span>${s.languageData?.definitions||0}</span></article><article><b>Dialogue</b><span>${s.languageData?.dialogueMessages||0}</span></article><article><b>Agents</b><span>${s.agentCount}</span></article><article><b>Shadow R&D</b><span>${s.shadow?.runs||0} runs · ${s.shadow?.active||0} active</span></article><article><b>Light patches</b><span>${s.light?.patches||0} patches · ${s.light?.active||0} active</span></article><article><b>Governance stop</b><span>${s.governanceKernel?.emergencyStop?.engaged?"ENGAGED":"ready"}</span></article><article><b>Source refs</b><span>${s.sourceResearch?.count||0}</span></article><article><b>ForgeLM</b><span>${esc(s.forgelm?.state||"UNKNOWN")}</span></article><article><b>Audit</b><span>${s.auditCount}</span></article>`;
   const deps=s.neuralDependencies?.dependencies||{};$("#depSummary").innerHTML=`<p class="muted">Neural dependencies: ${Object.entries(deps).map(([k,v])=>`${esc(k)}=${esc(v)}`).join(" · ")}</p>`;
   $("#doctrine").innerHTML=`<ol>${s.doctrine.laws.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><p>${esc(s.doctrine.governance.truthRule)}</p><div class="caps">${s.capabilities.map(c=>`<span class="cap ${c.availability.toLowerCase()}">${esc(c.id)} · ${esc(c.availability)}</span>`).join("")}</div>`;
-  if(authState.authenticated)refreshOperations();
+  const runtime=s.governanceKernel?.emergencyStop?.engaged?"blocked":activeTurnSession?"executing":s.forgelm?.checkpointExists?"ready":"available";$("#avatar")?.setAttribute("data-state",runtime);$("#avatarLarge")?.setAttribute("data-state",runtime);if($("#runtimeState"))$("#runtimeState").textContent=runtime.toUpperCase()+" · "+connected+"/"+s.capabilities.length+" connected";
+  if(authState.authenticated){refreshOperations().then(()=>{latestDashboard=null;refreshWorkspacePanels();});}else refreshWorkspacePanels();
 }
 
 $("#authForm").addEventListener("submit",async e=>{
@@ -352,3 +395,13 @@ $("#composer").addEventListener("submit",async e=>{
   }finally{if(!activeTurnSession){send.disabled=false;attach.disabled=false;}}
 });
 Promise.all([refresh(),refreshAuth()]);
+
+document.querySelectorAll(".nav-item[data-panel]").forEach(b=>b.addEventListener("click",()=>openPanel(b.dataset.panel)));
+$("#navToggle")?.addEventListener("click",()=>$("#leftNav")?.classList.toggle("open"));
+$("#conversationsBtn")?.addEventListener("click",()=>{const p=$("#conversationPane");p.hidden=!p.hidden;if(!p.hidden)refreshConversations();});
+$("#commandBtn")?.addEventListener("click",()=>{$("#commandPalette").hidden=false;renderCommandPalette();setTimeout(()=>$("#commandSearch")?.focus(),0);});
+$("#commandClose")?.addEventListener("click",()=>$("#commandPalette").hidden=true);
+$("#commandSearch")?.addEventListener("input",e=>renderCommandPalette(e.target.value));
+$("#commandList")?.addEventListener("click",e=>{const b=e.target.closest(".command-option");if(!b)return;if(b.dataset.kind==="workspace")openPanel(b.dataset.value);else commandToChat(b.dataset.value);$("#commandPalette").hidden=true;});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#commandPalette").hidden=false;renderCommandPalette();$("#commandSearch")?.focus();}if(e.key==="Escape"){$("#commandPalette").hidden=true;$("#leftNav")?.classList.remove("open");}});
+openPanel(sessionStorage.getItem("uai_workspace")||"chat");
