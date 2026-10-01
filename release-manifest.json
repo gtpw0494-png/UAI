@@ -143,6 +143,11 @@
       "bytes": 486
     },
     {
+      "path": "docs/MASTER-PRODUCT-SPEC-v078-ADDENDUM.md",
+      "sha256": "0d63b5b31ebfb7a06a0ed9999892b33157c921b9882def37ca7bc0d3a45296f7",
+      "bytes": 3930
+    },
+    {
       "path": "docs/MODEL-INTEGRATION.md",
       "sha256": "0474b162e1d4536fd122e4ff71325609760054befd1b114d4865b24a9af27029",
       "bytes": 1313
