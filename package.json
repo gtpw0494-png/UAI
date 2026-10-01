@@ -1,6 +1,6 @@
 {
   "name": "intraultuniversalion",
-  "version": "0.77.0",
+  "version": "0.78.0",
   "private": true,
   "description": "Unified UAI + WitForge local-first governed AI platform with native Chronicle and consolidated WitForge source lineage.",
   "type": "module",
@@ -127,7 +127,10 @@
     "test:firecrawl-interact": "node verification/firecrawl-interact-self-improvement.test.mjs",
     "test:self-improvement-web": "npm run test:firecrawl-interact && npm run test:shadow-light && npm run test:v077",
     "project:audit": "node scripts/project-artifact-audit.mjs",
-    "test:project-artifacts": "node verification/project-artifact-audit.test.mjs"
+    "test:project-artifacts": "node verification/project-artifact-audit.test.mjs",
+    "test:forge-cognitive": "node verification/forge-cognitive-fabric.test.mjs",
+    "test:forgengn": "python3 model/test_neural_gearing.py && python3 model/test_cognitive_learning_heads.py",
+    "forgengn:train": "python3 model/train_neural_gearing.py --steps 25 --device cpu"
   },
   "engines": {
     "node": ">=20"
