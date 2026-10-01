@@ -18,8 +18,8 @@ function run(command,args,{cwd=process.cwd(),timeoutMs=300000}={}){
 function lastJson(text=""){for(const line of String(text).trim().split(/\r?\n/).reverse()){try{return JSON.parse(line)}catch{}}return null}
 
 export class ForgeLMCandidatePromotion{
-  constructor({root=process.cwd(),stateRoot=path.resolve("state"),python=process.env.PYTHON||"python3",runner=run,audit=null}={}){
-    this.root=root;this.stateRoot=stateRoot;this.python=python;this.runner=runner;this.audit=audit;
+  constructor({root=process.cwd(),stateRoot=path.resolve("state"),python=process.env.PYTHON||"python3",runner=run,audit=null,approvalStore=null}={}){
+    this.root=root;this.stateRoot=stateRoot;this.python=python;this.runner=runner;this.audit=audit;this.approvalStore=approvalStore;
     this.live=path.join(root,"model","checkpoints","forgelm-seed.pt");
     this.dir=path.join(stateRoot,"model-rollbacks");fs.mkdirSync(this.dir,{recursive:true});
   }
@@ -47,7 +47,12 @@ export class ForgeLMCandidatePromotion{
   }
   promote({candidate,evaluation,approved=false,approvalId=null}={}){
     if(!evaluation?.eligible)return{state:"BLOCKED",promoted:false,message:"Candidate has not passed regression evaluation."};
-    if(!approved||!approvalId)return{state:"WAITING_APPROVAL",promoted:false,message:"Explicit owner-bound approval is required.",candidate_sha256:evaluation.candidate_sha256};
+    const approvalBinding={operation:"forgelm.promote",arguments:{candidateSha256:evaluation.candidate_sha256},capability:"model.promote",actor:"user:onechat",toolVersion:"forgelm-candidate-promotion-v1"};
+    if(!approved||!approvalId)return{state:"WAITING_APPROVAL",promoted:false,message:"Explicit owner-bound approval is required.",candidate_sha256:evaluation.candidate_sha256,approvalBinding};
+    if(this.approvalStore){
+      const validation=this.approvalStore.validate(approvalId,approvalBinding);
+      if(validation.state!=="SUCCESS")return{state:validation.state==="TIMEOUT"?"TIMEOUT":"DENIED",promoted:false,message:"ForgeLM promotion approval is invalid or not bound to this exact candidate.",candidate_sha256:evaluation.candidate_sha256,approvalBinding,approvalValidation:validation};
+    }else return{state:"BLOCKED",promoted:false,message:"ForgeLM promotion approval store is unavailable; promotion is fail-closed.",candidate_sha256:evaluation.candidate_sha256,approvalBinding};
     if(sha256File(candidate)!==evaluation.candidate_sha256)return{state:"BLOCKED",promoted:false,message:"Candidate hash changed after evaluation."};
     const snapshot=this.snapshotBaseline("pre-forgelm-promotion");if(snapshot.state!=="SUCCESS")return snapshot;
     atomicCopy(candidate,this.live);const liveSha=sha256File(this.live);
