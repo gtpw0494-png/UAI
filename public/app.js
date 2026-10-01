@@ -189,8 +189,10 @@ async function loadConversationHistory({force=false}={}){
     if(turns.length){
       $("#stream").innerHTML='<article class="msg system"><b>System</b><p>Restored governed OneChat history for this local session.</p></article>';
       for(const t of turns){
+        const evidence=t.evidenceEnvelope||t.evidence||t.evidenceSummary||null;
+        const evidenceMeta=evidence?` · evidence ${esc(evidence.id||evidence.claims||t.evidenceId||"available")}`:"";
         bubble("user","You",`<p>${esc(t.user||"")}</p>${attachmentCards(t.attachments||[])}`,t.createdAt||"");
-        bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>${turnControls(t.id)}`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}`);
+        bubble("assistant","IntraultUniversalion",`<p>${esc(t.answer||"")}</p>${turnControls(t.id)}`,`${esc(t.state||"UNKNOWN")} · ${esc(t.responseMode||"history")}${evidenceMeta}`);
       }
     }
     historyLoadedFor=chatId;
