@@ -974,8 +974,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "eb550675066d819f68a9388341e7cd0fcafec8d68317f129c21102457ec9690d",
-      "bytes": 9912
+      "sha256": "b80ee162aa77fec27871cd70c340ecd050e517c2bf4259d8764f3d4b7aac4ea2",
+      "bytes": 10031
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -1024,8 +1024,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "9166353a6d102a5251e10408a1ba98f9a84dede37474304b0b0ce9057e70e544",
-      "bytes": 24855
+      "sha256": "a0cce16bc8300461413e3c4f8b1c8a6b3fe3c7c346e3af8e979adf570a253961",
+      "bytes": 27740
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -1604,8 +1604,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "3b2249f36c5c247ca4f982165cacbc69a1612376cc6afae4f44abdfac96dfd49",
-      "bytes": 8309
+      "sha256": "84e4dee231c23256bc3cc318891dd482a754f54297cf183ad32f0d4ef099af8d",
+      "bytes": 8557
     },
     {
       "path": "storage/retrieval_eval.py",
