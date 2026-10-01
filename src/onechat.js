@@ -490,12 +490,16 @@ export class OneChatRouter{
   }
   if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled before verification.",allocations,contributions,attachments:prepared.artifacts||[]};
   emit({type:"phase",phase:"verify",message:"Verifying result states and evidence."});
-  const failed=contributions.filter(x=>!ok(x.result?.state));const verification=result(failed.length?"PARTIAL":"SUCCESS",failed.length?`${failed.length} collaborating result(s) were not successful; see evidence. All result states are preserved.`:"Verification passed for the operations executed in this turn.",{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
+  const failed=contributions.filter(x=>!ok(x.result?.state));
+  const authoritative=contributions.filter(x=>x.agent==="conversation");
+  const authoritativeSuccess=authoritative.some(x=>ok(x.result?.state));
+  const finalFailures=hasAttachments&&authoritativeSuccess?failed.filter(x=>x.agent==="conversation"):failed;
+  const verification=result(finalFailures.length?"PARTIAL":"SUCCESS",finalFailures.length?`${finalFailures.length} required collaborating result(s) were not successful; see evidence. All result states are preserved.`:(failed.length?"Primary multimodal response succeeded; unavailable advisory collaborators remain preserved in evidence.":"Verification passed for the operations executed in this turn."),{checked:contributions.map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"})),advisoryFailures:failed.filter(x=>!finalFailures.includes(x)).map(x=>({agent:x.agent,state:x.result?.state||"UNKNOWN"}))});
   contributions.push({agent:"verifier",reason:"truth-state verification",result:verification});
   const ranked=contributions.filter(x=>x.agent!=="verifier").map(x=>x.result).sort((a,b)=>(stateRank.get(b.state)||0)-(stateRank.get(a.state)||0));const best=ranked[0]||verification;
   const composed=this.responseComposer.compose({message,allocations,contributions});
   const answer=composed.message||best.message||"Collaboration completed.";
-  const finalState=failed.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
+  const finalState=finalFailures.length?(ranked.some(x=>x.state==="SUCCESS")?"PARTIAL":best.state):"SUCCESS";
   const responseId=`response-${crypto.randomUUID()}`;
   const researchSupport=(researchContext?.sources||[]).map(x=>({source_id:`web:${x.publisher||x.label}`,document_id:null,document_revision:null,chunk_id:x.label,uri:x.url,quote:null,score:x.relevance??null,provenance:{title:x.title,publisher:x.publisher,retrievedAt:x.retrievedAt,researchRunId:researchContext.runId}}));
   const attachmentSupport=(prepared.evidence||[]).map(x=>({source_id:x.source_id||null,document_id:null,document_revision:null,chunk_id:null,uri:x.uri||null,quote:null,score:null,provenance:x.provenance||{}}));
