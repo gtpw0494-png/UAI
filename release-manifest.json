@@ -1609,8 +1609,8 @@
     },
     {
       "path": "verification/chronicle-integration-v074.test.mjs",
-      "sha256": "e01ed3563dbab1ef3e32278d5cdf84cafff48aa22102fe0a8fce0b923f2ced74",
-      "bytes": 1696
+      "sha256": "d3b2bb47431b7ac00af11dda674bd1be1d35dfa73d30711d813caf90f9873e4e",
+      "bytes": 1690
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
