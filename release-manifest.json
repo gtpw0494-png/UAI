@@ -948,6 +948,11 @@
       "bytes": 3242
     },
     {
+      "path": "src/forge-cognitive-fabric.js",
+      "sha256": "9d8b8effd341340d899a1f958d670befb426f4b235fd45fc298e1d679ef883a5",
+      "bytes": 1845
+    },
+    {
       "path": "src/forge-curriculum.js",
       "sha256": "ea09d6f78ff537ec3d2667d79380b90de8f2644ffd561a873c0e3e63bf8dc36a",
       "bytes": 3221
