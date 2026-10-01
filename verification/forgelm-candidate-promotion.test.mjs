@@ -15,13 +15,27 @@ fs.writeFileSync(live,"baseline");
 fs.writeFileSync(candidate,"candidate");
 fs.writeFileSync(path.join(dataset,"train.jsonl"),'{"text":"x"}\n');
 
+let expectedApprovalId="approval-test";
+const approvalStore={
+  validate(id,expected){
+    if(id!==expectedApprovalId)return {state:"DENIED",message:"Approval not found."};
+    if(expected.operation!=="forgelm.promote"||expected.capability!=="model.promote"||expected.arguments?.candidateSha256!==evaluationHash)return {state:"DENIED",message:"Approval binding mismatch."};
+    return {state:"SUCCESS",message:"Exact operation approval is valid."};
+  }
+};
+let evaluationHash=null;
 const promotion=new ForgeLMCandidatePromotion({
-  root,stateRoot:path.join(root,"state"),
+  root,stateRoot:path.join(root,"state"),approvalStore,
   runner:async()=>({state:"SUCCESS",code:0,stdout:JSON.stringify({state:"SUCCESS",passed:true,relative_regression:-0.1})+"\n",stderr:""})
 });
 const evaluation=await promotion.evaluate({candidate,dataset});
+evaluationHash=evaluation.candidate_sha256;
 assert.equal(evaluation.eligible,true);
-assert.equal(promotion.promote({candidate,evaluation}).state,"WAITING_APPROVAL");
+const waiting=promotion.promote({candidate,evaluation});
+assert.equal(waiting.state,"WAITING_APPROVAL");
+assert.equal(waiting.approvalBinding.operation,"forgelm.promote");
+assert.equal(waiting.approvalBinding.arguments.candidateSha256,evaluation.candidate_sha256);
+assert.equal(promotion.promote({candidate,evaluation,approved:true,approvalId:"wrong-approval"}).state,"DENIED");
 const promoted=promotion.promote({candidate,evaluation,approved:true,approvalId:"approval-test"});
 assert.equal(promoted.state,"SUCCESS");
 assert.equal(fs.readFileSync(live,"utf8"),"candidate");
