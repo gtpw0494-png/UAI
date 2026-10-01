@@ -469,8 +469,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "0979cc6bbd90b0ea6acb605205999a5f1b12486ff514cfc505a8da05ad14ceae",
-      "bytes": 46498
+      "sha256": "a6bcd145658312b9d0c9b03459557b473cb88b64d641bbf7553a172eaae90b16",
+      "bytes": 47126
     },
     {
       "path": "public/index.html",
@@ -1274,8 +1274,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "edbe04c7b8c806f5c56709cda3842fb2b5115425af1fbf6da7e8c3fa6557828e",
-      "bytes": 8376
+      "sha256": "1add0d647802d5d3fe1a73d7fbf5a7c080a7780197b9b0e99f71a6b558e81df5",
+      "bytes": 8452
     },
     {
       "path": "src/plugin-executor.js",
@@ -1554,8 +1554,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "323bf1aada183e2d8ec1fe4625d39ecdad84c6fb06c6baf918fd4ece11e3f900",
-      "bytes": 8227
+      "sha256": "6c28137fade7db70a39c0f76bd0aace67aa2ed390c1b528f7111683c0f641e93",
+      "bytes": 8311
     },
     {
       "path": "storage/retrieval_eval.py",
@@ -1594,8 +1594,8 @@
     },
     {
       "path": "verification/chronicle-integration-v074.test.mjs",
-      "sha256": "85c77b0e9b368d7524d671b2e1aabb7e8f9621812d7cfed7cc96add091b18286",
-      "bytes": 1266
+      "sha256": "e01ed3563dbab1ef3e32278d5cdf84cafff48aa22102fe0a8fce0b923f2ced74",
+      "bytes": 1696
     },
     {
       "path": "verification/cloud-knowledge-store.test.mjs",
@@ -1794,8 +1794,8 @@
     },
     {
       "path": "verification/proof-genome-dream-v077.test.mjs",
-      "sha256": "78273464e12fe5e5c63086bf2cb06689423a6c0658e353c8ae1b320ed2f8505d",
-      "bytes": 4368
+      "sha256": "ce5202acee2557ffe9c04576a6a177ce6c14b0b44855b77572591c13c698aa94",
+      "bytes": 4651
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
