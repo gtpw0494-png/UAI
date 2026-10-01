@@ -2,9 +2,15 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import {ChronicleCenter} from "../src/chronicle/chronicle-center.js";\nimport {PLATFORM_TABLES} from "../src/platform-state-store.js";
+import {ChronicleCenter} from "../src/chronicle/chronicle-center.js";
+import {PLATFORM_TABLES} from "../src/platform-state-store.js";
 
-assert.equal(PLATFORM_TABLES["chronicle-event"],"chronicle_events");\nassert.equal(PLATFORM_TABLES["chronicle-digest"],"chronicle_digests");\nconst py=fs.readFileSync(new URL("../storage/platform_state.py",import.meta.url),"utf8");\nassert.ok(py.includes('"chronicle-event":"chronicle_events"'));\nassert.ok(py.includes('"chronicle-digest":"chronicle_digests"'));\nconst root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-chronicle-"));
+assert.equal(PLATFORM_TABLES["chronicle-event"],"chronicle_events");
+assert.equal(PLATFORM_TABLES["chronicle-digest"],"chronicle_digests");
+const py=fs.readFileSync(new URL("../storage/platform_state.py",import.meta.url),"utf8");
+assert.ok(py.includes('"chronicle-event":"chronicle_events"'));
+assert.ok(py.includes('"chronicle-digest":"chronicle_digests"'));
+const root=fs.mkdtempSync(path.join(os.tmpdir(),"uai-chronicle-"));
 const auditRows=[];
 const chronicle=new ChronicleCenter({stateRoot:root,audit:{append:x=>auditRows.push(x)}});
 const a=chronicle.record({eventType:"project.milestone",subjectId:"project:uai",payload:{version:"0.74.0",feature:"chronicle"},verified:true,state:"SUCCESS"});
