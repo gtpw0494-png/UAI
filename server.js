@@ -81,6 +81,10 @@ import { NativeSnakeLabAdapter } from "./src/witforge/snake-lab-adapter.js";
 import { DecisionProofLedger } from "./src/decision-proof-ledger.js";
 import { CapabilityGenomeRegistry } from "./src/capability-genome.js";
 import { ForgeDreamLab } from "./src/forgedream.js";
+import { ForgeMuseum } from "./src/forge-museum.js";
+import { ForgeCanary } from "./src/forge-canary.js";
+import { ForgeRosetta } from "./src/forge-rosetta.js";
+import { ForgeCurriculum } from "./src/forge-curriculum.js";
 import { EvolutionCoordinator } from "./src/evolution-coordinator.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -150,6 +154,10 @@ const policySimulator = new PolicySimulator({policyEngine,stateRoot:stateDir,aud
 const decisionProofs = new DecisionProofLedger({stateRoot:stateDir,policySimulator,audit});
 const capabilityGenomes = new CapabilityGenomeRegistry({stateRoot:stateDir,audit});
 const forgeDream = new ForgeDreamLab({stateRoot:stateDir,audit});
+const forgeMuseum = new ForgeMuseum({stateRoot:stateDir,audit});
+const forgeCanary = new ForgeCanary({stateRoot:stateDir,audit});
+const forgeRosetta = new ForgeRosetta({stateRoot:stateDir,audit});
+const forgeCurriculum = new ForgeCurriculum({stateRoot:stateDir,audit});
 const evolutionCoordinator = new EvolutionCoordinator({genomes:capabilityGenomes,dreams:forgeDream,proofs:decisionProofs,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
 const evaluationStore = new EvaluationStore({stateRoot:stateDir,audit});
@@ -188,7 +196,7 @@ const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research"
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle,collaboration,mentalHealth,snakeLab});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle,collaboration,mentalHealth,snakeLab,forgeDream,forgeMuseum,forgeCanary,forgeRosetta,forgeCurriculum});
 const onechatTurnSessions = new OneChatTurnSessions({onechat,audit,stateRoot:stateDir});
 const PORT = Number(process.env.PORT || 8787);
 const HOST = String(process.env.HOST || "127.0.0.1").trim() || "127.0.0.1";
@@ -482,7 +490,17 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/governance/emergency/release"){const b=await readBody(req);return send(res,200,governanceKernel.emergencyStop.release(req.uaiSecurity,b.reason||"owner release"));}
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/enroll"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.enroll(b,req.uaiSecurity));}
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/revoke"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.revoke(b.id,req.uaiSecurity));}
-  if(req.method==="GET"&&url.pathname==="/api/innovation/status")return send(res,200,{state:"SUCCESS",decisionProofs:decisionProofs.list(Number(url.searchParams.get("limit")||25)),capabilityGenomes:capabilityGenomes.list(Number(url.searchParams.get("limit")||100)),forgeDream:{worlds:forgeDream.worlds(),runs:forgeDream.list(Number(url.searchParams.get("limit")||50))},evolution:{authority:"EXTERNAL_APPROVAL_REQUIRED",selfPromotion:false}});
+  if(req.method==="GET"&&url.pathname==="/api/innovation/status"){
+    const limit=Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||50)));
+    return send(res,200,{state:"SUCCESS",decisionProofs:decisionProofs.list(Math.min(100,limit)),capabilityGenomes:capabilityGenomes.list(Math.min(200,limit)),forgeDream:{...forgeDream.status(),worlds:forgeDream.worlds(),runs:forgeDream.list(limit),trainingCandidates:forgeDream.trainingCandidates(limit)},forgeMuseum:{...forgeMuseum.status(),exhibits:forgeMuseum.list(limit)},forgeCanary:{...forgeCanary.status(),profiles:forgeCanary.profiles(limit),runs:forgeCanary.runs(limit)},forgeRosetta:{...forgeRosetta.status(),mappings:forgeRosetta.list(limit)},forgeCurriculum:{...forgeCurriculum.status(),skills:forgeCurriculum.list(limit),next:forgeCurriculum.list(1).length?forgeCurriculum.next():null},evolution:{authority:"EXTERNAL_APPROVAL_REQUIRED",selfPromotion:false}});
+  }
+  if(req.method==="POST"&&url.pathname==="/api/innovation/museum/exhibits"){const b=await readBody(req);return send(res,200,forgeMuseum.retire(b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/canary/profiles"){const b=await readBody(req);return send(res,200,forgeCanary.createProfile(b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/canary/simulate"){const b=await readBody(req);return send(res,200,forgeCanary.simulate(b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/rosetta/mappings"){const b=await readBody(req);return send(res,200,forgeRosetta.register(b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/rosetta/verify"){const b=await readBody(req);return send(res,200,forgeRosetta.verify(b.id,b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/curriculum/record"){const b=await readBody(req);return send(res,200,forgeCurriculum.record(b));}
+  if(req.method==="POST"&&url.pathname==="/api/innovation/dream/from-canary"){const b=await readBody(req),found=forgeCanary.getRun(b.canaryRunId);if(found.state!=="SUCCESS")return send(res,404,{state:"UNAVAILABLE",message:"Canary run not found."});return send(res,200,forgeDream.createFromCanary({canaryRun:found.record,objective:b.objective||"",world:b.world||"ChaosWorld",constraints:b.constraints||[]}));}
   if(req.method==="GET"&&url.pathname==="/api/control-plane/status")return send(res,200,{state:"SUCCESS",scheduler:agentScheduler.status(),storage:agentScheduler.db.status()});
   if(req.method==="GET"&&url.pathname==="/api/control-plane/dashboard"){
     const capabilities=await capabilitySnapshot(),taskRows=taskStore.list({limit:10000}),approvalRows=approvalStore.list({limit:10000}),shadowRuns=shadow.runs.list({limit:10000}),lightPatches=light.list({limit:10000}),jobs=agentScheduler.list({limit:10000}),plugins=pluginRegistry.list(),modelStatus=modelRegistry.status(),evidenceRows=featureEvidence.features||[],auditRows=audit.list(10000),ownerId=req.uaiSecurity.auth.identityId,memoryItems=memoryStore.list({ownerId,limit:10000}),provStatus=provenanceGraph.status(),evalStatus=evaluationStore.status(),artifactRows=modelArtifactVerifier.list(10000),policySims=policySimulator.list(10000);
