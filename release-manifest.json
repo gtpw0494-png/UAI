@@ -1978,6 +1978,11 @@
       "bytes": 7971
     },
     {
+      "path": "verification/ui-shell-contract-v078.test.mjs",
+      "sha256": "d6dc8f454225408820d78918182a2a7995d9694f9848dc5e8a0471fc5e72c8fd",
+      "bytes": 2066
+    },
+    {
       "path": "verification/verified-knowledge-sqlite.test.mjs",
       "sha256": "ef2398c206642d26b161ebf8379c153899833e80e5375aac929aad37a73f1c76",
       "bytes": 2258
