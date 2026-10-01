@@ -838,6 +838,16 @@
       "bytes": 6783
     },
     {
+      "path": "src/confidence-policy-bridge.js",
+      "sha256": "aae738b7ecd1c646c76efeab73d5d1647ceb1cb26c38afc8645744dc0e08e306",
+      "bytes": 661
+    },
+    {
+      "path": "src/confidence-router.js",
+      "sha256": "ec63fe7694651b9c36246d1f5f0768192e7583217d19d56d06806e0124af2bbc",
+      "bytes": 1718
+    },
+    {
       "path": "src/content-security.js",
       "sha256": "5a20cbd1864b9c0acac86149825238e13132890e4dd392c11e4951d4f1023abf",
       "bytes": 1630
@@ -906,6 +916,26 @@
       "path": "src/evidence-envelope.js",
       "sha256": "7ab4cfeccba44d830042d2befb6079682138956e321e63bbd0b95493c51527a6",
       "bytes": 3109
+    },
+    {
+      "path": "src/evidence-gain-scout.js",
+      "sha256": "a1b0b684a44a5111ee766af07b4506153ea260e857fa730c752895bebca9a2bb",
+      "bytes": 1223
+    },
+    {
+      "path": "src/evidence-gain-verifier.js",
+      "sha256": "f8cf47f290707319474f2d648d4dc58ce9207602b8846c98e036b9662b4d0b39",
+      "bytes": 606
+    },
+    {
+      "path": "src/evidence-portfolio-optimizer.js",
+      "sha256": "4d36ef922800841423bc5ef838b91114f48573efcd4fae34ce1613c3c6d2e4de",
+      "bytes": 2154
+    },
+    {
+      "path": "src/evidence-portfolio-verifier.js",
+      "sha256": "9c5dab0c1c0b687fc947d9613c0d99c4ab90bfbe22641b0dae31578da4b2c3bf",
+      "bytes": 713
     },
     {
       "path": "src/evolution-coordinator.js",
@@ -1301,6 +1331,11 @@
       "path": "src/multimodal/pipeline.js",
       "sha256": "894d7753d4d50e2dbc75b13b949aaee61d42ddefeefc7b4fce44e2845c5973da",
       "bytes": 8337
+    },
+    {
+      "path": "src/ngn-envelope.js",
+      "sha256": "d48f531bcc8e0e51fd4aafe58a99ac9015389a555b2b2f12f4108724dbfbf343",
+      "bytes": 1301
     },
     {
       "path": "src/observability.js",
