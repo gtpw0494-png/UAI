@@ -11,7 +11,7 @@ assert.equal(proof.state,"SUCCESS");assert.equal(proof.proof.privateReasoningSto
 const genomes=new CapabilityGenomeRegistry({stateRoot:root});const cand=genomes.candidate({id:"filesystem.write",availability:"CONNECTED",tests:["write-fixture"]});assert.equal(cand.genome.status,"CANDIDATE");assert.equal(genomes.promote(cand.genome.id,{approved:false,testState:"SUCCESS"}).state,"BLOCKED");
 const promoted=genomes.promote(cand.genome.id,{approved:true,testState:"SUCCESS"});assert.equal(promoted.state,"SUCCESS");assert.equal(promoted.genome.status,"ACTIVE");
 const dream=new ForgeDreamLab({stateRoot:root});const run=dream.create({world:"RepoWorld",objective:"repair safely"});assert.equal(run.run.realWorldEffects,false);const fin=dream.finish(run.run.id,{verifiedResult:{state:"SUCCESS",verified:true},score:1});assert.equal(fin.run.trainingEligible,true);assert.equal(dream.list().find(x=>x.id===run.run.id).state,"SUCCESS");
-const loop=new EvolutionCoordinator({genomes,dreams,proofs:new DecisionProofLedger({stateRoot:root,policySimulator:sim})});
+const loop=new EvolutionCoordinator({genomes,dreams:dream,proofs:new DecisionProofLedger({stateRoot:root,policySimulator:sim})});
 const evo=loop.begin({capability:{id:"repo.patch",tests:["sandbox"]},world:"RepoWorld",objective:"repair fixture"});
 assert.equal(evo.state,"SUCCESS");assert.equal(evo.evaluation.promotionAuthorized,false);
 const concluded=loop.conclude({evaluation:evo.evaluation,result:{verifiedResult:{state:"SUCCESS",verified:true},score:0.95},actor:"owner"});
