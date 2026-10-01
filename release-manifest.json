@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "8d2250921b039a44e966da4126929981a34eaf6a9aebbf9aaba92a191aaa8b75",
-      "bytes": 9673
+      "sha256": "372a064481e89ba5e137c8fe0876ae2d75ab946f827a23631e2c40cdce58bb51",
+      "bytes": 9757
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -103,6 +103,11 @@
       "bytes": 1778
     },
     {
+      "path": "docs/FORGE-EVOLUTION-LAB.md",
+      "sha256": "925d7589fa7648b8fae3bb1af49c4caefdd08e6eccacd19955862456a6388831",
+      "bytes": 1408
+    },
+    {
       "path": "docs/FORGELM-SELF-SUFFICIENT.md",
       "sha256": "54b6e579c5575154295c8a14e538034c101fba00ea36493cd21fac04c35fa364",
       "bytes": 1276
@@ -169,8 +174,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "bea7cfaa991d07a2110bb69883d50ab459df96c53c4820bdaff6d9b3b38b3da9",
-      "bytes": 62126
+      "sha256": "a2e690abffd1a07a3c725e1b28bb2779d25e4dd62489d9ae1362f8a538333ec5",
+      "bytes": 63005
     },
     {
       "path": "model/adaptation.py",
@@ -479,18 +484,18 @@
     },
     {
       "path": "package.json",
-      "sha256": "0f145d373cd495f7892e9f2ca0bf2ea37101dd0428ac1b680ccb1d7eb4867775",
-      "bytes": 9943
+      "sha256": "375a9d025882b287c48c583b1ab2e9edb21e22de3e6a330d8e504eb0d886b983",
+      "bytes": 10021
     },
     {
       "path": "public/app.js",
-      "sha256": "4f2896338b1c9078e722c7753100b7441177448c2af51635e857080faa0ad441",
-      "bytes": 47342
+      "sha256": "5c2c6b515aea23e632b28e2e8cdbb101d146b6a59bd00f988790e18c58130292",
+      "bytes": 48975
     },
     {
       "path": "public/index.html",
-      "sha256": "b3181ed8d09e1815f2ccc25db3f8c2cea2447748b512f8fa6ccd25043b03cb3b",
-      "bytes": 9655
+      "sha256": "d38e68ea77d9ff539b94ea29c87c3ff3eea8bb53ae3683e99e9f1f308a03250d",
+      "bytes": 9720
     },
     {
       "path": "public/styles.css",
@@ -754,8 +759,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "d9020ef695b280376e2a2f2257c962abd326e331234cb02c7329314f01471706",
-      "bytes": 81701
+      "sha256": "271e79274c3eba007e588cb0814221c7ef44cb7969f8d4a03321839d904682aa",
+      "bytes": 84071
     },
     {
       "path": "src/action-envelope.js",
@@ -799,8 +804,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "4ee5fe0183447d8bbd1d4fa43b664906c6355995d4c9c12276f3be5fb652f761",
-      "bytes": 13242
+      "sha256": "e7037e0400c63981488d8bfbab47df0bf2ea7be037d88242c40a803c9b8fc64e",
+      "bytes": 14710
     },
     {
       "path": "src/capability-genome.js",
@@ -908,14 +913,34 @@
       "bytes": 2210
     },
     {
+      "path": "src/forge-canary.js",
+      "sha256": "204232cadfd8157a0abe4304d400f26a66b5848e3730e51d43070c8e88a1b33e",
+      "bytes": 3242
+    },
+    {
+      "path": "src/forge-curriculum.js",
+      "sha256": "ea09d6f78ff537ec3d2667d79380b90de8f2644ffd561a873c0e3e63bf8dc36a",
+      "bytes": 3221
+    },
+    {
+      "path": "src/forge-museum.js",
+      "sha256": "07ee586f0acb3df3ec59206f7d558f52a459a99ce1513ef09d71a3fc8a4250c2",
+      "bytes": 2455
+    },
+    {
+      "path": "src/forge-rosetta.js",
+      "sha256": "e18ec83b7e6cd71f41a57b79b004bcb114d65b97d7c075609a03ddfcdabf9931",
+      "bytes": 3650
+    },
+    {
       "path": "src/forgeaudio-candidate-promotion.js",
       "sha256": "332d2ff7687d5d79fa4eaeee66ce89186a94e8b2ee2bc538a10a71a8732b8011",
       "bytes": 6291
     },
     {
       "path": "src/forgedream.js",
-      "sha256": "c8aabf38161f22852588b9209de603a8033e1437bdb6745a67f1d281a8d2f433",
-      "bytes": 2032
+      "sha256": "9fe0da67102afb11564c54ab8913257ea509e6e12d772f86e72e803c2b20bc43",
+      "bytes": 3330
     },
     {
       "path": "src/forgelm-bridge.js",
@@ -949,8 +974,8 @@
     },
     {
       "path": "src/governance/authorization.js",
-      "sha256": "eb550675066d819f68a9388341e7cd0fcafec8d68317f129c21102457ec9690d",
-      "bytes": 9912
+      "sha256": "b80ee162aa77fec27871cd70c340ecd050e517c2bf4259d8764f3d4b7aac4ea2",
+      "bytes": 10031
     },
     {
       "path": "src/governance/capability-boundary.js",
@@ -999,8 +1024,8 @@
     },
     {
       "path": "src/governance/request-schemas.js",
-      "sha256": "9166353a6d102a5251e10408a1ba98f9a84dede37474304b0b0ce9057e70e544",
-      "bytes": 24855
+      "sha256": "a0cce16bc8300461413e3c4f8b1c8a6b3fe3c7c346e3af8e979adf570a253961",
+      "bytes": 27740
     },
     {
       "path": "src/governance/trusted-device.js",
@@ -1289,8 +1314,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "e5fcffc0d480c90292d458dddaa608577efd82c54b0880b4cda1bcba9de974da",
-      "bytes": 56363
+      "sha256": "c42e3cfe0bb76984462a77687f2f247b15b18f45a7e86e3c761f3803dc8204a3",
+      "bytes": 58051
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -1299,8 +1324,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "1add0d647802d5d3fe1a73d7fbf5a7c080a7780197b9b0e99f71a6b558e81df5",
-      "bytes": 8452
+      "sha256": "bf3c5fbdeb57a020f03d4c9f998c20ea16d0657f04729da3840f50cf4c1a8f94",
+      "bytes": 8685
     },
     {
       "path": "src/plugin-executor.js",
@@ -1579,8 +1604,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "3b2249f36c5c247ca4f982165cacbc69a1612376cc6afae4f44abdfac96dfd49",
-      "bytes": 8309
+      "sha256": "84e4dee231c23256bc3cc318891dd482a754f54297cf183ad32f0d4ef099af8d",
+      "bytes": 8557
     },
     {
       "path": "storage/retrieval_eval.py",
@@ -1661,6 +1686,11 @@
       "path": "verification/firecrawl-interact-self-improvement.test.mjs",
       "sha256": "4b85a2d752bc396ef6bd74b275052804f3d72dd9780695a33c750af99fef66be",
       "bytes": 1424
+    },
+    {
+      "path": "verification/forge-evolution-lab.test.mjs",
+      "sha256": "50530fcfc7d58058db61ec382c39bae1bd42eed223f12ffb817721510fa67198",
+      "bytes": 3625
     },
     {
       "path": "verification/forgeaudio-candidate-promotion.test.mjs",

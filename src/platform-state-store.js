@@ -10,7 +10,7 @@ const iso=()=>new Date().toISOString();
 export const PLATFORM_TABLES=Object.freeze({
   "memory-item":"memory_items","memory-settings":"memory_settings","provenance-node":"provenance_nodes","provenance-edge":"provenance_edges",
   "model-artifact":"model_artifacts","evaluation-run":"evaluation_runs","policy-simulation":"policy_simulations",
-  "code-file":"code_files","code-symbol":"code_symbols","code-edge":"code_edges","media-artifact":"media_artifacts","verified-knowledge":"verified_knowledge","decision-proof":"decision_proofs","capability-genome":"capability_genomes","forgedream-run":"forgedream_runs","chronicle-event":"chronicle_events","chronicle-digest":"chronicle_digests"
+  "code-file":"code_files","code-symbol":"code_symbols","code-edge":"code_edges","media-artifact":"media_artifacts","verified-knowledge":"verified_knowledge","decision-proof":"decision_proofs","capability-genome":"capability_genomes","forge-museum-exhibit":"forge_museum_exhibits","forge-canary-profile":"forge_canary_profiles","forge-canary-run":"forge_canary_runs","forge-rosetta-mapping":"forge_rosetta_mappings","forge-curriculum-skill":"forge_curriculum_skills","forgedream-run":"forgedream_runs","chronicle-event":"chronicle_events","chronicle-digest":"chronicle_digests"
 });
 const meta=(body={})=>({
   state:String(body.state||body.status||body.deletionState||"ACTIVE"),

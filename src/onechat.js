@@ -225,7 +225,7 @@ export class OneChatRouter{
   if(/learning|training data|dataset|verified trace|prepare corpus/i.test(t))a.push({agent:"learning",reason:"learning-fabric intent"});
   if(/collaborat|architect|coder|programmer|software engineer|debugger|test engineer|devops|database engineer|ui\/ux|ml engineer|performance engineer/i.test(t))a.push({agent:"collaboration",reason:"governed multi-role collaboration intent"});
   if(/agent|orchestrate|collaborat|workflow|task\b|resume task|cancel task|action envelope/i.test(t))a.push({agent:"explorative",reason:"agent/orchestration/task-lifecycle intent"});
-  if(/account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite|what (?:else )?can you do|what can you do|help me use|available features/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
+  if(/forge\s*museum|forge\s*canary|forge\s*rosetta|forge\s*curriculum|forge\s*dream|forge evolution|innovation lab|account|subscription|billing|plugin|model registry|runtime model|llama|gguf|observability|metrics|capabilit|availability|approval|policy|autonomy|lease|data lifecycle|retention|delete source|system status|dependencies|hardware|release integrity|langgraph|oxford|fabricat|octoprint|storage database|sqlite|what (?:else )?can you do|what can you do|help me use|available features/i.test(t))a.push({agent:"systems",reason:"system-service intent"});
   if(!a.length)a.push({agent:"conversation",reason:"general conversational response"});
   return a.filter((x,i)=>a.findIndex(y=>y.agent===x.agent)===i);
  }
@@ -409,6 +409,11 @@ export class OneChatRouter{
     return this.development.propose({request:message});
   }
   if(agent==="systems"){
+    if(/forge\s*museum/i.test(message)&&this.forgeMuseum){const exhibits=this.forgeMuseum.list(50);return result("SUCCESS","ForgeMuseum holds "+exhibits.length+" retired design exhibit(s); resurrection remains review-only.",{status:this.forgeMuseum.status(),exhibits});}
+    if(/forge\s*canary/i.test(message)&&this.forgeCanary){return result("SUCCESS","ForgeCanary is local synthetic-user simulation only; it has no real identity, credential or external-action authority.",{status:this.forgeCanary.status(),profiles:this.forgeCanary.profiles(50),runs:this.forgeCanary.runs(50)});}
+    if(/forge\s*rosetta/i.test(message)&&this.forgeRosetta){return result("SUCCESS","ForgeRosetta translates interface semantics into Universal Capability Language proposals; verified mappings still grant no execution authority.",{status:this.forgeRosetta.status(),mappings:this.forgeRosetta.list(100)});}
+    if(/forge\s*curriculum/i.test(message)&&this.forgeCurriculum){const next=this.forgeCurriculum.next();return result("SUCCESS","ForgeCurriculum records evidence-backed skill scores and proposes the next learning target without starting training automatically.",{status:this.forgeCurriculum.status(),skills:this.forgeCurriculum.list(100),next});}
+    if(/forge\s*dream/i.test(message)&&this.forgeDream){return result("SUCCESS","ForgeDream provides isolated synthetic worlds. Only verified SUCCESS results become training-eligible.",{status:this.forgeDream.status(),worlds:this.forgeDream.worlds(),runs:this.forgeDream.list(50),trainingCandidates:this.forgeDream.trainingCandidates(50)});}
     if(/what (?:else )?can you do|what can you do|help me use|available features/i.test(message)&&this.capabilityStatus){
       const caps=await this.capabilityStatus(),connected=caps.filter(x=>x.availability==="CONNECTED"),configured=caps.filter(x=>x.availability==="CONFIGURED"),unavailable=caps.filter(x=>!["CONNECTED","CONFIGURED"].includes(x.availability));
       const groups=[["chat",/onechat|forgelm/i],["knowledge",/knowledge|document|memory|retrieval|lexicon/i],["web",/web|research/i],["multimodal",/vision|audio|speech|video|multimodal|media/i],["development",/develop|plugin|github|task|action/i],["governance",/policy|approval|audit|provenance|security|capabilit/i]]

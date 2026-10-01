@@ -16,6 +16,7 @@ export function routeSecurity(method,path){
   let risk=stateChanging?"medium":"low",capability="api.read",external=false,mutatesSource=false,requiresCredential=false,delegateApproval=false;
   if(p.startsWith("/api/mental-health/"))capability=stateChanging?"wellbeing.write":"wellbeing.read";
   else if(p.startsWith("/api/snake/"))capability=stateChanging?"snake.execute":"snake.read";
+  else if(p.startsWith("/api/innovation/")){capability=stateChanging?"innovation.write":"innovation.read";risk="low";}
   else if(p.startsWith("/api/chronicle/"))capability=stateChanging?"chronicle.write":"chronicle.read";
   else if(p.startsWith("/api/memory/"))capability=stateChanging?"memory.write":"memory.read";
   else if(p.startsWith("/api/provenance/"))capability=stateChanging?"provenance.write":"provenance.read";

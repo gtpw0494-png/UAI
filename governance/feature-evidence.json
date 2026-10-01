@@ -1504,6 +1504,28 @@
         "verification/proof-genome-dream-v077.test.mjs"
       ],
       "evidence_note": "ForgeDream defines isolated seeded synthetic worlds with objectives, constraints, mutations, actions, policy decisions, failures, recovery, verified result and score. Runs declare no real-world effects; only verified SUCCESS runs become training-eligible."
+    },
+    {
+      "id": "forge-evolution-lab",
+      "introduced": "0.77.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "src/forge-museum.js",
+        "src/forge-canary.js",
+        "src/forge-rosetta.js",
+        "src/forge-curriculum.js",
+        "src/forgedream.js",
+        "src/platform-state-store.js",
+        "storage/platform_state.py",
+        "src/onechat.js",
+        "server.js",
+        "public/app.js",
+        "public/index.html"
+      ],
+      "tests": [
+        "verification/forge-evolution-lab.test.mjs"
+      ],
+      "evidence_note": "ForgeMuseum, ForgeCanary, ForgeRosetta, ForgeCurriculum and ForgeDream are wired into persistent local state, authenticated HTTP routes, OneChat and the Forge Evolution Lab UI. Status remains IMPLEMENTED_UNVERIFIED_REPO until authoritative CI verifies the exact integration commit."
     }
   ]
 }
