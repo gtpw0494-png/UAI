@@ -14,7 +14,7 @@ assert.ok(!/<textarea[^>]+id="chatIn"[^>]+required/i.test(html));
 
 assert.ok(app.includes('UPLOAD_CHUNK_BYTES=1_500_000'));
 assert.ok(app.includes('post("/api/media/upload"'));
-assert.ok(app.includes('post("/api/onechat"'));
+assert.ok(app.includes('post("/api/onechat/start"'));
 assert.ok(app.includes('/api/onechat/history'));
 assert.ok(app.includes('/api/media/content?id='));
 assert.ok(app.includes('data-turn-action'));
