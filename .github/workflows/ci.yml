@@ -150,6 +150,9 @@ jobs:
       - name: Verify Forge Evolution Lab
         run: npm run test:forge-evolution
 
+      - name: Verify Forge Cognitive Fabric
+        run: npm run test:forge-cognitive
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
@@ -279,3 +282,11 @@ jobs:
       - name: Run ForgeLM v0.70 token streaming test
         working-directory: model
         run: python3 test_streaming.py
+
+      - name: Run ForgeNGN neural gearing test
+        working-directory: model
+        run: python3 test_neural_gearing.py
+
+      - name: Run cognitive learning-head tests
+        working-directory: model
+        run: python3 test_cognitive_learning_heads.py
