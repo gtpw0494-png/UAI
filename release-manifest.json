@@ -148,6 +148,11 @@
       "bytes": 6455
     },
     {
+      "path": "docs/PUTER-UPSTREAM-COMPATIBILITY.md",
+      "sha256": "95415ed754d8c2c3f97eedf12a83c8612640ec11a71fdefcbde6d94bf54554b9",
+      "bytes": 2450
+    },
+    {
       "path": "docs/SECURITY.md",
       "sha256": "48e790fd0aace0795826d5d3ff4940e6cd966efad8a05628ea423a92610d5942",
       "bytes": 3608
@@ -464,8 +469,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "7c64a938946237cc9aa0ac8f34b2c24480df429dd69f8eb2b7a104460614805f",
-      "bytes": 9351
+      "sha256": "e659517cfe31306a2a65285f767a8a6b7510eeaf7cc9b13d260ec6dcd0446150",
+      "bytes": 9581
     },
     {
       "path": "public/app.js",
@@ -1796,6 +1801,11 @@
       "path": "verification/proof-genome-dream-v077.test.mjs",
       "sha256": "ce5202acee2557ffe9c04576a6a177ce6c14b0b44855b77572591c13c698aa94",
       "bytes": 4651
+    },
+    {
+      "path": "verification/puter-upstream-fd8b8288.test.mjs",
+      "sha256": "0103419d8b149743a0f83a5df49399418e053d1f6d93ba8aa77294474c7e5996",
+      "bytes": 2307
     },
     {
       "path": "verification/runtime-boundaries.test.mjs",
