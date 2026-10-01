@@ -1,6 +1,6 @@
 {
   "schema_version": "uai-feature-evidence-v1",
-  "generated_for": "0.77.0",
+  "generated_for": "0.78.0",
   "promotion_rule": "A feature may be VERIFIED only when concrete implementation paths and executable tests exist and authoritative repository CI passes on the exact promotion commit. Runtime-dependent integrations retain separate availability truth.",
   "allowed_statuses": [
     "DECLARED",
@@ -1526,6 +1526,36 @@
         "verification/forge-evolution-lab.test.mjs"
       ],
       "evidence_note": "ForgeMuseum, ForgeCanary, ForgeRosetta, ForgeCurriculum and ForgeDream are wired into persistent local state, authenticated HTTP routes, OneChat and the Forge Evolution Lab UI. Status remains IMPLEMENTED_UNVERIFIED_REPO until authoritative CI verifies the exact integration commit."
+    },
+    {
+      "id": "forge-cognitive-fabric-v078",
+      "introduced": "0.78.0",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "implementation": [
+        "model/neural_gearing.py",
+        "model/neural_gearing_growth.py",
+        "model/confidence_head.py",
+        "model/evidence_gain_scout.py",
+        "model/train_neural_gearing.py",
+        "src/confidence-router.js",
+        "src/confidence-policy-bridge.js",
+        "src/evidence-gain-scout.js",
+        "src/evidence-gain-verifier.js",
+        "src/evidence-portfolio-optimizer.js",
+        "src/evidence-portfolio-verifier.js",
+        "src/ngn-envelope.js",
+        "src/forge-cognitive-fabric.js",
+        "src/capabilities.js",
+        "src/onechat.js",
+        "server.js",
+        "docs/FORGE-COGNITIVE-FABRIC.md"
+      ],
+      "tests": [
+        "verification/forge-cognitive-fabric.test.mjs",
+        "model/test_neural_gearing.py",
+        "model/test_cognitive_learning_heads.py"
+      ],
+      "evidence_note": "ForgeNGN, Capability Confidence Router, Evidence-Gain Scout and Evidence Portfolio Optimizer are merged as an additive experimental candidate layer. Neural outputs remain advisory; VERIFIED confidence requires independent verification; growth is candidate-only and cannot mutate or promote a live model. Status remains IMPLEMENTED_UNVERIFIED_REPO until authoritative core and CPU-PyTorch CI pass on the exact integration commit."
     }
   ]
 }
