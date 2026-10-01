@@ -517,7 +517,7 @@ export class OneChatRouter{
   if(cancelled())return {state:"CANCELLED",chatId,message:"Turn cancelled before persistence; result was not saved.",allocations,contributions,attachments:prepared.artifacts||[]};
   this.lastEvidence.set(chatId,evidenceEnvelope);
   const record=this.store.add({kind:"chat-turn",title:"OneChat turn",chatId,ownerId:input.ownerId||null,user:message,allocations,contributions,state:finalState,answer,responseMode:composed.mode,evidenceEnvelope,attachments:prepared.artifacts||[],verified:finalState==="SUCCESS"});
-  this._ensureAutoTitle(chatId,message,input.ownerId||null);
+  if(input.autoTitle!==false)this._ensureAutoTitle(chatId,message,input.ownerId||null);
   this.audit?.append({type:"onechat.turn",chatId,responseId,evidenceId:evidenceEnvelope.id,evidenceDigest:evidenceEnvelope.integrity.digest,knowledgeId:record.id,allocations:allocations.map(x=>x.agent),state:finalState,responseMode:composed.mode});
   this.chronicle?.recordChatTurn?.(record);
   emit({type:"persisted",state:finalState,knowledgeId:record.id,responseId,evidenceId:evidenceEnvelope.id,message:"Turn persisted with evidence."});
