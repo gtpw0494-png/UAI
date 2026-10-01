@@ -908,6 +908,21 @@
       "bytes": 2210
     },
     {
+      "path": "src/forge-canary.js",
+      "sha256": "204232cadfd8157a0abe4304d400f26a66b5848e3730e51d43070c8e88a1b33e",
+      "bytes": 3242
+    },
+    {
+      "path": "src/forge-museum.js",
+      "sha256": "07ee586f0acb3df3ec59206f7d558f52a459a99ce1513ef09d71a3fc8a4250c2",
+      "bytes": 2455
+    },
+    {
+      "path": "src/forge-rosetta.js",
+      "sha256": "e18ec83b7e6cd71f41a57b79b004bcb114d65b97d7c075609a03ddfcdabf9931",
+      "bytes": 3650
+    },
+    {
       "path": "src/forgeaudio-candidate-promotion.js",
       "sha256": "332d2ff7687d5d79fa4eaeee66ce89186a94e8b2ee2bc538a10a71a8732b8011",
       "bytes": 6291
