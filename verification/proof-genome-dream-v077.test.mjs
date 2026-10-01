@@ -31,4 +31,6 @@ assert.ok(server.includes("/api/innovation/status"));
 
 const styles=fs.readFileSync(path.join(process.cwd(),"public","styles.css"),"utf8");
 assert.ok(html.includes("themeStudio"));assert.ok(html.includes("data-theme=\"neon\""));assert.ok(ui.includes("uai_visual_theme"));assert.ok(ui.includes("applyMotion"));assert.ok(styles.includes('html[data-theme="aurora"]'));assert.ok(styles.includes("prefers-reduced-motion"));
+for(const route of ["/api/tasks","/api/actions","/api/approvals","/api/model/status","/api/agents","/api/chronicle/status","/api/research/sources","/api/light/status","/api/shadow/status","/api/governance/status","/api/provider/status","/api/memory/status","/api/provenance/status","/api/mental-health/status","/api/audit/verify"])assert.ok(server.includes(route),"server route missing: "+route);
+assert.ok(html.includes("liveInspector"));assert.ok(ui.includes("inspectApi"));assert.ok(ui.includes("data-api-get"));assert.ok(styles.includes(".action-bar"));
 console.log("Proof/Genome/ForgeDream evolution tests passed");
