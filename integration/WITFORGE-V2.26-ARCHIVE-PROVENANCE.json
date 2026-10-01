@@ -1,0 +1,37 @@
+{
+  "schema": "uai.archive-provenance.v1",
+  "sourceArchive": "WitForge-ForgeLM-Puter-v2.26.0.zip",
+  "sourceVersion": "2.26.0",
+  "archiveSha256": "da1911bada830cd9e0389d584ca4335180860482b647d53ca0b420d656fb9030",
+  "archiveSizeBytes": 10348824,
+  "observedFileCount": 147,
+  "checksumManifestEntries": 144,
+  "auditedAt": "2026-10-01",
+  "destinationPrefix": "legacy/witforge-source",
+  "disposition": "PARTIAL_PRESERVED_SOURCE",
+  "notes": [
+    "The public repository preserves the source lineage but is not claimed byte-for-byte identical to this archive.",
+    "Raw archive publication is not required for provenance; local artifact audit can verify the original archive by SHA-256.",
+    "Three checkpoint binaries observed in the archive are not present in the public GitHub tree and remain external model artifacts pending explicit lifecycle review."
+  ],
+  "externalModelArtifacts": [
+    {
+      "path": "forge_lm/checkpoints/nano/model.pt",
+      "sha256": "75b39c531f7f66ec3e4bf97da02dc6c5e4b4dfb16342a8672ee3d5418db288e1",
+      "sizeBytes": 3364303,
+      "githubPresent": false
+    },
+    {
+      "path": "forge_lm/checkpoints/releases/ForgeLM-Nano-0.3-v2.22.0/model.pt",
+      "sha256": "74896ed332498c2fa913beace056a8fa396c21aeb5ca2610a07c96e837baaacb",
+      "sizeBytes": 3564919,
+      "githubPresent": false
+    },
+    {
+      "path": "forge_lm/checkpoints/releases/ForgeLM-Nano-0.4-3491185b5ace/model.pt",
+      "sha256": "75b39c531f7f66ec3e4bf97da02dc6c5e4b4dfb16342a8672ee3d5418db288e1",
+      "sizeBytes": 3364303,
+      "githubPresent": false
+    }
+  ]
+}

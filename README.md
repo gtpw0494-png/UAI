@@ -1,6 +1,11 @@
-# IntraultUniversalion / WitForge Unified v0.76.0
+# IntraultUniversalion / WitForge Unified v0.77.0
 
 UAI is an **independent AI operating environment**: a local-first, evidence-governed platform for conversation, research, retrieval, models, tools, plugins, durable tasks and owner-authorized action. It is not defined as a claim of universal superiority over other assistants; comparisons must be task-specific and evidence-backed.
+
+
+## Project artifact provenance compilation
+
+Historical UAI/WitForge ZIPs, specifications, prompts/responses and model artifacts are now handled through a governed local inventory path. `npm run project:audit -- <folder>` produces SHA-256 provenance in ignored local state, flags sensitive paths, and never treats an archive or chat export as executable authority. See `docs/PROJECT-ARTIFACT-COMPILATION.md` and `integration/WITFORGE-V2.26-ARCHIVE-PROVENANCE.json`.
 
 ## v0.76 Native WitForge activation
 
