@@ -147,6 +147,9 @@ jobs:
       - name: Verify governed multi-role collaboration
         run: npm run test:multi-role
 
+      - name: Verify Forge Evolution Lab
+        run: npm run test:forge-evolution
+
       - name: Verify lifecycle retrieval and learning foundations
         run: python3 verification/test_data_learning.py
 
