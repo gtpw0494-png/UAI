@@ -1279,8 +1279,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "fc5fa43ff0fa7dec0137e546ee130d546cb35e37fdd3dc1ff5bdbb138b36a0a4",
-      "bytes": 56336
+      "sha256": "e5fcffc0d480c90292d458dddaa608577efd82c54b0880b4cda1bcba9de974da",
+      "bytes": 56363
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -1779,8 +1779,8 @@
     },
     {
       "path": "verification/onechat-multimodal-attachments.test.mjs",
-      "sha256": "e7fe71bd0da2a1ace7b12208772bb10134093ed09970c7e8d8493e8c7836cdda",
-      "bytes": 2338
+      "sha256": "f4dbc906fb490537ef05203737a32ce1e04f5e53c22e7ed4176c2478619ee6f9",
+      "bytes": 2446
     },
     {
       "path": "verification/onechat-turn-controls.test.mjs",
