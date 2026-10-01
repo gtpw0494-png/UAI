@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.76.0",
+  "version": "0.77.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -474,7 +474,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "3093aef01f33a6ceb7b889fd854b68225c866b2ed459525f85473c98370ee640",
+      "sha256": "b10599b437d7f044791633a1bc3588693025dd019113680e61f69c0af0964f95",
       "bytes": 9796
     },
     {
