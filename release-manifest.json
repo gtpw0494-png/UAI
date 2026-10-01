@@ -98,6 +98,11 @@
       "bytes": 2233
     },
     {
+      "path": "docs/FIRECRAWL-INTERACT-SELF-IMPROVEMENT.md",
+      "sha256": "3214d993f26d2c6bac7f8358cc64b07e2ea44066b10ad01e9fc63cf3313d061c",
+      "bytes": 1778
+    },
+    {
       "path": "docs/FORGELM-SELF-SUFFICIENT.md",
       "sha256": "54b6e579c5575154295c8a14e538034c101fba00ea36493cd21fac04c35fa364",
       "bytes": 1276
@@ -469,8 +474,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "e659517cfe31306a2a65285f767a8a6b7510eeaf7cc9b13d260ec6dcd0446150",
-      "bytes": 9581
+      "sha256": "3093aef01f33a6ceb7b889fd854b68225c866b2ed459525f85473c98370ee640",
+      "bytes": 9796
     },
     {
       "path": "public/app.js",
@@ -1006,6 +1011,11 @@
       "path": "src/idempotency-store.js",
       "sha256": "44a899532a46abc1469d1ba0ca3e336aed445a19035b384c9a16690c2d5c81b6",
       "bytes": 4467
+    },
+    {
+      "path": "src/integrations/firecrawl-interact.js",
+      "sha256": "1ae163225390338b728b7d991a2e6c631d0c94f90bb45344d2ca32cdfdd8b585",
+      "bytes": 3120
     },
     {
       "path": "src/iubin.js",
@@ -1636,6 +1646,11 @@
       "path": "verification/document-http.test.mjs",
       "sha256": "5e68f26ae374cef9931f245fc08dde05a65dd1ddb0264ed4b0de01d689695251",
       "bytes": 5099
+    },
+    {
+      "path": "verification/firecrawl-interact-self-improvement.test.mjs",
+      "sha256": "4b85a2d752bc396ef6bd74b275052804f3d72dd9780695a33c750af99fef66be",
+      "bytes": 1424
     },
     {
       "path": "verification/forgeaudio-candidate-promotion.test.mjs",
