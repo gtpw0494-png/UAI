@@ -103,6 +103,11 @@
       "bytes": 1778
     },
     {
+      "path": "docs/FORGE-EVOLUTION-LAB.md",
+      "sha256": "925d7589fa7648b8fae3bb1af49c4caefdd08e6eccacd19955862456a6388831",
+      "bytes": 1408
+    },
+    {
       "path": "docs/FORGELM-SELF-SUFFICIENT.md",
       "sha256": "54b6e579c5575154295c8a14e538034c101fba00ea36493cd21fac04c35fa364",
       "bytes": 1276
@@ -911,6 +916,11 @@
       "path": "src/forge-canary.js",
       "sha256": "204232cadfd8157a0abe4304d400f26a66b5848e3730e51d43070c8e88a1b33e",
       "bytes": 3242
+    },
+    {
+      "path": "src/forge-curriculum.js",
+      "sha256": "ea09d6f78ff537ec3d2667d79380b90de8f2644ffd561a873c0e3e63bf8dc36a",
+      "bytes": 3221
     },
     {
       "path": "src/forge-museum.js",
