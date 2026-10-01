@@ -1749,8 +1749,8 @@
     },
     {
       "path": "verification/onechat-attachment-ui.test.mjs",
-      "sha256": "cc49f86cba709ed17e600729d6bb3e261d4162e15ac9d3a8a662f2faea059b6c",
-      "bytes": 1746
+      "sha256": "4bd662254bebbeb0cf0fc888539cc41bf32fdacbfa24f4e1d3566fca629033f7",
+      "bytes": 1752
     },
     {
       "path": "verification/onechat-conversation-management.test.mjs",
