@@ -448,3 +448,6 @@ $("#inspectorClose")?.addEventListener("click",closeInspector);
 addEventListener("keydown",e=>{if(e.key==="Escape")closeInspector();});
 
 addEventListener("click",e=>{const b=e.target.closest("[data-linked-id]");if(b)inspectLinked(b.dataset.linkedId);});
+
+// Browser-visible boot handshake: emitted only after all UI handlers above were registered.
+window.dispatchEvent(new CustomEvent("uai-ui-ready",{detail:{version:"0.77.0"}}));
