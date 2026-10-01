@@ -86,6 +86,7 @@ import { ForgeCanary } from "./src/forge-canary.js";
 import { ForgeRosetta } from "./src/forge-rosetta.js";
 import { ForgeCurriculum } from "./src/forge-curriculum.js";
 import { EvolutionCoordinator } from "./src/evolution-coordinator.js";
+import { ForgeCognitiveFabric } from "./src/forge-cognitive-fabric.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageMeta = JSON.parse(fs.readFileSync(path.join(__dirname,"package.json"),"utf8"));
@@ -158,6 +159,7 @@ const forgeMuseum = new ForgeMuseum({stateRoot:stateDir,audit});
 const forgeCanary = new ForgeCanary({stateRoot:stateDir,audit});
 const forgeRosetta = new ForgeRosetta({stateRoot:stateDir,audit});
 const forgeCurriculum = new ForgeCurriculum({stateRoot:stateDir,audit});
+const forgeCognitiveFabric = new ForgeCognitiveFabric({root:__dirname});
 const evolutionCoordinator = new EvolutionCoordinator({genomes:capabilityGenomes,dreams:forgeDream,proofs:decisionProofs,audit});
 const modelArtifactVerifier = new ModelArtifactVerifier({stateRoot:stateDir,audit});
 const evaluationStore = new EvaluationStore({stateRoot:stateDir,audit});
@@ -196,7 +198,7 @@ const sourceRegistry = JSON.parse(fs.readFileSync(path.join(__dirname,"research"
 const countBy=(rows,key="state")=>Object.fromEntries(Object.entries((rows||[]).reduce((acc,row)=>{const k=String(row?.[key]||"UNKNOWN");acc[k]=(acc[k]||0)+1;return acc;},{})).sort(([a],[b])=>a.localeCompare(b)));
 const capabilitySnapshot=async()=>{const deps=dependencyStatus(),model=await forgelm.status(),vision=await forgelm.visionStatus(),audio=await forgelm.audioStatus(),speech=await forgelm.speechStatus(),video=await forgelm.videoStatus(),multimodal=await forgelm.multimodalStatus(),lg=await langgraph.status();return buildCapabilityRegistry(providerHub,{deps,model,vision,audio,speech,video,multimodal,langgraph:lg,runtimes:{llamacpp:await llamaRuntime.status()},local:await localOrchestrator.promotionSnapshot()});};
 const pluginGateway = new PluginGateway({registry:pluginRegistry,policyEngine,approvalStore,autonomyStore,idempotencyStore,capabilityStatus:capabilitySnapshot,audit});
-const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle,collaboration,mentalHealth,snakeLab,forgeDream,forgeMuseum,forgeCanary,forgeRosetta,forgeCurriculum});
+const onechat = new OneChatRouter({research,development,explorative,tasks,knowledge,agents,store,audit,forgelm,conversation,learning,selfdev,control,sourceRegistry,dependencyStatus,modelLab,webCorpus,webResearch,documentStore,multimodalPipeline,runtimeServices,langgraph,storageDb,policyEngine,policySimulator,memoryStore,provenanceGraph,evaluationStore,modelArtifactVerifier,approvalStore,autonomyStore,pluginRegistry,modelRegistry,llamaRuntime,observability,localOrchestrator,localCapabilityRouter,modelRouter,taskStore,availabilityLedger,providerHub,capabilityStatus:capabilitySnapshot,availabilityStatus:async()=>availabilityLedger.record(await capabilitySnapshot()),chronicle,collaboration,mentalHealth,snakeLab,forgeDream,forgeMuseum,forgeCanary,forgeRosetta,forgeCurriculum,forgeCognitiveFabric});
 const onechatTurnSessions = new OneChatTurnSessions({onechat,audit,stateRoot:stateDir});
 const PORT = Number(process.env.PORT || 8787);
 const HOST = String(process.env.HOST || "127.0.0.1").trim() || "127.0.0.1";
@@ -492,8 +494,9 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/governance/trusted-devices/revoke"){const b=await readBody(req);return send(res,200,governanceKernel.trustedDevices.revoke(b.id,req.uaiSecurity));}
   if(req.method==="GET"&&url.pathname==="/api/innovation/status"){
     const limit=Math.max(1,Math.min(500,Number(url.searchParams.get("limit")||50)));
-    return send(res,200,{state:"SUCCESS",decisionProofs:decisionProofs.list(Math.min(100,limit)),capabilityGenomes:capabilityGenomes.list(Math.min(200,limit)),forgeDream:{...forgeDream.status(),worlds:forgeDream.worlds(),runs:forgeDream.list(limit),trainingCandidates:forgeDream.trainingCandidates(limit)},forgeMuseum:{...forgeMuseum.status(),exhibits:forgeMuseum.list(limit)},forgeCanary:{...forgeCanary.status(),profiles:forgeCanary.profiles(limit),runs:forgeCanary.runs(limit)},forgeRosetta:{...forgeRosetta.status(),mappings:forgeRosetta.list(limit)},forgeCurriculum:{...forgeCurriculum.status(),skills:forgeCurriculum.list(limit),next:forgeCurriculum.list(1).length?forgeCurriculum.next():null},evolution:{authority:"EXTERNAL_APPROVAL_REQUIRED",selfPromotion:false}});
+    return send(res,200,{state:"SUCCESS",decisionProofs:decisionProofs.list(Math.min(100,limit)),capabilityGenomes:capabilityGenomes.list(Math.min(200,limit)),forgeDream:{...forgeDream.status(),worlds:forgeDream.worlds(),runs:forgeDream.list(limit),trainingCandidates:forgeDream.trainingCandidates(limit)},forgeMuseum:{...forgeMuseum.status(),exhibits:forgeMuseum.list(limit)},forgeCanary:{...forgeCanary.status(),profiles:forgeCanary.profiles(limit),runs:forgeCanary.runs(limit)},forgeRosetta:{...forgeRosetta.status(),mappings:forgeRosetta.list(limit)},forgeCurriculum:{...forgeCurriculum.status(),skills:forgeCurriculum.list(limit),next:forgeCurriculum.list(1).length?forgeCurriculum.next():null},cognitiveFabric:forgeCognitiveFabric.status(),evolution:{authority:"EXTERNAL_APPROVAL_REQUIRED",selfPromotion:false}});
   }
+  if(req.method==="GET"&&url.pathname==="/api/innovation/cognitive-fabric/status")return send(res,200,{state:"SUCCESS",...forgeCognitiveFabric.status()});
   if(req.method==="POST"&&url.pathname==="/api/innovation/museum/exhibits"){const b=await readBody(req);return send(res,200,forgeMuseum.retire(b));}
   if(req.method==="POST"&&url.pathname==="/api/innovation/canary/profiles"){const b=await readBody(req);return send(res,200,forgeCanary.createProfile(b));}
   if(req.method==="POST"&&url.pathname==="/api/innovation/canary/simulate"){const b=await readBody(req);return send(res,200,forgeCanary.simulate(b));}

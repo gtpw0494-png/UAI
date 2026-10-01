@@ -1,6 +1,6 @@
 {
   "format": "iu-release-manifest-v1",
-  "version": "0.77.0",
+  "version": "0.78.0",
   "files": [
     {
       "path": ".github/workflows/bootstrap-v042.yml",
@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "372a064481e89ba5e137c8fe0876ae2d75ab946f827a23631e2c40cdce58bb51",
-      "bytes": 9757
+      "sha256": "0e86d00cc62c8be57e43a2b5931aa66d7ce157859297a3daf970c707e3225900",
+      "bytes": 10105
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -103,6 +103,11 @@
       "bytes": 1778
     },
     {
+      "path": "docs/FORGE-COGNITIVE-FABRIC.md",
+      "sha256": "3f818c184031885066439707c3ba66b3f75353bcfa20d6738f32083afbcc2df2",
+      "bytes": 2306
+    },
+    {
       "path": "docs/FORGE-EVOLUTION-LAB.md",
       "sha256": "925d7589fa7648b8fae3bb1af49c4caefdd08e6eccacd19955862456a6388831",
       "bytes": 1408
@@ -174,8 +179,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "a2e690abffd1a07a3c725e1b28bb2779d25e4dd62489d9ae1362f8a538333ec5",
-      "bytes": 63005
+      "sha256": "c095ca21bc7a2170740da6272be30cd9402708ee1b0036943903daa6995dbf21",
+      "bytes": 64434
     },
     {
       "path": "model/adaptation.py",
@@ -211,6 +216,11 @@
       "path": "model/cli.py",
       "sha256": "8fd6518bdb7abfb63ef85c5e123bb9484069d07da707c11c397ba1cca5e1179e",
       "bytes": 3304
+    },
+    {
+      "path": "model/confidence_head.py",
+      "sha256": "b82c11d9763b191e1b3977a999b51b4b58b693ffadbde3955b51d9ddc376b72f",
+      "bytes": 1014
     },
     {
       "path": "model/config_presets.json",
@@ -293,6 +303,11 @@
       "bytes": 4520
     },
     {
+      "path": "model/evidence_gain_scout.py",
+      "sha256": "c6ee1bc312f242fe40e1eae4088066d98667efd6b2259b5f285b74bc06a44951",
+      "bytes": 894
+    },
+    {
       "path": "model/forgecode.py",
       "sha256": "99abc296cd8d0effd72e97749870ed182065f16e39bc6da3d4289591402f657f",
       "bytes": 7216
@@ -358,6 +373,16 @@
       "bytes": 8503
     },
     {
+      "path": "model/neural_gearing.py",
+      "sha256": "f51e89b3436ee2793c979de6e1afec57a06c7440c00ab44dc6ebb5480152b671",
+      "bytes": 10637
+    },
+    {
+      "path": "model/neural_gearing_growth.py",
+      "sha256": "fb13e609868b110e5f27b847a8b91538d657d427cfe143727f03f57d81a8d96d",
+      "bytes": 2995
+    },
+    {
       "path": "model/orchestration.py",
       "sha256": "cd58704f6146d89a62851a74eea8e9502fad2511487e8f027e5a7eeaf13a8b55",
       "bytes": 440
@@ -388,6 +413,11 @@
       "bytes": 1656
     },
     {
+      "path": "model/test_cognitive_learning_heads.py",
+      "sha256": "08df80947b69d9bfa14930d1f0370360ea78d7631f4f27f1cf084d900fcc96d0",
+      "bytes": 1086
+    },
+    {
       "path": "model/test_forgelm.py",
       "sha256": "3ea5b71d35ec092cb6d4dbd1b36c043ca72b01316c0a481482301ac331e8fb0c",
       "bytes": 1168
@@ -401,6 +431,11 @@
       "path": "model/test_multimodal.py",
       "sha256": "8ad68d8fa516e88678d3b531c894a367e773b9e7127a89975b8adf7f69d7d4e0",
       "bytes": 2193
+    },
+    {
+      "path": "model/test_neural_gearing.py",
+      "sha256": "47e0ee9e5f6835b0b3f8331f09dbbd6b7b20cba7d05d7cc0fc97ac153d25f673",
+      "bytes": 2253
     },
     {
       "path": "model/test_speech.py",
@@ -441,6 +476,11 @@
       "path": "model/train_audio.py",
       "sha256": "4204bd26fe113023a92d988746c72d3ccc5069d0635e44f0b84c6b9bb7e1b2d5",
       "bytes": 5004
+    },
+    {
+      "path": "model/train_neural_gearing.py",
+      "sha256": "8ea9a6d588d33f0c5426061e1f079d13064d283c80f6cbe32edf59b3e631e3d2",
+      "bytes": 2140
     },
     {
       "path": "model/train_speech.py",
@@ -484,18 +524,18 @@
     },
     {
       "path": "package.json",
-      "sha256": "375a9d025882b287c48c583b1ab2e9edb21e22de3e6a330d8e504eb0d886b983",
-      "bytes": 10021
+      "sha256": "e4e8423e7c346de93362437b1c78493bc47d9c5b3bbe79a286e8d5a53697f024",
+      "bytes": 10300
     },
     {
       "path": "public/app.js",
-      "sha256": "5c2c6b515aea23e632b28e2e8cdbb101d146b6a59bd00f988790e18c58130292",
-      "bytes": 48975
+      "sha256": "c3586bd509613086a35b23b73175680ca40cf503c65f1ee31cca7079cd3548fb",
+      "bytes": 49465
     },
     {
       "path": "public/index.html",
-      "sha256": "d38e68ea77d9ff539b94ea29c87c3ff3eea8bb53ae3683e99e9f1f308a03250d",
-      "bytes": 9720
+      "sha256": "b7194fcbb957979b0f14ea7273d42479d6eacc1ffca4fa39bed86d11b7f9532e",
+      "bytes": 9773
     },
     {
       "path": "public/styles.css",
@@ -759,8 +799,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "271e79274c3eba007e588cb0814221c7ef44cb7969f8d4a03321839d904682aa",
-      "bytes": 84071
+      "sha256": "11826166228ce46a2db763b52f204cb688d17e2240e27db7195903e29562c552",
+      "bytes": 84438
     },
     {
       "path": "src/action-envelope.js",
@@ -804,8 +844,8 @@
     },
     {
       "path": "src/capabilities.js",
-      "sha256": "e7037e0400c63981488d8bfbab47df0bf2ea7be037d88242c40a803c9b8fc64e",
-      "bytes": 14710
+      "sha256": "c0003f68979cee73db8ba2333e79c3292aa07f939c3d6534bff069eba0d1beee",
+      "bytes": 15372
     },
     {
       "path": "src/capability-genome.js",
@@ -836,6 +876,16 @@
       "path": "src/collaboration/multi-role.js",
       "sha256": "41d2fcf21e0f63853be20347ecd07e8b776770147c8dc55886154f36f42bf890",
       "bytes": 6783
+    },
+    {
+      "path": "src/confidence-policy-bridge.js",
+      "sha256": "aae738b7ecd1c646c76efeab73d5d1647ceb1cb26c38afc8645744dc0e08e306",
+      "bytes": 661
+    },
+    {
+      "path": "src/confidence-router.js",
+      "sha256": "ec63fe7694651b9c36246d1f5f0768192e7583217d19d56d06806e0124af2bbc",
+      "bytes": 1718
     },
     {
       "path": "src/content-security.js",
@@ -908,6 +958,26 @@
       "bytes": 3109
     },
     {
+      "path": "src/evidence-gain-scout.js",
+      "sha256": "a1b0b684a44a5111ee766af07b4506153ea260e857fa730c752895bebca9a2bb",
+      "bytes": 1223
+    },
+    {
+      "path": "src/evidence-gain-verifier.js",
+      "sha256": "f8cf47f290707319474f2d648d4dc58ce9207602b8846c98e036b9662b4d0b39",
+      "bytes": 606
+    },
+    {
+      "path": "src/evidence-portfolio-optimizer.js",
+      "sha256": "4d36ef922800841423bc5ef838b91114f48573efcd4fae34ce1613c3c6d2e4de",
+      "bytes": 2154
+    },
+    {
+      "path": "src/evidence-portfolio-verifier.js",
+      "sha256": "9c5dab0c1c0b687fc947d9613c0d99c4ab90bfbe22641b0dae31578da4b2c3bf",
+      "bytes": 713
+    },
+    {
       "path": "src/evolution-coordinator.js",
       "sha256": "54f12d5cf1c45ec46f17efd96df41242fbd164ed7bf8b3c056d6c63980cc81dc",
       "bytes": 2210
@@ -916,6 +986,11 @@
       "path": "src/forge-canary.js",
       "sha256": "204232cadfd8157a0abe4304d400f26a66b5848e3730e51d43070c8e88a1b33e",
       "bytes": 3242
+    },
+    {
+      "path": "src/forge-cognitive-fabric.js",
+      "sha256": "9d8b8effd341340d899a1f958d670befb426f4b235fd45fc298e1d679ef883a5",
+      "bytes": 1845
     },
     {
       "path": "src/forge-curriculum.js",
@@ -1303,6 +1378,11 @@
       "bytes": 8337
     },
     {
+      "path": "src/ngn-envelope.js",
+      "sha256": "d48f531bcc8e0e51fd4aafe58a99ac9015389a555b2b2f12f4108724dbfbf343",
+      "bytes": 1301
+    },
+    {
       "path": "src/observability.js",
       "sha256": "cd8676015f3987f52f17aeb835156cd5884bc8c208363db9345a48ff9f8e36fc",
       "bytes": 824
@@ -1314,8 +1394,8 @@
     },
     {
       "path": "src/onechat.js",
-      "sha256": "c42e3cfe0bb76984462a77687f2f247b15b18f45a7e86e3c761f3803dc8204a3",
-      "bytes": 58051
+      "sha256": "05b953ec0fbf6d5de33add0cf757224f0c91910b12da6eaa065e1114d8e54aaf",
+      "bytes": 58616
     },
     {
       "path": "src/platform-capability-catalog.js",
@@ -1686,6 +1766,11 @@
       "path": "verification/firecrawl-interact-self-improvement.test.mjs",
       "sha256": "4b85a2d752bc396ef6bd74b275052804f3d72dd9780695a33c750af99fef66be",
       "bytes": 1424
+    },
+    {
+      "path": "verification/forge-cognitive-fabric.test.mjs",
+      "sha256": "4012611dc662d7fd74af6fae579710595316275ddbb3589501d07872c5a70ec9",
+      "bytes": 4484
     },
     {
       "path": "verification/forge-evolution-lab.test.mjs",
