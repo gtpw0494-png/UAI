@@ -33,4 +33,6 @@ const styles=fs.readFileSync(path.join(process.cwd(),"public","styles.css"),"utf
 assert.ok(html.includes("themeStudio"));assert.ok(html.includes("data-theme=\"neon\""));assert.ok(ui.includes("uai_visual_theme"));assert.ok(ui.includes("applyMotion"));assert.ok(styles.includes('html[data-theme="aurora"]'));assert.ok(styles.includes("prefers-reduced-motion"));
 for(const route of ["/api/tasks","/api/actions","/api/approvals","/api/model/status","/api/agents","/api/chronicle/status","/api/research/sources","/api/light/status","/api/shadow/status","/api/governance/status","/api/provider/status","/api/memory/status","/api/provenance/status","/api/mental-health/status","/api/audit/verify"])assert.ok(server.includes(route),"server route missing: "+route);
 assert.ok(html.includes("liveInspector"));assert.ok(ui.includes("inspectApi"));assert.ok(ui.includes("data-api-get"));assert.ok(styles.includes(".action-bar"));
+assert.ok(server.includes('actionEnvelopes.list(Number(url.searchParams.get("limit")||100))'));
+assert.ok(ui.includes("/api/chronicle/digest"));assert.ok(ui.includes("inspectLinked"));assert.ok(ui.includes("Approval Center"));assert.ok(ui.includes("/api/approvals?status=PENDING"));
 console.log("Proof/Genome/ForgeDream evolution tests passed");
