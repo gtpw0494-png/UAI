@@ -939,8 +939,8 @@
     },
     {
       "path": "src/forgedream.js",
-      "sha256": "c8aabf38161f22852588b9209de603a8033e1437bdb6745a67f1d281a8d2f433",
-      "bytes": 2032
+      "sha256": "9fe0da67102afb11564c54ab8913257ea509e6e12d772f86e72e803c2b20bc43",
+      "bytes": 3330
     },
     {
       "path": "src/forgelm-bridge.js",
@@ -1324,8 +1324,8 @@
     },
     {
       "path": "src/platform-state-store.js",
-      "sha256": "1add0d647802d5d3fe1a73d7fbf5a7c080a7780197b9b0e99f71a6b558e81df5",
-      "bytes": 8452
+      "sha256": "bf3c5fbdeb57a020f03d4c9f998c20ea16d0657f04729da3840f50cf4c1a8f94",
+      "bytes": 8685
     },
     {
       "path": "src/plugin-executor.js",
