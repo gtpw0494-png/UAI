@@ -469,8 +469,8 @@
     },
     {
       "path": "public/app.js",
-      "sha256": "a6a41e04177aad8439e7ae0d4c7942b4ecbfa730bb7e6e50bc0de06ff96bae6f",
-      "bytes": 45245
+      "sha256": "0979cc6bbd90b0ea6acb605205999a5f1b12486ff514cfc505a8da05ad14ceae",
+      "bytes": 46498
     },
     {
       "path": "public/index.html",
@@ -734,8 +734,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "498c629da972bdca888794e31a05b75a68750fca47d2bc8ffb39787ff5472247",
-      "bytes": 81709
+      "sha256": "d9020ef695b280376e2a2f2257c962abd326e331234cb02c7329314f01471706",
+      "bytes": 81701
     },
     {
       "path": "src/action-envelope.js",
