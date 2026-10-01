@@ -1569,8 +1569,8 @@
     },
     {
       "path": "storage/platform_state.py",
-      "sha256": "6c28137fade7db70a39c0f76bd0aace67aa2ed390c1b528f7111683c0f641e93",
-      "bytes": 8311
+      "sha256": "3b2249f36c5c247ca4f982165cacbc69a1612376cc6afae4f44abdfac96dfd49",
+      "bytes": 8309
     },
     {
       "path": "storage/retrieval_eval.py",
