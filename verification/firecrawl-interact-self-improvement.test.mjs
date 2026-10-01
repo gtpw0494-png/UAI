@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {FirecrawlInteractAdapter} from "../src/integrations/firecrawl-interact.js";
+const calls=[]; const reply=(json,status=200)=>({ok:status>=200&&status<300,status,text:async()=>JSON.stringify(json)});
+const fetchImpl=async(url,options={})=>{calls.push({url:String(url),options});return reply({success:true,output:"evidence",metadata:{scrapeId:"scrape-1"}});};
+const adapter=new FirecrawlInteractAdapter({apiKey:"fc-test",baseUrl:"https://api.firecrawl.test",fetchImpl});
+assert.equal(adapter.status().availability,"CONFIGURED");
+const scrape=await adapter.scrape("https://example.com"); assert.equal(scrape.state,"SUCCESS"); assert.equal(calls.at(-1).url,"https://api.firecrawl.test/v2/scrape");
+const prompt=await adapter.interact("scrape-1",{prompt:"Inspect the changelog"}); assert.equal(prompt.state,"SUCCESS");
+const blocked=await adapter.interact("scrape-1",{code:"await page.title()"}); assert.equal(blocked.state,"BLOCKED");
+const approved=await adapter.interact("scrape-1",{code:"await page.title()",approvedCode:true}); assert.equal(approved.state,"SUCCESS");
+const stop=await adapter.stop("scrape-1"); assert.equal(stop.state,"SUCCESS"); assert.equal(calls.at(-1).options.method,"DELETE");
+const invalid=await adapter.scrape("file:///etc/passwd"); assert.equal(invalid.state,"BLOCKED");
+console.log("Firecrawl Interact governed self-improvement verification passed");
