@@ -804,8 +804,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "087dfe754177942db968124f6df45abefa63ee3a3760d992352ca6baafdf86b5",
-      "bytes": 84811
+      "sha256": "24e296d3e7f78646e7989cdc4108cc8c82b37eab6113372c66e254dc38857d0f",
+      "bytes": 84825
     },
     {
       "path": "src/action-envelope.js",
@@ -1029,8 +1029,8 @@
     },
     {
       "path": "src/forgelm-candidate-promotion.js",
-      "sha256": "ad0ff8e36cc0b84f033c395a1c517438de1d871058eb3996b7db2634acd770c4",
-      "bytes": 5689
+      "sha256": "b1639964e72301b1c6cf2c27ae56be04720674cfd7b7ac4b92a5f0fa7a0b1346",
+      "bytes": 6560
     },
     {
       "path": "src/forgespeech-candidate-promotion.js",
