@@ -121,6 +121,7 @@
     "test:witforge-native": "node verification/witforge-native-v076.test.mjs",
     "test:multi-role": "node verification/multi-role-collaboration.test.mjs",
     "test:v077": "node verification/proof-genome-dream-v077.test.mjs",
+    "test:forge-evolution": "node verification/forge-evolution-lab.test.mjs",
     "test:puter-upstream": "node verification/puter-upstream-fd8b8288.test.mjs",
     "test:puter-integration": "npm run test:puter-upstream && npm run test:frontier-models && npm run test:api-security && npm run test:owner-auth",
     "test:firecrawl-interact": "node verification/firecrawl-interact-self-improvement.test.mjs",
