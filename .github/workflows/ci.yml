@@ -178,9 +178,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp release-manifest.json /tmp/release-manifest.before.json
           python3 scripts/build-release-manifest.py
-          diff -u /tmp/release-manifest.before.json release-manifest.json
+          cp release-manifest.json /tmp/release-manifest.generated.json
+          python3 scripts/build-release-manifest.py
+          diff -u /tmp/release-manifest.generated.json release-manifest.json
 
       - name: Localhost smoke test
         shell: bash
