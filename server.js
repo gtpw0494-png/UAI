@@ -547,7 +547,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==="POST"&&url.pathname==="/api/tasks/run")return send(res,200,await tasks.run(await readBody(req)));
   if(req.method==="POST"&&url.pathname==="/api/tasks/resume"){const b=await readBody(req);return send(res,200,await tasks.resume(b.id||b.taskId||""));}
   if(req.method==="POST"&&url.pathname==="/api/tasks/cancel"){const b=await readBody(req);return send(res,200,tasks.cancel(b.id||b.taskId||""));}
-  if(req.method==="GET"&&url.pathname==="/api/actions")return send(res,200,{state:"SUCCESS",actions:url.searchParams.get("id")?[actionEnvelopes.get(url.searchParams.get("id"))].filter(Boolean):actionEnvelopes.list({limit:Number(url.searchParams.get("limit")||100)})});
+  if(req.method==="GET"&&url.pathname==="/api/actions")return send(res,200,{state:"SUCCESS",actions:url.searchParams.get("id")?[actionEnvelopes.get(url.searchParams.get("id"))].filter(Boolean):actionEnvelopes.list(Number(url.searchParams.get("limit")||100))});
   if(req.method==="GET"&&url.pathname==="/api/availability")return send(res,200,{state:"SUCCESS",snapshot:availabilityLedger.latest()});
   if(req.method==="POST"&&url.pathname==="/api/policy/evaluate")return send(res,200,policyEngine.evaluate(await readBody(req)));
   if(req.method==="GET"&&url.pathname==="/api/approvals")return send(res,200,{state:"SUCCESS",approvals:approvalStore.list({status:url.searchParams.get("status")||null,limit:Number(url.searchParams.get("limit")||100)})});
