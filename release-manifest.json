@@ -174,8 +174,8 @@
     },
     {
       "path": "governance/feature-evidence.json",
-      "sha256": "bea7cfaa991d07a2110bb69883d50ab459df96c53c4820bdaff6d9b3b38b3da9",
-      "bytes": 62126
+      "sha256": "a2e690abffd1a07a3c725e1b28bb2779d25e4dd62489d9ae1362f8a538333ec5",
+      "bytes": 63005
     },
     {
       "path": "model/adaptation.py",
@@ -484,8 +484,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "0f145d373cd495f7892e9f2ca0bf2ea37101dd0428ac1b680ccb1d7eb4867775",
-      "bytes": 9943
+      "sha256": "375a9d025882b287c48c583b1ab2e9edb21e22de3e6a330d8e504eb0d886b983",
+      "bytes": 10021
     },
     {
       "path": "public/app.js",
@@ -1686,6 +1686,11 @@
       "path": "verification/firecrawl-interact-self-improvement.test.mjs",
       "sha256": "4b85a2d752bc396ef6bd74b275052804f3d72dd9780695a33c750af99fef66be",
       "bytes": 1424
+    },
+    {
+      "path": "verification/forge-evolution-lab.test.mjs",
+      "sha256": "50530fcfc7d58058db61ec382c39bae1bd42eed223f12ffb817721510fa67198",
+      "bytes": 3625
     },
     {
       "path": "verification/forgeaudio-candidate-promotion.test.mjs",
