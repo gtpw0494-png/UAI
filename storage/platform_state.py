@@ -21,7 +21,7 @@ TABLES={
   "verified-knowledge":"verified_knowledge",
   "decision-proof":"decision_proofs",
   "capability-genome":"capability_genomes",
-  "forgedream-run":"forgedream_runs",
+  "forgedream-run":"forgedream_runs",\n  "chronicle-event":"chronicle_events",\n  "chronicle-digest":"chronicle_digests",
 }
 def now(): return datetime.now(timezone.utc).isoformat()
 def connect():
