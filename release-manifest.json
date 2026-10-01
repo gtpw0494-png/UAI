@@ -358,6 +358,11 @@
       "bytes": 8503
     },
     {
+      "path": "model/neural_gearing.py",
+      "sha256": "f51e89b3436ee2793c979de6e1afec57a06c7440c00ab44dc6ebb5480152b671",
+      "bytes": 10637
+    },
+    {
       "path": "model/orchestration.py",
       "sha256": "cd58704f6146d89a62851a74eea8e9502fad2511487e8f027e5a7eeaf13a8b55",
       "bytes": 440
