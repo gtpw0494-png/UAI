@@ -42,7 +42,15 @@ This ledger prevents historical project work from disappearing silently. A histo
 | Device/OS breadth | legacy manufactured adapters preserved; current native breadth not fully proven on hardware | PARTIAL |
 | 4H3 Android app/APK | diverged v3.3/v3.4 branches | OPEN |
 | Arena/economy/engagement | legacy implementation preserved; native current-main activation not proven | OPEN/PRESERVED |
-| Every historical ZIP/document | repository lineage and known project artifacts partially preserved; external Downloads/Library ZIP corpus has not all been byte-for-byte inventoried in this repository | OPEN |
+| Every historical ZIP/document | repository lineage preserved; v2.26 archive provenance and missing checkpoint hashes recorded; governed local artifact inventory compiler added; the full Downloads/Library corpus is not yet fully reconciled | PARTIAL |
+
+## Project artifact reconciliation
+
+- Added `scripts/project-artifact-audit.mjs` to hash and classify local UAI/WitForge/ForgeLM/Chronicle/Snake artifacts without automatically publishing or executing them.
+- Added `verification/project-artifact-audit.test.mjs` and authoritative CI coverage.
+- Audited `WitForge-ForgeLM-Puter-v2.26.0.zip`: 147 observed files, 144 entries in its own checksum manifest, archive SHA-256 `da1911bada830cd9e0389d584ca4335180860482b647d53ca0b420d656fb9030`.
+- Three historical ForgeLM `model.pt` checkpoint artifacts are present in that archive but absent from the public Git tree; their hashes are preserved in `integration/WITFORGE-V2.26-ARCHIVE-PROVENANCE.json` rather than being silently represented as merged source.
+- Raw prompts/responses, credentials and account exports are not blindly committed to the public repository. They can be inventoried locally and mapped into Chronicle/provenance under existing governance.
 
 ## Completion rule
 

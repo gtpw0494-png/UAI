@@ -33,6 +33,9 @@ jobs:
       - name: Validate feature evidence claims
         run: node scripts/validate-feature-evidence.mjs
 
+      - name: Verify project artifact provenance compiler
+        run: npm run test:project-artifacts
+
       - name: Run cumulative regression suite
         run: npm test
 

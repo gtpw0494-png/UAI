@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "8374a32862da1b12a636ef4af746200b2e6f8cc95d5c2f660d190d69e64f8022",
-      "bytes": 9570
+      "sha256": "8d2250921b039a44e966da4126929981a34eaf6a9aebbf9aaba92a191aaa8b75",
+      "bytes": 9673
     },
     {
       "path": ".github/workflows/feature-evidence-gate.yml",
@@ -44,8 +44,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "f2e17919d8b222f41ce7a58cc853c657ae4f849ef64d02ad46fe1b77212a51e5",
-      "bytes": 26729
+      "sha256": "9da2fc810aedc0425eee72bbdfc89e576c12648739f797d15956b8770c3b2c2c",
+      "bytes": 27196
     },
     {
       "path": "RELEASES.md",
@@ -151,6 +151,11 @@
       "path": "docs/PLUGIN-SDK.md",
       "sha256": "8ac937aa1cddd543680ab14495b56a45ef8aa42ce5468d64a061fd0ffd0545be",
       "bytes": 6455
+    },
+    {
+      "path": "docs/PROJECT-ARTIFACT-COMPILATION.md",
+      "sha256": "de98c453e9c51b8fbdb5f37f1b9407c1c5b5d5c7971a1edb26f8d02420c58ebd",
+      "bytes": 2221
     },
     {
       "path": "docs/PUTER-UPSTREAM-COMPATIBILITY.md",
@@ -474,8 +479,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "b10599b437d7f044791633a1bc3588693025dd019113680e61f69c0af0964f95",
-      "bytes": 9796
+      "sha256": "0f145d373cd495f7892e9f2ca0bf2ea37101dd0428ac1b680ccb1d7eb4867775",
+      "bytes": 9943
     },
     {
       "path": "public/app.js",
@@ -696,6 +701,11 @@
       "path": "scripts/probe-capabilities.js",
       "sha256": "814158f940e14ce73aa6dd479d13de8cf8e42339c9405c3212b100f7ba1a6185",
       "bytes": 1065
+    },
+    {
+      "path": "scripts/project-artifact-audit.mjs",
+      "sha256": "6ecaefacda31016d6dcf89b7ebb3c577c5954fcdea241549d3c3a62edc1bdc94",
+      "bytes": 6025
     },
     {
       "path": "scripts/run-owner-local.sh",
@@ -1811,6 +1821,11 @@
       "path": "verification/plugin-http.test.mjs",
       "sha256": "588ede53d07920bd86d3ab496e75f314bf9d131af990e5f947ed5f2624ba7e3b",
       "bytes": 5138
+    },
+    {
+      "path": "verification/project-artifact-audit.test.mjs",
+      "sha256": "150fefd49ee4301307b2ba6aad83d5ba829c616d619d86b7c26f2d10731098e6",
+      "bytes": 1535
     },
     {
       "path": "verification/proof-genome-dream-v077.test.mjs",

@@ -124,7 +124,9 @@
     "test:puter-upstream": "node verification/puter-upstream-fd8b8288.test.mjs",
     "test:puter-integration": "npm run test:puter-upstream && npm run test:frontier-models && npm run test:api-security && npm run test:owner-auth",
     "test:firecrawl-interact": "node verification/firecrawl-interact-self-improvement.test.mjs",
-    "test:self-improvement-web": "npm run test:firecrawl-interact && npm run test:shadow-light && npm run test:v077"
+    "test:self-improvement-web": "npm run test:firecrawl-interact && npm run test:shadow-light && npm run test:v077",
+    "project:audit": "node scripts/project-artifact-audit.mjs",
+    "test:project-artifacts": "node verification/project-artifact-audit.test.mjs"
   },
   "engines": {
     "node": ">=20"
