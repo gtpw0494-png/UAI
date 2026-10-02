@@ -1739,8 +1739,8 @@
     },
     {
       "path": "verification/complete-merge-manifest.test.mjs",
-      "sha256": "155ad647b40c904de7b0602b318c04c6e29452f0568064eaaed4f7e5d341af56",
-      "bytes": 1729
+      "sha256": "82a04213e825025f269b3241775f57ea03129cc4e35772f1b5cdbebedc45eb86",
+      "bytes": 2127
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
