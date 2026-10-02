@@ -529,8 +529,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "e4e8423e7c346de93362437b1c78493bc47d9c5b3bbe79a286e8d5a53697f024",
-      "bytes": 10300
+      "sha256": "c4da6b20207a0e558c52ed6a63b13755f54982c48d119e4059a2a3c103eb8ecd",
+      "bytes": 10447
     },
     {
       "path": "public/app.js",
@@ -1736,6 +1736,11 @@
       "path": "verification/cloud-knowledge-store.test.mjs",
       "sha256": "cdd4d0eff14e95166296e94c9df9a0ebf808a3d058c5169f1ff02b7137c1c177",
       "bytes": 3228
+    },
+    {
+      "path": "verification/complete-merge-manifest.test.mjs",
+      "sha256": "155ad647b40c904de7b0602b318c04c6e29452f0568064eaaed4f7e5d341af56",
+      "bytes": 1729
     },
     {
       "path": "verification/control-plane-modernization.test.mjs",
