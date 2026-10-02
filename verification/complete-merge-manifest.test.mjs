@@ -7,6 +7,11 @@ const manifestPath=path.join(root,"integration","COMPLETE-MERGE-MANIFEST.json");
 assert.equal(fs.existsSync(manifestPath),true,"complete merge manifest must exist");
 const m=JSON.parse(fs.readFileSync(manifestPath,"utf8"));
 
+const packageVersion=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8")).version;
+const releaseVersion=JSON.parse(fs.readFileSync(path.join(root,"release-manifest.json"),"utf8")).version;
+assert.equal(m.version,packageVersion,"complete merge manifest version must match package.json");
+assert.equal(releaseVersion,packageVersion,"release manifest version must match package.json");
+
 assert.equal(m.schema,"uai.complete-merge.v1");
 assert.equal(m.authoritativeBranch,"main");
 assert.equal(m.policy.blindBranchMerge,false);
