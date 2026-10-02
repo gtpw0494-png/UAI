@@ -1,6 +1,6 @@
 {
   "schema": "uai.complete-merge.v1",
-  "version": "0.78.0",
+  "version": "0.80.0",
   "authoritativeBranch": "main",
   "generatedFrom": "UAI-WitForge-IntraultUniversalion Complete Merge Specification 2026-10-02",
   "policy": {
@@ -11,24 +11,114 @@
     "modelPromotionRequiresGovernedApproval": true
   },
   "subsystems": [
-    {"id":"governance","name":"Governance Kernel / Universal Action","status":"IMPLEMENTED","authority":"CURRENT_MAIN"},
-    {"id":"decision-proof","name":"Decision Proof Ledger","status":"IMPLEMENTED","authority":"CURRENT_MAIN"},
-    {"id":"chronicle","name":"Chronicle / Memory / Provenance","status":"IMPLEMENTED","authority":"CURRENT_MAIN"},
-    {"id":"onechat","name":"OneChat","status":"IMPLEMENTED","authority":"CURRENT_MAIN"},
-    {"id":"ui","name":"OneChat UI / Theme Studio","status":"IMPLEMENTED_UNVERIFIED_RUNTIME","authority":"CURRENT_MAIN"},
-    {"id":"forgelm","name":"ForgeLM","status":"PARTIAL","authority":"CURRENT_MAIN","blocker":"current trained/evaluated/approved/promoted checkpoint not yet runtime-verified"},
-    {"id":"multimodal","name":"Forge multimodal family","status":"IMPLEMENTED_UNVERIFIED_REPO","authority":"CURRENT_MAIN"},
-    {"id":"evolution","name":"Forge Evolution Lab","status":"IMPLEMENTED_UNVERIFIED_REPO","authority":"CURRENT_MAIN"},
-    {"id":"cognitive","name":"Forge Cognitive Fabric / ForgeNGN","status":"IMPLEMENTED_UNVERIFIED_REPO","authority":"CURRENT_MAIN"},
-    {"id":"snake","name":"Snake Lab / Overwatch","status":"PARTIAL","authority":"RECONCILED_LINEAGE"},
-    {"id":"wellbeing","name":"Wellbeing support","status":"PARTIAL","authority":"RECONCILED_LINEAGE"},
-    {"id":"integrations","name":"Puter / Firecrawl / plugins / external adapters","status":"PARTIAL","authority":"CURRENT_MAIN"},
-    {"id":"android-4h3","name":"Android / 4H3","status":"PARTIAL","authority":"HISTORICAL_PROVENANCE","blocker":"reproducible current-main APK evidence required"},
-    {"id":"arena-economy","name":"Arena / economy / assets","status":"HISTORICAL_ONLY","authority":"HISTORICAL_PROVENANCE"},
-    {"id":"release","name":"Release verification","status":"UNVERIFIED","authority":"CURRENT_MAIN","blocker":"exact-state release gate required"}
+    {
+      "id": "governance",
+      "name": "Governance Kernel / Universal Action",
+      "status": "IMPLEMENTED",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "decision-proof",
+      "name": "Decision Proof Ledger",
+      "status": "IMPLEMENTED",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "chronicle",
+      "name": "Chronicle / Memory / Provenance",
+      "status": "IMPLEMENTED",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "onechat",
+      "name": "OneChat",
+      "status": "IMPLEMENTED",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "ui",
+      "name": "OneChat UI / Theme Studio",
+      "status": "IMPLEMENTED_UNVERIFIED_RUNTIME",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "forgelm",
+      "name": "ForgeLM",
+      "status": "PARTIAL",
+      "authority": "CURRENT_MAIN",
+      "blocker": "current trained/evaluated/approved/promoted checkpoint not yet runtime-verified"
+    },
+    {
+      "id": "multimodal",
+      "name": "Forge multimodal family",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "evolution",
+      "name": "Forge Evolution Lab",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "cognitive",
+      "name": "Forge Cognitive Fabric / ForgeNGN",
+      "status": "IMPLEMENTED_UNVERIFIED_REPO",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "snake",
+      "name": "Snake Lab / Overwatch",
+      "status": "PARTIAL",
+      "authority": "RECONCILED_LINEAGE"
+    },
+    {
+      "id": "wellbeing",
+      "name": "Wellbeing support",
+      "status": "PARTIAL",
+      "authority": "RECONCILED_LINEAGE"
+    },
+    {
+      "id": "integrations",
+      "name": "Puter / Firecrawl / plugins / external adapters",
+      "status": "PARTIAL",
+      "authority": "CURRENT_MAIN"
+    },
+    {
+      "id": "android-4h3",
+      "name": "Android / 4H3",
+      "status": "PARTIAL",
+      "authority": "HISTORICAL_PROVENANCE",
+      "blocker": "reproducible current-main APK evidence required"
+    },
+    {
+      "id": "arena-economy",
+      "name": "Arena / economy / assets",
+      "status": "HISTORICAL_ONLY",
+      "authority": "HISTORICAL_PROVENANCE"
+    },
+    {
+      "id": "release",
+      "name": "Release verification",
+      "status": "UNVERIFIED",
+      "authority": "CURRENT_MAIN",
+      "blocker": "exact-state release gate required"
+    }
   ],
   "historicalEvidence": [
-    {"id":"witforge-v2.22","kind":"release-validation","status":"HISTORICAL_VERIFIED","note":"ForgeLM-Nano-0.3 and 713/713 executable checks belong to historical v2.22 only."},
-    {"id":"witforge-v2.26-archive","kind":"archive","status":"PROVENANCE_RECORDED","sha256":"da1911bada830cd9e0389d584ca4335180860482b647d53ca0b420d656fb9030","observedFiles":147,"checksumManifestEntries":144}
+    {
+      "id": "witforge-v2.22",
+      "kind": "release-validation",
+      "status": "HISTORICAL_VERIFIED",
+      "note": "ForgeLM-Nano-0.3 and 713/713 executable checks belong to historical v2.22 only."
+    },
+    {
+      "id": "witforge-v2.26-archive",
+      "kind": "archive",
+      "status": "PROVENANCE_RECORDED",
+      "sha256": "da1911bada830cd9e0389d584ca4335180860482b647d53ca0b420d656fb9030",
+      "observedFiles": 147,
+      "checksumManifestEntries": 144
+    }
   ]
 }
