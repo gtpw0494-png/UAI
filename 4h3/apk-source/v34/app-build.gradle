@@ -1,0 +1,26 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.fourh3.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.fourh3.app'
+        minSdk 26
+        targetSdk 35
+        versionCode 340
+        versionName '3.4.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}

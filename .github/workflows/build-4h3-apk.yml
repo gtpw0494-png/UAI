@@ -1,0 +1,96 @@
+name: Build 4H3 Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 4h3-apk-v3.4
+    paths:
+      - '4h3/apk-source/**'
+      - '.github/workflows/build-4h3-apk.yml'
+  pull_request:
+    paths:
+      - '4h3/apk-source/**'
+      - '.github/workflows/build-4h3-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore verified Android base and apply v3.4 overlays
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/4h3"
+          cat             4h3/apk-source/chunks/part-00.b64             4h3/apk-source/chunks/part-01.b64             4h3/apk-source/chunks/part-02a.b64             4h3/apk-source/chunks/part-02b.b64             4h3/apk-source/chunks/part-03.b64             4h3/apk-source/chunks/part-04.b64             4h3/apk-source/chunks/part-05.b64             4h3/apk-source/chunks/part-06.b64             4h3/apk-source/chunks/part-07.b64             4h3/apk-source/chunks/part-08.b64             4h3/apk-source/chunks/part-09.b64             > "$RUNNER_TEMP/4h3-source.b64"
+          base64 -d "$RUNNER_TEMP/4h3-source.b64" > "$RUNNER_TEMP/4h3-source.zip"
+          echo "51b78a1c424d6a2e6816615f191f73f247acf4df88f6a969fcd244ab67028ee9  $RUNNER_TEMP/4h3-source.zip" | sha256sum -c -
+          unzip -q "$RUNNER_TEMP/4h3-source.zip" -d "$RUNNER_TEMP/4h3"
+
+          ROOT="$RUNNER_TEMP/4h3/native-android"
+          test -f "$ROOT/settings.gradle"
+          test -f "$ROOT/app/src/main/AndroidManifest.xml"
+
+          cp 4h3/apk-source/v34/app-build.gradle "$ROOT/app/build.gradle"
+          cp 4h3/apk-source/v34/MainActivity.java "$ROOT/app/src/main/java/com/fourh3/app/MainActivity.java"
+          cp 4h3/apk-source/v34/ContactsBridge.java "$ROOT/app/src/main/java/com/fourh3/app/ContactsBridge.java"
+          cp 4h3/apk-source/v34/app.js "$ROOT/app/src/main/assets/app.js"
+          cp 4h3/apk-source/v34/google-contacts.js "$ROOT/app/src/main/assets/google-contacts.js"
+          cp 4h3/apk-source/v34/android-native.js "$ROOT/app/src/main/assets/android-native.js"
+          cp 4h3/apk-source/v34/manifest.webmanifest "$ROOT/app/src/main/assets/manifest.webmanifest"
+
+          grep -q "versionName '3.4.0'" "$ROOT/app/build.gradle"
+          grep -q "transfer_ld_v2" "$ROOT/app/src/main/assets/app.js"
+          grep -q "addWebMessageListener" "$ROOT/app/src/main/java/com/fourh3/app/MainActivity.java"
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configure hosted Android SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          ANDROID_HOME="/usr/local/lib/android/sdk"
+          test -d "$ANDROID_HOME"
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+          test -x "$SDKMANAGER"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "$(dirname "$SDKMANAGER")" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0'
+
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build standalone v3.4 APK
+        working-directory: ${{ runner.temp }}/4h3/native-android
+        run: gradle :app:assembleDebug --stacktrace --no-daemon
+
+      - name: Verify APK
+        shell: bash
+        run: |
+          APK="$RUNNER_TEMP/4h3/native-android/app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          sha256sum "$APK"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: 4H3-v3.4-standalone-apk
+          path: ${{ runner.temp }}/4h3/native-android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
